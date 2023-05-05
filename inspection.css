@@ -103,18 +103,26 @@ th, td {
   display: inline-block;
   justify-content: left;
 }
+.submit-btn {
+  margin-right: 20px; /* 設置右邊距以與 h1 元素分隔 */
+  white-space: nowrap; /* 避免按鈕換行 */
+}
+
 
 
 .submitFormbtn {
   width: 50%;
   padding: 10px;
   margin: 0 auto;
-display: block;
+  display: block;
   background-color: #7c7c7c;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-left: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 

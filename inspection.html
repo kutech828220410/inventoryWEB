@@ -11,9 +11,12 @@
   <script src="inspection.js"></script>
 </head>
 <body>
-  <span class="h1top">
-    <h1>驗收入庫</h1>
-  </span>
+  <div class="d-flex justify-content-center align-items-center h1top">
+    <h1 class="mb-0">驗收入庫</h1>
+    <div class="ml-auto">
+      <button id="submitFormbtn" onclick="submitForm()">送出</button>
+    </div>
+  </div>
   <style>
     #firstinspection {
       border-bottom: 1px solid #000000;
@@ -35,9 +38,7 @@
               </tbody>
     </table>
   </div>
-  <div class="pagination">
-    <button id="submitFormbtn" onclick="submitForm()" >送出</button>
-  </div>
+  
 
   <div class="under-line">
     <B>Copyright ©2023 鴻森整合機電有限公司</B>
