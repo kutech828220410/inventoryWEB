@@ -11,14 +11,15 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-right: 20px;
+  padding-right: 0;
   position: relative;
 }
 
 .h1top h1 {
-  margin-right: auto;
+  margin: 0 auto;
   font-size: 2rem;
 }
+
 h1 {
   position: fixed;
   text-align: center;
@@ -94,10 +95,10 @@ th, td {
 
 
 .pagination {
-  width: 100px;
-  margin-top: 0px;
-  display: inline-block;
-  justify-content: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
 }
 .submit-btn {
   white-space: nowrap;
@@ -114,6 +115,7 @@ th, td {
   color: #fff;
   font-size: 16px;
   font-weight: bold;
+  padding: 10px 20px;
 }
 
 .under-line {
