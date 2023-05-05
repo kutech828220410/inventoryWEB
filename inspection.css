@@ -13,6 +13,9 @@ body {
   align-items: center;
   padding-right: 20px;
 }
+.h1top h1 {
+  margin-right: auto;
+}
 h1 {
   position: fixed;
   text-align: center;
@@ -100,16 +103,14 @@ th, td {
 
 
 
-
 #submitFormbtn {
+  margin-left: 20px;
   background-color: #007bff;
   border-color: #007bff;
   color: #fff;
   font-size: 16px;
   font-weight: bold;
-  margin-left: auto;
 }
-
 
 
 .under-line {
