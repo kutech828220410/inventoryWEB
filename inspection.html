@@ -8,13 +8,19 @@
   <link rel="stylesheet" href="inspection.css">
   <script src="ApiURL.js"></script>
   <script src="WebApiFunc.js"></script>
-  <script src="frontpage.js"></script>
-  <script src="inspection.js"></script>
+  <script src="../dist/JsBarcode.all.js"></script>
+
+  <!-- <script src="frontpage.js"></script> -->
+  
 </head>
 <body>
   <div class="h1top">
     <h1 class="h1_inspection">驗收入庫</h1>
     <div class="pagination">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="toggleCK" checked>
+        <label class="form-check-label" for="toggleLB">Scanner</label>
+      </div>
       <button id="submitFormbtn" onclick="submitForm()">送出</button>
     </div>
   </div>
@@ -44,8 +50,54 @@
   <div class="under-line">
     <B>Copyright ©2023 鴻森整合機電有限公司</B>
   </div>
+  
+  <script src="inspection.js"></script>
+  <script>
+    
+    var barcode_value = '';
+    // 監聽頁面的keydown事件
+     window.addEventListener('keydown', function(event) {
+        // 判斷按下的按鍵是否是Tab鍵或Enter鍵
+        if (event.key === 'Tab' || event.key === 'Enter') {
+        // 防止頁面重新載入
+            event.preventDefault();
+            const parsedCode = parseBarcode(barcode_value);
+            
+            // 取得輸入框的值
+            barcode_value = '';
+            // 解析藍牙掃描器返回的數據
+            if(parsedCode != '' && document.getElementById("toggleCK").checked)
+            {
+                console.log(parsedCode);
+                searchItem(data.Data, parsedCode).then((result) => {
+                  const dataLength = result.length;
+                  if(dataLength == 0) return;
+                  const qty = prompt(`${result[0].CODE} 請輸入數量：`);
 
+                }).catch((error) => {
+                  console.error(error);
+                });
+            }         
+        }
+        else
+        {
+            const isValid = /^[a-zA-Z0-9]+$/.test(event.key);
+            const isControlKey = event.keyCode < 48 || event.keyCode > 90;
+            if (isValid && !isControlKey) {
+                // 將解析後的條碼值設定為輸入框的值
+                barcode_value += event.key;
+            } 
+        }
+    });
 
+    // 解析帶有分隔符的字符串
+    function parseBarcode(scannedCode) {
+    const delimiter = /[\n\r]/g;
+    const matches = scannedCode.split(delimiter);
+    return matches[0];
+    }
+    
   </script>
-</body>
+  
+  </body>
 </html>

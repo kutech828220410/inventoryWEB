@@ -17,6 +17,7 @@ body {
 }
 
 
+
 .form-group {
   margin-bottom: 0.5rem;
 }
@@ -149,4 +150,29 @@ th, td {
   display: block;
 }
 
+/* toggle container */
+.toggle-container {
+  display: inline-block;
+  position: relative;
+  width: 60px;
+  height: 30px;
+  margin-right: 20px;
+}
 
+/* toggle label */
+.toggle-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  text-align: center;
+  color: #333;
+  font-weight: bold;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+}

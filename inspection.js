@@ -1,8 +1,11 @@
+let response = [];
+let data =[];
 async function insertDataIntoTable() {
-  const response = await fetch('http://103.1.221.188:4433/api/inspection'); // 替換成您的 API 網址
-  const data = await response.json();
+  response = await fetch('http://103.1.221.188:4433/api/inspection'); // 替換成您的 API 網址
+  data = await response.json();
 
   const table = document.querySelector('table');
+  var _index = 0;
   for (const item of data.Data) {
     // 插入新的表格列
     const row = table.insertRow();
@@ -41,11 +44,31 @@ async function insertDataIntoTable() {
     `;
     
     // 插入新的表格列
+    var barcode_text = `barcode${_index}`;
+    console.log(_index);
     const inspectionRow = table.insertRow();
     const inspectionCell = inspectionRow.insertCell();
     inspectionCell.colSpan = 2;
     inspectionCell.id = 'firstinspection';
-    inspectionCell.textContent = `批號:${item.LOT_NUMBER}  效期:${item.VAL_DATE}`;
+    //inspectionCell.textContent = `批號:${item.LOT_NUMBER}  效期:${item.VAL_DATE}`;
+    inspectionCell.innerHTML = 
+    `
+    <td id="LOT_NUMBER_VAL_DATE">
+    <div>批號:${item.LOT_NUMBER}  效期:${item.VAL_DATE} 
+    <canvas id="${barcode_text}" style="float: right; width:140px"></canvas>
+    </div>
+    </td>
+    `; 
+    const barcodeDiv = document.getElementById(barcode_text);
+    JsBarcode(barcodeDiv, item.CODE, {
+      format: "code128",
+      width: 1,
+      height: 12,
+      displayValue: false,
+      margin: 0,
+      
+    });
+     _index++;
   }
 }
 
@@ -94,7 +117,10 @@ async function postData(url, data) {
   
   return response.json();
 }
-
+async function get_jsondata() {
+  const data = await response.json();
+  return data;
+}
 
 
 function checkQuantity(input) {
@@ -106,5 +132,19 @@ function checkQuantity(input) {
     input.value = ''; // 清空實收輸入框的值
   }
 }
-
+function searchItem(data, searchKey) {
+  return new Promise((resolve, reject) => {
+    const result = data.filter((item) => {
+      return item.CODE == searchKey;
+    });
+    if (result.length > 0) {
+      resolve(result);
+    } else {
+      reject("No result found.");
+    }
+  });
+}
 insertDataIntoTable();
+
+
+
