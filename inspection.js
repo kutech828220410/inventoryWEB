@@ -37,6 +37,7 @@ async function insertDataIntoTable() {
     <input type="number" min="0" max="999" class="form-control" value="">
   </div>
   </td>
+  
     `;
     
     // 插入新的表格列
