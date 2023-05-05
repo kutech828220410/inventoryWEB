@@ -98,9 +98,10 @@ th, td {
 
 
 .pagination {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
+  width: 100px;
+  margin-top: 0px;
+  display: inline-block;
+  justify-content: left;
 }
 
 
