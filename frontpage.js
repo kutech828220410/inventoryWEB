@@ -1,0 +1,86 @@
+setInterval(check_session, 1000);
+
+async function check_session() {
+    var loggedID = sessionStorage.getItem('loggedID');
+    var loggedName = sessionStorage.getItem('loggedName');
+    var loggedEmployer = sessionStorage.getItem('loggedEmployer');
+    var loggedTime = sessionStorage.getItem('loggedTime');
+
+    let userdata = {
+        "ID": loggedID,
+        "loginTime": loggedTime,
+        "check_sec": "5"
+    };
+    console.log(JSON.stringify(userdata));
+
+    data = await postDataToAPI(session_check_post_url, userdata);
+    console.log(data);
+
+    if (data.Code < 0) {
+        let lotoutdata = {
+            "ID": loggedID,
+        };
+        data_0 = await postDataToAPI(session_logout_post_url, lotoutdata);
+        console.log(data_0);
+        sessionStorage.clear();
+        alert(data.Result);
+        window.location.href = "login.html";
+    }
+}
+async function logout() {
+    var loggedID = sessionStorage.getItem('loggedID');
+    let lotoutdata = {
+        "ID": loggedID,
+    };
+    data_0 = await postDataToAPI(session_logout_post_url, lotoutdata);
+    console.log(data_0);
+
+    sessionStorage.clear();
+    window.location.href = "login.html";
+}
+
+
+
+function setButtonPermissions(level) {
+  var inventoryButton = document.getElementById("inventory-btn");
+  var consumptionButton = document.getElementById("consumption-btn");
+  var controlledDrugsButton = document.getElementById("controlled-drugs-btn");
+  var inspectionButton = document.getElementById("inspection-btn");
+  var emgApplicationButton = document.getElementById("emg-application-btn");
+
+
+  switch (level) {
+    case "01":
+      // level 01 用户有权限访问所有按钮
+      break;
+    case "02":
+      // level 02 用户无法访问 controlledDrugsButton
+      controlledDrugsButton.disabled = true;
+       emgApplicationButton.disabled = true;
+      break;
+    case "03":
+      // level 03 用户无法访问 inventoryButton 和 consumptionButton
+      inventoryButton.disabled = true;
+      consumptionButton.disabled = true;
+      break;
+    default:
+      // 默认情况下，所有按钮都被禁用
+      inventoryButton.disabled = true;
+      consumptionButton.disabled = true;
+      controlledDrugsButton.disabled = true;
+      inspectionButton.disabled = true;
+      emgApplicationButton.disabled = true;
+  }
+}
+
+function goToInventory() {
+  // 執行盤點相關操作
+}
+
+function goToConsumption() {
+  // 執行庫存消耗量相關操作
+}
+
+function goToControlledDrugs() {
+  // 執行管制藥結存報表相關操作
+}

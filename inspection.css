@@ -1,0 +1,136 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.h1top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 32px;
+  text-align: center;
+  font-size: 22px;
+  color: #000000;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+h1 {
+  position: fixed;
+  text-align: center;
+  font-size: 22px;
+  color: #000000;
+  font-weight: bold;
+}
+
+.table-container {
+  margin-top: 0px;
+  overflow-y: auto;
+  height: calc(100vh - 82Px);
+}
+
+.table-container th:nth-child(2),
+.table-container td:nth-child(2) {
+  width: 33%; /* 調整數量欄位的寬度 */
+}
+
+.form-control {
+  border-radius: 0;
+}
+
+
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  z-index: 4;
+}
+
+
+
+.input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  z-index: 3;
+  
+}
+
+.input-group-prepend {
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+}
+
+
+.text-right {
+  text-align: right;
+}
+
+
+
+thead th {
+  position: sticky;
+  background-color: #c9d6ff;
+  z-index: 2;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+
+.submitFormbtn {
+  width: 50%;
+  padding: 10px;
+  margin: 0 auto;
+display: block;
+  background-color: #7c7c7c;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+
+
+.under-line {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  color: #000000;
+  background-color: #ffffff;
+  height: 30px;
+  line-height: 30px;
+  display: block;
+}
+
+

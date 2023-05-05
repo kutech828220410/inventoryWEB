@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="login.css">
+    <title>智慧庫儲登入頁</title>
+
+    <script src="ApiURL.js"></script>
+    <script src="WebApiFunc.js"></script>
+    <script src="login.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <form class="login-form" action="login.php" method="POST" onsubmit="return verifyUser(event)">
+            <h2>智慧庫儲盤點系統</h2>
+            <input type="text" name="account" placeholder="使用者帳號">
+            <input type="password" name="password" placeholder="密碼">
+            <button type="submit" id="login-btn">登入</button>
+        </form>
+        </div>
+        <div class="under-line">
+            <B>Copyright ©2023 鴻森整合機電有限公司</B>
+         </div>
+</body>
+</html>
