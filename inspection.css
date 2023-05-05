@@ -8,23 +8,21 @@ body {
 }
 
 .h1top {
-  width: 100%;
+  width: 80%;
+  height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 0;
 }
 
+
+.form-group {
+  margin-bottom: 0.5rem;
+}
 .h1top h1 {
   margin: 0;
   font-size: 2rem;
-}
-
-h1 {
-  position: fixed;
-  text-align: center;
-  font-size: 22px;
-  color: #000000;
-  font-weight: bold;
 }
 
 .table-container {
@@ -91,11 +89,24 @@ th, td {
   padding: 8px;
 }
 
-
+.h1_inspection{
+  position: absolute;
+  top: 0px;
+  top: 10px;
+  left : 20px; 
+  text-align: center;
+  font-size: 50px;
+  color: #000000;
+  font-weight: bold;
+  
+}
 
 .pagination {
+  position: absolute;
   margin-left: auto;
   margin-right: 0;
+  top: 6px;
+  right : 10px; 
 }
 
 .submit-btn {
