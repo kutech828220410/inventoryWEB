@@ -11,12 +11,10 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-right: 0;
-  position: relative;
 }
 
 .h1top h1 {
-  margin: 0 auto;
+  margin: 0;
   font-size: 2rem;
 }
 
@@ -95,10 +93,7 @@ th, td {
 
 
 .pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
+  margin-left: auto;
 }
 .submit-btn {
   white-space: nowrap;
@@ -106,10 +101,6 @@ th, td {
 }
 
 #submitFormbtn {
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
   background-color: #007bff;
   border-color: #007bff;
   color: #fff;
