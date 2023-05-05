@@ -8,6 +8,7 @@ body {
 }
 
 .h1top {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -94,7 +95,9 @@ th, td {
 
 .pagination {
   margin-left: auto;
+  margin-right: 0;
 }
+
 .submit-btn {
   white-space: nowrap;
   margin-left: 20px;
@@ -107,6 +110,8 @@ th, td {
   font-size: 16px;
   font-weight: bold;
   padding: 10px 20px;
+  width: auto;
+  margin-left: 10px;
 }
 
 .under-line {
