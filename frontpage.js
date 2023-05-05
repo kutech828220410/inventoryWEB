@@ -1,4 +1,4 @@
-setInterval(check_session, 1000);
+setInterval(check_session, 5000);
 
 async function check_session() {
     var loggedID = sessionStorage.getItem('loggedID');
@@ -9,7 +9,7 @@ async function check_session() {
     let userdata = {
         "ID": loggedID,
         "loginTime": loggedTime,
-        "check_sec": "5"
+        "check_sec": "20"
     };
     console.log(JSON.stringify(userdata));
 
