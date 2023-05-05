@@ -12,9 +12,12 @@ body {
   justify-content: space-between;
   align-items: center;
   padding-right: 20px;
+  position: relative;
 }
+
 .h1top h1 {
   margin-right: auto;
+  font-size: 2rem;
 }
 h1 {
   position: fixed;
@@ -101,17 +104,17 @@ th, td {
   margin-left: 20px;
 }
 
-
-
 #submitFormbtn {
-  margin-left: 20px;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
   background-color: #007bff;
   border-color: #007bff;
   color: #fff;
   font-size: 16px;
   font-weight: bold;
 }
-
 
 .under-line {
   position: fixed;
