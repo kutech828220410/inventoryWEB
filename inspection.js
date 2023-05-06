@@ -1,23 +1,27 @@
 let response = [];
 let data =[];
 async function insertDataIntoTable() {
-  response = await fetch('http://103.1.221.188:4433/api/inspection'); // 替換成您的 API 網址
+  url = inspection_get_url + "/123";
+  response = await fetch(inspection_get_url); // 替換成您的 API 網址
   data = await response.json();
-
+  console.log(data);
   const table = document.querySelector('table');
   var _index = 0;
+  
   for (const item of data.Data) {
     // 插入新的表格列
+    var GUID = item.GUID;
     const row = table.insertRow();
     
     // 插入藥品資訊儲存格
     const drugInfoCell = row.insertCell();
     drugInfoCell.innerHTML = `
     <td id="firstdruginfo">
-        <div>藥碼: ${item.CODE}</div>
-        <div>料號: ${item.SKDIACODE}</div>
-        <div>藥名: ${item.NAME}</div>
-        <div>中文名: ${item.CHT_NAME}</div>
+        <div style="font-size: 10px; margin-top: -6px;"><b>${_index + 1}</b></div>
+        <div><b>藥碼: ${item.CODE}</b></div>
+        <div><b>料號: ${item.SKDIACODE}</b></div>
+        <div style="color: orange;"><b>(英)  ${item.NAME}</b></div>
+        <div style="color: orange;"><b>(中)  ${item.CHT_NAME}</b></div>
         </td>
     `;
     
@@ -33,13 +37,13 @@ async function insertDataIntoTable() {
     <BR>
     <BR>
     <input type="text" class="form-control text-right" value="${item.START_QTY}" readonly>
-  <div class="input-group">
-    <div class="input-group-prepend">
-      <div>實收:</div>
-    </div>
-    <input type="number" min="0" max="999" class="form-control" value="">
-  </div>
-  </td>
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <div>實收:</div>
+      </div>
+      <input type="number" min="0" max="9999" class="form-control" value="${item.END_QTY}" inputmode="numeric" onfocus="clearInput(this)" onblur='checkInput(this , "${GUID}")' onkeydown='checkEnterKey(event, "${GUID}")'">
+      </div>
+    </td>
   
     `;
     
@@ -68,10 +72,97 @@ async function insertDataIntoTable() {
       margin: 0,
       
     });
+
+  
      _index++;
   }
+ 
 }
 
+function clearInput(input) {
+  input.value = '';
+}
+
+async function checkInput(input, GUID) {
+  data.Data = data.Data.map((item) => {
+    if (item.GUID === GUID) {
+      const num = parseInt(item.START_QTY);
+      if (!input.value) {
+        input.value = item.END_QTY ;
+        return item;
+      }
+      if(input.value > num)
+      {
+        console.log(input.value);
+        console.log(item.START_QTY);
+         alert("實收數量不得大於應收數量!");
+         input.value = 0;
+         return item;
+      }
+      item.END_QTY = input.value;
+    }
+    return item;
+  });
+
+  
+  data = await postDataToAPI(inspection_update_post_url , data);
+  
+  console.log(data);
+}
+
+async function checkEnterKey(event, GUID) {
+  if (event.key === 'Enter') {
+    const input = event.target;
+    input.value = await set_END_QTY(GUID ,input.value);
+    // data.Data = data.Data.map((item) => {
+    //   if (item.GUID === GUID) {
+    //     const num = parseInt(item.START_QTY);
+    //     if (!input.value) {
+    //       input.value = item.END_QTY ;
+    //       return item;
+    //     }
+    //     console.log(input.value );
+    //     if(input.value > num)
+    //     {
+    //        alert("實收數量不得大於應收數量!");
+    //        input.value = 0;
+    //        return item;
+    //     }
+    //     item.END_QTY = input.value;
+    //   }
+    //   return item;
+    // });
+
+    // data = await postDataToAPI(inspection_update_post_url , data);
+
+    // console.log(data);
+  }
+}
+async function set_END_QTY(GUID , QTY)
+{
+    data.Data = data.Data.map((item) => {
+      if (item.GUID === GUID) {
+        const num = parseInt(item.START_QTY);
+        if (!QTY) {
+          return item;
+        }
+        console.log(QTY);
+        if(QTY > num)
+        {
+          alert("實收數量不得大於應收數量!");
+          QTY = 0;
+          return item;
+        }
+        item.END_QTY = QTY;
+      }
+      return item;
+    });
+
+    data = await postDataToAPI(inspection_update_post_url , data);
+
+    console.log(data);
+    return QTY;
+}
 
 function submitForm() {
   const table = document.querySelector('table');
@@ -91,7 +182,7 @@ function submitForm() {
     });
   }
 
-  postData('http://103.1.221.188:4433/api/inspection', formData)
+  postData(inspection_update_post_url, formData)
     .then(response => {
       console.log(response);
       // 在這裡處理回傳的回應
@@ -122,14 +213,28 @@ async function get_jsondata() {
   return data;
 }
 
-
-function checkQuantity(input) {
-  const expectedInput = input.previousElementSibling.querySelector('input').value;
-  const actualInput = input.value;
-
-  if (parseInt(actualInput) > parseInt(expectedInput)) {
-    alert('實收數量不可大於應收數量');
-    input.value = ''; // 清空實收輸入框的值
+function search_name_OnEnter(event) {
+  if (event.key === 'Enter') {
+    let foundRow = null;
+    const input = document.querySelector('.drugNameText');
+    const filter = input.value.toLowerCase();
+    const rows = document.querySelectorAll('table tr');
+    console.log(input);
+    
+    for (let i = 1; i < rows.length; i++) { // 從第2列開始搜尋，跳過表格標題列
+      const drugNameCell = rows[i].querySelector('td:first-child');
+      
+      if (!drugNameCell) {
+        continue; // 如果 drugNameCell 為 null，則跳過該行的處理
+      }
+      const drugName = drugNameCell.textContent.trim().toLowerCase();
+      if (drugName.includes(filter)) {
+        console.log(drugNameCell);
+        rows[i].style.display = '';
+      } else {
+        rows[i].style.display = 'none';
+      }
+    } 
   }
 }
 function searchItem(data, searchKey) {
@@ -145,6 +250,5 @@ function searchItem(data, searchKey) {
   });
 }
 insertDataIntoTable();
-
 
 

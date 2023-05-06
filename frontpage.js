@@ -1,3 +1,5 @@
+
+
 setInterval(check_session, 5000);
 
 async function check_session() {
@@ -73,14 +75,28 @@ function setButtonPermissions(level) {
   }
 }
 
-function goToInventory() {
-  // 執行盤點相關操作
-}
 
-function goToConsumption() {
-  // 執行庫存消耗量相關操作
-}
+window.onload = function() {
 
-function goToControlledDrugs() {
-  // 執行管制藥結存報表相關操作
+  // 在這裡撰寫當網頁載入完成後要執行的程式碼
+};
+window.addEventListener('load', function() {
+  // 在這裡撰寫當網頁載入完成後要執行的程式碼
+});
+
+
+async function inventoryBtnClick() {
+  
+}
+async function consumptionBtnClick() {
+  
+}
+async function controlledDrugsBtnClick() {
+  
+}
+async function inspectionClick() {
+  location.href = "inspection.html";
+}
+async function emgApplicationClick() {
+  
 }

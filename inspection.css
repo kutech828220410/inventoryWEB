@@ -16,14 +16,34 @@ body {
   margin-top: 0;
 }
 
+.serch_div {
+  width: 90%;
+  height: 44px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-top: 0;
+  
+}
+.drugNameText {
+  width: 130px !important;
+}
 
 
+.drugNameSearch {
+  float: left;
+  margin-left: 10px; /* 調整元素之間的間距 */
+}
+#firstquantity input[type="number"] {
+  width: 80px;
+}
 .form-group {
   margin-bottom: 0.5rem;
 }
 .h1top h1 {
   margin: 0;
-  font-size: 2rem;
+  font-size: 30px;
+  
 }
 
 .table-container {
@@ -48,7 +68,9 @@ body {
   border: 1px solid #000000;
   text-align: right; /* 調整文字靠右對齊 */
 }
-
+#firstinspection {
+  border-bottom: 2px solid #000000;
+}
 
 
 table {
@@ -70,7 +92,6 @@ thead {
   display: flex;
   align-items: right;
   margin-bottom: 8px;
-  z-index: 3;
   
 }
 
@@ -100,6 +121,7 @@ th, td {
 }
 
 .h1_inspection{
+  text-shadow: 2px 2px 2px #888888;
   position: absolute;
   top: 0px;
   top: 10px;
@@ -148,6 +170,7 @@ th, td {
   height: 30px;
   line-height: 30px;
   display: block;
+
 }
 
 /* toggle container */
