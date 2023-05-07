@@ -10,6 +10,8 @@
 <body>
   <h1>藍芽掃碼器範例</h1>
   <label for="barcode">請使用藍芽掃碼器掃描條碼：</label>
+  <a href="http://103.1.221.188:4433/api/excel/test" download="excel-file.xlsx">下載 Excel 檔案</a>
+  <a href="#" onclick="downloadExcel()">下載 Excel 檔案</a>
   <script>
     var barcode_value = '';
     // 監聽頁面的keydown事件
@@ -46,6 +48,22 @@
     const matches = scannedCode.split(delimiter);
     return matches[0];
     }
+    function downloadExcel() {
+  // 發送 HTTP 請求獲取 Excel 檔案的二進位數據
+    fetch('http://103.1.221.188:4433/api/excel/test')
+      .then(response => response.blob())
+      .then(blob => {
+        // 創建下載連結
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = 'excel-file.xlsx';
+      
+        // 模擬點擊下載連結
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      });
+  }
   </script>
 </body>
 </html>

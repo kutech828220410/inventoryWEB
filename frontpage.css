@@ -1,4 +1,5 @@
 body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -77,6 +78,7 @@ span {
     height: 30px;
     line-height: 30px;
     display: block;
+
 }
 
 

@@ -18,6 +18,7 @@ async function insertDataIntoTable() {
     drugInfoCell.innerHTML = `
     <td id="firstdruginfo">
         <div style="font-size: 10px; margin-top: -6px;"><b>${_index + 1}</b></div>
+        <div style="display:none;"><b>GUID: ${item.GUID}</b></div>
         <div><b>藥碼: ${item.CODE}</b></div>
         <div><b>料號: ${item.SKDIACODE}</b></div>
         <div style="color: orange;"><b>(英)  ${item.NAME}</b></div>
@@ -114,28 +115,7 @@ async function checkEnterKey(event, GUID) {
   if (event.key === 'Enter') {
     const input = event.target;
     input.value = await set_END_QTY(GUID ,input.value);
-    // data.Data = data.Data.map((item) => {
-    //   if (item.GUID === GUID) {
-    //     const num = parseInt(item.START_QTY);
-    //     if (!input.value) {
-    //       input.value = item.END_QTY ;
-    //       return item;
-    //     }
-    //     console.log(input.value );
-    //     if(input.value > num)
-    //     {
-    //        alert("實收數量不得大於應收數量!");
-    //        input.value = 0;
-    //        return item;
-    //     }
-    //     item.END_QTY = input.value;
-    //   }
-    //   return item;
-    // });
-
-    // data = await postDataToAPI(inspection_update_post_url , data);
-
-    // console.log(data);
+ 
   }
 }
 async function set_END_QTY(GUID , QTY)
@@ -213,30 +193,57 @@ async function get_jsondata() {
   return data;
 }
 
-function search_name_OnEnter(event) {
+
+function search_By_name_Event(event) {
   if (event.key === 'Enter') {
-    let foundRow = null;
     const input = document.querySelector('.drugNameText');
-    const filter = input.value.toLowerCase();
-    const rows = document.querySelectorAll('table tr');
-    console.log(input);
-    
-    for (let i = 1; i < rows.length; i++) { // 從第2列開始搜尋，跳過表格標題列
-      const drugNameCell = rows[i].querySelector('td:first-child');
-      
-      if (!drugNameCell) {
-        continue; // 如果 drugNameCell 為 null，則跳過該行的處理
-      }
-      const drugName = drugNameCell.textContent.trim().toLowerCase();
-      if (drugName.includes(filter)) {
-        console.log(drugNameCell);
-        rows[i].style.display = '';
-      } else {
-        rows[i].style.display = 'none';
-      }
-    } 
+    search_By_name(input.value);    
   }
 }
+function search_By_name(name) {
+  let foundRow = null;
+  const filter = name.toLowerCase();
+  const rows = document.querySelectorAll('table tr');
+  console.log(name);
+  
+  for (let i = 1; i < rows.length; i++) { // 從第2列開始搜尋，跳過表格標題列
+    const drugNameCell = rows[i].querySelector('td:first-child');
+    
+    if (!drugNameCell) {
+      continue; // 如果 drugNameCell 為 null，則跳過該行的處理
+    }
+    const drugName = drugNameCell.textContent.trim().toLowerCase();
+    if (drugName.includes(filter)) {
+      console.log(drugNameCell);
+      rows[i].style.display = '';
+    } else {
+      rows[i].style.display = 'none';
+    }
+  }
+}
+function updateQtyByGuid(guid, qty) {
+  const rows = document.querySelectorAll('table tr');
+  const filter = guid.toLowerCase();
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const drugNameCell = rows[i].querySelector('td:first-child');
+      
+    if (!drugNameCell) {
+      continue; // 如果 drugNameCell 為 null，則跳過該行的處理
+    }
+    const drugName = drugNameCell.textContent.trim().toLowerCase();
+    if (drugName.includes(filter)) {
+      console.log(drugNameCell);
+      const qtyInput = row.querySelector('input[type="number"]');
+      qtyInput.value = qty;
+      return;
+    } 
+   
+  }
+
+  console.warn(`Cannot find row with GUID ${guid}`);
+}
+
 function searchItem(data, searchKey) {
   return new Promise((resolve, reject) => {
     const result = data.filter((item) => {
