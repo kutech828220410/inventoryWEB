@@ -6,6 +6,7 @@ async function check_session() {
     var loggedID = sessionStorage.getItem('loggedID');
     var loggedName = sessionStorage.getItem('loggedName');
     var loggedEmployer = sessionStorage.getItem('loggedEmployer');
+    var loggedlevel = sessionStorage.getItem('loggedlevel');
     var loggedTime = sessionStorage.getItem('loggedTime');
 
     let userdata = {
@@ -42,6 +43,34 @@ async function logout() {
 }
 
 
+window.onload = function() {
+
+  // 在這裡撰寫當網頁載入完成後要執行的程式碼
+};
+window.addEventListener('load', function() {
+  // 在這裡撰寫當網頁載入完成後要執行的程式碼
+  var loggedlevel = sessionStorage.getItem('loggedlevel');
+  setButtonPermissions(loggedlevel);
+});
+
+
+async function inventoryBtnClick() {
+  
+}
+async function consumptionBtnClick() {
+  
+}
+async function controlledDrugsBtnClick() {
+  
+}
+async function inspectionClick() {
+  location.href = "frontinspection.html";
+}
+async function emgApplicationClick() {
+  
+}
+
+
 
 function setButtonPermissions(level) {
   var inventoryButton = document.getElementById("inventory-btn");
@@ -75,28 +104,3 @@ function setButtonPermissions(level) {
   }
 }
 
-
-window.onload = function() {
-
-  // 在這裡撰寫當網頁載入完成後要執行的程式碼
-};
-window.addEventListener('load', function() {
-  // 在這裡撰寫當網頁載入完成後要執行的程式碼
-});
-
-
-async function inventoryBtnClick() {
-  
-}
-async function consumptionBtnClick() {
-  
-}
-async function controlledDrugsBtnClick() {
-  
-}
-async function inspectionClick() {
-  location.href = "inspection.html";
-}
-async function emgApplicationClick() {
-  
-}

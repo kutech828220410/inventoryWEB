@@ -1,7 +1,7 @@
 let response = [];
 let data =[];
 async function insertDataIntoTable() {
-  url = inspection_get_url + "/123";
+  url = inspection_get_url;
   response = await fetch(inspection_get_url); // 替換成您的 API 網址
   data = await response.json();
   console.log(data);

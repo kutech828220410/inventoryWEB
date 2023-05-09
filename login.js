@@ -47,6 +47,7 @@ async function verifyUser(event) {
         sessionStorage.setItem('loggedID', session_login.Data[0].ID);
         sessionStorage.setItem('loggedName', session_login.Data[0].Name);        
         sessionStorage.setItem('loggedEmployer', session_login.Data[0].Employer);
+        sessionStorage.setItem('loggedlevel', session_login.Data[0].level);
         sessionStorage.setItem('loggedTime', session_login.Data[0].loginTime);
 
         window.location.href = "frontpage.html?loggedIn=true"; // 跳轉到 frontpage.html 頁面
@@ -66,6 +67,7 @@ async function showConfirm(session_login) {
         sessionStorage.setItem('loggedID', session_login.Data[0].ID);
         sessionStorage.setItem('loggedName', session_login.Data[0].Name);
         sessionStorage.setItem('loggedEmployer', session_login.Data[0].Employer);
+        sessionStorage.setItem('loggedlevel', session_login.Data[0].level);
         sessionStorage.setItem('loggedTime', session_login.Data[0].loginTime);
 
         window.location.href = "frontpage.html?loggedIn=true"; // 跳轉到 frontpage.html 頁面

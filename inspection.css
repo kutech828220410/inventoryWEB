@@ -14,6 +14,7 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-top: 0;
+  z-index: 5;
 }
 
 .h1top h1 {
@@ -167,7 +168,7 @@ th, td {
   padding: 10px 20px;
   width: auto;
   margin-left: 10px;
-  border-radius: 20px;
+  border-radius: 10px;
 }
 
 .under-line {
@@ -182,6 +183,7 @@ th, td {
   height: 30px;
   line-height: 30px;
   display: block;
+  z-index: 5;
 }
 
 /* toggle container */

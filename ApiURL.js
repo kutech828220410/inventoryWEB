@@ -6,3 +6,6 @@ var session_logout_post_url = 'http://103.1.221.188:4433/api/session/logout';
 
 var inspection_get_url = 'http://103.1.221.188:4433/api/inspection';
 var inspection_update_post_url = 'http://103.1.221.188:4433/api/inspection/update';
+
+var inspection_get_od_Date = 'http://103.1.221.188:4433/api/inspection/get_od_Date';
+var inspection_download_excel = 'http://103.1.221.188:4433/api/inspection/download_excel';

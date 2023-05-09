@@ -10,8 +10,7 @@
 <body>
   <h1>藍芽掃碼器範例</h1>
   <label for="barcode">請使用藍芽掃碼器掃描條碼：</label>
-  <a href="http://103.1.221.188:4433/api/excel/test" download="excel-file.xlsx">下載 Excel 檔案</a>
-  <a href="#" onclick="downloadExcel()">下載 Excel 檔案</a>
+  <a href="#" onclick="downloadExcel('http://103.1.221.188:4433/api/inspection/download_excel',jsonData ,'驗收入庫')">下載 Excel 檔案</a>
   <script>
     var barcode_value = '';
     // 監聽頁面的keydown事件
@@ -48,21 +47,46 @@
     const matches = scannedCode.split(delimiter);
     return matches[0];
     }
-    function downloadExcel() {
-  // 發送 HTTP 請求獲取 Excel 檔案的二進位數據
-    fetch('http://103.1.221.188:4433/api/excel/test')
-      .then(response => response.blob())
-      .then(blob => {
-        // 創建下載連結
-        const downloadLink = document.createElement('a');
-        downloadLink.href = URL.createObjectURL(blob);
-        downloadLink.download = 'excel-file.xlsx';
-      
-        // 模擬點擊下載連結
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-      });
+
+    let jsonData = {
+    "Data": [
+      {
+        "OD_SN_S": "1120507002",
+        "MIS_CREATEDTTM": "2023/05/07"
+      },
+      {
+        "OD_SN_S": "1120508002",
+        "MIS_CREATEDTTM": "2023/05/08"
+      },
+      {
+        "OD_SN_S": "1120508001",
+        "MIS_CREATEDTTM": "2023/05/08"
+      }
+    ],
+    "Code": 200,
+    "Result": "取得請購日期表成功!"
+    };
+    function downloadExcel(url ,jsonData , filename) {
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(jsonData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.blob())
+    .then(blob => {
+      let today = new Date();
+      let year = today.getFullYear();
+      let month = today.getMonth() + 1; // 注意月份是從0開始計算的，所以要加1
+      let day = today.getDate();
+      // Creating a download link for the file
+      let downloadLink = document.createElement('a');
+      downloadLink.href = window.URL.createObjectURL(blob);
+      downloadLink.download = `${year}/${month}/${day}_${filename}.xls`;
+      downloadLink.click();
+    })
+    .catch(error => console.error(error));
   }
   </script>
 </body>
