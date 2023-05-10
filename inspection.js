@@ -1,12 +1,12 @@
-let response = [];
-let data =[];
-async function insertDataIntoTable() {
-  url = inspection_get_url;
-  response = await fetch(inspection_get_url); // 替換成您的 API 網址
-  data = await response.json();
-  console.log(data);
-  const table = document.querySelector('table');
-  var _index = 0;
+// let response = [];
+// let data =[];
+// async function insertDataIntoTable() {
+//   url = inspection_get_url;
+//   response = await fetch(inspection_get_url); // 替換成您的 API 網址
+//   data = await response.json();
+//   console.log(data);
+//   const table = document.querySelector('table');
+//   var _index = 0;
   
   for (const item of data.Data) {
     // 插入新的表格列
@@ -25,7 +25,7 @@ async function insertDataIntoTable() {
         <div style="color: orange;"><b>(中)  ${item.CHT_NAME}</b></div>
         </td>
     `;
-    
+  
     // 插入數量儲存格
     const quantityCell = row.insertCell();
     quantityCell.innerHTML = `
