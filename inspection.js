@@ -1,17 +1,19 @@
-// let response = [];
-// let data =[];
-// async function insertDataIntoTable() {
-//   url = inspection_get_url;
-//   response = await fetch(inspection_get_url); // 替換成您的 API 網址
-//   data = await response.json();
-//   console.log(data);
-//   const table = document.querySelector('table');
-//   var _index = 0;
+let response = [];
+let data =[];
+async function insertDataIntoTable() {
+  url = inspection_get_url;
+  response = await fetch(inspection_get_url); // 替換成您的 API 網址
+  data = await response.json();
+  console.log(data);
+  const table = document.querySelector('table');
+  const tbody = document.createElement('tbody'); // 新增 tbody 元素
+  table.appendChild(tbody); // 加入 table 元素中
+  var _index = 0;
   
   for (const item of data.Data) {
     // 插入新的表格列
     var GUID = item.GUID;
-    const row = table.insertRow();
+    const row = tbody.insertRow(); // 改為插入 tbody 元素的內容
     
     // 插入藥品資訊儲存格
     const drugInfoCell = row.insertCell();
