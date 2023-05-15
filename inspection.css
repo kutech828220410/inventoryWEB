@@ -84,8 +84,46 @@ body {
   text-align: right; /* 調整文字靠右對齊 */
 }
 
+.lot, .date, .qty {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  text-align: right; /* 調整文字靠右對齊 */
+}
 
-#firstinspection {
+.lot::-ms-expand, .date::-ms-expand, .qty::-ms-expand {
+  background-color: transparent;
+  border: 0;
+}
+
+.lot:focus, .date:focus, .qty:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.lot::placeholder, .date::placeholder, .qty::placeholder {
+  color: #6c757d;
+}
+
+.lot:disabled, .lot[readonly], .date:disabled, .date[readonly], .qty:disabled, .qty[readonly] {
+  background-color: #e9ecef;
+  opacity: 1;
+}
+
+
+.firstinspection {
   border-bottom: 2px solid #000000;
   padding:0 !important ;
   height: 60px;
@@ -241,7 +279,7 @@ th, td {
 }
 
 /* 關閉按鈕樣式 */
-.modalbtn {
+.modalbtn,.addRowBtn {
   background-color: #007bff;
   color: #fff;
   float: right;
