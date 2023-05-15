@@ -9,7 +9,7 @@ async function insertDataIntoTable() {
   const tbody = document.createElement('tbody'); // 新增 tbody 元素
   table.appendChild(tbody); // 加入 table 元素中
   var _index = 0;
-  
+
   for (const item of data.Data) {
     // 插入新的表格列
     var GUID = item.GUID;
@@ -18,20 +18,17 @@ async function insertDataIntoTable() {
     // 插入藥品資訊儲存格
     const drugInfoCell = row.insertCell();
     drugInfoCell.innerHTML = `
-    <td id="firstdruginfo">
-        <div style="font-size: 10px; margin-top: -6px;"><b>${_index + 1}</b></div>
+        <div><b style="font-size: 12px; padding-right:5px; padding-left:5px; border-style:dashed; margin-top: -6px;">${_index + 1}</b><span style="padding-left: 10px;">${item.OD_SN_L}</span></div>
         <div style="display:none;"><b>GUID: ${item.GUID}</b></div>
         <div><b>藥碼: ${item.CODE}</b></div>
         <div><b>料號: ${item.SKDIACODE}</b></div>
         <div style="color: orange;"><b>(英)  ${item.NAME}</b></div>
         <div style="color: orange;"><b>(中)  ${item.CHT_NAME}</b></div>
-        </td>
     `;
   
     // 插入數量儲存格
     const quantityCell = row.insertCell();
     quantityCell.innerHTML = `
-    <td id="firstquantity">
     <BR>
     <div class="input-group">
     <div class="input-group-prepend">
@@ -44,10 +41,8 @@ async function insertDataIntoTable() {
       <div class="input-group-prepend">
         <div>實收:</div>
       </div>
-      <input type="number" min="0" max="9999" class="form-control" value="${item.END_QTY}" inputmode="numeric" onfocus="clearInput(this)" onblur='checkInput(this , "${GUID}")' onkeydown='checkEnterKey(event, "${GUID}")'">
+      <input type="number" min="0" max="99999" class="form-control" value="" readonly onfocus="clearInput(this)" onblur='checkInput(this , "${GUID}")' onkeydown='checkEnterKey(event, "${GUID}")'>
       </div>
-    </td>
-  
     `;
     
     // 插入新的表格列
@@ -60,12 +55,49 @@ async function insertDataIntoTable() {
     //inspectionCell.textContent = `批號:${item.LOT_NUMBER}  效期:${item.VAL_DATE}`;
     inspectionCell.innerHTML = 
     `
-    <td id="LOT_NUMBER_VAL_DATE">
-    <div>批號:${item.LOT_NUMBER}  效期:${item.VAL_DATE} 
-    <canvas id="${barcode_text}" style="float: right; width:140px"></canvas>
-    </div>
-    </td>
-    `; 
+    <button  id="druginfo" style="text-align: left;  display:block; width:100%; height:100%; border:none; background-color:transparent;" onclick="document.getElementById('myModal${_index}').style.display='block'">
+    點選輸入藥品驗收資訊
+    <canvas id="${barcode_text}" style="float: right; width:140px; padding-right:10px;"></canvas>
+    </button>
+
+    <div id="myModal${_index}" class="modal">
+    <div class="modal-content">
+    <button class="modalbtn" id="addRowBtn" onclick="addNewRow()">新增驗收藥品</button>
+
+      <div><b>${item.OD_SN_L}</b></div>
+      <div><b>批號</b>:<input id="lot" type="text" class="form-control" value="" placeholder="請輸入批號" oninput="this.value = this.value.toUpperCase()" onfocus="clearInput(this)" onblur='checkInput(this , "${GUID}")' onkeydown='checkEnterKey(event, "${GUID}")'></div>
+      <div style="display: flex; flex-direction: column;">
+        <div><b>效期</b>:</div>
+        <div>
+          <input id="date" type="date" class="form-control" value="" placeholder="請選擇效期" onfocus="clearInput(this)" onblur='checkInput(this , "${GUID}")' onkeydown='checkEnterKey(event, "${GUID}")'>
+        </div>
+        <div><b>數量</b>: <input id="qty" type="number" min="0" max="9999" class="form-control" value="" placeholder="請輸入數量" inputmode="numeric" onfocus="clearInput(this)" onblur='checkInput(this , "${GUID}")' onkeydown='checkEnterKey(event, "${GUID}")'></div>
+      </div>
+      <div id="rows"></div>
+      <button class="modalbtn" onclick="document.getElementById('myModal${_index}').style.display='none' ">確認</button>
+    `;
+
+    
+// //彈跳視窗開與關
+// const modalfunction = fuction() {
+//   const modal =
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
     const barcodeDiv = document.getElementById(barcode_text);
     JsBarcode(barcodeDiv, item.CODE, {
       format: "code128",
@@ -152,8 +184,8 @@ function submitForm() {
 
   const formData = [];
   for (let i = 0; i < rows.length; i += 2) {
-    const drugInfoCell = rows[i].querySelector('#firstdruginfo');
-    const quantityCell = rows[i].querySelector('#firstquantity input[type="number"]');
+    const drugInfoCell = rows[i].querySelector();
+    const quantityCell = rows[i].querySelector();
 
     const drugInfo = drugInfoCell.textContent.trim();
     const actualQuantity = quantityCell.value.trim();
@@ -163,6 +195,7 @@ function submitForm() {
       actualQuantity
     });
   }
+
 
   postData(inspection_update_post_url, formData)
     .then(response => {
