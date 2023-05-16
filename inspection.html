@@ -233,14 +233,14 @@ function AddNewRow(_index,lot,date,qty) {
   delBtn.addEventListener("click", function () {
     const delBtn_rowNum = delBtn.getAttribute("_rowNum");
     const delBtn_index = delBtn.getAttribute("_index");
-      console.log(delBtn_rowNum);
       const divs = myModal1.querySelectorAll(`.rows`);
-      const rows = myModal1.querySelectorAll(`#rows${delBtn_index}`);
-      console.log(rows);
-      for(var i = 0 ; i < divs.length ; i++)
+      const Modalrows = myModal1.querySelectorAll(`.Modalrows-area`);
+      console.log(Modalrows);
+      
+      for(var i = 0 ; i < Modalrows.length ; i++)
       {
-          var _index = divs[i].getAttribute("_index");
-          if(_index == delBtn_rowNum)divs[i].remove();
+          var _rowNum = Modalrows[i].getAttribute("_rowNum");
+          if(_rowNum == delBtn_rowNum)Modalrows[i].remove();
       }
       rowNum = (myModal1.querySelectorAll(".rows").length / 3) + 1;
   });
@@ -346,6 +346,7 @@ function AddNewRow(_index,lot,date,qty) {
   // append divs to rows
   divall.className = "Modalrows-area";
   divall.id = `Modalrows-area${rowNum}`;
+  divall.setAttribute("_rowNum",rowNum);
   divall.style.borderTop = "2.5px solid #dadadad8";
   divall.style.borderRight = "2.5px solid #dadadad8";
   divall.style.borderLeft = "1px solid rgba(0, 0, 0, 0.85)";
