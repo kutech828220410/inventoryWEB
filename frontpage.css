@@ -6,6 +6,10 @@ body {
   justify-content: center;
   height: 100vh;
   margin: 0;
+  background-image: url('frontpage.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .header {
     display: flex;
@@ -56,14 +60,21 @@ span {
   background-color: #007bff;
   color: #fff;
   font-size: 20px;
-  border: none;
-  border-radius: 100px;
+  border-radius: 8px;
   cursor: pointer;
+  border: 2px solid rgb(44, 44, 44);
+  border-top: 2px solid #dadadad8;
+  border-right: 2px solid #dadadad8;
+  box-shadow: -2px 3px rgb(0, 90, 185);
 }
 
 .button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
+    border: 2px solid rgb(44, 44, 44);
+    border-top: 2px solid #ffffff;
+    border-right: 2px solid #ffffff;
+    box-shadow: -2px 3px rgba(0, 0, 0, 0.7);
 }
 
 .under-line {

@@ -1,12 +1,9 @@
-
-
-
 body {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0;
 }
 
@@ -76,8 +73,8 @@ header {
 
 
 .table-container {
-  position: relative;
-  overflow-y: auto;
+  /* position: relative;
+  overflow-y: auto; */
   margin-top: 100px; /*調整與header之間的間距*/
 }
 
@@ -93,9 +90,9 @@ header {
   text-align: right; /* 調整文字靠右對齊 */
 }
 
-.lot, .date, .qty { 
+.lot{ 
   width: 100%;
-  margin: 0 auto;
+  margin: 10 ,auto;
   box-sizing: border-box;
   text-align: right; /* 調整文字靠右對齊 */
   height: 40px;
@@ -104,7 +101,17 @@ header {
   background: transparent;
   resize: none;
 }
-
+.date, .qty { 
+  width: 90%;
+  margin: 10px;
+  box-sizing: border-box;
+  text-align: right; /* 調整文字靠右對齊 */
+  height: 40px;
+  border: 1px solid #000000;
+  outline: none;
+  background: transparent;
+  resize: none;
+}
 
 .firstinspection {
   border-bottom: 2px solid #000000;
@@ -119,7 +126,7 @@ table {
 
 thead {
   position: sticky;
-  top: -3px;
+  top: 87px;
   background-color: #ffffff;
   overflow-y:fixed;
   z-index: 4;
@@ -192,9 +199,10 @@ th, td {
   width: auto;
   margin-left: 10px;
   border-radius: 10px;
-  border-top: 2px solid #dadada;
-  border-right: 2px solid #dadada;
-  box-shadow: 0px 4px rgb(0, 90, 185);
+  border: 2px solid rgb(44, 44, 44);
+  border-top: 2px solid #dadadad8;
+  border-right: 2px solid #dadadad8;
+  box-shadow: -2px 3px rgb(0, 90, 185);
 }
 
 .under-line {
@@ -250,7 +258,7 @@ th, td {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 .myModal_title {
   font-family: Arial, sans-serif;
@@ -260,12 +268,12 @@ th, td {
 }
 /* 彈跳視窗內容樣式 */
 .modal-content {
-  background-color: #fefefe;
+  background-color: #ffffff;
   margin: 15% auto;
   padding: 20px;
   left: 0;
   top: 0;
-  border: 1px solid #888;
+  box-shadow: -4px 4px rgba(0, 0, 0, 0.85);
   width: 95%;
 }
 
@@ -277,11 +285,11 @@ th, td {
   font-size: 28px;
   font-weight: bold;
   border-radius: 10px;
-  border: 2px solid #000000;
   margin: 20px;
-  border-top: 2px solid #dadada;
-  border-right: 2px solid #dadada;
-  box-shadow: 0px 4px rgb(0, 90, 185);
+  border: 2px solid rgb(44, 44, 44);
+  border-top: 2px solid #dadadad8;
+  border-right: 2px solid #dadadad8;
+  box-shadow: -2px 3px rgb(0, 90, 185);
 }
 
 .modalbtn:hover,

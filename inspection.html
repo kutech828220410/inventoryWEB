@@ -195,10 +195,7 @@ function AddNewRow(_index,lot,date,qty) {
   const delBtn = document.createElement("button")
   
   // set input attributes
-  div1.style.display = "flex";
-  div1.style.flexDirection = "row";
-  div1.style.justifyContent = "space-between";
-  div1.style.alignItems = "center";
+  
   lotInput.id = "lot1"
   lotInput.type = "text";
   lotInput.className = "lot";
@@ -246,9 +243,88 @@ function AddNewRow(_index,lot,date,qty) {
   });
   // create text nodes
   const orderText = document.createTextNode("<div style=  flex-direction: row;'> <b>(新增批效: " + rowNum + ")</b> </div> ");
-  const lotText = document.createTextNode("<b>批號:</b>");
-  const expText = document.createTextNode("<b>效期:</b>");
-  const qtyText = document.createTextNode("<b>數量:</b>");
+
+  
+  const lot_div = document.createElement("div");
+  const lotInput_span = document.createElement("span");
+  const lotText_span = document.createElement("span");
+  
+  lotText_span.innerHTML = "<b>批號:</b>";
+  lotText_span.style.display = "flex";
+  lotText_span.style.justifyContent = "flex-start";
+  lotText_span.style.alignItems = "center";
+  lotText_span.style.marginRight = "10px";
+  lotText_span.flexBasis  ="50%";
+  lotInput_span.style.display = "flex";
+  lotInput_span.style.justifyContent = "flex-start";
+  lotInput_span.style.alignItems = "center";
+  lotInput_span.style.flexBasis  = "80%";
+  lotInput_span.appendChild(lotInput);
+  lot_div.style.display = "flex";
+  lot_div.style.justifyContent = "center";
+  lot_div.style.width = "100%";
+  lot_div.style.marginTop = "5px";
+  lot_div.appendChild(lotText_span);
+  lot_div.appendChild(lotInput_span);
+  
+  const date_qty_div = document.createElement("div");
+  const date_div = document.createElement("div");
+  const dateInput_span = document.createElement("span");
+  const dateText_span = document.createElement("span");
+  
+  const qty_div = document.createElement("div");
+  const qtyInput_span = document.createElement("span");
+  const qtyText_span = document.createElement("span");
+
+  dateText_span.innerHTML = "<b>效期:</b>";
+  dateText_span.style.display = "flex";
+  dateText_span.style.justifyContent = "flex-start";
+  dateText_span.style.alignItems = "center";
+  dateText_span.style.marginRight = "10px";
+  dateText_span.flexBasis  ="50%";
+  dateInput_span.style.display = "flex";
+  dateInput_span.style.justifyContent = "flex-start";
+  dateInput_span.style.alignItems = "center";
+  dateInput_span.style.flexBasis  = "80%";
+  dateInput_span.appendChild(expInput);
+  date_div.style.display = "flex";
+  date_div.style.justifyContent = "center";
+  date_div.style.width = "100%";
+  date_div.style.marginTop = "5px";
+  date_div.appendChild(dateText_span);
+  date_div.appendChild(dateInput_span);
+
+
+  qtyText_span.innerHTML = "<b>數量:</b>";
+  qtyText_span.style.display = "flex";
+  qtyText_span.style.justifyContent = "flex-start";
+  qtyText_span.style.alignItems = "center";
+  qtyText_span.style.marginRight = "10px";
+  qtyText_span.flexBasis  ="50%";
+  qtyInput_span.style.display = "flex";
+  qtyInput_span.style.justifyContent = "flex-start";
+  qtyInput_span.style.alignItems = "center";
+  qtyInput_span.style.flexBasis  = "80%";
+  qtyInput_span.appendChild(qtyInput);
+  qty_div.style.display = "flex";
+  qty_div.style.justifyContent = "center";
+  qty_div.style.width = "100%";
+  qty_div.style.marginTop = "5px";
+  qty_div.appendChild(qtyText_span);
+  qty_div.appendChild(qtyInput_span);
+
+  date_qty_div.style.display = "flex";
+  date_qty_div.style.flexDirection = "row";
+  date_qty_div.appendChild(date_div);
+  date_qty_div.appendChild(qty_div);
+
+  div1.style.display = "flex";
+  div1.style.flexDirection = "row";
+  div1.style.justifyContent = "space-between";
+  div1.style.alignItems = "center";
+
+
+
 
   div1.className =`rows`;
   div2.className =`rows`;
@@ -259,18 +335,15 @@ function AddNewRow(_index,lot,date,qty) {
 
   div1.innerHTML = orderText.textContent;  
   div1.appendChild(delBtn);
-  div2.innerHTML = lotText.textContent;
-  div2.appendChild(lotInput);
-  div2.appendChild(document.createTextNode(" "));
-  div2.innerHTML += expText.textContent;
-  div2.appendChild(expInput);
-  div3.innerHTML = qtyText.textContent;
-  div3.appendChild(qtyInput);
+  //div2.innerHTML = lotText.textContent;
+  //div2.appendChild(document.createTextNode(" "));
+  // div2.innerHTML += expText.textContent;
+  
   // append divs to rows
   divall.className = "Modalrows-area";
   divall.appendChild(div1);
-  divall.appendChild(div2);
-  divall.appendChild(div3);
+  divall.appendChild(lot_div);
+  divall.appendChild(date_qty_div);
   rows.appendChild(divall);
  
   // increment row number
