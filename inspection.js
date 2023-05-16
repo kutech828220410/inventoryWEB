@@ -75,7 +75,7 @@ async function insertDataIntoTable() {
     <canvas id="${barcode_text}" style="float: right; width:140px; padding-right:10px;"></canvas>
     </button>
     
-    <div id="myModal${_index}" class="modal" OD_SN_L="${item.OD_SN_L}" START_QTY="${item.START_QTY}" END_QTY="${item.END_QTY}" GUID = "${GUID}">
+    <div id="myModal${_index}" class="modal" _index="${item._index}" OD_SN_L="${item.OD_SN_L}" START_QTY="${item.START_QTY}" END_QTY="${item.END_QTY}" GUID = "${GUID}">
     <div class="modal-content">
       <div class=myModal_title>
       <b>[${item.OD_SN_L}]</b>
@@ -121,33 +121,6 @@ async function insertDataIntoTable() {
 function clearInput(input) {
   input.select();
 }
-
-async function checkInput(input, GUID) {
-  // data.Data = data.Data.map((item) => {
-  //   if (item.GUID === GUID) {
-  //     const num = parseInt(item.START_QTY);
-  //     if (!input.value) {
-  //       input.value = item.END_QTY ;
-  //       return item;
-  //     }
-  //     if(input.value > num)
-  //     {
-  //       console.log(input.value);
-  //       console.log(item.START_QTY);
-  //        alert("實收數量不得大於應收數量!");
-  //        input.value = 0;
-  //        return item;
-  //     }
-  //     item.END_QTY = input.value;
-  //   }
-  //   return item;
-  // });
-
-
-  //data = await postDataToAPI(inspection_update_post_url , data);
-
-}
-
 async function checkEnterKey(event, GUID) {
   if (event.key === 'Enter') {
     const input = event.target;
@@ -155,31 +128,6 @@ async function checkEnterKey(event, GUID) {
 
   }
 }
-async function set_END_QTY(GUID, QTY) {
-  // data.Data = data.Data.map((item) => {
-  //   if (item.GUID === GUID) {
-  //     const num = parseInt(item.START_QTY);
-  //     if (!QTY) {
-  //       return item;
-  //     }
-  //     console.log(QTY);
-  //     if(QTY > num)
-  //     {
-  //       alert("實收數量不得大於應收數量!");
-  //       QTY = 0;
-  //       return item;
-  //     }
-  //     item.END_QTY = QTY;
-  //   }
-  //   return item;
-  // });
-
-  // data = await postDataToAPI(inspection_update_post_url , data);
-
-  // console.log(data);
-  return QTY;
-}
-
 function submitForm() {
   const table = document.querySelector('table');
   const rows = table.rows;
@@ -197,7 +145,6 @@ function submitForm() {
       actualQuantity
     });
   }
-
 
   postData(inspection_update_post_url, formData)
     .then(response => {

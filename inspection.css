@@ -278,7 +278,7 @@ th, td {
 /* 關閉按鈕樣式 */
 .modalbtn,.addRowBtn {
   background-color: #007bff;
-  color: #857272;
+  color: #ffffff;
   float: right;
   font-size: 28px;
   font-weight: bold;
