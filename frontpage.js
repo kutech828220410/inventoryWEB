@@ -11,6 +11,7 @@ async function check_session() {
 
     let userdata = {
         "ID": loggedID,
+        "level": loggedlevel,
         "loginTime": loggedTime,
         "check_sec": "20"
     };
@@ -30,18 +31,6 @@ async function check_session() {
         window.location.href = "login.html";
     }
 }
-async function logout() {
-    var loggedID = sessionStorage.getItem('loggedID');
-    let lotoutdata = {
-        "ID": loggedID,
-    };
-    data_0 = await postDataToAPI(session_logout_post_url, lotoutdata);
-    console.log(data_0);
-
-    sessionStorage.clear();
-    window.location.href = "login.html";
-}
-
 
 window.onload = function() {
 
@@ -55,7 +44,7 @@ window.addEventListener('load', function() {
 
 
 async function inventoryBtnClick() {
-  
+  location.href = "frontinventory.html"
 }
 async function consumptionBtnClick() {
   
@@ -71,16 +60,13 @@ async function emgApplicationClick() {
 }
 
 
-
-function setButtonPermissions(level) {
+function setButtonPermissions(loggedlevel) {
   var inventoryButton = document.getElementById("inventory-btn");
   var consumptionButton = document.getElementById("consumption-btn");
   var controlledDrugsButton = document.getElementById("controlled-drugs-btn");
   var inspectionButton = document.getElementById("inspection-btn");
   var emgApplicationButton = document.getElementById("emg-application-btn");
-
-
-  switch (level) {
+  switch (loggedlevel) {
     case "01":
       // level 01 用户有权限访问所有按钮
       break;
@@ -104,3 +90,31 @@ function setButtonPermissions(level) {
   }
 }
 
+async function logout() {
+  var loggedID = sessionStorage.getItem('loggedID');
+  let lotoutdata = {
+      "ID": loggedID,
+  };
+  data_0 = await postDataToAPI(session_logout_post_url, lotoutdata);
+  console.log(data_0);
+
+  sessionStorage.clear();
+  window.location.href = "login.html";
+}
+
+
+async function inventoryBtnClick() {
+  location.href = "frontinventory.html"
+}
+async function consumptionBtnClick() {
+  
+}
+async function controlledDrugsBtnClick() {
+  
+}
+async function inspectionClick() {
+  location.href = "frontinspection.html";
+}
+async function emgApplicationClick() {
+  
+}

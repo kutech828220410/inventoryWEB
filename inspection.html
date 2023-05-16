@@ -184,13 +184,13 @@ function AddNewRow(_index,lot,date,qty) {
   const rows = document.querySelector(`#rows${_index}`);
   // create divs
   const divall = document.createElement("div");
-  const div1 = document.createElement("div");
+  const title_div = document.createElement("div");
   const div2 = document.createElement("div");
   const div3 = document.createElement("div");
   
   // create inputs
   const lotInput = document.createElement("input");
-  const expInput = document.createElement("input");
+  const dateInput = document.createElement("input");
   const qtyInput = document.createElement("input");
   const delBtn = document.createElement("button")
   
@@ -202,11 +202,11 @@ function AddNewRow(_index,lot,date,qty) {
   lotInput.placeholder = "請輸入批號";
   if(lot != null)  lotInput.setAttribute("value",lot);
  
-  expInput.id = "date1"
-  expInput.type = "date";
-  expInput.className = "date";
-  expInput.placeholder = "請選擇效期";
-  if(date != null) expInput.value = date;
+  dateInput.id = "date1"
+  dateInput.type = "date";
+  dateInput.className = "date";
+  dateInput.placeholder = "請選擇效期";
+  if(date != null) dateInput.value = date;
 
 
   qtyInput.id = "qty1";
@@ -242,7 +242,7 @@ function AddNewRow(_index,lot,date,qty) {
       rowNum = (myModal1.querySelectorAll(".rows").length / 3) + 1;
   });
   // create text nodes
-  const orderText = document.createTextNode("<div style=  flex-direction: row;'> <b>(新增批效: " + rowNum + ")</b> </div> ");
+  const orderText = document.createTextNode("<div style=  flex-direction: row;'> <b>(批效: " + rowNum + ")</b> </div> ");
 
   
   const lot_div = document.createElement("div");
@@ -253,15 +253,16 @@ function AddNewRow(_index,lot,date,qty) {
   lotText_span.style.display = "flex";
   lotText_span.style.justifyContent = "flex-start";
   lotText_span.style.alignItems = "center";
-  lotText_span.style.marginRight = "10px";
-  lotText_span.flexBasis  ="50%";
+  lotText_span.style.marginRight = "0px";
+  lotText_span.style.width = "50px";
+  lotText_span.flexBasis  ="100%";
   lotInput_span.style.display = "flex";
   lotInput_span.style.justifyContent = "flex-start";
   lotInput_span.style.alignItems = "center";
-  lotInput_span.style.flexBasis  = "80%";
+  lotInput_span.style.flexBasis  = "100%";
   lotInput_span.appendChild(lotInput);
   lot_div.style.display = "flex";
-  lot_div.style.justifyContent = "center";
+  lot_div.style.flexDirection = "row";
   lot_div.style.width = "100%";
   lot_div.style.marginTop = "5px";
   lot_div.appendChild(lotText_span);
@@ -280,17 +281,19 @@ function AddNewRow(_index,lot,date,qty) {
   dateText_span.style.display = "flex";
   dateText_span.style.justifyContent = "flex-start";
   dateText_span.style.alignItems = "center";
-  dateText_span.style.marginRight = "10px";
-  dateText_span.flexBasis  ="50%";
+  dateText_span.style.marginRight = "5px";
+  dateText_span.style.width = "50px";
+  dateText_span.flexBasis  ="100%";
   dateInput_span.style.display = "flex";
   dateInput_span.style.justifyContent = "flex-start";
   dateInput_span.style.alignItems = "center";
-  dateInput_span.style.flexBasis  = "80%";
-  dateInput_span.appendChild(expInput);
+  dateInput_span.style.flexBasis  = "100%";
+  dateInput_span.appendChild(dateInput);
   date_div.style.display = "flex";
   date_div.style.justifyContent = "center";
-  date_div.style.width = "100%";
-  date_div.style.marginTop = "5px";
+  date_div.style.width = "60%";
+  date_div.style.marginTop = "10px";
+  date_div.style.marginRight = "5px";
   date_div.appendChild(dateText_span);
   date_div.appendChild(dateInput_span);
 
@@ -299,7 +302,8 @@ function AddNewRow(_index,lot,date,qty) {
   qtyText_span.style.display = "flex";
   qtyText_span.style.justifyContent = "flex-start";
   qtyText_span.style.alignItems = "center";
-  qtyText_span.style.marginRight = "10px";
+  qtyText_span.style.marginRight = "5px";
+  qtyText_span.style.width = "50px";
   qtyText_span.flexBasis  ="50%";
   qtyInput_span.style.display = "flex";
   qtyInput_span.style.justifyContent = "flex-start";
@@ -308,7 +312,7 @@ function AddNewRow(_index,lot,date,qty) {
   qtyInput_span.appendChild(qtyInput);
   qty_div.style.display = "flex";
   qty_div.style.justifyContent = "center";
-  qty_div.style.width = "100%";
+  qty_div.style.width = "40%";
   qty_div.style.marginTop = "5px";
   qty_div.appendChild(qtyText_span);
   qty_div.appendChild(qtyInput_span);
@@ -318,46 +322,39 @@ function AddNewRow(_index,lot,date,qty) {
   date_qty_div.appendChild(date_div);
   date_qty_div.appendChild(qty_div);
 
-  div1.style.display = "flex";
-  div1.style.flexDirection = "row";
-  div1.style.justifyContent = "space-between";
-  div1.style.alignItems = "center";
+  title_div.style.display = "flex";
+  title_div.style.flexDirection = "row";
+  title_div.style.justifyContent = "space-between";
+  title_div.style.alignItems = "center";
+  title_div.innerHTML = orderText.textContent;  
+  title_div.appendChild(delBtn);
 
 
 
+  title_div.className =`rows`;
+  lot_div.className =`rows`;
+  date_qty_div.className =`rows`;
+  title_div.setAttribute("_index",rowNum);
+  lot_div.setAttribute("_index",rowNum);
+  date_qty_div.setAttribute("_index",rowNum);
 
-  div1.className =`rows`;
-  div2.className =`rows`;
-  div3.className =`rows`;
-  div1.setAttribute("_index",rowNum);
-  div2.setAttribute("_index",rowNum);
-  div3.setAttribute("_index",rowNum);
 
-  div1.innerHTML = orderText.textContent;  
-  div1.appendChild(delBtn);
-  //div2.innerHTML = lotText.textContent;
-  //div2.appendChild(document.createTextNode(" "));
-  // div2.innerHTML += expText.textContent;
   
   // append divs to rows
   divall.className = "Modalrows-area";
-  divall.appendChild(div1);
+  divall.style.border = "1px";
+  divall.style.borderStyle = "solid";
+  divall.style.margin = "5px";
+  divall.style.padding = "10px";
+  divall.style.borderColor = "#000000";
+  divall.style.boxShadow = "-1px 1px rgba(0, 0, 0, 0.85)";
+
+  divall.appendChild(title_div);
   divall.appendChild(lot_div);
   divall.appendChild(date_qty_div);
   rows.appendChild(divall);
- 
-  // increment row number
   
-  // add color style
-  if (rowNum % 2 === 1) {
-    div1.style.backgroundColor = "#ffffff";
-    div2.style.backgroundColor = "#ffffff";
-    div3.style.backgroundColor = "#ffffff";
-  } else {
-    div1.style.backgroundColor = "#c1dcffe3";
-    div2.style.backgroundColor = "#c1dcffe3";
-    div3.style.backgroundColor = "#c1dcffe3";
-  }
+ 
 }
 </script>
           

@@ -92,7 +92,6 @@ header {
 
 .lot{ 
   width: 100%;
-  margin: 10 ,auto;
   box-sizing: border-box;
   text-align: right; /* 調整文字靠右對齊 */
   height: 40px;
@@ -102,8 +101,7 @@ header {
   resize: none;
 }
 .date, .qty { 
-  width: 90%;
-  margin: 10px;
+  width: 100%;
   box-sizing: border-box;
   text-align: right; /* 調整文字靠右對齊 */
   height: 40px;
@@ -270,7 +268,7 @@ th, td {
 .modal-content {
   background-color: #ffffff;
   margin: 15% auto;
-  padding: 20px;
+  padding: 10px;
   left: 0;
   top: 0;
   box-shadow: -4px 4px rgba(0, 0, 0, 0.85);
@@ -280,7 +278,7 @@ th, td {
 /* 關閉按鈕樣式 */
 .modalbtn,.addRowBtn {
   background-color: #007bff;
-  color: #fff;
+  color: #857272;
   float: right;
   font-size: 28px;
   font-weight: bold;
@@ -302,9 +300,7 @@ th, td {
 .Modalrows{
   margin-top: 5px; 
 }
-.Modalrows-area{
-  margin-top: 5px; 
-}
+
 .delBtn{
   background: none !important;
   border: none ; 
