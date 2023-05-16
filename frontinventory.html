@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>建立盤點單號操作頁</title>
+    <link rel="stylesheet" href="frontinventory.css">
+    <script src="ApiURL.js"></script>
+    <script src="WebApiFunc.js"></script>
+    <script src="frontinventory.js"></script>
+    
+</head>
+<body>
+  <div class="h1top">
+    <h1 class="h1">建立盤點單號</h1>
+  </div>
+
+  <div class="pagination">
+  <div class="submit_div2">
+    <button id="submitdownloadbtn" class="submitdownloadbtn" onclick="submitdownload()">下載報表</button>
+  </div>
+  <div class="submit_div1">
+    <button id="submitinfobtn" class="submitinfobtn" onclick="submitinfo()">新增盤點</button>
+  </div>
+</div>
+<!-- 表格首行 -->
+<div class="table-container">
+  <table class="table">
+      <thead>
+          <tr>
+              <th class="th1">日期時間</th>
+              <th class="th2">盤點單號(建表者)</th>
+          </tr>
+      </thead>
+  </table>
+</div>
+  
+  <div class="under-line">
+    <B> Copyright ©2023 鴻森整合機電有限公司 </B>
+  </div>
+</body>
+</html>

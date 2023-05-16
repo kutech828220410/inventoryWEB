@@ -1,5 +1,5 @@
 let response = [];
-let data =[];
+let data = [];
 async function insertDataIntoTable() {
   url = inspection_get_url;
   response = await fetch(inspection_get_url); // 替換成您的 API 網址
@@ -14,10 +14,11 @@ async function insertDataIntoTable() {
     // 插入新的表格列
     var GUID = item.GUID;
     const row = tbody.insertRow(); // 改為插入 tbody 元素的內容
-    
+
     // 插入藥品資訊儲存格
     const drugInfoCell = row.insertCell();
-    drugInfoCell.innerHTML = `
+    drugInfoCell.innerHTML =
+     `
         <div><b style="font-size: 12px; padding-right:5px; padding-left:5px; border-style:dashed; margin-top: -6px;">${_index + 1}</b><span style="padding-left: 10px;">${item.OD_SN_L}</span></div>
         <div style="display:none;"><b>GUID: ${item.GUID}</b></div>
         <div><b>藥碼: ${item.CODE}</b></div>
@@ -25,10 +26,14 @@ async function insertDataIntoTable() {
         <div style="color: orange;"><b>(英)  ${item.NAME}</b></div>
         <div style="color: orange;"><b>(中)  ${item.CHT_NAME}</b></div>
     `;
-  
+
     // 插入數量儲存格
+    var _quantityCell_QTY = `quantityCell_QTY${_index}`;
     const quantityCell = row.insertCell();
-    quantityCell.innerHTML = `
+    quantityCell.id = _quantityCell_QTY;
+    quantityCell.className = 'quantityCell_QTY';
+    quantityCell.innerHTML = 
+    `
     <BR>
     <div class="input-group">
     <div class="input-group-prepend">
@@ -41,45 +46,62 @@ async function insertDataIntoTable() {
       <div class="input-group-prepend">
         <div>實收:</div>
       </div>
-      <input type="number" min="0" max="99999" class="form-control" value="" readonly onfocus="clearInput(this)" onblur='checkInput(this , "${GUID}")' onkeydown='checkEnterKey(event, "${GUID}")'>
+      <input id="END_QTY${_index}" type="number" min="0" max="99999" class="form-control" value="${item.END_QTY}" readonly  onblur='checkInput(this , "${GUID}")' onkeydown='checkEnterKey(event, "${GUID}")'>
       </div>
       </div>
     `;
-    
+
     // 插入新的表格列
     var _myModal = `myModal${_index}`;
- 
     var barcode_text = `barcode${_index}`;
+    //取得初始化第一個效期批號數量
+    var lot_init = "";
+    var date_init = "";
+    var qty_init = "";
+    if (item.Lot_date_datas.length > 0) {
+      lot_init = item.Lot_date_datas[0].LOT_NUMBER;
+      date_init = item.Lot_date_datas[0].VAL_DATE;
+      qty_init = item.Lot_date_datas[0].QTY;
+    }
     const inspectionRow = tbody.insertRow();
     const inspectionCell = inspectionRow.insertCell();
     inspectionCell.colSpan = 2;
     inspectionCell.id = `firstinspection${_index}`;
     inspectionCell.className = "firstinspection";
-    inspectionCell.innerHTML = 
-    ` 
+    inspectionCell.innerHTML =
+      ` 
     <button  id="druginfo${_index}" style="text-align: left;  display:block; width:100%; height:100%; border:none; background-color:transparent;" onclick="document.getElementById('myModal${_index}').style.display='block'">
     點選輸入藥品驗收資訊
     <canvas id="${barcode_text}" style="float: right; width:140px; padding-right:10px;"></canvas>
     </button>
-    <div id="myModal${_index}" class="modal">
+    
+    <div id="myModal${_index}" class="modal" OD_SN_L="${item.OD_SN_L}" START_QTY="${item.START_QTY}" END_QTY="${item.END_QTY}" GUID = "${GUID}">
     <div class="modal-content">
-    <button class="addRowBtn" id="addRowBtn${_index}" onclick="addNewRow(${_myModal})">新增驗收藥品</button>
-      <div><b>${item.OD_SN_L}</b></div>
-      <div><b>批號</b>:<input id="lot${_index}" type="text" class="lot" value="" placeholder="請輸入批號" oninput="this.value = this.value.toUpperCase()" onfocus="clearInput(this)" onblur=\'checkInput(this , "${GUID}")\' onkeydown=\'checkEnterKey(event, "${GUID}")\'></div>
-      <div style="display: flex; flex-direction: column;">
-        <div><b>效期</b>:</div>
-        <div>
-          <input id="date${_index}" type="date" class="date" value="" placeholder="請選擇效期" onfocus="clearInput(this)" onblur=\'checkInput(this , "${GUID}")\' onkeydown=\'checkEnterKey(event, "${GUID}")\'>
-        </div>
-        <div><b>數量</b>: <input id="qty${_index}" type="number" min="0" max="9999" class="qty" value="" placeholder="請輸入數量" inputmode="numeric" onfocus="clearInput(this)" onblur=\'checkInput(this , "${GUID}")\' onkeydown=\'checkEnterKey(event, "${GUID}")\'></div>
+      <div class=myModal_title>
+      <b>[${item.OD_SN_L}]</b>
+      <br>
+      <b> 藥名 : ${item.NAME}</b>
       </div>
-      <div class = Modalrows id="rows${_index}"></div>
-      <button class="modalbtn" onclick="validateInput(${_myModal})">確認</button> 
+    <button class="addRowBtn" id="addRowBtn${_index}" onclick="Check_addNewRow('${_index}')">新增驗收藥品</button>      
+    <div class="Modalrows" id="rows${_index}">
+    </div>
+    <button class="modalbtn" onclick="validateInput('${_index}' )">確認</button> 
     `;
-
+ 
+    for (var i = 0; i < item.Lot_date_datas.length; i++) {
+      const lot = item.Lot_date_datas[i].LOT_NUMBER;
+      const date = item.Lot_date_datas[i].VAL_DATE;
+      const qty = item.Lot_date_datas[i].QTY;
+      AddNewRow(_index, lot, date, qty);
+    }
+    var START_QTY = parseInt(item.START_QTY);
+    var END_QTY = parseInt(item.END_QTY);
+    if(START_QTY - END_QTY > 0)
+    {
+      AddNewRow(_index,null,null,(START_QTY - END_QTY));
+    }
     
 
-  
     const barcodeDiv = document.getElementById(barcode_text);
     JsBarcode(barcodeDiv, item.CODE, {
       format: "code128",
@@ -87,77 +109,75 @@ async function insertDataIntoTable() {
       height: 12,
       displayValue: false,
       margin: 0,
-      
+
     });
 
-  
-     _index++;
+
+    _index++;
   }
- 
+
 }
 
 function clearInput(input) {
-  input.value = '';
+  input.select();
 }
 
 async function checkInput(input, GUID) {
-  data.Data = data.Data.map((item) => {
-    if (item.GUID === GUID) {
-      const num = parseInt(item.START_QTY);
-      if (!input.value) {
-        input.value = item.END_QTY ;
-        return item;
-      }
-      if(input.value > num)
-      {
-        console.log(input.value);
-        console.log(item.START_QTY);
-         alert("實收數量不得大於應收數量!");
-         input.value = 0;
-         return item;
-      }
-      item.END_QTY = input.value;
-    }
-    return item;
-  });
+  // data.Data = data.Data.map((item) => {
+  //   if (item.GUID === GUID) {
+  //     const num = parseInt(item.START_QTY);
+  //     if (!input.value) {
+  //       input.value = item.END_QTY ;
+  //       return item;
+  //     }
+  //     if(input.value > num)
+  //     {
+  //       console.log(input.value);
+  //       console.log(item.START_QTY);
+  //        alert("實收數量不得大於應收數量!");
+  //        input.value = 0;
+  //        return item;
+  //     }
+  //     item.END_QTY = input.value;
+  //   }
+  //   return item;
+  // });
 
-  
-  data = await postDataToAPI(inspection_update_post_url , data);
-  
-  console.log(data);
+
+  //data = await postDataToAPI(inspection_update_post_url , data);
+
 }
 
 async function checkEnterKey(event, GUID) {
   if (event.key === 'Enter') {
     const input = event.target;
-    input.value = await set_END_QTY(GUID ,input.value);
- 
+    input.value = await set_END_QTY(GUID, input.value);
+
   }
 }
-async function set_END_QTY(GUID , QTY)
-{
-    data.Data = data.Data.map((item) => {
-      if (item.GUID === GUID) {
-        const num = parseInt(item.START_QTY);
-        if (!QTY) {
-          return item;
-        }
-        console.log(QTY);
-        if(QTY > num)
-        {
-          alert("實收數量不得大於應收數量!");
-          QTY = 0;
-          return item;
-        }
-        item.END_QTY = QTY;
-      }
-      return item;
-    });
+async function set_END_QTY(GUID, QTY) {
+  // data.Data = data.Data.map((item) => {
+  //   if (item.GUID === GUID) {
+  //     const num = parseInt(item.START_QTY);
+  //     if (!QTY) {
+  //       return item;
+  //     }
+  //     console.log(QTY);
+  //     if(QTY > num)
+  //     {
+  //       alert("實收數量不得大於應收數量!");
+  //       QTY = 0;
+  //       return item;
+  //     }
+  //     item.END_QTY = QTY;
+  //   }
+  //   return item;
+  // });
 
-    data = await postDataToAPI(inspection_update_post_url , data);
+  // data = await postDataToAPI(inspection_update_post_url , data);
 
-    console.log(data);
-    return QTY;
+  // console.log(data);
+  return QTY;
 }
 
 function submitForm() {
@@ -198,11 +218,11 @@ async function postData(url, data) {
     },
     body: JSON.stringify(data)
   });
-  
+
   if (!response.ok) {
     throw new Error('送出資料失敗');
   }
-  
+
   return response.json();
 }
 async function get_jsondata() {
@@ -214,7 +234,7 @@ async function get_jsondata() {
 function search_By_name_Event(event) {
   if (event.key === 'Enter') {
     const input = document.querySelector('.drugNameText');
-    search_By_name(input.value);    
+    search_By_name(input.value);
   }
 }
 function search_By_name(name) {
@@ -222,10 +242,10 @@ function search_By_name(name) {
   const filter = name.toLowerCase();
   const rows = document.querySelectorAll('table tr');
   console.log(name);
-  
+
   for (let i = 1; i < rows.length; i++) { // 從第2列開始搜尋，跳過表格標題列
     const drugNameCell = rows[i].querySelector('td:first-child');
-    
+
     if (!drugNameCell) {
       continue; // 如果 drugNameCell 為 null，則跳過該行的處理
     }
@@ -244,7 +264,7 @@ function updateQtyByGuid(guid, qty) {
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i];
     const drugNameCell = rows[i].querySelector('td:first-child');
-      
+
     if (!drugNameCell) {
       continue; // 如果 drugNameCell 為 null，則跳過該行的處理
     }
@@ -254,8 +274,8 @@ function updateQtyByGuid(guid, qty) {
       const qtyInput = row.querySelector('input[type="number"]');
       qtyInput.value = qty;
       return;
-    } 
-   
+    }
+
   }
 
   console.warn(`Cannot find row with GUID ${guid}`);

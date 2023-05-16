@@ -1,0 +1,277 @@
+
+
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  .h1top {
+    width: 80%;
+    height: 44px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0;
+    z-index: 5;
+  }
+  
+  .h1top h1 {
+    margin: 0;
+    font-size: 30px;
+  }
+  
+  
+  .h1_inspection{
+    text-shadow: 2px 2px 2px #888888;
+    position: absolute;
+    top: 0px;
+    top: 10px;
+    left : 20px; 
+    text-align: center;
+    color: #000000;
+    font-weight: bold;
+  }
+  
+  .serch_div {
+    width: 90%;
+    height: 44px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-top: 0;
+    
+  }
+  .drugNameText {
+    width: 130px !important;
+  }
+  
+  
+  .drugNameSearch {
+    float: left;
+    margin-left: 10px; /* 調整元素之間的間距 */
+  }
+  #firstquantity input[type="number"] {
+    width: 80px;
+  }
+  .form-group {
+    margin-bottom: 0.5rem;
+  }
+  
+  
+  .table-container {
+    margin-top: 0px;
+    overflow-y: auto;
+    height: calc(100vh - 82Px);
+  }
+  
+  .table table-striped table-hover {
+    border: 1px solid #ff0000;
+  }
+  
+  .table-container th:nth-child(2),
+  .table-container td:nth-child(2) {
+    width: 33%; /* 調整數量欄位的寬度 */
+  }
+  
+  .form-control {
+    border-radius: 0;
+    border: 1px solid #000000;
+    text-align: right; /* 調整文字靠右對齊 */
+  }
+  
+  .lot, .date, .qty { 
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    text-align: right; /* 調整文字靠右對齊 */
+    height: 40px;
+    border: 1px solid #000000;
+    outline: none;
+    background: transparent;
+    resize: none;
+  }
+  
+  
+  .firstinspection {
+    border-bottom: 2px solid #000000;
+    padding:0 !important ;
+    height: 60px;
+  }
+  
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  
+  thead {
+    position: sticky;
+    top: -3px;
+    background-color: #ffffff;
+    z-index: 4;
+  }
+  
+  
+  
+  .input-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .input-group-prepend {
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+  }
+  
+  
+  .text-right {
+    text-align: right; /* 調整文字靠右對齊 */
+    border: 1px solid #7979794b;
+  }
+  
+  
+  
+  thead th {
+    position: sticky;
+    background-color: #c9d6ff;
+    z-index: 2;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 8px;
+    
+  }
+  
+  .h1_inventory{
+    text-shadow: 2px 2px 2px #888888;
+    position: absolute;
+    top: 0px;
+    top: 10px;
+    left : 20px; 
+    text-align: center;
+    color: #000000;
+    font-weight: bold;
+  }
+  
+  .pagination {
+    position: absolute;
+    margin-left: auto;
+    margin-right: 0;
+    top: 6px;
+    right : 10px; 
+  }
+  
+  .submit-btn {
+    white-space: nowrap;
+    margin-left: 20px;
+  }
+  
+  #submitFormbtn {
+    background-color: #007bff;
+    border: 2px solid rgb(0, 0, 0);
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    width: auto;
+    margin-left: 10px;
+    border-radius: 10px;
+  }
+  
+  .under-line {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    color: #000000;
+    background-color: #ffffff;
+    height: 30px;
+    line-height: 30px;
+    display: block;
+    z-index: 5;
+  }
+  
+  /* toggle container */
+  .toggle-container {
+    display: inline-block;
+    position: relative;
+    width: 60px;
+    height: 30px;
+    margin-right: 20px;
+  }
+  
+  /* toggle label */
+  .toggle-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    text-align: center;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .form-check {
+    display: flex;
+    align-items: center;
+  }
+  
+  /*  */
+  /* 彈跳視窗樣式 */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+  }
+  
+  /* 彈跳視窗內容樣式 */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+  }
+  
+  /* 關閉按鈕樣式 */
+  .modalbtn,.addRowBtn {
+    background-color: #007bff;
+    color: #fff;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    border-radius: 10px;
+    border: 2px solid #000000;
+    margin: 20px;
+  }
+  
+  .modalbtn:hover,
+  .modalbtn:focus {
+    color: #888;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  #rows{
+    margin-top: 20px;
+  }
+  

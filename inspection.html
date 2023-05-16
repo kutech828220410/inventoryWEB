@@ -15,9 +15,9 @@
   
 </head>
 <body>
-  
+  <header>
   <div class="h1top">
-    <h1 class="h1_inspection">驗收入庫</h1>
+   <h1 class="h1_inspection">驗收入庫</h1>
     <div class="pagination">
       <div class="form-check form-switch">
         <input class="form-check-input" type="checkbox" id="toggleCK" checked>
@@ -28,11 +28,11 @@
   </div>
   <div class="serch_div">
     <input type="text" class="drugNameText" placeholder="藥名搜尋" onkeydown="search_By_name_Event(event)">
-    <b style="font-size: 12px; height: 30px ;margin-left: 10px;padding-right:5px; padding-left:5px; border-style:dashed;">${_index + 1}</b>
+    <!-- <b style="font-size: 12px; height: 30px ;margin-left: 10px;padding-right:5px; padding-left:5px; border-style:dashed;">${_index + 1}</b> -->
   </div>
-
+    </header>
   <div class="table-container">
-    <table class="table table-striped table-hover">
+    <table>
         <thead>
             <tr>
                 <th style="font-weight: bolder;font-size: 18px;">藥品資訊</th>
@@ -40,26 +40,30 @@
             </tr>
         </thead>
 <script>
-  
-function validateInput(myModal1) {
 
+//彈跳視窗確認按鈕
+async function validateInput(_index) {
+  var myModal1 = document.querySelector(`#myModal${_index}`);
+  var GUID = myModal1.getAttribute("GUID");
   if (!myModal1) return;
   
   var lotInputs = myModal1.querySelectorAll(".lot");
   var dateInputs = myModal1.querySelectorAll(".date");
   var qtyInputs = myModal1.querySelectorAll(".qty");
-  
+  var AllQTY = 0;
+  var START_QTY = parseInt(myModal1.getAttribute("START_QTY"));
   var allInputsValid = true;
   // loop through each input and validate
-  for (let i = 0; i < lotInputs.length; i++) {
+  for (let i = 0; i < lotInputs.length; i++) 
+  {
     const lot = lotInputs[i].value;
     const date = dateInputs[i].value;
     const qty = qtyInputs[i].value;
-  
-
-    if (!lot.trim() && !date.trim() && !qty.trim() ) {
+    AllQTY = AllQTY + parseInt(qty);
+    if (!lot.trim() && !date.trim()) {
       // 如果全部輸入欄位都是空白的，關閉彈跳視窗
       myModal1.style.display='none';
+      return;
     } else if (!lot.trim() || !date.trim() || !qty.trim() ) {
       // 如果有任何一格未填，跳出警示提醒
       alert("請填寫完整驗收資訊！");
@@ -68,21 +72,73 @@ function validateInput(myModal1) {
     }
   }
   
-  if (allInputsValid) {
-    // 如果全部都填寫了，關閉彈跳視窗
+  if (allInputsValid) 
+  {
+    if(AllQTY > START_QTY)
+    {
+       alert("實收數量不得大於應收數量!");
+       return;
+    }
+    data.Data.map((item) =>
+    {
+        if (item.GUID === GUID)
+        {
+          let _data = [];
+          for (let i = 0; i < lotInputs.length; i++) 
+          {
+            const lot = lotInputs[i].value;
+            const date = dateInputs[i].value;
+            const qty = qtyInputs[i].value;
+            _data.push(
+            {
+               VAL_DATE: date,
+               LOT_NUMBER: lot,
+               QTY: qty,
+            });
+           
+          }
+          item.Lot_date_datas = _data;
+          let post_data = data;
+          post_data.Data.length = 0;
+          post_data.Data.push(item);
+          console.log(post_data);
+          
+        }
+    });
     myModal1.style.display='none';
+    let return_data = await postDataToAPI(inspection_update_post_url , data);
+    console.log(return_data);
+    response = await fetch(inspection_get_url); // 替換成您的 API 網址
+    data = await response.json();
+    console.log(data);
+    
+    data.Data.map((item) =>
+    {
+        if (item.GUID === GUID)
+        {
+          var END_QTY_input = document.querySelector(`#END_QTY${_index}`);
+          END_QTY_input.value = item.END_QTY;
+        }
+    });
+
+    
   }
+ 
 }
 
 //新增批效
-let rowNum = 1;            
-function addNewRow(myModal1) {
+          
+function Check_addNewRow(_index) {
+  var myModal1 = document.querySelector(`#myModal${_index}`);
+  OD_SN_L = myModal1.getAttribute("OD_SN_L");
   if (!myModal1) return;
   const lotInputs = myModal1.querySelectorAll(".lot");
   const dateInputs = myModal1.querySelectorAll(".date");
   const qtyInputs = myModal1.querySelectorAll(".qty");
 
   let alertMsg = myModal1.querySelector("#alertMsg"); // 建立一個新的 HTML 元素
+  var AllQTY = 0;
+  var START_QTY = parseInt(myModal1.getAttribute("START_QTY"));
 
 // loop through each input and validate
   for (let i = 0; i < lotInputs.length; i++) 
@@ -90,7 +146,7 @@ function addNewRow(myModal1) {
       const lot = lotInputs[i].value;
       const date = dateInputs[i].value;
       const qty = qtyInputs[i].value;
-
+      AllQTY = AllQTY + parseInt(qty);
       if (!lot.trim() || !date.trim() || !qty.trim() )
       {
         if (alertMsg) {
@@ -111,10 +167,23 @@ function addNewRow(myModal1) {
   {
     alertMsg.remove(); // 如果已經有警示訊息存在，移除它
   }
-
-  const rows = myModal1.querySelector(`.Modalrows`);
-  console.log(rows);
+  if(START_QTY - AllQTY > 0)
+  {
+    AddNewRow(_index ,null,null,(START_QTY - AllQTY));
+  }
+  
+}
+function AddNewRow(_index){
+  AddNewRow(_index,null,null,null);
+}
+function AddNewRow(_index,lot,date,qty) {
+  let rowNum = 1;  
+  var myModal1 = document.querySelector(`#myModal${_index}`);
+  OD_SN_L = myModal1.getAttribute("OD_SN_L");
+  if (!myModal1) return;
+  const rows = document.querySelector(`#rows${_index}`);
   // create divs
+  const divall = document.createElement("div");
   const div1 = document.createElement("div");
   const div2 = document.createElement("div");
   const div3 = document.createElement("div");
@@ -134,42 +203,60 @@ function addNewRow(myModal1) {
   lotInput.type = "text";
   lotInput.className = "lot";
   lotInput.placeholder = "請輸入批號";
+  if(lot != null)  lotInput.setAttribute("value",lot);
+ 
   expInput.id = "date1"
   expInput.type = "date";
   expInput.className = "date";
   expInput.placeholder = "請選擇效期";
-  qtyInput.id = "qty1"
+  if(date != null) expInput.value = date;
+
+
+  qtyInput.id = "qty1";
   qtyInput.type = "number";
   qtyInput.className = "qty";
+  qtyInput.inputMode = "numeric";
   qtyInput.placeholder = "請輸入數量";
   qtyInput.min = "0";
   qtyInput.max = "9999";
-  qtyInput.inputmode = "numeric";
-  delBtn.innerHTML = "<i class='bi bi-x'></i>";
-  delBtn.style.border = "2px solid #ff0000";
-  delBtn.style.backgroundColor = "#ff0000";
-  delBtn.style.color = "#fff";
-  delBtn.style.cursor = "pointer";
-
-
+  qtyInput.onfocus = function() {
+  clearInput(this);
+  };
+  if(qty != null) qtyInput.value = qty;
+  delBtn.innerHTML = `<svg stroke="red" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="svg" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+  <polyline points="3 6 5 6 21 6"></polyline>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+  <line x1="10" y1="11" x2="10" y2="17"></line>
+  <line x1="14" y1="11" x2="14" y2="17"></line>`;
+  const divs = myModal1.querySelectorAll(".rows");
+  rowNum = (divs.length / 3) + 1;
+  delBtn.className = `delBtn${rowNum}`;
+  delBtn.setAttribute("_index",rowNum);
   delBtn.addEventListener("click", function () {
-      const divs = myModal1.querySelectorAll("#rows1 > div");
-      const div1 = divs[divs.length - 3];
-      const div2 = divs[divs.length - 2];
-      const div3 = divs[divs.length - 1];
-      div1.remove();
-      div2.remove();
-      div3.remove();
-      rowNum--;
-      updateRowNum();
+      const delBtn_index = delBtn.getAttribute("_index");
+      console.log(delBtn_index);
+      const divs = myModal1.querySelectorAll(`.rows`);
+      console.log(divs);
+      for(var i = 0 ; i < divs.length ; i++)
+      {
+          var _index = divs[i].getAttribute("_index");
+          if(_index == delBtn_index)divs[i].remove();
+      }
+      rowNum = (myModal1.querySelectorAll(".rows").length / 3) + 1;
   });
-
   // create text nodes
-  const orderText = document.createTextNode("<div style=  flex-direction: row;'> <b>驗收單號:20230514-1 <n> (新增批效: " + rowNum + ")</b> </div> ");
-  const lotText = document.createTextNode("<b>批號</b>:");
-  const expText = document.createTextNode("<b>效期</b>:");
-  const qtyText = document.createTextNode("<b>數量</b>:");
-  // append text to divs
+  const orderText = document.createTextNode("<div style=  flex-direction: row;'> <b>(新增批效: " + rowNum + ")</b> </div> ");
+  const lotText = document.createTextNode("<b>批號:</b>");
+  const expText = document.createTextNode("<b>效期:</b>");
+  const qtyText = document.createTextNode("<b>數量:</b>");
+
+  div1.className =`rows`;
+  div2.className =`rows`;
+  div3.className =`rows`;
+  div1.setAttribute("_index",rowNum);
+  div2.setAttribute("_index",rowNum);
+  div3.setAttribute("_index",rowNum);
+
   div1.innerHTML = orderText.textContent;  
   div1.appendChild(delBtn);
   div2.innerHTML = lotText.textContent;
@@ -180,12 +267,13 @@ function addNewRow(myModal1) {
   div3.innerHTML = qtyText.textContent;
   div3.appendChild(qtyInput);
   // append divs to rows
-  rows.appendChild(div1);
-  rows.appendChild(div2);
-  rows.appendChild(div3);
-  
+  divall.className = "Modalrows-area";
+  divall.appendChild(div1);
+  divall.appendChild(div2);
+  divall.appendChild(div3);
+  rows.appendChild(divall);
+ 
   // increment row number
-  rowNum++;
   
   // add color style
   if (rowNum % 2 === 1) {
@@ -200,19 +288,6 @@ function addNewRow(myModal1) {
 }
 </script>
           
-          
-          
-      
-      </div>
-    </div>
-      </td>
-
-  </tr>
-
-
-</tbody>
-<!-- end -->
-
     </table>
   </div>
 
@@ -238,7 +313,6 @@ function addNewRow(myModal1) {
             // 解析藍牙掃描器返回的數據
             if(parsedCode != '' && document.getElementById("toggleCK").checked)
             {
-                console.log(parsedCode);
                 searchItem(data.Data, parsedCode).then((result) => {
                   const dataLength = result.length;
                   if(dataLength == 0) return;
