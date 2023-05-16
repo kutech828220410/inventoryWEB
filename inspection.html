@@ -230,24 +230,34 @@ function AddNewRow(_index,lot,date,qty) {
   delBtn.className = `delBtn${rowNum}`;
   delBtn.setAttribute("_rowNum",rowNum);
   delBtn.setAttribute("_index",_index);
-  delBtn.addEventListener("click", function () {
-    const delBtn_rowNum = delBtn.getAttribute("_rowNum");
-    const delBtn_index = delBtn.getAttribute("_index");
+
+  delBtn.addEventListener("click", function () 
+  {
+      const delBtn_rowNum = delBtn.getAttribute("_rowNum");
+      const delBtn_index = delBtn.getAttribute("_index");
       const divs = myModal1.querySelectorAll(`.rows`);
-      const Modalrows = myModal1.querySelectorAll(`.Modalrows-area`);
-      console.log(Modalrows);
+      var Modalrows = myModal1.querySelectorAll(`.Modalrows-area`);
+      
       
       for(var i = 0 ; i < Modalrows.length ; i++)
       {
           var _rowNum = Modalrows[i].getAttribute("_rowNum");
-          if(_rowNum == delBtn_rowNum)Modalrows[i].remove();
+          if(_rowNum == delBtn_rowNum)
+          {
+              Modalrows[i].remove();
+              console.log( Modalrows[i]);
+          }
       }
-      rowNum = Modalrows.length + 1;
+      Modalrows = myModal1.querySelectorAll(`.Modalrows-area`);
+      for(var i = 0 ; i < Modalrows.length ; i++)
+      {
+          const orderText = Modalrows[i].querySelector("#orderText");
+          orderText.innerHTML = `<div id = 'orderText' style=  flex-direction: row;'> <b>(批效: ${i + 1})</b> </div> `;
+      }
   });
-  // create text nodes
-  const orderText = document.createTextNode("<div style=  flex-direction: row;'> <b>(批效: " + rowNum + ")</b> </div> ");
 
-  
+  // create text nodes
+  const orderText = document.createTextNode("<div id = 'orderText' style=  flex-direction: row;'> <b>(批效: " + rowNum + ")</b> </div> ");
   const lot_div = document.createElement("div");
   const lotInput_span = document.createElement("span");
   const lotText_span = document.createElement("span");
