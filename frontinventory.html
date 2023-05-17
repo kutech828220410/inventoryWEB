@@ -8,7 +8,7 @@
     <script src="ApiURL.js"></script>
     <script src="WebApiFunc.js"></script>
     <script src="frontinventory.js"></script>
-    
+    <script src="frontinventory_addform.js"></script>
 </head>
 <body>
   <div class="h1top">
@@ -20,19 +20,17 @@
     <button id="submitdownloadbtn" class="submitdownloadbtn" onclick="submitdownload()">下載報表</button>
   </div>
   <div class="submit_div1">
-    <button id="AddINVbtn" class="AddINVbtn" onclick="AddINVbtn_Click()">新增盤點</button>
+    <button id="addform" class="addform" onclick="addform_Click()">新增盤點</button>
   </div>
 </div>
-<!-- 表格首行 -->
-<div class="table-container">
-  <table class="table">
-      <thead>
-          <tr>
-              <th class="th1">日期時間</th>
-              <th class="th2">盤點單號(建表者)</th>
-          </tr>
-      </thead>
-  </table>
+
+<div class="allform">
+  <!-- 新增盤點表位置 -->
+  <div id="addformposition"></div>
+
+
+
+
 </div>
   
   <div class="under-line">

@@ -76,6 +76,7 @@ header {
   /* position: relative;
   overflow-y: auto; */
   margin-top: 100px; /*調整與header之間的間距*/
+  width: 100%;
 }
 
 
@@ -120,6 +121,7 @@ header {
 
 table {
   width: 100%;
+  overflow-y: block;
 }
 
 thead {
@@ -238,13 +240,11 @@ th, td {
 /* 彈跳視窗樣式 */
 .modal {
   display: none;
-  position: fixed;
+  /* position: fixed; */
   z-index: 1000;
   left: 0;
   top: 0;
   width: 100%;
-  height: 100%;
-  overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
 }
 .myModal_title {
@@ -262,7 +262,7 @@ th, td {
   left: 0;
   top: 0;
   box-shadow: -4px 4px rgba(0, 0, 0, 0.85);
-  width: 95%;
+  width: 90%;
 }
 
 /* 關閉按鈕樣式 */

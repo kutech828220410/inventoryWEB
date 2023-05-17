@@ -256,7 +256,7 @@ th, td {
 }
 /* 彈跳視窗內容樣式 */
 .modal-content {
-  
+  max-width: 600px;
   background-color: #ffffff;
   margin: 15% auto;
   padding: 10px;

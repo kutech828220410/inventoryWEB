@@ -239,3 +239,26 @@ function searchItem(data, searchKey) {
 insertDataIntoTable();
 
 
+
+// // 获取模态框和表格容器的引用
+// var modal = document.querySelector('.modal');
+// var tableContainer = document.querySelector('.table-container');
+
+// // 打开模态框时锁定表格容器
+// function openModal() {
+//   modal.style.display = 'block';
+//   tableContainer.style.overflow = 'hidden';
+//   document.body.style.overflow = 'hidden';
+// }
+
+// // 关闭模态框时解除表格容器的锁定
+// function closeModal() {
+//   modal.style.display = 'none';
+//   tableContainer.style.overflow = 'auto';
+//   document.body.style.overflow = 'auto';
+// }
+
+// // 绑定打开和关闭模态框的事件
+// document.getElementById('openModalBtn').addEventListener('click', openModal);
+// document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+
