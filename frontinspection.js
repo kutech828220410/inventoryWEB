@@ -13,7 +13,7 @@ let data =[];
 
 async function insertDataIntoTable() {
   url = inspection_get_od_Date; 
-  response = await fetch(inspection_get_od_Date); // 替換成您的 API 網址
+  let response = await fetch(inspection_get_od_Date); // 替換成您的 API 網址
   data = await response.json();
   console.log(data);
   

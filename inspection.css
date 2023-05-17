@@ -81,7 +81,7 @@ header {
 
 .table-container th:nth-child(2),
 .table-container td:nth-child(2) {
-  width: 33%; /* 調整數量欄位的寬度 */
+  width: 40%; /* 調整數量欄位的寬度 */
 }
 
 .form-control {
@@ -161,17 +161,6 @@ th, td {
   text-align: left;
   padding: 8px;
   
-}
-
-.h1_inspection{
-  text-shadow: 2px 2px 2px #888888;
-  position: absolute;
-  top: 0px;
-  top: 10px;
-  left : 20px; 
-  text-align: center;
-  color: #000000;
-  font-weight: bold;
 }
 
 .pagination {
@@ -266,6 +255,7 @@ th, td {
 }
 /* 彈跳視窗內容樣式 */
 .modal-content {
+  max-width: 600px;
   background-color: #ffffff;
   margin: 15% auto;
   padding: 10px;
@@ -292,7 +282,6 @@ th, td {
 
 .modalbtn:hover,
 .modalbtn:focus {
-  color: #888;
   text-decoration: none;
   cursor: pointer;
 }

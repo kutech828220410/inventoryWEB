@@ -6,7 +6,7 @@ function getDataFromAPI(url) {
             'Content-Type': 'application/json'
         }
     })
-        .then(response => {
+    .then(response => {
             if (response.ok) {
                 return response.json();
             }
@@ -36,10 +36,10 @@ const postDataToAPI = (url, data) => {
 };
 
 
-function downloadExcel(url ,jsonData,filename) {
+function downloadExcel(url ,jsonData,filename) 
+{
 
     
-
   fetch(url, {
     method: 'POST',
     body: JSON.stringify(jsonData),

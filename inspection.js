@@ -14,7 +14,8 @@ async function insertDataIntoTable() {
     // 插入新的表格列
     var GUID = item.GUID;
     const row = tbody.insertRow(); // 改為插入 tbody 元素的內容
-
+    row.className = "med_rows";
+    row.setAttribute("GUID",GUID);
     // 插入藥品資訊儲存格
     const drugInfoCell = row.insertCell();
     drugInfoCell.innerHTML =
@@ -64,6 +65,8 @@ async function insertDataIntoTable() {
       qty_init = item.Lot_date_datas[0].QTY;
     }
     const inspectionRow = tbody.insertRow();
+    inspectionRow.className = "med_rows";
+    inspectionRow.setAttribute("GUID",GUID);
     const inspectionCell = inspectionRow.insertCell();
     inspectionCell.colSpan = 2;
     inspectionCell.id = `firstinspection${_index}`;
@@ -75,7 +78,7 @@ async function insertDataIntoTable() {
     <canvas id="${barcode_text}" style="float: right; width:140px; padding-right:10px;"></canvas>
     </button>
     
-    <div id="myModal${_index}" class="modal" _index="${item._index}" OD_SN_L="${item.OD_SN_L}" START_QTY="${item.START_QTY}" END_QTY="${item.END_QTY}" GUID = "${GUID}">
+    <div id="myModal${_index}" class="modal" _index="${item._index}" OD_SN_L="${item.OD_SN_L}" START_QTY="${item.START_QTY}" END_QTY="${item.END_QTY}" GUID="${GUID}">
     <div class="modal-content">
       <div class=myModal_title>
       <b>[${item.OD_SN_L}]</b>
@@ -179,18 +182,22 @@ async function get_jsondata() {
 
 
 function search_By_name_Event(event) {
+
   if (event.key === 'Enter') {
     const input = document.querySelector('.drugNameText');
-    search_By_name(input.value);
+    if(!search_By_name(input.value))
+    {
+       input.value = '';
+    }
   }
 }
 function search_By_name(name) {
   let foundRow = null;
   const filter = name.toLowerCase();
   const rows = document.querySelectorAll('table tr');
-  console.log(name);
-
-  for (let i = 1; i < rows.length; i++) { // 從第2列開始搜尋，跳過表格標題列
+  var flag_display = false;
+  for (let i = 1; i < rows.length; i++) 
+  { // 從第2列開始搜尋，跳過表格標題列
     const drugNameCell = rows[i].querySelector('td:first-child');
 
     if (!drugNameCell) {
@@ -198,35 +205,24 @@ function search_By_name(name) {
     }
     const drugName = drugNameCell.textContent.trim().toLowerCase();
     if (drugName.includes(filter)) {
-      console.log(drugNameCell);
       rows[i].style.display = '';
+      flag_display = true;
     } else {
       rows[i].style.display = 'none';
     }
   }
-}
-function updateQtyByGuid(guid, qty) {
-  const rows = document.querySelectorAll('table tr');
-  const filter = guid.toLowerCase();
-  for (let i = 0; i < rows.length; i++) {
-    const row = rows[i];
-    const drugNameCell = rows[i].querySelector('td:first-child');
-
-    if (!drugNameCell) {
-      continue; // 如果 drugNameCell 為 null，則跳過該行的處理
+  if(!flag_display)
+  {
+    for (let i = 1; i < rows.length; i++) 
+    { 
+      rows[i].style.display = '';
     }
-    const drugName = drugNameCell.textContent.trim().toLowerCase();
-    if (drugName.includes(filter)) {
-      console.log(drugNameCell);
-      const qtyInput = row.querySelector('input[type="number"]');
-      qtyInput.value = qty;
-      return;
-    }
-
+    alert("查無資料!");
   }
-
-  console.warn(`Cannot find row with GUID ${guid}`);
+  return flag_display;
+  
 }
+
 
 function searchItem(data, searchKey) {
   return new Promise((resolve, reject) => {

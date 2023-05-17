@@ -54,7 +54,7 @@ body {
   flex: 1;
 }
 
-.submitinfobtn,
+.AddINVbtn,
 .submitdownloadbtn {
   margin: 3px;
   padding: 7px 12px;
@@ -70,7 +70,7 @@ body {
   box-shadow: 0px 4px rgb(0, 90, 185);
 }
 
-.submitinfobtn:hover,
+.AddINVbtn:hover,
 .submitdownloadbtn:hover {
   background-color: #005bbd;
   cursor: pointer;
