@@ -20,25 +20,28 @@ function toggleButton(button) {
   }
 }
 
-
-async function AddINVbtn_Click() 
+async function addform_Click() 
 {
   const confirmResult = confirm("確定建立盤點單?");
   if (confirmResult) 
   {
-    data.Data.splice(0);
+    // data.Data.splice(0);
 
-    let jsonData = 
-    {
-      "CREAT_OP": "李偉豪",
-    };
-    data.Data.push(jsonData);
-    console.log(data);
-    data = await postDataToAPI(inventory_get_creat , data);
-    // API帶入資料結尾
-    //insertDataIntoTable();
+    // let jsonData = 
+    // {
+    //   "CREAT_OP": "李偉豪",
+    // };
+    // data.Data.push(jsonData);
+    // console.log(data);
+    // data = await postDataToAPI(inventory_get_creat , data);
+    // // API帶入資料結尾
+    // //insertDataIntoTable();
+
+    
   }
 }
+
+
 function submitdownload() 
 {
   downloadExcel(inspection_download_excel, jsonData, '驗收入庫');
