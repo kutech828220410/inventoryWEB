@@ -26,7 +26,7 @@ function select_btn_Click(event)
     var IC_SN = this.getAttribute("IC_SN");
     console.log(IC_SN);
     sessionStorage.setItem('IC_SN',IC_SN);
-    location.href = "inventory.html"
+    location.href = "inventory/main.html"
 }
 
 function get_header()
