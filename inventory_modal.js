@@ -129,8 +129,6 @@ function AddNewRow(_index,qty) {
     // create divs
     const divall = document.createElement("div");
     const title_div = document.createElement("div");
-    const div2 = document.createElement("div");
-    const div3 = document.createElement("div");
     
     // create inputs
     const qtyInput = document.createElement("input");
@@ -145,7 +143,7 @@ function AddNewRow(_index,qty) {
     qtyInput.placeholder = "請輸入數量";
     qtyInput.min = "0";
     qtyInput.max = "9999";
-    qtyInput.onfocus = function() {
+    qtyInput.onclick = function() {
     clearInput(this);
     };
     if(qty != null) qtyInput.value = qty;

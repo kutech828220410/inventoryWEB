@@ -9,10 +9,10 @@
   <script src="ApiURL.js"></script>
   <script src="WebApiFunc.js"></script>
   <script src="/dist/JsBarcode.all.js"></script>
-  <!-- <script src="frontpage.js"></script> -->
+  <script src="frontpage.js"></script>
   <script src="inspection.js"></script>
   <script src="inspection_modal.js"></script>
-
+  <script src="session_check.js"></script>
   
 </head>
 <body>
@@ -88,20 +88,7 @@
                   {
                     search_By_name(result[0].NAME);
                     return;
-                    // var med_rows = document.querySelectorAll(".med_rows");
-                    // console.log(med_rows);
-                    // for(var i = 0 ; i <med_rows.length ; i++)
-                    // {
-                    //   med_rows[i].style.display = 'none';
-                    //   for(var k = 0 ; k < result.length ; k++)
-                    //     {
-                    //        var GUID = med_rows[i].getAttribute("GUID");
-                    //        if(GUID == result[k].GUID)
-                    //        {
-                    //           med_rows[i].style.display = '';
-                    //        }     
-                    //     }                                                         
-                    // }
+
 
                   }                              
                 }).catch((error) => 

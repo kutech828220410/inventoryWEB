@@ -1,17 +1,3 @@
-let data = {};
-
-window.addEventListener('load', function(event) 
-{
-  
-});
-async function get_creat_data() 
-{
-  let response = await fetch(inventory_get_creat); // 替換成您的 API 網址
-  data = await response.json();
-  console.log(data);
-  return data;
-}
-
 // 單號選擇變色
 function toggleButton(button) {
   const confirmResult = confirm("是否前往盤點？");
@@ -25,56 +11,125 @@ async function addform_Click()
   const confirmResult = confirm("確定建立盤點單?");
   if (confirmResult) 
   {
-    // data.Data.splice(0);
-
-    // let jsonData = 
-    // {
-    //   "CREAT_OP": "李偉豪",
-    // };
-    // data.Data.push(jsonData);
-    // console.log(data);
-    // data = await postDataToAPI(inventory_get_creat , data);
-    // // API帶入資料結尾
-    // //insertDataIntoTable();
-
-    
+    creat_all_div();
   }
 }
-
-
-function submitdownload() 
+window.onload = function() 
 {
-  downloadExcel(inspection_download_excel, jsonData, '驗收入庫');
-}
-async function insertDataIntoTable()
+
+  setUserText();
+  // 在這裡撰寫當網頁載入完成後要執行的程式碼
+};
+function get_header()
 {
-  data = await get_creat_data();
-  const now = new Date();
-  const date = now.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
-  const time = now.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const header_div = document.createElement("div");
+  header_div.id = "header_div";
+  header_div.className = "header_div";
+  header_div.style.width = "100%";
+  header_div.style.height = "70px";
+  header_div.style.background = "rgb(186, 185, 208)";
+  header_div.style.background = "linear-gradient(90deg, rgba(186, 185, 208, 1) 0%, rgba(235, 235, 235, 1) 100%)";
+  header_div.style.display = "flex";
+  header_div.style.justifyContent = "left";
+  header_div.style.flexDirection = "row";
+  header_div.style.overflowX = "hidden";
+ 
 
-  // 插入日期資訊儲存格
-  const table = document.querySelector('table');
-  const tbody = document.createElement('tbody'); // 新增 tbody 元素
-  table.appendChild(tbody); // 加入 table 元素中
-  const row = tbody.insertRow();
-  const InspectionDateCell = row.insertCell();
-  InspectionDateCell.innerHTML = `
-    <p>建表時間</p>
-    <p>${date}</p>
-  `;
+  const header_title_user_div = document.createElement("div");
+  header_title_user_div.id = "header_title_user_div";
+  header_title_user_div.className = "header_title_user_div";
+  header_title_user_div.style.display = "flex";
+  header_title_user_div.style.justifyContent = "top";
+  header_title_user_div.style.flexDirection = "column";
+  header_title_user_div.style.width = "70%";
+  header_title_user_div.style.height = "100%";
+  header_title_user_div.style.backgroundColor = "#";
 
-  // 插入盤點單號資訊儲存格
-  const InspectionNumberCell = row.insertCell();
-  InspectionNumberCell.innerHTML = `
-      <div class="check_div">
-        ${data.Data.map((item) => `
-          <button id="invnum" type="button" class="check-button" onclick="toggleButton(this)">
-            ${item.INV_SN_L}(${item.CREAT_OP})
-          </button>
-        `).join('')}
-      </div>
-  `;
+  const header_title_div = document.createElement("div");
+  header_title_div.innerHTML = `<b class="h1">盤點單管理</b>`;
+  header_title_div.style.display = "flex";
+  header_title_div.id = "header_title_div";
+  header_title_div.className = "header_title_div";
+  header_title_div.style.textAlign = "left";
+  header_title_div.style.width = "100%";
+  header_title_div.style.height = "50%";
+  header_title_div.style.backgroundColor = "#";
+  header_title_div.style.justifyContent = "";
+  header_title_div.style.flexDirection = "";
+
+
+  const header_user_div = document.createElement("div");
+  header_user_div.innerHTML = `<span ><p id="header_user_text" style="font-family: 微軟正黑體; font-size: 12px; margin-left: 20px; word-spacing: 5px; letter-spacing: 3px;">使用者名稱:</p><span>`;
+  header_user_div.id = "header_user_div";
+  header_user_div.style.display = "flex";
+  header_user_div.className = "header_user_div";
+  header_user_div.style.textAlign = "left";
+  header_user_div.style.width = "100%";
+  header_user_div.style.height = "50%";
+  header_user_div.style.backgroundColor = "#";
+  header_user_div.style.justifyContent = "";
+  header_user_div.style.flexDirection = "";
+  header_title_user_div.appendChild(header_title_div);
+  header_title_user_div.appendChild(header_user_div);
+
+  const header_contorls_div = document.createElement("div");
+  header_contorls_div.id = "header_contorls_div";
+  header_contorls_div.className = "header_contorls_div";
+  header_contorls_div.style.display = "flex";
+  header_contorls_div.style.justifyContent = "right";
+  header_contorls_div.style.flexDirection = "row";
+  header_contorls_div.style.width = "30%";
+  header_contorls_div.style.height = "100%";
+  header_contorls_div.style.backgroundColor = "#";
+  header_contorls_div.style.paddingRight = "5px";
+
+  const header_contorls_findbtn = Get_find_in_page_SVG("100%", "100%", "70%","100%","black","");
+  // const header_contorls_findbtn = document.createElement("button");
+  header_contorls_findbtn.id = "header_contorls_findbtn";
+  header_contorls_findbtn.className = "header_contorls";
+  header_contorls_findbtn.style.width = "60px";
+  header_contorls_findbtn.style.height = "80%";
+  header_contorls_findbtn.style.marginTop = "5px";
+  header_contorls_findbtn.style.marginRight = "2px";
+  header_contorls_findbtn.style.display = "flex";
+
+  const header_contorls_addformbtn = Get_add_SVG("100%", "100%", "70%","100%","black","");
+  // const header_contorls_addformbtn = document.createElement("button");
+  header_contorls_addformbtn.id = "header_contorls_addformbtn";
+  header_contorls_addformbtn.className = "header_contorls";
+  header_contorls_addformbtn.style.width = "60px";
+  header_contorls_addformbtn.style.height = "80%";
+  header_contorls_addformbtn.style.marginTop = "5px";
+  header_contorls_addformbtn.style.marginRight = "2px";
+  header_contorls_addformbtn.style.display = "flex";
+
+
+
+  //header_contorls_addformbtn.innerHTML = "新增盤點";  // 設置按鈕的內容
+  header_contorls_div.appendChild(header_contorls_findbtn);
+  header_contorls_div.appendChild(header_contorls_addformbtn);
+
+  header_contorls_addformbtn.onclick = addform_Click;
+  
+  header_div.appendChild(header_title_user_div);
+  header_div.appendChild(header_contorls_div);
+
+  
+  return header_div;
 }
-
-insertDataIntoTable();
+function get_main()
+{
+  const main_div = document.createElement("div");
+  main_div.id = "main_div";
+  main_div.className = "main_div";
+  main_div.style.width = "100%";
+  main_div.style.height = "100%";
+  main_div.style.backgroundColor = "#FFFFFF";
+  return main_div;
+}
+function setUserText()
+{
+   const userText = document.querySelector("#header_user_text");
+   userText.innerText = `使用者:${get_logedName()} ID:${get_loggedID()}`;
+   console.log(userText);0
+}

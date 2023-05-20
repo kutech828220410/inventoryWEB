@@ -1,197 +1,417 @@
-//彈跳視窗確認按鈕
 
-  function addform(_index,lot,date,qty) {
+let data = {};
+
+window.onload = load;
+async function get_creat_data() 
+{
+  let response = await fetch(`${inventory_url}/creat`); // 替換成您的 API 網址
+  data = await response.json();
+  return data;
+}
+
+async function load()
+{
     let rowNum = 1;  
-    var myModal1 = document.querySelector(`#addformposition`);
-    OD_SN_L = myModal1.getAttribute("OD_SN_L");
-    if (!myModal1) return;
-    const rows = document.querySelector('');
-    // create divs
-    const divall = document.createElement("div");
-    const title_div = document.createElement("div");
-    const div2 = document.createElement("div");
-    const div3 = document.createElement("div");
-    
-    // create inputs
-    const lotInput = document.createElement("input");
-    const dateInput = document.createElement("input");
-    const qtyInput = document.createElement("input");
-    const delBtn = document.createElement("button")
-    
-    // set input attributes
-    
-    lotInput.id = "lot1"
-    lotInput.type = "text";
-    lotInput.className = "lot";
-    lotInput.placeholder = "請輸入批號";
-    if(lot != null)  lotInput.setAttribute("value",lot);
-   
-    dateInput.id = "date1"
-    dateInput.type = "date";
-    dateInput.className = "date";
-    dateInput.placeholder = "請選擇效期";
-    if(date != null) dateInput.value = date;
-  
-  
-    qtyInput.id = "qty1";
-    qtyInput.type = "number";
-    qtyInput.className = "qty";
-    qtyInput.inputMode = "numeric";
-    qtyInput.placeholder = "請輸入數量";
-    qtyInput.min = "0";
-    qtyInput.max = "9999";
-    qtyInput.onfocus = function() {
-    clearInput(this);
-    };
-    if(qty != null) qtyInput.value = qty;
-    delBtn.innerHTML = `<svg stroke="red" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="svg" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-    <polyline points="3 6 5 6 21 6"></polyline>
-    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-    <line x1="10" y1="11" x2="10" y2="17"></line>
-    <line x1="14" y1="11" x2="14" y2="17"></line>`;
-    const Modalrows = myModal1.querySelectorAll(".Modalrows-area");
-    rowNum = Modalrows.length + 1;
-    delBtn.className = `delBtn${rowNum}`;
-    delBtn.setAttribute("_rowNum",rowNum);
-    delBtn.setAttribute("_index",_index);
-  
-    delBtn.addEventListener("click", function () 
+    data = await get_creat_data();
+    console.log(data);
+
+    const _per_all_div = document.querySelectorAll(".all_div");
+    for(var i = 0 ; i < data.Data.length ; i++)
     {
-        const delBtn_rowNum = delBtn.getAttribute("_rowNum");
-        const delBtn_index = delBtn.getAttribute("_index");
-        const divs = myModal1.querySelectorAll(`.rows`);
-        var Modalrows = myModal1.querySelectorAll(`.Modalrows-area`);
-        
-        
-        for(var i = 0 ; i < Modalrows.length ; i++)
-        {
-            var _rowNum = Modalrows[i].getAttribute("_rowNum");
-            if(_rowNum == delBtn_rowNum)
-            {
-                Modalrows[i].remove();
-                console.log( Modalrows[i]);
-            }
-        }
-        Modalrows = myModal1.querySelectorAll(`.Modalrows-area`);
-        for(var i = 0 ; i < Modalrows.length ; i++)
-        {
-            const orderText = Modalrows[i].querySelector("#orderText");
-            orderText.innerHTML = `<div id = 'orderText' style=  flex-direction: row;'> <b>(批效: ${i + 1})</b> </div> `;
-        }
-    });
+        const all_div = creat_all_div(i, data.Data[i]);
+    }
   
-    // create text nodes
-    const orderText = document.createTextNode("<div id = 'orderText' style=  flex-direction: row;'> <b>(批效: " + rowNum + ")</b> </div> ");
-    const lot_div = document.createElement("div");
-    const lotInput_span = document.createElement("span");
-    const lotText_span = document.createElement("span");
-    
-    lotText_span.innerHTML = "<b>批號:</b>";
-    lotText_span.style.display = "flex";
-    lotText_span.style.justifyContent = "flex-start";
-    lotText_span.style.alignItems = "center";
-    lotText_span.style.width = "50px";
-    lotText_span.flexBasis  ="100%";
-    lotInput_span.style.display = "flex";
-    lotInput_span.style.justifyContent = "flex-start";
-    lotInput_span.style.alignItems = "center";
-    lotInput_span.style.flexBasis  = "100%";
-    lotInput_span.appendChild(lotInput);
-    lot_div.style.display = "flex";
-    lot_div.style.flexDirection = "row";
-    lot_div.style.width = "100%";
-    lot_div.style.marginTop = "5px";
-    lot_div.appendChild(lotText_span);
-    lot_div.appendChild(lotInput_span);
-    
-    const date_qty_div = document.createElement("div");
-    const date_div = document.createElement("div");
-    const dateInput_span = document.createElement("span");
-    const dateText_span = document.createElement("span");
-    
-    const qty_div = document.createElement("div");
-    const qtyInput_span = document.createElement("span");
-    const qtyText_span = document.createElement("span");
-  
-    dateText_span.innerHTML = "<b>效期:</b>";
-    dateText_span.style.display = "flex";
-    dateText_span.style.justifyContent = "flex-start";
-    dateText_span.style.alignItems = "center";
-    dateText_span.style.width = "50px";
-    dateText_span.flexBasis  ="100%";
-    dateText_span.style.marginRight = "5px";
-    dateInput_span.style.display = "flex";
-    dateInput_span.style.justifyContent = "flex-start";
-    dateInput_span.style.alignItems = "center";
-    dateInput_span.style.flexBasis  = "100%";
-    dateInput_span.appendChild(dateInput);
-    date_div.style.display = "flex";
-    date_div.style.justifyContent = "center";
-    date_div.style.width = "60%";
-    date_div.style.marginTop = "10px";
-    date_div.appendChild(dateText_span);
-    date_div.appendChild(dateInput_span);
-  
-  
-    qtyText_span.innerHTML = "<b>數量:</b>";
-    qtyText_span.style.display = "flex";
-    qtyText_span.style.justifyContent = "flex-start";
-    qtyText_span.style.alignItems = "center";
-    qtyText_span.style.width = "60px";
-    qtyText_span.flexBasis  ="50%";
-    qtyInput_span.style.display = "flex";
-    qtyInput_span.style.justifyContent = "flex-start";
-    qtyInput_span.style.alignItems = "center";
-    qtyInput_span.style.flexBasis  = "100%";
-    qtyInput_span.appendChild(qtyInput);
-    qty_div.style.display = "flex";
-    qty_div.style.justifyContent = "center";
-    qty_div.style.width = "40%";
-    qty_div.style.marginTop = "10px";
-    qty_div.style.marginLeft = "5px";
-    qty_div.appendChild(qtyText_span);
-    qty_div.appendChild(qtyInput_span);
-  
-    date_qty_div.style.display = "flex";
-    date_qty_div.style.flexDirection = "row";
-    date_qty_div.appendChild(date_div);
-    date_qty_div.appendChild(qty_div);
-  
-    title_div.style.display = "flex";
-    title_div.style.flexDirection = "row";
-    title_div.style.justifyContent = "space-between";
-    title_div.style.alignItems = "center";
-    title_div.innerHTML = orderText.textContent;  
-    title_div.appendChild(delBtn);
-  
-  
-  
-    title_div.className =`rows`;
-    lot_div.className =`rows`;
-    date_qty_div.className =`rows`;
-    title_div.setAttribute("_index",rowNum);
-    lot_div.setAttribute("_index",rowNum);
-    date_qty_div.setAttribute("_index",rowNum);
-  
-  
-    
-    // append divs to rows
-    divall.className = "Modalrows-area";
-    divall.id = `Modalrows-area${rowNum}`;
-    divall.setAttribute("_rowNum",rowNum);
-    divall.style.borderTop = "2.5px solid #dadadad8";
-    divall.style.borderRight = "2.5px solid #dadadad8";
-    divall.style.borderLeft = "1px solid rgba(0, 0, 0, 0.85)";
-    divall.style.borderBottom = "1px solid rgba(0, 0, 0, 0.85)";
-    divall.style.margin = "5px";
-    divall.style.padding = "10px";
-    divall.style.boxShadow = "-2.5px 2.5px rgba(0, 0, 0, 0.85)";  
-  
-  
-    divall.appendChild(title_div);
-    divall.appendChild(lot_div);
-    divall.appendChild(date_qty_div);
-    rows.appendChild(divall);
-    
+}
+
+async function addform() 
+{
+
+    data = await get_creat_data();
    
-  }
+}
+
+
+function creat_all_div(_index , item) 
+{
+    const main_div = document.querySelector('#main_div');
+    main_div.style.width = "98%";
+    const all_div = document.createElement("div");
+    all_div.className = "all_div";
+    all_div.id = `all_div${_index}`;
+    all_div.style.display = "flex";
+    all_div.style.justifyContent = "center";
+    all_div.style.width = "100%";
+    all_div.style.height= "200px";
+    all_div.style.backgroundColor = "#ffffff";
+    all_div.style.marginTop = "7px";
+    all_div.style.paddingBottom = "10px";
+    all_div.style.borderBottom = "2px solid gray";
+    all_div.style.flexDirection = "column";
+    main_div.appendChild(all_div);
+    //編號刪除按鈕框
+    const formnnum_delbtn_div = document.createElement("div");
+    formnnum_delbtn_div.className = "formnnum_delbtn_div";
+    formnnum_delbtn_div.id = `formnnum_delbtn_div${_index}`;
+    formnnum_delbtn_div.setAttribute("_index",_index);
+    all_div.appendChild(formnnum_delbtn_div);
+    edit_formnnum_delbtn_div(formnnum_delbtn_div);
+    //刪除鈕    
+    var del_btn_div = Get_trashBox_SVG("30px", "100%", "70%","100%","red","");
+    del_btn_div.className = "del_botton";
+    del_btn_div.id = `$del_botton${_index}`;
+    edit_del_btn_div(del_btn_div);
+    formnnum_delbtn_div.appendChild(del_btn_div);
+    //盤點編號
+    const formnnum_div = document.createElement("div");
+    formnnum_div.className = "formnnum_div";
+    formnnum_div.id = `formnnum_div${_index}`;
+    formnnum_div.setAttribute("_index",_index);
+    formnnum_delbtn_div.appendChild(formnnum_div);
+    edit_formnnum_div(formnnum_div);
+    //時間資訊按鈕框架
+    const time_info_btn_div = document.createElement("div");
+    time_info_btn_div.className = "time_info_btn_div";
+    time_info_btn_div.id = `time_info_btn_div${_index}`;
+    all_div.appendChild(time_info_btn_div);
+    edit_time_info_btn_div(time_info_btn_div);
+    //年月日
+    const calendar_div = document.createElement("div");
+    calendar_div.className = "calendar_div";
+    calendar_div.id = `calendar_div${_index}`;
+    calendar_div.setAttribute("_index",_index);
+    time_info_btn_div.appendChild(calendar_div);
+    edit_calendar_div(calendar_div);
+    const year_div = document.createElement("div");
+    year_div.className = "year_div";
+    year_div.id = `year_div${_index}`;
+    year_div.setAttribute("_index",_index);
+    calendar_div.appendChild(year_div);
+    edit_year_div(year_div);
+    const day_week_div = document.createElement("div");
+    day_week_div.className = "day_week_div";
+    day_week_div.id = `day_week_divv${_index}`;
+    calendar_div.appendChild(day_week_div);
+    edit_day_week_div(day_week_div);
+    const day_div = document.createElement("div");
+    day_div.className = "day_div";
+    day_div.id = `day_div${_index}`;
+    day_week_div.appendChild(day_div);
+    edit_day_div(day_div);
+    const week_div = document.createElement("div");
+    week_div.className = "week_div";
+    week_div.id = `week_div${_index}`;
+    day_week_div.appendChild(week_div);
+    edit_week_div(week_div);
+
+    // 盤點資訊
+    const info_div = document.createElement("div");
+    info_div.className = "info_div";
+    info_div.id = `info_div${_index}`;
+    time_info_btn_div.appendChild(info_div);
+    edit_info_div(info_div);
+    // 盤點資訊
+    const INV_SN_L_div = document.createElement("div");
+    INV_SN_L_div.className = "INV_SN_L_div";
+    INV_SN_L_div.id = `INV_SN_L_div${_index}`;
+    INV_SN_L_div.setAttribute("_INV_SN_L",item.INV_SN_L);
+    info_div.appendChild(INV_SN_L_div);
+    edit_INV_SN_L_div(INV_SN_L_div);
+    const CREAT_OP_div = document.createElement("div");
+    CREAT_OP_div.className = "CREAT_OP_div";
+    CREAT_OP_div.id = `CREAT_OP_div${_index}`;
+    CREAT_OP_div.setAttribute("_CREAT_OP",item.CREAT_OP);
+    info_div.appendChild(CREAT_OP_div);
+    edit_CREAT_OP_div(CREAT_OP_div);
+    
+
+    //操作按鈕
+    const btn_div = document.createElement("div");
+    btn_div.className = "btn_div";
+    btn_div.id = `btn_div${_index}`;
+    btn_div.style.paddingTop = "5px";
+    btn_div.style.paddingRight = "7px";
+    btn_div.style.paddingBottom = "5px";
+    btn_div.style.paddingLeft = "2px";
+    time_info_btn_div.appendChild(btn_div);
+    edit_btn_div(btn_div);
+    const selectbtn = Get_right_direction_SVG("100%", "60px", "70%","100%","steelblue","");
+    selectbtn.className = "div_botton";
+    selectbtn.id = `selectbtn${_index}`;
+    btn_div.appendChild(selectbtn);
+    edit_select(selectbtn);
+    const dlbtn = Get_download_SVG("100%", "60px", "70%","100%","steelblue","");
+    dlbtn.className = "div_botton";
+    dlbtn.id = `dlbtn${_index}`;
+    btn_div.appendChild(dlbtn);
+    edit_dlbtn(dlbtn);
+    const lockbtn = Get_unlock_SVG("100%", "60px", "70%","100%","steelblue","");
+    lockbtn.className = "div_botton";
+    lockbtn.id = `lockbtn${_index}`;
+    btn_div.appendChild(lockbtn);
+    edit_lockbtn(lockbtn);
+
+
+    return all_div;
+}
+function edit_time_info_btn_div(div)
+{
+    div.style.display = "flex";
+    div.style.justifyContent = "flex-start";
+    div.style.flexDirection = "row";
+    div.style.width = "100%";
+    div.style.height= "85%";
+    div.style.marginLeft= "5px"
+    div.style.marginTop= "2px"
+}
+function edit_formnnum_delbtn_div(div)
+{
+    var _index =parseInt(div.getAttribute("_index"));
+    div.style.display = "flex";
+    div.style.width = "100%";
+    div.style.height= "15%"; 
+    div.style.marginLeft = "5px";
+    div.style.fontSize = "16px";
+    div.style.fontWeight = "bold";
+    div.style.alignItems = "center";
+    div.style.direction = "row"
+}
+function edit_formnnum_div(div)
+{
+    var _index =parseInt(div.getAttribute("_index"));
+    div.style.display = "flex";
+    div.innerText = `編號 : ${_index + 1}`;
+    div.style.width = "100%";
+    div.style.height= "100%"; 
+    div.style.marginLeft = "5px";
+    div.style.fontSize = "16px";
+    div.style.fontWeight = "bold";
+    div.style.justifyContent = "flex-start" ;
+    div.style.alignItems = "center";
+    div.style.flexDirection = "row";
+}
+
+function edit_calendar_div(div)
+{
+    var _index =parseInt(div.getAttribute("_index"));
+    div.style.display = "flex";
+    div.style.width = "200px";
+    div.style.height= "100%"; 
+    div.style.marginLeft = "2px";
+    div.style.marginTop = "3px";
+    div.style.fontSize = "16px";
+    div.style.fontWeight = "bold";
+    div.style.justifyContent = "flex-start" ;
+    div.style.flexDirection = "column";
+    div.style.backgroundColor = "#fff" ;
+    div.style.alignItems = "center" ;
+    div.style.borderRadius = "10px" ;
+    div.style.boxShadow = "1.5px 2px 2px 2px rgb(69, 68, 68, 0.65)" ;
+}
+function edit_year_div(div)
+{
+    var _index =parseInt(div.getAttribute("_index"));
+    div.innerText = "2023 / 12"
+    div.style.display = "flex";
+    div.style.width = "100%";
+    div.style.height= "40%"; 
+    div.style.fontSize = "18px";
+    div.style.fontWeight = "bold";
+    div.style.justifyContent = "center" ;
+    div.style.alignItems = "center" ;
+    div.style.backgroundColor = "lightsteelblue" ;
+    div.style.borderTopLeftRadius = "10px";
+    div.style.borderTopRightRadius = "10px";
+    div.style.fontWeight = "bolder";
+    div.style.color = "#fff"
+ ;
+}
+function edit_day_week_div(div)
+{
+    div.style.display = "flex";
+    div.style.width = "100%";
+    div.style.height= "60%"; 
+    div.style.flexDirection = "row";
+    div.style.borderTopStyle = "dotted";
+    div.style.borderColor = "dotted";
+    div.style.color = "gray";
+}
+function edit_day_div(div)
+{
+    var _index =parseInt(div.getAttribute("_index"));
+    div.innerText = "25"
+    div.style.display = "flex";
+    div.style.width = "65%";
+    div.style.height= "100%"; 
+    div.style.fontSize = "40px";
+    div.style.fontWeight = "bold";
+    div.style.justifyContent = "center" ;
+    div.style.alignItems = "center" ;
+    div.style.backgroundColor = "#fff" ;
+    div.style.borderBottomLeftRadius = "10px";
+    div.style.fontWeight = "bolder";
+    div.style.color = "#000";
+}
+function edit_week_div(div)
+{
+    var _index =parseInt(div.getAttribute("_index"));
+    div.innerText = "星期一"
+    div.style.display = "flex";
+    div.style.width = "35%";
+    div.style.height= "100%"; 
+    div.style.fontSize = "16px";
+    div.style.fontWeight = "bold";
+    div.style.justifyContent = "center" ;
+    div.style.alignItems = "center" ;
+    div.style.flexDirection = "column";
+    div.style.backgroundColor = "#fff" ;
+    div.style.borderBottomRightRadius = "10px";
+    div.style.fontWeight = "bolder";
+    div.style.color = "gray";
+    div.style.writingMode = "vertical-rl";
+ ;
+}
+//資訊欄DIV
+function edit_info_div(div)
+{
+    div.style.display = "flex";
+    div.style.width = "100%";
+    div.style.height= "100%";
+    div.style.marginLeft = "10px"
+    div.style.marginRight = "0px"
+    div.style.border= "2px solid";
+    div.style.flexDirection ="column";
+    div.style.borderRadius = "5px" ;
+}
+function edit_INV_SN_L_div(div)
+{
+    var _index = div.getAttribute("_index");
+    var _INV_SN_L = div.getAttribute("_INV_SN_L");
+    div.style.display = "inline-flex";
+    div.innerText = `單號:${_INV_SN_L}`;
+    div.style.width = "100%";
+    div.style.marginTop = "5px";
+    div.style.marginLeft = "5px";
+    div.style.fontSize = "16px";
+    div.style.fontWeight = "bold" ;
+    div.style.justifyContent = "flex-start" ;
+}
+function edit_CREAT_OP_div(div)
+{
+    var _index = div.getAttribute("_index");
+    var _CREAT_OP = div.getAttribute("_CREAT_OP");
+    div.style.display = "inline-flex";
+    div.innerText = `人員:${_CREAT_OP}`;
+    div.style.width = "100%";
+    div.style.marginTop = "5px";
+    div.style.marginLeft = "5px";
+    div.style.fontSize = "16px" ;
+    div.style.fontWeight = "bold" ;
+    div.style.justifyContent = "flex-start" ;
+}
+//操作按鈕DIV
+function edit_del_btn_div(div)
+{
+    div.addEventListener('click', function()
+    {
+
+    });
+}
+//操作按鈕DIV
+function edit_btn_div(div)
+{
+    div.style.display = "flex";
+    div.style.justifyContent = "center";
+    div.style.flexDirection ="column";
+    div.style.width = "85px";
+    div.style.height= "170px";
+}
+function edit_select(button)
+{
+    button.style.width = "100%";
+    button.style.height = "33%";
+    button.addEventListener('click', function()
+    {
+
+    });
+}
+function edit_dlbtn(button)
+{
+    button.style.width = "100%";
+    button.style.height = "33%";
+    button.addEventListener('click', function()
+    {
+
+    });
+}
+function edit_lockbtn(button)
+{
+    button.style.width = "100%";
+    button.style.height = "33%";
+    button.addEventListener('click', function()
+    {
+
+    });
+}
+
+
+
+//年月日轉中文
+// JavaScript source code
+// var date = new Date();
+// var month = date.getMonth();
+// var year = date.getFullYear();
+// var day = date.getDate();
+
+// var dayName = date.toLocaleString(navigator.language, { weekday: 'long' });
+// var monthNane = date.toLocaleString(navigator.language, { month: 'long' });
+
+// var C_dayName;
+// var C_monthName;
+
+// if (dayName == "Monday") {
+//     C_dayName = "星期一";
+// } else if (dayName == "Tuesday") {
+//     C_dayName = "星期二";
+// } else if (dayName == "Wednesday") {
+//     C_dayName = "星期三";
+// } else if (dayName == "Thursday") {
+//     C_dayName = "星期四";
+// } else if (dayName == "Friday") {
+//     C_dayName = "星期五";
+// } else if (dayName == "Saturday") {
+//     C_dayName = "星期六";
+// } else {
+//     C_dayName = "星期日";
+// }
+
+// if (monthName == "January") {
+//     C_monthName = "一月";
+// } else if (monthName == "February") {
+//     C_monthName = "二月";
+// } else if (monthName == "March") {
+//     C_monthName = "三月";
+// } else if (monthName == "April") {
+//     C_monthName = "四月";
+// } else if (monthName == "May") {
+//     C_monthName = "五月";
+// } else if (monthName == "June") {
+//     C_monthName = "六月";
+// } else if (monthName == "July") {
+//     C_monthName = "七月";
+// } else if (monthName == "August") {
+//     C_monthName = "八月";
+// } else if (monthName == "September") {
+//     C_monthName = "九月";
+// } else if (monthName == "October") {
+//     C_monthName = "十月";
+// } else if (monthName == "November") {
+//     C_monthName = "十一月";
+// } else {
+//     C_monthName = "十二月";
+
+// }
+
+// document.getElementById("day").innerHTML = day;
+// document.getElementById("year").innerHTML = year;
+// document.getElementById("monthName").innerHTML = C_monthName;
+// document.getElementById("dayName").innerHTML = C_dayName;

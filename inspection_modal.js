@@ -141,14 +141,12 @@ async function validateInput(_index) {
     // create divs
     const divall = document.createElement("div");
     const title_div = document.createElement("div");
-    const div2 = document.createElement("div");
-    const div3 = document.createElement("div");
     
     // create inputs
     const lotInput = document.createElement("input");
     const dateInput = document.createElement("input");
     const qtyInput = document.createElement("input");
-    const delBtn = document.createElement("button")
+    const delBtn = document.createElement("button");
     
     // set input attributes
     
@@ -172,7 +170,7 @@ async function validateInput(_index) {
     qtyInput.placeholder = "請輸入數量";
     qtyInput.min = "0";
     qtyInput.max = "9999";
-    qtyInput.onfocus = function() {
+    qtyInput.onclick = function() {
     clearInput(this);
     };
     if(qty != null) qtyInput.value = qty;

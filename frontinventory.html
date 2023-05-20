@@ -3,38 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>建立盤點單號操作頁</title>
+    <title>盤點單管理</title>
     <link rel="stylesheet" href="frontinventory.css">
     <script src="ApiURL.js"></script>
     <script src="WebApiFunc.js"></script>
+    <script src="./svg/mySVG.js"></script>
     <script src="frontinventory.js"></script>
     <script src="frontinventory_addform.js"></script>
+    <!-- <script src="session_check.js"></script> -->
 </head>
 <body>
-  <div class="h1top">
-    <h1 class="h1">建立盤點單號</h1>
+  <div class="form" id="form" style="width: 100%; height: 100%;">
+    <script>
+    const form = document.querySelector("#form");
+    form.style.display = "flex";
+    form.style.width = "100%";
+    form.style.justifyContent = "top";
+    form.style.flexDirection = "column";
+    form.style.backgroundColor = "#";
+ 
+    const header_div = get_header();
+    form.appendChild(header_div);
+
+    const main_div = get_main();
+    form.appendChild(main_div);
+
+    
+    </script>
   </div>
-
-  <div class="pagination">
-  <div class="submit_div2">
-    <button id="submitdownloadbtn" class="submitdownloadbtn" onclick="submitdownload()">下載報表</button>
-  </div>
-  <div class="submit_div1">
-    <button id="addform" class="addform" onclick="addform_Click()">新增盤點</button>
-  </div>
-</div>
-
-<div class="allform">
-  <!-- 新增盤點表位置 -->
-  <div id="addformposition"></div>
-
-
-
-
-</div>
   
-  <div class="under-line">
-    <B> Copyright ©2023 鴻森整合機電有限公司 </B>
-  </div>
+  
+<div class="under-line">
+  <B> Copyright ©2023 鴻森整合機電有限公司 </B>
+</div>
+<script>
+  
+</script>
 </body>
+
 </html>
