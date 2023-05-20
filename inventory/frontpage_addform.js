@@ -1,34 +1,4 @@
 
-let data = {};
-
-window.onload = load;
-async function get_creat_data() 
-{
-  let response = await fetch(`${inventory_url}/creat`); // 替換成您的 API 網址
-  data = await response.json();
-  return data;
-}
-
-async function load()
-{
-    let rowNum = 1;  
-    data = await get_creat_data();
-    console.log(data);
-
-    const _per_all_div = document.querySelectorAll(".all_div");
-    for(var i = 0 ; i < data.Data.length ; i++)
-    {
-        const all_div = creat_all_div(i, data.Data[i]);
-    }
-  
-}
-
-async function addform() 
-{
-
-    data = await get_creat_data();
-   
-}
 
 
 function creat_all_div(_index , item) 
@@ -75,54 +45,98 @@ function creat_all_div(_index , item)
     all_div.appendChild(time_info_btn_div);
     edit_time_info_btn_div(time_info_btn_div);
     //年月日
+    const dateString = getDatePartsFromDate(item.CT_TIME);
     const calendar_div = document.createElement("div");
     calendar_div.className = "calendar_div";
     calendar_div.id = `calendar_div${_index}`;
     calendar_div.setAttribute("_index",_index);
     time_info_btn_div.appendChild(calendar_div);
     edit_calendar_div(calendar_div);
+
+    //年及月
     const year_div = document.createElement("div");
     year_div.className = "year_div";
     year_div.id = `year_div${_index}`;
     year_div.setAttribute("_index",_index);
-    calendar_div.appendChild(year_div);
+    year_div.setAttribute("value",`${dateString.year}年${dateString.month}月`);
     edit_year_div(year_div);
+    calendar_div.appendChild(year_div);
+    
+    //星期幾及日期外框
     const day_week_div = document.createElement("div");
     day_week_div.className = "day_week_div";
     day_week_div.id = `day_week_divv${_index}`;
     calendar_div.appendChild(day_week_div);
     edit_day_week_div(day_week_div);
+
+    //日期
     const day_div = document.createElement("div");
     day_div.className = "day_div";
     day_div.id = `day_div${_index}`;
-    day_week_div.appendChild(day_div);
+    day_div.setAttribute("value",`${dateString.day}`);
     edit_day_div(day_div);
+    day_week_div.appendChild(day_div);
+    
+    //星期幾
     const week_div = document.createElement("div");
     week_div.className = "week_div";
     week_div.id = `week_div${_index}`;
-    day_week_div.appendChild(week_div);
+    week_div.setAttribute("value",`${dateString.dayOfWeek}`);
     edit_week_div(week_div);
+    day_week_div.appendChild(week_div);
+   
 
     // 盤點資訊
     const info_div = document.createElement("div");
     info_div.className = "info_div";
     info_div.id = `info_div${_index}`;
-    time_info_btn_div.appendChild(info_div);
     edit_info_div(info_div);
-    // 盤點資訊
-    const INV_SN_L_div = document.createElement("div");
-    INV_SN_L_div.className = "INV_SN_L_div";
-    INV_SN_L_div.id = `INV_SN_L_div${_index}`;
-    INV_SN_L_div.setAttribute("_INV_SN_L",item.INV_SN_L);
-    info_div.appendChild(INV_SN_L_div);
-    edit_INV_SN_L_div(INV_SN_L_div);
-    const CREAT_OP_div = document.createElement("div");
-    CREAT_OP_div.className = "CREAT_OP_div";
-    CREAT_OP_div.id = `CREAT_OP_div${_index}`;
-    CREAT_OP_div.setAttribute("_CREAT_OP",item.CREAT_OP);
-    info_div.appendChild(CREAT_OP_div);
-    edit_CREAT_OP_div(CREAT_OP_div);
+    time_info_btn_div.appendChild(info_div);
     
+    // 盤點資訊-單號
+    const IC_SN_div = document.createElement("div");
+    IC_SN_div.className = "IC_SN_div";
+    IC_SN_div.id = `IC_SN_div${_index}`;
+    IC_SN_div.setAttribute("_IC_SN",item.IC_SN);
+    edit_IC_SN_div(IC_SN_div);
+    info_div.appendChild(IC_SN_div);
+    
+    // 盤點資訊-建表人
+    const CT_div = document.createElement("div");
+    CT_div.className = "CT_div";
+    CT_div.id = `CT_div${_index}`;
+    CT_div.setAttribute("_CT",item.CT);
+    edit_CT_div(CT_div);
+    info_div.appendChild(CT_div);
+   
+    // 盤點資訊-開始時間
+    const START_TIME_div = document.createElement("div");
+    START_TIME_div.className = "START_TIME_div";
+    START_TIME_div.id = `START_TIME_div${_index}`;
+    START_TIME_div.setAttribute("_START_TIME",item.START_TIME);
+    edit_START_TIME_div(START_TIME_div);
+    info_div.appendChild(START_TIME_div);
+    
+    // 盤點資訊-結束時間
+    const END_TIME_div = document.createElement("div");
+    END_TIME_div.className = "END_TIME_div";
+    END_TIME_div.id = `END_TIME_div${_index}`;
+    END_TIME_div.setAttribute("_END_TIME",item.END_TIME);
+    edit_END_TIME_div(END_TIME_div);
+    info_div.appendChild(END_TIME_div);
+    
+    // 盤點資訊-狀態
+    const STATE_div = document.createElement("div");
+    STATE_div.className = "STATE_div";
+    STATE_div.id = `STATE_div${_index}`;
+    STATE_div.setAttribute("_STATE",item.STATE);
+    edit_STATE_div(STATE_div);
+    info_div.appendChild(STATE_div);
+    
+    if(item.STATE == '等待盤點')
+    {
+        info_div.style.backgroundColor = 'yellow';
+    }
 
     //操作按鈕
     const btn_div = document.createElement("div");
@@ -137,6 +151,7 @@ function creat_all_div(_index , item)
     const selectbtn = Get_right_direction_SVG("100%", "60px", "70%","100%","steelblue","");
     selectbtn.className = "div_botton";
     selectbtn.id = `selectbtn${_index}`;
+    selectbtn.setAttribute("IC_SN",item.IC_SN);
     btn_div.appendChild(selectbtn);
     edit_select(selectbtn);
     const dlbtn = Get_download_SVG("100%", "60px", "70%","100%","steelblue","");
@@ -210,7 +225,8 @@ function edit_calendar_div(div)
 function edit_year_div(div)
 {
     var _index =parseInt(div.getAttribute("_index"));
-    div.innerText = "2023 / 12"
+    var value = div.getAttribute("value");
+    div.innerText = `${value}`;
     div.style.display = "flex";
     div.style.width = "100%";
     div.style.height= "40%"; 
@@ -238,7 +254,8 @@ function edit_day_week_div(div)
 function edit_day_div(div)
 {
     var _index =parseInt(div.getAttribute("_index"));
-    div.innerText = "25"
+    var value = div.getAttribute(`value`);
+    div.innerText = `${value}`;
     div.style.display = "flex";
     div.style.width = "65%";
     div.style.height= "100%"; 
@@ -254,7 +271,8 @@ function edit_day_div(div)
 function edit_week_div(div)
 {
     var _index =parseInt(div.getAttribute("_index"));
-    div.innerText = "星期一"
+    var value = div.getAttribute(`value`);
+    div.innerText = `${value}`;
     div.style.display = "flex";
     div.style.width = "35%";
     div.style.height= "100%"; 
@@ -282,12 +300,12 @@ function edit_info_div(div)
     div.style.flexDirection ="column";
     div.style.borderRadius = "5px" ;
 }
-function edit_INV_SN_L_div(div)
+function edit_IC_SN_div(div)
 {
     var _index = div.getAttribute("_index");
-    var _INV_SN_L = div.getAttribute("_INV_SN_L");
+    var _IC_SN = div.getAttribute("_IC_SN");
     div.style.display = "inline-flex";
-    div.innerText = `單號:${_INV_SN_L}`;
+    div.innerText = `單號 : ${_IC_SN}`;
     div.style.width = "100%";
     div.style.marginTop = "5px";
     div.style.marginLeft = "5px";
@@ -295,12 +313,52 @@ function edit_INV_SN_L_div(div)
     div.style.fontWeight = "bold" ;
     div.style.justifyContent = "flex-start" ;
 }
-function edit_CREAT_OP_div(div)
+function edit_CT_div(div)
 {
     var _index = div.getAttribute("_index");
-    var _CREAT_OP = div.getAttribute("_CREAT_OP");
+    var _CT = div.getAttribute("_CT");
     div.style.display = "inline-flex";
-    div.innerText = `人員:${_CREAT_OP}`;
+    div.innerText = `建表 : ${_CT}`;
+    div.style.width = "100%";
+    div.style.marginTop = "5px";
+    div.style.marginLeft = "5px";
+    div.style.fontSize = "16px" ;
+    div.style.fontWeight = "bold" ;
+    div.style.justifyContent = "flex-start" ;
+}
+function edit_START_TIME_div(div)
+{
+    var _index = div.getAttribute("_index");
+    var _START_TIME = div.getAttribute("_START_TIME");
+    div.style.display = "inline-flex";
+    div.innerText = `開始時間 : ${_START_TIME}`;
+    div.style.width = "100%";
+    div.style.marginTop = "5px";
+    div.style.marginLeft = "5px";
+    div.style.fontSize = "16px" ;
+    div.style.fontWeight = "bold" ;
+    div.style.justifyContent = "flex-start" ;
+}
+
+function edit_END_TIME_div(div)
+{
+    var _index = div.getAttribute("_index");
+    var _END_TIME = div.getAttribute("_END_TIME");
+    div.style.display = "inline-flex";
+    div.innerText = `結束時間 : ${_END_TIME}`;
+    div.style.width = "100%";
+    div.style.marginTop = "5px";
+    div.style.marginLeft = "5px";
+    div.style.fontSize = "16px" ;
+    div.style.fontWeight = "bold" ;
+    div.style.justifyContent = "flex-start" ;
+}
+function edit_STATE_div(div)
+{
+    var _index = div.getAttribute("_index");
+    var _STATE = div.getAttribute("_STATE");
+    div.style.display = "inline-flex";
+    div.innerText = `狀態 : ${_STATE}`;
     div.style.width = "100%";
     div.style.marginTop = "5px";
     div.style.marginLeft = "5px";
@@ -329,10 +387,11 @@ function edit_select(button)
 {
     button.style.width = "100%";
     button.style.height = "33%";
-    button.addEventListener('click', function()
-    {
+    button.onclick = select_btn_Click;
+    // button.addEventListener('click', function()
+    // {
 
-    });
+    // });
 }
 function edit_dlbtn(button)
 {
@@ -353,65 +412,3 @@ function edit_lockbtn(button)
     });
 }
 
-
-
-//年月日轉中文
-// JavaScript source code
-// var date = new Date();
-// var month = date.getMonth();
-// var year = date.getFullYear();
-// var day = date.getDate();
-
-// var dayName = date.toLocaleString(navigator.language, { weekday: 'long' });
-// var monthNane = date.toLocaleString(navigator.language, { month: 'long' });
-
-// var C_dayName;
-// var C_monthName;
-
-// if (dayName == "Monday") {
-//     C_dayName = "星期一";
-// } else if (dayName == "Tuesday") {
-//     C_dayName = "星期二";
-// } else if (dayName == "Wednesday") {
-//     C_dayName = "星期三";
-// } else if (dayName == "Thursday") {
-//     C_dayName = "星期四";
-// } else if (dayName == "Friday") {
-//     C_dayName = "星期五";
-// } else if (dayName == "Saturday") {
-//     C_dayName = "星期六";
-// } else {
-//     C_dayName = "星期日";
-// }
-
-// if (monthName == "January") {
-//     C_monthName = "一月";
-// } else if (monthName == "February") {
-//     C_monthName = "二月";
-// } else if (monthName == "March") {
-//     C_monthName = "三月";
-// } else if (monthName == "April") {
-//     C_monthName = "四月";
-// } else if (monthName == "May") {
-//     C_monthName = "五月";
-// } else if (monthName == "June") {
-//     C_monthName = "六月";
-// } else if (monthName == "July") {
-//     C_monthName = "七月";
-// } else if (monthName == "August") {
-//     C_monthName = "八月";
-// } else if (monthName == "September") {
-//     C_monthName = "九月";
-// } else if (monthName == "October") {
-//     C_monthName = "十月";
-// } else if (monthName == "November") {
-//     C_monthName = "十一月";
-// } else {
-//     C_monthName = "十二月";
-
-// }
-
-// document.getElementById("day").innerHTML = day;
-// document.getElementById("year").innerHTML = year;
-// document.getElementById("monthName").innerHTML = C_monthName;
-// document.getElementById("dayName").innerHTML = C_dayName;

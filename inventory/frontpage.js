@@ -1,12 +1,19 @@
-// 單號選擇變色
-function toggleButton(button) {
-  const confirmResult = confirm("是否前往盤點？");
-  if (confirmResult) {
-    window.location.href = "inventory.html";
-  }
-}
 
-async function addform_Click() 
+window.onload = load;
+async function load()
+{
+    let rowNum = 1;  
+    data = await creat_get_by_CT_TIME(getCurrentDate());
+    console.log(data);
+
+    const _per_all_div = document.querySelectorAll(".all_div");
+    for(var i = 0 ; i < data.Data.length ; i++)
+    {
+        const all_div = creat_all_div(i, data.Data[i]);
+    }
+    setUserText();
+}
+function addform_Click() 
 {
   const confirmResult = confirm("確定建立盤點單?");
   if (confirmResult) 
@@ -14,12 +21,14 @@ async function addform_Click()
     creat_all_div();
   }
 }
-window.onload = function() 
+function select_btn_Click(event)
 {
+    var IC_SN = this.getAttribute("IC_SN");
+    console.log(IC_SN);
+    sessionStorage.setItem('IC_SN',IC_SN);
+    location.href = "inventory.html"
+}
 
-  setUserText();
-  // 在這裡撰寫當網頁載入完成後要執行的程式碼
-};
 function get_header()
 {
   const header_div = document.createElement("div");
@@ -132,4 +141,27 @@ function setUserText()
    const userText = document.querySelector("#header_user_text");
    userText.innerText = `使用者:${get_logedName()} ID:${get_loggedID()}`;
    console.log(userText);0
+}
+
+async function creat_get_by_CT_TIME(date)
+{
+  const post_data = 
+  {
+    "Data": {
+      "GUID": null,
+      "IC_SN": null,
+      "CT": null,
+      "CT_TIME": `${date}`,
+      "START_TIME": null,
+      "END_TIME": null,
+      "STATE": null,
+      "Contents": []
+    },
+    "Code": 0,
+    "Result": "",
+    "Value": "",
+    "TimeTaken": ""
+  };
+  let response = await postDataToAPI(`${inventory_url}/creat_get_by_CT_TIME`,post_data);
+  return response;
 }
