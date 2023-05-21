@@ -1,6 +1,3 @@
-
-
-
 function creat_all_div(_index , item) 
 {
     const main_div = document.querySelector('#main_div');
@@ -27,6 +24,7 @@ function creat_all_div(_index , item)
     edit_formnnum_delbtn_div(formnnum_delbtn_div);
     //刪除鈕    
     var del_btn_div = Get_trashBox_SVG("30px", "100%", "70%","100%","red","");
+    del_btn_div.setAttribute("IC_SN",item.IC_SN);
     del_btn_div.className = "del_botton";
     del_btn_div.id = `$del_botton${_index}`;
     edit_del_btn_div(del_btn_div);
@@ -97,7 +95,7 @@ function creat_all_div(_index , item)
     const IC_SN_div = document.createElement("div");
     IC_SN_div.className = "IC_SN_div";
     IC_SN_div.id = `IC_SN_div${_index}`;
-    IC_SN_div.setAttribute("_IC_SN",item.IC_SN);
+    IC_SN_div.setAttribute("IC_SN",item.IC_SN);
     edit_IC_SN_div(IC_SN_div);
     info_div.appendChild(IC_SN_div);
     
@@ -195,14 +193,19 @@ function edit_formnnum_div(div)
     var _index =parseInt(div.getAttribute("_index"));
     div.style.display = "flex";
     div.innerText = `編號 : ${_index + 1}`;
+    div.style.color = "";
     div.style.width = "100%";
     div.style.height= "100%"; 
     div.style.marginLeft = "5px";
+    div.style.paddingLeft = "5px";
     div.style.fontSize = "16px";
     div.style.fontWeight = "bold";
     div.style.justifyContent = "flex-start" ;
     div.style.alignItems = "center";
     div.style.flexDirection = "row";
+    div.style.borderRadius = "5px";
+    div.style.backgroundColor = "rgba(136,136,136,1)";
+    div.style.background ="linear-gradient(90deg, rgba(136,136,136,1) 0%, rgba(255,255,255,0.6797093837535014) 34%, rgba(255,255,255,0.31556372549019607) 100%)";
 }
 
 function edit_calendar_div(div)
@@ -219,7 +222,7 @@ function edit_calendar_div(div)
     div.style.flexDirection = "column";
     div.style.backgroundColor = "#fff" ;
     div.style.alignItems = "center" ;
-    div.style.borderRadius = "10px" ;
+    div.style.borderRadius = "5px" ;
     div.style.boxShadow = "1.5px 2px 2px 2px rgb(69, 68, 68, 0.65)" ;
 }
 function edit_year_div(div)
@@ -234,11 +237,12 @@ function edit_year_div(div)
     div.style.fontWeight = "bold";
     div.style.justifyContent = "center" ;
     div.style.alignItems = "center" ;
-    div.style.backgroundColor = "lightsteelblue" ;
-    div.style.borderTopLeftRadius = "10px";
-    div.style.borderTopRightRadius = "10px";
+    div.style.background = "rgb(162,188,222)" ;
+    div.style.background = "linear-gradient(180deg, rgba(162,188,222,1) 0%, rgba(162,188,222,0.6797093837535014) 65%, rgba(162,188,222,0.31556372549019607) 100%)" ;
+    div.style.borderTopLeftRadius = "5px";
+    div.style.borderTopRightRadius = "5px";
     div.style.fontWeight = "bolder";
-    div.style.color = "#fff"
+    div.style.color = "#"
  ;
 }
 function edit_day_week_div(div)
@@ -247,8 +251,8 @@ function edit_day_week_div(div)
     div.style.width = "100%";
     div.style.height= "60%"; 
     div.style.flexDirection = "row";
-    div.style.borderTopStyle = "dotted";
-    div.style.borderColor = "dotted";
+    // div.style.borderTopStyle = "dotted";
+    // div.style.borderColor = "dotted";
     div.style.color = "gray";
 }
 function edit_day_div(div)
@@ -259,8 +263,10 @@ function edit_day_div(div)
     div.style.display = "flex";
     div.style.width = "65%";
     div.style.height= "100%"; 
-    div.style.fontSize = "40px";
+    div.style.fontSize = "50px";
     div.style.fontWeight = "bold";
+    div.style.fontStyle = "italic"; // 添加斜体样式
+
     div.style.justifyContent = "center" ;
     div.style.alignItems = "center" ;
     div.style.backgroundColor = "#fff" ;
@@ -303,7 +309,7 @@ function edit_info_div(div)
 function edit_IC_SN_div(div)
 {
     var _index = div.getAttribute("_index");
-    var _IC_SN = div.getAttribute("_IC_SN");
+    var _IC_SN = div.getAttribute("IC_SN");
     div.style.display = "inline-flex";
     div.innerText = `單號 : ${_IC_SN}`;
     div.style.width = "100%";
@@ -367,12 +373,9 @@ function edit_STATE_div(div)
     div.style.justifyContent = "flex-start" ;
 }
 //操作按鈕DIV
-function edit_del_btn_div(div)
+function edit_del_btn_div(button)
 {
-    div.addEventListener('click', function()
-    {
-
-    });
+    button.onclick = delete_btn_Click;
 }
 //操作按鈕DIV
 function edit_btn_div(div)
@@ -388,10 +391,7 @@ function edit_select(button)
     button.style.width = "100%";
     button.style.height = "33%";
     button.onclick = select_btn_Click;
-    // button.addEventListener('click', function()
-    // {
 
-    // });
 }
 function edit_dlbtn(button)
 {

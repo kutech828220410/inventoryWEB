@@ -1,15 +1,26 @@
 let response = [];
 let data = [];
+
+window.onload = load;
+async function load()
+{
+    var IC_SN = sessionStorage.getItem('IC_SN');    
+    data = await creat_get_by_IC_SN(IC_SN);
+    console.log(data);
+    insertDataIntoTable();
+}
+
+
 async function insertDataIntoTable() {
-  response = await fetch(inspection_get_url); // 替換成您的 API 網址
-  data = await response.json();
-  console.log(data);
+  // response = await fetch(inspection_get_url); // 替換成您的 API 網址
+  // data = await response.json();
+  // console.log(data);
   const table = document.querySelector('table');
   const tbody = document.createElement('tbody'); // 新增 tbody 元素
   table.appendChild(tbody); // 加入 table 元素中
   var _index = 0;
 
-  for (const item of data.Data) {
+  for (const item of data.Data[0].Contents) {
     // 插入新的表格列
     var GUID = item.GUID;
     const row = tbody.insertRow(); // 改為插入 tbody 元素的內容
@@ -18,7 +29,7 @@ async function insertDataIntoTable() {
     const drugInfoCell = row.insertCell();
     drugInfoCell.innerHTML =
      `
-        <div><b style="font-size: 12px; padding-right:5px; padding-left:5px; border-style:dashed; margin-top: -6px;">${_index + 1}</b><span style="padding-left: 10px;">${item.OD_SN_L}</span></div>
+        <div><b style="font-size: 12px; padding-right:5px; padding-left:5px; border-style:dashed; margin-top: -6px;">${_index + 1}</b><span style="padding-left: 10px;">${item.IC_SN}</span></div>
         <div style="display:none;"><b>GUID: ${item.GUID}</b></div>
         <div><b>藥碼: ${item.CODE}</b></div>
         <div><b>料號: ${item.SKDIACODE}</b></div>
@@ -57,7 +68,7 @@ async function insertDataIntoTable() {
     var lot_init = "";
     var date_init = "";
     var qty_init = "";
-    if (item.Lot_date_datas.length > 0) {
+    if (item.Sub_content.length > 0) {
       lot_init = item.Lot_date_datas[0].LOT_NUMBER;
       date_init = item.Lot_date_datas[0].VAL_DATE;
       qty_init = item.Lot_date_datas[0].QTY;
@@ -74,10 +85,10 @@ async function insertDataIntoTable() {
     <canvas id="${barcode_text}" style="float: right; width:140px; padding-right:10px;"></canvas>
     </button>
     
-    <div id="myModal${_index}" class="modal" _index="${item._index}" OD_SN_L="${item.OD_SN_L}" START_QTY="${item.START_QTY}" END_QTY="${item.END_QTY}" GUID = "${GUID}">
+    <div id="myModal${_index}" class="modal" _index="${item._index}" IC_SN="${item.IC_SN}" START_QTY="${item.START_QTY}" END_QTY="${item.END_QTY}" GUID = "${GUID}">
     <div class="modal-content">
       <div class=myModal_title>
-      <b>[${item.OD_SN_L}]</b>
+      <b>[${item.IC_SN}]</b>
       <br>
       <div><b> 藥名 : ${item.NAME}</b></div>
       <div><b> 庫存理論值 : ${item.START_QTY}</b></div>
@@ -88,7 +99,7 @@ async function insertDataIntoTable() {
     <button class="modalbtn" onclick="validateInput('${_index}' )">確認</button> 
     `;
  
-    for (var i = 0; i < item.Lot_date_datas.length; i++) {
+    for (var i = 0; i < item.Sub_content.length; i++) {
       const lot = item.Lot_date_datas[i].LOT_NUMBER;
       const date = item.Lot_date_datas[i].VAL_DATE;
       const qty = item.Lot_date_datas[i].QTY;
@@ -190,6 +201,6 @@ function searchItem(data, searchKey) {
     }
   });
 }
-insertDataIntoTable();
+//insertDataIntoTable();
 
 

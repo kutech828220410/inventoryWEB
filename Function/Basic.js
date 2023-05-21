@@ -43,3 +43,33 @@ function getDatePartsFromDate(dateString)
     const config = urlParams.get(`${config_name}`);
     return config;
   }
+
+  function getAbsolutePosition(element) 
+  {
+    const rect = element.getBoundingClientRect();
+    return {
+      top: rect.top + window.pageYOffset,
+      left: rect.left + window.pageXOffset,
+      bottom: rect.bottom + window.pageYOffset,
+      right: rect.right + window.pageXOffset,
+      width : rect.width,
+      height : rect.height
+    };
+  }
+  function waitForElementToDisplay(element, callback)
+  {
+    const isElementVisible = () => {
+      const style = window.getComputedStyle(element);
+      return style.display !== 'none' && style.visibility !== 'hidden';
+    };
+  
+    const checkVisibility = () => {
+      if (isElementVisible()) {
+        callback(); // 元素完全显示后执行回调函数
+      } else {
+        requestAnimationFrame(checkVisibility);
+      }
+    };
+  
+    checkVisibility();
+  }

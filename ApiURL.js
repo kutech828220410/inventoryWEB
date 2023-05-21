@@ -1,4 +1,30 @@
 // JavaScript source code
+const Enum_Target =
+{
+    Dept : 'Dept',
+    Phar : 'Phar',
+}
+var Target = Enum_Target.Dept;
+
+
+
+const Enum_BasicDeviceTableName = 
+{
+    Dept: 'firstclass_device_jsonstring',
+    Phar: 'phar_device_jsonstring',
+};
+
+var BalsicDeviceTableName = "";
+if(Target == Enum_Target.Dept)
+{
+    BalsicDeviceTableName = Enum_BasicDeviceTableName.Dept;
+}
+else if(Target == Enum_Target.Phar)
+{
+    BalsicDeviceTableName = Enum_BasicDeviceTableName.Phar;
+}
+
+
 var person_page_url = 'http://103.1.221.188:4433/api/person_page';
 var session_login_post_url = 'http://103.1.221.188:4433/api/session';
 var session_check_post_url = 'http://103.1.221.188:4433/api/session/check';

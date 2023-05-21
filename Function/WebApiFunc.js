@@ -1,5 +1,5 @@
 
-function getDataFromAPI(url) {
+async function getDataFromAPI(url) {
     return fetch(url, {
         method: 'GET',
         headers: {
