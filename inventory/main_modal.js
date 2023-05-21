@@ -243,3 +243,4 @@ function AddNewRow(_index,qty) {
     
    
   }
+
