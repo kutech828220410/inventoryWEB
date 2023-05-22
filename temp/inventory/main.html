@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>盤點操作頁面</title>
+  <link rel="stylesheet" href="main.css">
+  <script src="/ApiURL.js"></script>
+  <script src="/Function/WebApiFunc.js"></script>
+  <script src="/dist/JsBarcode.all.js"></script>
+  <script src="/Function/Basic.js"></script>
+  <script src="jsonFunc.js"></script>
+  <script src="main.js"></script>
+  <script src="main_loadingdata.js"></script>
+  <script src="main_modal.js"></script>
+  <script src="/svg/mySVG.js"></script>
+  <!-- <script src="../session_check.js"></script> -->
+</head>
+<body>
+    <div class="form" id="form" style="width: 100%; height: 100%;">
+      <script>
+      const form = document.querySelector("#form");
+      form.style.display = "flex";
+      form.style.width = "100%";
+      form.style.justifyContent = "top";
+      form.style.flexDirection = "column";
+      form.style.backgroundColor = "#";
+   
+      const header_div = get_header();
+      form.appendChild(header_div);
+  
+      const main_div = get_main();
+      form.appendChild(main_div);
+      creat_all_div(1, "示例项");
+      
+      </script>
+    </div>
+
+  <div class="under-line">
+    <B> Copyright ©2023 鴻森整合機電有限公司 </B>
+  </div>
+  
+  
+  <script>
+
+
+  </script>
+  
+  </body>
+</html>

@@ -39,29 +39,35 @@ async function postDataToAPI(url, data)
     }
 }
   
-
-function downloadExcel(url ,jsonData,filename) 
+async function downloadExcel(url, jsonData, filename)
 {
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(jsonData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
 
-    
-  fetch(url, {
-    method: 'POST',
-    body: JSON.stringify(jsonData),
-    headers: {
-      'Content-Type': 'application/json'
+    if (!response.ok) {
+      throw new Error('Failed to fetch the Excel file.');
     }
-  })
-  .then(response => response.blob())
-  .then(blob => {
-    let today = new Date();
-    let year = today.getFullYear();
-    let month = today.getMonth() + 1; // 注意月份是從0開始計算的，所以要加1
-    let day = today.getDate();
-    // Creating a download link for the file
+
+    const blob = await response.blob();
+    const _url = window.URL.createObjectURL(blob);
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1; // 注意月份是从0开始计算的，所以要加1
+    const day = today.getDate();
+
+    // 创建下载链接
     let downloadLink = document.createElement('a');
     downloadLink.href = window.URL.createObjectURL(blob);
-    downloadLink.download = `${year}/${month}/${day}_${filename}.xls`;
+    downloadLink.download = `${year}/${month}/${day}_${filename}.xlsx`;
     downloadLink.click();
-  })
-  .catch(error => console.error(error));
+  } catch (error) {
+    console.error(error);
+  }
 }
+

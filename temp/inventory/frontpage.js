@@ -1,4 +1,4 @@
-let data;
+
 window.onload = load;
 window.addEventListener('resize', handleResize);
 
@@ -10,21 +10,16 @@ async function load()
 {
     let rowNum = 1;  
     data = await creat_get_by_CT_TIME_L(getCurrentDate());
-    page_Init(data);
-}
-function page_Init(data)
-{
     console.log(data);
-    const main_div = document.querySelector('#main_div');
-    main_div.innerHTML = "";
+
+    const _per_all_div = document.querySelectorAll(".all_div");
     for(var i = 0 ; i < data.Data.length ; i++)
     {
         const all_div = creat_all_div(i, data.Data[i]);
     }
     setUserText();
 }
-
-async function addform_Click(event) 
+async function addform_Click() 
 {
   const confirmResult = confirm("確定建立盤點單?");
   if (confirmResult) 
@@ -35,58 +30,12 @@ async function addform_Click(event)
       document.body.style.opacity = "1"; 
   }
 }
-async function dlbtn_Click(event)
+async function dlbtn_Click()
 {
   var IC_SN = this.getAttribute("IC_SN");
-  const confirmResult = confirm(`確定下載盤點單 [${IC_SN}]?`);
-  if (!confirmResult) return;
   document.body.style.opacity = "0.5"; 
   await download_excel_by_IC_SN(IC_SN);
   document.body.style.opacity = "1"; 
-}
-async function lockbtn_Click(event)
-{
-  var IC_SN = this.getAttribute("IC_SN");
-  var STATE = this.getAttribute("STATE");
-  var msg = '';
-   if(STATE == '等待盤點')
-   {
-      const confirmResult = confirm(`確定鎖定盤點單 [${IC_SN}]?`);
-      if (!confirmResult) return;
-      document.body.style.opacity = "0.5"; 
-      temp = await creat_lock_by_IC_SN(IC_SN);
-      document.body.style.opacity = "1"; 
-      const GUID = temp.Data.GUID;
-      console.log(temp);
-      for(var i = 0 ; i < data.Data.length ; i++)
-      {
-          if(data.Data[i].GUID == GUID)
-          {
-            data.Data[i] = { ...temp.Data };
-          }
-      }
-
-      page_Init(data);
-   }
-   else
-   {
-      const confirmResult = confirm(`確定解鎖盤點單 [${IC_SN}]?`);
-      if (!confirmResult) return;
-      document.body.style.opacity = "0.5"; 
-      temp = await creat_unlock_by_IC_SN(IC_SN);
-      document.body.style.opacity = "1"; 
-      const GUID = temp.Data.GUID;
-      console.log(temp);
-      for(var i = 0 ; i < data.Data.length ; i++)
-      {
-          if(data.Data[i].GUID == GUID)
-          {
-            data.Data[i] = { ...temp.Data };
-          }
-      }
-
-      page_Init(data);
-   }  
 }
 function select_btn_Click(event)
 {
@@ -107,7 +56,7 @@ async function delete_btn_Click(event)
      document.body.style.opacity = "1"; 
   }
 }
-function findbtn_Click(event)
+function findbtn_Click()
 {
   Set_popup_find_position();
   if(popup_find_div.style.visibility  != 'visible')
@@ -125,38 +74,7 @@ function findbtn_Click(event)
     popup_find_div.style.visibility = "hidden";
   }
 }
-async function findcheckbtn_Click(event)
-{
-  popup_find_div.style.display = "block";
-  popup_find_div.style.opacity = "0" ;
-  popup_find_div.style.visibility = "hidden";
-  var IC_SN = find_IC_SN_input.value;
-  var date = find_date_input.value;
-  find_IC_SN_input.value = '';
-  find_date_input.value = '';
-  if(IC_SN)
-  {
-    data = await creat_get_by_IC_SN(IC_SN);
-    if(data.Code  <= 0)
-    {
-       alert("查無資料!");
-       return;
-    }
-    page_Init(data);    
-    return;
-  }
-  if(date)
-  {
-    data = await creat_get_by_CT_TIME_L(date);
-    if(data.Data.length <= 0)
-    {
-       alert("查無資料!");
-       return;
-    }
-    page_Init(data);
-    return;
-  }
-}
+
 
 function Set_popup_find_position()
 {
@@ -205,7 +123,7 @@ function get_header()
   header_title_div.id = "header_title_div";
   header_title_div.className = "header_title_div";
   header_title_div.style.textAlign = "left";
-  header_title_div.style.width = "75%";
+  header_title_div.style.width = "70%";
   header_title_div.style.height = "50%";
   header_title_div.style.backgroundColor = "#";
   header_title_div.style.justifyContent = "";
@@ -272,18 +190,16 @@ function get_header()
   popup_find_div.id = "popup_find_div";
   popup_find_div.className = "popup_find";
   popup_find_div.style.backgroundColor = "#FFF";
-  popup_find_div.style.width = "230px";
-  popup_find_div.style.height = "160px";
+  popup_find_div.style.width = "220px";
+  popup_find_div.style.height = "140px";
   popup_find_div.style.position = "absolute";
   popup_find_div.style.top = "0px";
   popup_find_div.style.left = "0px";
   popup_find_div.style.display = "block";
   popup_find_div.style.visibility = 'hidden';
   popup_find_div.style.borderRadius = "5px";
-  popup_find_div.style.border = "solid 1px";
-  popup_find_div.style.flexDirection = "column";
-  popup_find_div.style.paddingTop = "5px";
-  popup_find_div.style.paddingLeft= "5px";
+  popup_find_div.style.border = "solid";
+  popup_find_div.style.flexDirection = "column"
   popup_find_div.style.opacity = "0" ;
   popup_find_div.style.transition = "opacity 0.5s, visibility 0.5s 0s";
   popup_background_div.appendChild(popup_find_div);
@@ -294,14 +210,13 @@ function get_header()
   find_IC_SN_div.style.width = "100%";
   find_IC_SN_div.style.height = "33.3%";
   find_IC_SN_div.style.alignItems = "center";
-  find_IC_SN_div.style.justifyContent = "left";
+  find_IC_SN_div.style.justifyContent = "center";
   find_IC_SN_div.style.display = "flex";
-  find_IC_SN_div.style.flexDirection = "row"
 
   const IC_SN_svg = Get_script_SVG("100%", "100%", "32px","100%","black","");
   IC_SN_svg.id = "IC_SN_svg";
   IC_SN_svg.className = "IC_SN_svg";
-  IC_SN_svg.style.width = "50px";
+  IC_SN_svg.style.width = "30%";
   IC_SN_svg.style.height = "100%";
   IC_SN_svg.style.alignItems = "center";
   IC_SN_svg.style.justifyContent = "center";
@@ -309,22 +224,11 @@ function get_header()
   const find_IC_SN_input = document.createElement("input")
   find_IC_SN_input.id = "find_IC_SN_input";
   find_IC_SN_input.className = "find_IC_SN_input";
-  find_IC_SN_input.style.width = "150px";
-  find_IC_SN_input.style.height = "30px";
+  find_IC_SN_input.style.width = "60%";
+  find_IC_SN_input.style.height = "35%";
   find_IC_SN_input.style.textAlign = "center";
-  find_IC_SN_input.style.marginRight = "0px";
+  find_IC_SN_input.style.marginRight = "15px";
   find_IC_SN_input.placeholder = "請輸入單號";
-  find_IC_SN_input.style.fontSize = "16px";
-  const find_IC_SN_input_div = document.createElement("div")
-  find_IC_SN_input_div.id = "find_IC_SN_input_div";
-  find_IC_SN_input_div.className = "find_IC_SN_input_div";
-  find_IC_SN_input_div.style.width = "100%";
-  find_IC_SN_input_div.style.height = "100%";
-  find_IC_SN_input_div.style.alignItems = "center";
-  find_IC_SN_input_div.style.justifyContent = "left";
-  find_IC_SN_input_div.style.display = "flex";
-  find_IC_SN_input_div.appendChild(find_IC_SN_input);
-
 
   const find_date_div = document.createElement("div")
   find_date_div.id = "find_date_div";
@@ -332,40 +236,27 @@ function get_header()
   find_date_div.style.width = "100%";
   find_date_div.style.height = "33.3%";
   find_date_div.style.alignItems = "center";
-  find_date_div.style.justifyContent = "left";
+  find_date_div.style.justifyContent = "flex-start";
   find_date_div.style.display = "flex";
-
-  const datesvg = Get_date_SVG("100%", "100%", "40px","100%","black","");
-  datesvg.id = "datesvg";
-  datesvg.className = "datesvg";
-  datesvg.style.width = "50px";
-  datesvg.style.height = "100%";
-  datesvg.style.alignItems = "center";
-  datesvg.style.justifyContent = "center";
 
   const find_date_input = document.createElement("input")
   find_date_input.id = "find_date_input";
   find_date_input.className = "find_date_input";
-  find_date_input.style.width = "150px";
-  find_date_input.style.height = "30px";
+  find_date_input.style.width = "60%";
+  find_date_input.style.height = "40%";
   find_date_input.style.border = "1px solid";
   find_date_input.type = "date";
-  find_date_input.style.margin = "0px";
+  find_date_input.style.margin = "-1.5px";
   find_date_input.style.textAlign = "center";
   find_date_input.placeholder = "請選擇日期";
-  find_date_input.style.fontSize = "16px";
 
-  const find_date_input_div = document.createElement("div")
-  find_date_input_div.id = "find_date_input_div";
-  find_date_input_div.className = "find_date_input_div";
-  find_date_input_div.style.width = "100%";
-  find_date_input_div.style.height = "100%";
-  find_date_input_div.style.alignItems = "center";
-  find_date_input_div.style.justifyContent = "left";
-  find_date_input_div.style.display = "flex";
-  find_date_input_div.appendChild(find_date_input);
-
- 
+  const datesvg = Get_date_SVG("100%", "100%", "40px","100%","black","");
+  datesvg.id = "datesvg";
+  datesvg.className = "datesvg";
+  datesvg.style.width = "30%";
+  datesvg.style.height = "100%";
+  datesvg.style.alignItems = "center";
+  datesvg.style.justifyContent = "center";
 
   const find_check_div = document.createElement("div")
   find_check_div.id = "find_check";
@@ -385,19 +276,16 @@ function get_header()
   checksvg.style.alignItems = "center";
   checksvg.style.justifyContent = "center";
   checksvg.style.marginRight = "15px";
-  checksvg.onclick = findcheckbtn_Click;
-
 
   header_contorls_div.appendChild(header_contorls_findbtn);
   header_contorls_div.appendChild(header_contorls_addformbtn);
   popup_find_div.appendChild(find_IC_SN_div);
   popup_find_div.appendChild(find_date_div);
   popup_find_div.appendChild(find_check_div);
-
   find_IC_SN_div.appendChild(IC_SN_svg);
-  find_IC_SN_div.appendChild(find_IC_SN_input_div);
+  find_IC_SN_div.appendChild(find_IC_SN_input);
   find_date_div.appendChild(datesvg);
-  find_date_div.appendChild(find_date_input_div);
+  find_date_div.appendChild(find_date_input);
   find_check_div.appendChild(checksvg);
 
   header_contorls_addformbtn.onclick = addform_Click;

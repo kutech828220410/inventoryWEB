@@ -92,54 +92,6 @@ async function creat_delete_by_IC_SN(IC_SN)
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
-async function creat_lock_by_IC_SN(IC_SN)
-{
-  const post_data = 
-  {
-    "Data": {
-      "GUID": null,
-      "IC_SN": `${IC_SN}`,
-      "CT": null,
-      "CT_TIME": null,
-      "START_TIME": null,
-      "END_TIME": null,
-      "STATE": null,
-      "Contents": []
-    },
-    "Code": 0,
-    "Result": "",
-    "Value": "",
-    "TimeTaken": ""
-  };
-  var _url = `${inventory_url}/creat_lock_by_IC_SN`;
-  console.log(_url)
-  let response = await postDataToAPI(`${_url}`,post_data);
-  return response;
-}
-async function creat_unlock_by_IC_SN(IC_SN)
-{
-  const post_data = 
-  {
-    "Data": {
-      "GUID": null,
-      "IC_SN": `${IC_SN}`,
-      "CT": null,
-      "CT_TIME": null,
-      "START_TIME": null,
-      "END_TIME": null,
-      "STATE": null,
-      "Contents": []
-    },
-    "Code": 0,
-    "Result": "",
-    "Value": "",
-    "TimeTaken": ""
-  };
-  var _url = `${inventory_url}/creat_unlock_by_IC_SN`;
-  console.log(_url)
-  let response = await postDataToAPI(`${_url}`,post_data);
-  return response;
-}
 async function GET_creat_add()
 {
   var _url = `${inventory_url}/creat_add?TableName=${BalsicDeviceTableName}`;
