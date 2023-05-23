@@ -1,4 +1,4 @@
-function creat_all_div(_index , item) 
+function get_all_div(_index , item) 
 {
     const main_div = document.querySelector('#main_div');
     main_div.style.width = "100%";
@@ -10,8 +10,16 @@ function creat_all_div(_index , item)
     all_div.style.width = "100%";
     all_div.style.height= "200px";
     all_div.style.borderBottom = "2px solid gray";
-    all_div.style.flexDirection = "row";
+    all_div.style.flexDirection = "column";
     main_div.appendChild(all_div);
+    const drugInfo_theor_actual_div = document.createElement("div");
+    drugInfo_theor_actual_div.className = "drugInfo_theor_actual_div";
+    drugInfo_theor_actual_div.id = `drugInfo_theor_actual_div${_index}`;
+    drugInfo_theor_actual_div.style.display = "flex";
+    drugInfo_theor_actual_div.style.width = "100%";
+    drugInfo_theor_actual_div.style.height= "80%";
+    drugInfo_theor_actual_div.style.flexDirection = "row";
+    // all_div.appendChild(drugInfo_theor_actual_div);
     //藥品資訊
     const drugInfo_div = document.createElement("div");
     drugInfo_div.className = "drugInfo_div";
@@ -20,8 +28,8 @@ function creat_all_div(_index , item)
     drugInfo_div.style.flexDirection = "column";
     drugInfo_div.style.justifyContent = "flex-start";
     drugInfo_div.style.width = "65%";
-    drugInfo_div.style.height= "200px";
-    all_div.appendChild(drugInfo_div);
+    drugInfo_div.style.height= "100%";
+    // drugInfo_theor_actual_div.appendChild(drugInfo_div);
     //藥碼
     const code_div = document.createElement("div");
     code_div.className = "code_div"; 
@@ -81,11 +89,11 @@ function creat_all_div(_index , item)
     theor_actual_div.className = "theor_actual_div";
     theor_actual_div.id = `theor_actual_div${_index}`;
     theor_actual_div.style.display = "flex";
-    theor_actual_div.style.justifyContent = "center";
+    theor_actual_div.style.justifyContent = "top";
     theor_actual_div.style.flexDirection = "column";
     theor_actual_div.style.width = "35%";
-    theor_actual_div.style.height= "200px";
-    all_div.appendChild(theor_actual_div);
+    theor_actual_div.style.height= "100%";
+    // drugInfo_theor_actual_div.appendChild(theor_actual_div);
     //理論值
     const theor_div = document.createElement("div");
     theor_div.className = "theor_div"; 
@@ -96,7 +104,7 @@ function creat_all_div(_index , item)
     theor_div.style.justifyContent = "flex-start";
     theor_div.style.alignItems = "center";
     theor_div.style.width = "100%";
-    theor_div.style.height= "21%";
+    theor_div.style.height= "10%";
     const theor_input = document.createElement("input");
     theor_input.className = "theor_input"; 
     theor_input.id = `theor_input${_index}`;
@@ -109,7 +117,7 @@ function creat_all_div(_index , item)
     theor_input.style.justifyContent = "center";
     theor_input.style.alignItems = "center";
     theor_input.style.width = "85%";
-    theor_input.style.height= "21%";
+    theor_input.style.height= "10%";
     theor_input.style.backgroundColor = "lightgray";
     //實際值
     const actual_div = document.createElement("div");
@@ -121,7 +129,7 @@ function creat_all_div(_index , item)
     actual_div.style.justifyContent = "flex-start";
     actual_div.style.alignItems = "center";
     actual_div.style.width = "100%";
-    actual_div.style.height= "21%";
+    actual_div.style.height= "10%";
     const actual_input = document.createElement("input");
     actual_input.className = "actual_input"; 
     actual_input.id = `actual_input${_index}`;
@@ -134,17 +142,48 @@ function creat_all_div(_index , item)
     actual_input.style.justifyContent = "center";
     actual_input.style.alignItems = "center";
     actual_input.style.width = "85%";
-    actual_input.style.height= "21%";
-
-
-
+    actual_input.style.height= "10%";
     theor_actual_div.appendChild(theor_div);
     theor_actual_div.appendChild(theor_input);
     theor_actual_div.appendChild(actual_div);
     theor_actual_div.appendChild(actual_input);
+    //輸入按鈕
+    // const value_input_div = document.createElement("div");
+    // value_input_div.className = "value_input_div"; 
+    // value_input_div.id = `value_input_div${_index}`;
+    // value_input_div.style.display = "flex";
+    // value_input_div.style.justifyContent = "center";
+    // value_input_div.style.alignItems = "center";
+    // value_input_div.style.width = "100%";
+    // value_input_div.style.height= "20%";
+    // all_div.appendChild(value_input_div);
+    const  value_input_btn = document.createElement("button");
+    value_input_btn.className = "value_input_btn"; 
+    value_input_btn.id = `value_input_btn${_index}`;
+    value_input_btn.style.display = "flex";
+    value_input_btn.style.width = "100%";
+    value_input_btn.style.height= "100%";
+    // value_input_div.appendChild(value_input_btn);
+    const barcode_div = document.createElement("div");
+    barcode_div.className = "barcode_div"; 
+    barcode_div.id = `barcode_div${_index}`;
+    barcode_div.style.display = "flex";
+    barcode_div.style.width = "100%";
+    barcode_div.style.height= "60%";
+    barcode_div.style.backgroundColor = "black";
+    const barcode = document.createElement("canvas");
+    barcode.className = "barcode"; 
+    barcode.id = `barcode${_index}`;
+    barcode.style.float
 
 
+    all_div.appendChild(value_input_btn);
+    value_input_btn.appendChild(drugInfo_div);
+    value_input_btn.appendChild(theor_actual_div);
+    theor_actual_div.appendChild(barcode_div)
 
+//     <canvas id="${barcode_text}" style="float: right; width:140px; padding-right:10px;"></canvas>
+    return all_div;
 }
 
 
