@@ -64,7 +64,7 @@ async function emgApplicationClick() {
 
 
 async function inventoryBtnClick() {
-  location.href = "frontinventory.html"
+  location.href = "./inventory/frontpage.html"
 }
 async function consumptionBtnClick() {
   

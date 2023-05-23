@@ -21,7 +21,14 @@ function Get_pill_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor,
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-
+    btn_div.addEventListener("mouseover", function() {
+        btn_div.style.backgroundColor = "lightgray";
+      });
+    
+      // 滑鼠移出時的事件處理器
+      btn_div.addEventListener("mouseout", function() {
+        btn_div.style.backgroundColor = backgroundColor;
+      });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -52,7 +59,14 @@ function Get_find_check_SVG(btn_width ,btn_height, svg_width, svg_height ,stroke
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-
+    btn_div.addEventListener("mouseover", function() {
+        btn_div.style.backgroundColor = "lightgray";
+      });
+    
+      // 滑鼠移出時的事件處理器
+      btn_div.addEventListener("mouseout", function() {
+        btn_div.style.backgroundColor = backgroundColor;
+      });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -84,7 +98,14 @@ function Get_date_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor,
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-
+    btn_div.addEventListener("mouseover", function() {
+        btn_div.style.backgroundColor = "lightgray";
+      });
+    
+      // 滑鼠移出時的事件處理器
+      btn_div.addEventListener("mouseout", function() {
+        btn_div.style.backgroundColor = backgroundColor;
+      });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -131,7 +152,14 @@ function Get_script_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColo
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-
+    btn_div.addEventListener("mouseover", function() {
+        btn_div.style.backgroundColor = "lightgray";
+      });
+    
+      // 滑鼠移出時的事件處理器
+      btn_div.addEventListener("mouseout", function() {
+        btn_div.style.backgroundColor = backgroundColor;
+      });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -173,7 +201,14 @@ function Get_find_in_page_SVG(btn_width ,btn_height, svg_width, svg_height ,stro
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-
+    btn_div.addEventListener("mouseover", function() {
+        btn_div.style.backgroundColor = "lightgray";
+      });
+    
+      // 滑鼠移出時的事件處理器
+      btn_div.addEventListener("mouseout", function() {
+        btn_div.style.backgroundColor = backgroundColor;
+      });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -218,7 +253,14 @@ function Get_add_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, 
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-
+    btn_div.addEventListener("mouseover", function() {
+        btn_div.style.backgroundColor = "lightgray";
+      });
+    
+      // 滑鼠移出時的事件處理器
+      btn_div.addEventListener("mouseout", function() {
+        btn_div.style.backgroundColor = backgroundColor;
+      });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -258,7 +300,14 @@ function Get_lock_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor,
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-
+    btn_div.addEventListener("mouseover", function() {
+        btn_div.style.backgroundColor = "lightgray";
+      });
+    
+      // 滑鼠移出時的事件處理器
+      btn_div.addEventListener("mouseout", function() {
+        btn_div.style.backgroundColor = backgroundColor;
+      });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -298,7 +347,14 @@ function Get_unlock_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColo
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-
+    btn_div.addEventListener("mouseover", function() {
+        btn_div.style.backgroundColor = "lightgray";
+      });
+    
+      // 滑鼠移出時的事件處理器
+      btn_div.addEventListener("mouseout", function() {
+        btn_div.style.backgroundColor = backgroundColor;
+      });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -333,7 +389,14 @@ function Get_right_direction_SVG(btn_width ,btn_height, svg_width, svg_height ,s
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-
+    btn_div.addEventListener("mouseover", function() {
+        btn_div.style.backgroundColor = "lightgray";
+      });
+    
+      // 滑鼠移出時的事件處理器
+      btn_div.addEventListener("mouseout", function() {
+        btn_div.style.backgroundColor = backgroundColor;
+      });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -370,7 +433,14 @@ function Get_download_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeCo
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-
+    btn_div.addEventListener("mouseover", function() {
+        btn_div.style.backgroundColor = "lightgray";
+      });
+    
+      // 滑鼠移出時的事件處理器
+      btn_div.addEventListener("mouseout", function() {
+        btn_div.style.backgroundColor = backgroundColor;
+      });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -441,7 +511,14 @@ function Get_trashBox_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeCo
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-
+    btn_div.addEventListener("mouseover", function() {
+        btn_div.style.backgroundColor = "lightgray";
+      });
+    
+      // 滑鼠移出時的事件處理器
+      btn_div.addEventListener("mouseout", function() {
+        btn_div.style.backgroundColor = backgroundColor;
+      });
     
     div.appendChild(svg);
     btn_div.appendChild(div);

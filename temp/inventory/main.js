@@ -1,6 +1,6 @@
-let data;
-window.onload = load;
-window.addEventListener('resize', handleResize);
+// let data;
+// window.onload = load;
+// window.addEventListener('resize', handleResize);
 
 function handleResize() 
 {
@@ -61,17 +61,29 @@ function Set_popup_find_position()
 }
 function get_header()
 {
+  const coverage_div =document.createElement("div");
+  coverage_div.style.width = "100%";
+  coverage_div.style.height = "100%";
+  coverage_div.style.display = "flex";
+  coverage_div.style.flexDirection = "row";
+
   const header_div = document.createElement("div");
   header_div.id = "header_div";
   header_div.className = "header_div";
   header_div.style.width = "100%";
   header_div.style.height = "70px";
+  header_div.style.position= "fixed";
+  header_div.style.top= "0";
+  header_div.style.left= "0";
+  header_div.style.zIndex= "9";
   header_div.style.background = "rgb(186, 185, 208)";
   header_div.style.background = "linear-gradient(90deg, rgba(186, 185, 208, 1) 0%, rgba(235, 235, 235, 1) 100%)";
   header_div.style.display = "flex";
   header_div.style.justifyContent = "left";
   header_div.style.flexDirection = "row";
   header_div.style.overflowX = "hidden";
+  coverage_div.appendChild(header_div);
+
 
   const header_title_user_div = document.createElement("div");
   header_title_user_div.id = "header_title_user_div";
@@ -149,7 +161,6 @@ function get_header()
   popup_background_div.position = "absolute";
   popup_background_div.top = "0";
   popup_background_div.left = "0";
-  // popup_background_div.style.display = "none";
   document.body.appendChild(popup_background_div);
 
   const popup_find_div = document.createElement("div");
@@ -168,6 +179,7 @@ function get_header()
   popup_find_div.style.flexDirection = "column"
   popup_find_div.style.opacity = "0" ;
   popup_find_div.style.transition = "opacity 0.5s, visibility 0.5s 0s";
+  popup_find_div.style.zIndex = "10";
   popup_background_div.appendChild(popup_find_div);
 
   const find_code_input_div = document.createElement("div")
@@ -228,17 +240,6 @@ function get_header()
   header_div.appendChild(header_title_user_div);
   header_div.appendChild(header_contorls_div);
   
-  return header_div;
-}
-function get_main()
-{
-  const main_div = document.createElement("div");
-  main_div.id = "main_div";
-  main_div.className = "main_div";
-  main_div.style.width = "100%";
-  main_div.style.height = "100%";
-  main_div.style.backgroundColor = "#FFFFFF";
-  
   const code_qty_div = document.createElement("div");
   code_qty_div.id = "code_qty_div";
   code_qty_div.className = "code_qty_div";
@@ -246,6 +247,10 @@ function get_main()
   code_qty_div.style.textAlign = "left";
   code_qty_div.style.width = "100%";
   code_qty_div.style.height = "30px";
+  code_qty_div.style.position= "fixed";
+  code_qty_div.style.top= "70px";
+  code_qty_div.style.left= "0";
+  code_qty_div.style.zIndex= "9";
   code_qty_div.style.background = "linear-gradient(90deg, skyblue 0%, #fff 100%)" ;
   code_qty_div.style.justifyContent = "";
   code_qty_div.style.flexDirection = "";
@@ -280,12 +285,80 @@ function get_main()
   qty_div.style.justifyContent = "";
   qty_div.style.flexDirection = "";
 
-  main_div.appendChild(code_qty_div);
+  coverage_div.appendChild(code_qty_div);
   code_qty_div.appendChild(code_div);
   code_qty_div.appendChild(qty_div);
 
+  return coverage_div;
+}
+function get_main() {
+  const main_div = document.createElement("div");
+  main_div.id = "main_div";
+  main_div.className = "main_div";
+  main_div.style.width = "100%";
+  main_div.style.height = "100%";
+  main_div.style.justifyContent = "flex-start";
+  main_div.style.marginTop = "100px";
+  main_div.style.marginBottom = "30px";
   return main_div;
 }
+// function get_main()
+// {
+//   const main_div = document.createElement("div");
+//   main_div.id = "main_div";
+//   main_div.className = "main_div";
+//   main_div.style.width = "100%";
+//   main_div.style.height = "100%";
+//   main_div.style.backgroundColor = "#FFFFFF";
+  
+//   const code_qty_div = document.createElement("div");
+//   code_qty_div.id = "code_qty_div";
+//   code_qty_div.className = "code_qty_div";
+//   code_qty_div.style.display = "flex";
+//   code_qty_div.style.textAlign = "left";
+//   code_qty_div.style.width = "100%";
+//   code_qty_div.style.height = "30px";
+//   code_qty_div.style.background = "linear-gradient(90deg, skyblue 0%, #fff 100%)" ;
+//   code_qty_div.style.justifyContent = "";
+//   code_qty_div.style.flexDirection = "";
+  
+//   const code_div = document.createElement("div");
+//   code_div.id = "code_div";
+//   code_div.className = "code_div";
+//   code_div.innerText = "藥品資訊";
+//   code_div.style.fontWeight = "bolder";
+//   code_div.style.paddingLeft= "10px";
+//   code_div.style.textAlign = "left";
+//   code_div.style.display = "flex";
+//   code_div.style.width = "65%";
+//   code_div.style.height = "100%";
+//   code_div.style.border = "";
+//   code_div.style.justifyContent = "";
+//   code_div.style.alignItems= "center";
+//   code_div.style.flexDirection = "";
+
+//   const qty_div = document.createElement("div");
+//   qty_div.id = "qty_div";
+//   qty_div.className = "qty_div";
+//   qty_div.innerText = "盤點數量";
+//   qty_div.style.fontWeight = "bolder";
+//   qty_div.style.paddingLeft= "10px";
+//   qty_div.style.textAlign = "left";
+//   qty_div.style.display = "flex";
+//   qty_div.style.width = "35%";
+//   qty_div.style.height = "100%";
+//   qty_div.style.alignItems= "center";
+//   qty_div.style.backgroundColor = "#";
+//   qty_div.style.justifyContent = "";
+//   qty_div.style.flexDirection = "";
+
+//   main_div.appendChild(code_qty_div);
+//   code_qty_div.appendChild(code_div);
+//   code_qty_div.appendChild(qty_div);
+
+//   return main_div;
+// }
+
 function setUserText()
 {
    const userText = document.querySelector("#header_user_text");

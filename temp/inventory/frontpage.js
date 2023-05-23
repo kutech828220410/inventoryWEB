@@ -17,6 +17,9 @@ async function load()
     {
         const all_div = creat_all_div(i, data.Data[i]);
     }
+    const main_div = document.querySelector('#main_div');
+   
+    
     setUserText();
 }
 async function addform_Click() 
@@ -313,5 +316,4 @@ function setUserText()
    userText.innerText = `使用者:${get_logedName()} ID:${get_loggedID()}`;
    console.log(userText);0
 }
-
 

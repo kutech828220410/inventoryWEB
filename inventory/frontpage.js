@@ -2,180 +2,178 @@ let data;
 window.onload = load;
 window.addEventListener('resize', handleResize);
 
-function handleResize() 
-{
+function handleResize() {
   Set_popup_find_position();
 }
-async function load()
-{
-    let rowNum = 1;  
-    data = await creat_get_by_CT_TIME_L(getCurrentDate());
-    page_Init(data);
+async function load() {
+  let rowNum = 1;
+  const Loadingpopup = GetLoadingpopup();
+  document.body.appendChild(Loadingpopup);
+  Set_main_div_enable(true);
+  data = await creat_get_by_CT_TIME_L(getCurrentDate());
+  Set_main_div_enable(false);
+  page_Init(data);
 }
-function page_Init(data)
-{
-    console.log(data);
-    const main_div = document.querySelector('#main_div');
-    main_div.innerHTML = "";
-    for(var i = 0 ; i < data.Data.length ; i++)
-    {
-        const all_div = creat_all_div(i, data.Data[i]);
-    }
-    setUserText();
-}
+function page_Init(data) {
+  console.log(data);
+  const main_div = document.querySelector('#main_div');
+  main_div.innerHTML = "";
 
-async function addform_Click(event) 
-{
-  const confirmResult = confirm("確定建立盤點單?");
-  if (confirmResult) 
-  {
-      document.body.style.opacity = "0.5"; 
-      const returnData = await GET_creat_add();
-      location.reload();
-      document.body.style.opacity = "1"; 
+  for (var i = 0; i < data.Data.length; i++) {
+    const all_div = creat_all_div(i, data.Data[i]);
+  }
+  if (data.Data.length == 0) {
+    const NoDataDiv = getNoDataDiv();
+    console.log(NoDataDiv);
+    main_div.appendChild(NoDataDiv);
+  }
+
+  setUserText();
+}
+function Set_main_div_enable(value) {
+  const main_div = document.querySelector('#main_div');
+  if (value) {
+    showLoadingPopup();
+    //  document.body.style.opacity = "0.5"; 
+    document.body.style.pointerEvents = "none";
+  }
+  else {
+    hideLoadingPopup();
+    document.body.style.opacity = "1";
+    document.body.style.pointerEvents = "auto";
+
   }
 }
-async function dlbtn_Click(event)
-{
+async function addform_Click(event) {
+
+  const confirmResult = confirm("確定建立盤點單?");
+  if (confirmResult) {
+    Set_main_div_enable(true);
+    const returnData = await GET_creat_add();
+    location.reload();
+    Set_main_div_enable(false);
+  }
+}
+async function dlbtn_Click(event) {
   var IC_SN = this.getAttribute("IC_SN");
   const confirmResult = confirm(`確定下載盤點單 [${IC_SN}]?`);
   if (!confirmResult) return;
-  document.body.style.opacity = "0.5"; 
+  Set_main_div_enable(true);
   await download_excel_by_IC_SN(IC_SN);
-  document.body.style.opacity = "1"; 
+  Set_main_div_enable(false);
 }
-async function lockbtn_Click(event)
-{
+async function lockbtn_Click(event) {
   var IC_SN = this.getAttribute("IC_SN");
   var STATE = this.getAttribute("STATE");
   var msg = '';
-   if(STATE == '等待盤點')
-   {
-      const confirmResult = confirm(`確定鎖定盤點單 [${IC_SN}]?`);
-      if (!confirmResult) return;
-      document.body.style.opacity = "0.5"; 
-      temp = await creat_lock_by_IC_SN(IC_SN);
-      document.body.style.opacity = "1"; 
-      const GUID = temp.Data.GUID;
-      console.log(temp);
-      for(var i = 0 ; i < data.Data.length ; i++)
-      {
-          if(data.Data[i].GUID == GUID)
-          {
-            data.Data[i] = { ...temp.Data };
-          }
+  if (STATE == '等待盤點') {
+    const confirmResult = confirm(`確定鎖定盤點單 [${IC_SN}]?`);
+    if (!confirmResult) return;
+    document.body.style.opacity = "0.5";
+    temp = await creat_lock_by_IC_SN(IC_SN);
+    document.body.style.opacity = "1";
+    const GUID = temp.Data.GUID;
+    console.log(temp);
+    for (var i = 0; i < data.Data.length; i++) {
+      if (data.Data[i].GUID == GUID) {
+        data.Data[i] = { ...temp.Data };
       }
+    }
 
-      page_Init(data);
-   }
-   else
-   {
-      const confirmResult = confirm(`確定解鎖盤點單 [${IC_SN}]?`);
-      if (!confirmResult) return;
-      document.body.style.opacity = "0.5"; 
-      temp = await creat_unlock_by_IC_SN(IC_SN);
-      document.body.style.opacity = "1"; 
-      const GUID = temp.Data.GUID;
-      console.log(temp);
-      for(var i = 0 ; i < data.Data.length ; i++)
-      {
-          if(data.Data[i].GUID == GUID)
-          {
-            data.Data[i] = { ...temp.Data };
-          }
+    page_Init(data);
+  }
+  else {
+    const confirmResult = confirm(`確定解鎖盤點單 [${IC_SN}]?`);
+    if (!confirmResult) return;
+    Set_main_div_enable(true);
+    temp = await creat_unlock_by_IC_SN(IC_SN);
+    Set_main_div_enable(false);
+    const GUID = temp.Data.GUID;
+    console.log(temp);
+    for (var i = 0; i < data.Data.length; i++) {
+      if (data.Data[i].GUID == GUID) {
+        data.Data[i] = { ...temp.Data };
       }
+    }
 
-      page_Init(data);
-   }  
+    page_Init(data);
+  }
 }
-function select_btn_Click(event)
-{
-    var IC_SN = this.getAttribute("IC_SN");
-    console.log(IC_SN);
-    sessionStorage.setItem('IC_SN',IC_SN);
-    location.href = "../inventory/main.html"
+function select_btn_Click(event) {
+  var IC_SN = this.getAttribute("IC_SN");
+  console.log(IC_SN);
+  sessionStorage.setItem('IC_SN', IC_SN);
+  location.href = "../inventory/main.html"
 }
-async function delete_btn_Click(event)
-{
+async function delete_btn_Click(event) {
   var IC_SN = this.getAttribute("IC_SN");
   const confirmResult = confirm(`確定刪除盤點單 [${IC_SN}]?`);
-  if (confirmResult) 
-  {
-     document.body.style.opacity = "0.5"; 
-     await creat_delete_by_IC_SN(IC_SN);
-     location.reload();
-     document.body.style.opacity = "1"; 
+  if (confirmResult) {
+    Set_main_div_enable(true);
+    await creat_delete_by_IC_SN(IC_SN);
+    location.reload();
+    Set_main_div_enable(false);
   }
 }
-function findbtn_Click(event)
-{
+function findbtn_Click(event) {
   Set_popup_find_position();
-  if(popup_find_div.style.visibility  != 'visible')
-  {
+  if (popup_find_div.style.visibility != 'visible') {
     popup_find_div.style.display = "block";
-    popup_find_div.style.opacity = "1" ;
-    popup_find_div.style.visibility  = "visible";
+    popup_find_div.style.opacity = "1";
+    popup_find_div.style.visibility = "visible";
 
-    
+
   }
-  else
-  {
+  else {
     popup_find_div.style.display = "block";
-    popup_find_div.style.opacity = "0" ;
+    popup_find_div.style.opacity = "0";
     popup_find_div.style.visibility = "hidden";
   }
 }
-async function findcheckbtn_Click(event)
-{
+async function findcheckbtn_Click(event) {
   popup_find_div.style.display = "block";
-  popup_find_div.style.opacity = "0" ;
+  popup_find_div.style.opacity = "0";
   popup_find_div.style.visibility = "hidden";
   var IC_SN = find_IC_SN_input.value;
   var date = find_date_input.value;
   find_IC_SN_input.value = '';
   find_date_input.value = '';
-  if(IC_SN)
-  {
+  if (IC_SN) {
     data = await creat_get_by_IC_SN(IC_SN);
-    if(data.Code  <= 0)
-    {
-       alert("查無資料!");
-       return;
+    if (data.Code <= 0) {
+      alert("查無資料!");
+      return;
     }
-    page_Init(data);    
+    page_Init(data);
     return;
   }
-  if(date)
-  {
+  if (date) {
     data = await creat_get_by_CT_TIME_L(date);
-    if(data.Data.length <= 0)
-    {
-       alert("查無資料!");
-       return;
+    if (data.Data.length <= 0) {
+      alert("查無資料!");
+      return;
     }
     page_Init(data);
     return;
   }
 }
 
-function Set_popup_find_position()
-{
- 
+function Set_popup_find_position() {
+
   const header_contorls_findbtn = document.querySelector("#header_contorls_findbtn");
   var position_header_contorls_findbtn = getAbsolutePosition(header_contorls_findbtn);
   const popup_find_div = document.querySelector("#popup_find_div");
   var position_popup_find_div = getAbsolutePosition(popup_find_div);
-  
+
   const top = `${position_header_contorls_findbtn.top + position_header_contorls_findbtn.height + 5}px`;
-  const left = `${position_header_contorls_findbtn.left + position_header_contorls_findbtn.width / 2- position_popup_find_div.width}px`;
- 
+  const left = `${position_header_contorls_findbtn.left + position_header_contorls_findbtn.width / 2 - position_popup_find_div.width}px`;
+
   popup_find_div.style.top = `${top}`;
   popup_find_div.style.left = `${left}`;
-  
+
 }
 
-function get_header()
-{
+function get_header() {
   const header_div = document.createElement("div");
   header_div.id = "header_div";
   header_div.className = "header_div";
@@ -187,7 +185,7 @@ function get_header()
   header_div.style.justifyContent = "left";
   header_div.style.flexDirection = "row";
   header_div.style.overflowX = "hidden";
- 
+
 
   const header_title_user_div = document.createElement("div");
   header_title_user_div.id = "header_title_user_div";
@@ -236,7 +234,7 @@ function get_header()
   header_contorls_div.style.height = "100%";
   header_contorls_div.style.paddingRight = "5px";
 
-  const header_contorls_findbtn = Get_find_in_page_SVG("100%", "100%", "70%","100%","black","");
+  const header_contorls_findbtn = Get_find_in_page_SVG("100%", "100%", "70%", "100%", "black", "");
   header_contorls_findbtn.id = "header_contorls_findbtn";
   header_contorls_findbtn.className = "header_contorls";
   header_contorls_findbtn.style.width = "60px";
@@ -246,7 +244,7 @@ function get_header()
   header_contorls_findbtn.style.display = "flex";
 
 
-  const header_contorls_addformbtn = Get_add_SVG("100%", "100%", "70%","100%","black","");
+  const header_contorls_addformbtn = Get_add_SVG("100%", "100%", "70%", "100%", "black", "");
   header_contorls_addformbtn.id = "header_contorls_addformbtn";
   header_contorls_addformbtn.className = "header_contorls";
   header_contorls_addformbtn.style.width = "60px";
@@ -283,8 +281,8 @@ function get_header()
   popup_find_div.style.border = "solid 1px";
   popup_find_div.style.flexDirection = "column";
   popup_find_div.style.paddingTop = "5px";
-  popup_find_div.style.paddingLeft= "5px";
-  popup_find_div.style.opacity = "0" ;
+  popup_find_div.style.paddingLeft = "5px";
+  popup_find_div.style.opacity = "0";
   popup_find_div.style.transition = "opacity 0.5s, visibility 0.5s 0s";
   popup_background_div.appendChild(popup_find_div);
 
@@ -298,7 +296,7 @@ function get_header()
   find_IC_SN_div.style.display = "flex";
   find_IC_SN_div.style.flexDirection = "row"
 
-  const IC_SN_svg = Get_script_SVG("100%", "100%", "32px","100%","black","");
+  const IC_SN_svg = Get_script_SVG("100%", "100%", "32px", "100%", "black", "");
   IC_SN_svg.id = "IC_SN_svg";
   IC_SN_svg.className = "IC_SN_svg";
   IC_SN_svg.style.width = "50px";
@@ -335,7 +333,7 @@ function get_header()
   find_date_div.style.justifyContent = "left";
   find_date_div.style.display = "flex";
 
-  const datesvg = Get_date_SVG("100%", "100%", "40px","100%","black","");
+  const datesvg = Get_date_SVG("100%", "100%", "40px", "100%", "black", "");
   datesvg.id = "datesvg";
   datesvg.className = "datesvg";
   datesvg.style.width = "50px";
@@ -349,11 +347,21 @@ function get_header()
   find_date_input.style.width = "150px";
   find_date_input.style.height = "30px";
   find_date_input.style.border = "1px solid";
-  find_date_input.type = "date";
+  find_date_input.type = "month";
+  find_date_input.max = "2023-05-24"; // 替換為您所需的最大日期
+  find_date_input.min = "2024-05-24"; // 替換為您所需的最小日期
   find_date_input.style.margin = "0px";
   find_date_input.style.textAlign = "center";
+  find_date_input.value  = "";
   find_date_input.placeholder = "請選擇日期";
   find_date_input.style.fontSize = "16px";
+  // flatpickr(find_date_input, {
+  //   dateFormat: "Y-m-d", // 設置日期格式，這裡使用 "yyyy-mm-dd" 格式
+  // });
+
+  
+ 
+
 
   const find_date_input_div = document.createElement("div")
   find_date_input_div.id = "find_date_input_div";
@@ -365,7 +373,7 @@ function get_header()
   find_date_input_div.style.display = "flex";
   find_date_input_div.appendChild(find_date_input);
 
- 
+
 
   const find_check_div = document.createElement("div")
   find_check_div.id = "find_check";
@@ -377,7 +385,7 @@ function get_header()
   find_check_div.style.justifyContent = "flex-end";
 
 
-  const checksvg =  Get_find_check_SVG("", "", "40px","100%","black","");
+  const checksvg = Get_find_check_SVG("", "", "40px", "100%", "black", "");
   checksvg.id = "datesvg";
   checksvg.className = "datesvg";
   checksvg.style.width = "20%";
@@ -405,12 +413,11 @@ function get_header()
 
   header_div.appendChild(header_title_user_div);
   header_div.appendChild(header_contorls_div);
-  
+
 
   return header_div;
 }
-function get_main()
-{
+function get_main() {
   const main_div = document.createElement("div");
   main_div.id = "main_div";
   main_div.className = "main_div";
@@ -419,11 +426,80 @@ function get_main()
   main_div.style.backgroundColor = "#FFFFFF";
   return main_div;
 }
-function setUserText()
-{
-   const userText = document.querySelector("#header_user_text");
-   userText.innerText = `使用者:${get_logedName()} ID:${get_loggedID()}`;
-   console.log(userText);0
+function setUserText() {
+  const userText = document.querySelector("#header_user_text");
+  userText.innerText = `使用者:${get_logedName()} ID:${get_loggedID()}`;
+  console.log(userText); 0
 }
 
+function getNoDataDiv() {
+  const NoData_div = document.createElement("div");
+  NoData_div.id = "NoData_div";
+  NoData_div.className = "NoData_div";
+  NoData_div.style.width = "100%";
+  NoData_div.style.height = "150px";
+  NoData_div.style.display = "flex";
+
+  NoData_div.style.textAlign = "center";
+  NoData_div.style.backgroundColor = "";
+  NoData_div.style.alignItems = "center";
+  NoData_div.style.justifyContent = "center";
+
+
+  NoData_Text = document.createElement("div");
+  NoData_Text.innerText = "今日無盤點單,請搜尋或創建新單號!";
+  NoData_Text.style.width = "100%"
+  NoData_Text.style.textAlign = "center";
+  NoData_Text.style.backgroundColor = "";
+  NoData_Text.style.color = "red";
+  NoData_Text.style.fontWeight = "bold";
+  NoData_Text.style.fontSize = "30px";
+
+  NoData_div.appendChild(NoData_Text);
+  return NoData_div;
+}
+// 創建輸入框元素
+
+
+// 顯示日期選擇器
+function showDatePicker() {
+  var datePicker = document.createElement("div");
+  datePicker.id = "date-picker";
+
+  // 創建年份選擇器
+  var yearSelect = document.createElement("select");
+  yearSelect.id = "year-select";
+  for (var year = 1900; year <= 2100; year++) {
+    var option = document.createElement("option");
+    option.value = year;
+    option.text = year;
+    yearSelect.appendChild(option);
+  }
+  datePicker.appendChild(yearSelect);
+
+  // 創建月份選擇器
+  var monthSelect = document.createElement("select");
+  monthSelect.id = "month-select";
+  for (var month = 1; month <= 12; month++) {
+    var option = document.createElement("option");
+    option.value = month;
+    option.text = month;
+    monthSelect.appendChild(option);
+  }
+  datePicker.appendChild(monthSelect);
+
+  // 創建日期選擇器
+  var dateSelect = document.createElement("select");
+  dateSelect.id = "date-select";
+  for (var date = 1; date <= 31; date++) {
+    var option = document.createElement("option");
+    option.value = date;
+    option.text = date;
+    dateSelect.appendChild(option);
+  }
+  datePicker.appendChild(dateSelect);
+
+  // 將日期選擇器添加到頁面中的某個容器元素
+  document.body.appendChild(datePicker);
+}
 
