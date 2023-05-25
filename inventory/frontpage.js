@@ -10,7 +10,13 @@ async function load() {
   const Loadingpopup = GetLoadingpopup();
   document.body.appendChild(Loadingpopup);
   Set_main_div_enable(true);
-  data = await creat_get_by_CT_TIME_L(getCurrentDate());
+  const currentDate = new Date();
+  var date_end = DateTimeAddDays(currentDate, 1);
+  var date_start = DateTimeAddDays(currentDate, -30);
+  date_start = getDateStr(date_start);
+  date_end = getDateStr(date_end);
+  
+  data = await creat_get_by_CT_TIME_ST_END(date_start,date_end);
   Set_main_div_enable(false);
   page_Init(data);
 }
@@ -49,7 +55,7 @@ async function addform_Click(event) {
   const confirmResult = confirm("確定建立盤點單?");
   if (confirmResult) {
     Set_main_div_enable(true);
-    const returnData = await GET_creat_add();
+    const returnData = await creat_auto_add();
     location.reload();
     Set_main_div_enable(false);
   }
@@ -115,7 +121,8 @@ async function delete_btn_Click(event) {
     Set_main_div_enable(false);
   }
 }
-function findbtn_Click(event) {
+function findbtn_Click(event)
+{
   Set_popup_find_position();
   if (popup_find_div.style.visibility != 'visible') {
     popup_find_div.style.display = "block";
@@ -130,26 +137,60 @@ function findbtn_Click(event) {
     popup_find_div.style.visibility = "hidden";
   }
 }
-async function findcheckbtn_Click(event) {
+async function findcheckbtn_Click(event)
+{
   popup_find_div.style.display = "block";
   popup_find_div.style.opacity = "0";
   popup_find_div.style.visibility = "hidden";
   var IC_SN = find_IC_SN_input.value;
-  var date = find_date_input.value;
+  var date_start = find_start_date_input.value;
+  var date_end = find_end_date_input.value;
   find_IC_SN_input.value = '';
-  find_date_input.value = '';
+  find_start_date_input.value = '';
   if (IC_SN) {
+    Set_main_div_enable(true);
     data = await creat_get_by_IC_SN(IC_SN);
-    if (data.Code <= 0) {
+    Set_main_div_enable(false);
+    if (data.Code <= 0) 
+    {
       alert("查無資料!");
       return;
     }
     page_Init(data);
     return;
   }
-  if (date) {
-    data = await creat_get_by_CT_TIME_L(date);
-    if (data.Data.length <= 0) {
+  if (date_start || date_end)
+  {
+    var num = 0;
+    if(date_start)num++;
+    if(date_end)num++;
+    if(num == 2)
+    {
+      var date_end = DateTimeAddDays(date_end, 1);
+      date_start = getDateStr(date_start);
+      date_end = getDateStr(date_end);
+      Set_main_div_enable(true);
+      data = await creat_get_by_CT_TIME_ST_END(date_start,date_end);
+      Set_main_div_enable(false);
+    }
+    else
+    {
+       if(date_start)
+       {
+          Set_main_div_enable(true);
+          data = await creat_get_by_CT_TIME_S(date_start);
+          Set_main_div_enable(false);
+       }
+       if(date_end)
+       {
+          Set_main_div_enable(true);
+          data = await creat_get_by_CT_TIME_S(date_end);
+          Set_main_div_enable(false);
+       }
+    }
+  
+    if (data.Data.length <= 0) 
+    {
       alert("查無資料!");
       return;
     }
@@ -271,7 +312,7 @@ function get_header() {
   popup_find_div.className = "popup_find";
   popup_find_div.style.backgroundColor = "#FFF";
   popup_find_div.style.width = "230px";
-  popup_find_div.style.height = "160px";
+  popup_find_div.style.height = "205px";
   popup_find_div.style.position = "absolute";
   popup_find_div.style.top = "0px";
   popup_find_div.style.left = "0px";
@@ -290,7 +331,7 @@ function get_header() {
   find_IC_SN_div.id = "find_IC_SN_div";
   find_IC_SN_div.className = "find_IC_SN_div";
   find_IC_SN_div.style.width = "100%";
-  find_IC_SN_div.style.height = "33.3%";
+  find_IC_SN_div.style.height = "50px";
   find_IC_SN_div.style.alignItems = "center";
   find_IC_SN_div.style.justifyContent = "left";
   find_IC_SN_div.style.display = "flex";
@@ -307,7 +348,7 @@ function get_header() {
   const find_IC_SN_input = document.createElement("input")
   find_IC_SN_input.id = "find_IC_SN_input";
   find_IC_SN_input.className = "find_IC_SN_input";
-  find_IC_SN_input.style.width = "150px";
+  find_IC_SN_input.style.width = "95%";
   find_IC_SN_input.style.height = "30px";
   find_IC_SN_input.style.textAlign = "center";
   find_IC_SN_input.style.marginRight = "0px";
@@ -324,88 +365,121 @@ function get_header() {
   find_IC_SN_input_div.appendChild(find_IC_SN_input);
 
 
-  const find_date_div = document.createElement("div")
-  find_date_div.id = "find_date_div";
-  find_date_div.className = "find_date_div";
-  find_date_div.style.width = "100%";
-  find_date_div.style.height = "33.3%";
-  find_date_div.style.alignItems = "center";
-  find_date_div.style.justifyContent = "left";
-  find_date_div.style.display = "flex";
+  const find_start_date_div = document.createElement("div")
+  find_start_date_div.id = "find_start_date_div";
+  find_start_date_div.className = "find_start_date_div";
+  find_start_date_div.style.width = "100%";
+  find_start_date_div.style.height = "50px";
+  find_start_date_div.style.alignItems = "center";
+  find_start_date_div.style.justifyContent = "left";
+  find_start_date_div.style.display = "flex";
 
-  const datesvg = Get_date_SVG("100%", "100%", "40px", "100%", "black", "");
-  datesvg.id = "datesvg";
-  datesvg.className = "datesvg";
-  datesvg.style.width = "50px";
-  datesvg.style.height = "100%";
-  datesvg.style.alignItems = "center";
-  datesvg.style.justifyContent = "center";
+  const date_start_svg = Get_date_SVG("100%", "100%", "40px", "100%", "black", "");
+  date_start_svg.id = "date_start_svg";
+  date_start_svg.className = "date_start_svg";
+  date_start_svg.style.width = "50px";
+  date_start_svg.style.height = "100%";
+  date_start_svg.style.alignItems = "center";
+  date_start_svg.style.justifyContent = "center";
 
-  const find_date_input = document.createElement("input")
-  find_date_input.id = "find_date_input";
-  find_date_input.className = "find_date_input";
-  find_date_input.style.width = "150px";
-  find_date_input.style.height = "30px";
-  find_date_input.style.border = "1px solid";
-  find_date_input.type = "month";
-  find_date_input.max = "2023-05-24"; // 替換為您所需的最大日期
-  find_date_input.min = "2024-05-24"; // 替換為您所需的最小日期
-  find_date_input.style.margin = "0px";
-  find_date_input.style.textAlign = "center";
-  find_date_input.value  = "";
-  find_date_input.placeholder = "請選擇日期";
-  find_date_input.style.fontSize = "16px";
-  // flatpickr(find_date_input, {
-  //   dateFormat: "Y-m-d", // 設置日期格式，這裡使用 "yyyy-mm-dd" 格式
-  // });
-
+  const find_start_date_input = document.createElement("input")
+  find_start_date_input.id = "find_start_date_input";
+  find_start_date_input.className = "find_start_date_input";
+  find_start_date_input.style.width = "95%";
+  find_start_date_input.style.height = "30px";
+  find_start_date_input.type = "text";
+  find_start_date_input.style.margin = "0px";
+  find_start_date_input.style.textAlign = "center";
+  find_start_date_input.value  = "";
+  find_start_date_input.placeholder = "開始日期";
+  find_start_date_input.style.fontSize = "16px";
   
- 
+  const find_start_date_input_div = document.createElement("div")
+  find_start_date_input_div.id = "find_start_date_input_div";
+  find_start_date_input_div.className = "find_start_date_input_div";
+  find_start_date_input_div.style.width = "100%";
+  find_start_date_input_div.style.height = "100%";
+  find_start_date_input_div.style.alignItems = "center";
+  find_start_date_input_div.style.justifyContent = "left";
+  find_start_date_input_div.style.display = "flex";
+  find_start_date_input_div.appendChild(find_start_date_input);
 
 
-  const find_date_input_div = document.createElement("div")
-  find_date_input_div.id = "find_date_input_div";
-  find_date_input_div.className = "find_date_input_div";
-  find_date_input_div.style.width = "100%";
-  find_date_input_div.style.height = "100%";
-  find_date_input_div.style.alignItems = "center";
-  find_date_input_div.style.justifyContent = "left";
-  find_date_input_div.style.display = "flex";
-  find_date_input_div.appendChild(find_date_input);
+  const find_end_date_div = document.createElement("div")
+  find_end_date_div.id = "find_end_date_div";
+  find_end_date_div.className = "find_end_date_div";
+  find_end_date_div.style.width = "100%";
+  find_end_date_div.style.height = "50px";
+  find_end_date_div.style.alignItems = "center";
+  find_end_date_div.style.justifyContent = "left";
+  find_end_date_div.style.display = "flex";
 
+  const date_end_svg = Get_date_SVG("100%", "100%", "40px", "100%", "black", "");
+  date_end_svg.id = "date_end_svg";
+  date_end_svg.className = "date_end_svg";
+  date_end_svg.style.width = "50px";
+  date_end_svg.style.height = "100%";
+  date_end_svg.style.alignItems = "center";
+  date_end_svg.style.justifyContent = "center";
 
+  const find_end_date_input = document.createElement("input")
+  find_end_date_input.id = "find_end_date_input";
+  find_end_date_input.className = "find_end_date_input";
+  find_end_date_input.style.width = "95%";
+  find_end_date_input.style.height = "30px";
+  find_end_date_input.style.border = "1px solid";
+  find_end_date_input.style.margin = "0px";
+  find_end_date_input.style.textAlign = "center";
+  find_end_date_input.value  = "";
+  find_end_date_input.placeholder = "結束日期";
+  find_end_date_input.style.fontSize = "16px";
+  
+  const find_end_date_input_div = document.createElement("div")
+  find_end_date_input_div.id = "find_end_date_input_div";
+  find_end_date_input_div.className = "find_end_date_input_div";
+  find_end_date_input_div.style.width = "100%";
+  find_end_date_input_div.style.height = "100%";
+  find_end_date_input_div.style.alignItems = "center";
+  find_end_date_input_div.style.justifyContent = "left";
+  find_end_date_input_div.style.display = "flex";
+  find_end_date_input_div.appendChild(find_end_date_input);
 
   const find_check_div = document.createElement("div")
   find_check_div.id = "find_check";
   find_check_div.className = "find_check";
   find_check_div.style.width = "100%";
-  find_check_div.style.height = "33.3%";
+  find_check_div.style.height = "50px";
   find_check_div.style.display = "flex";
   find_check_div.style.alignItems = "center";
   find_check_div.style.justifyContent = "flex-end";
 
 
-  const checksvg = Get_find_check_SVG("", "", "40px", "100%", "black", "");
-  checksvg.id = "datesvg";
-  checksvg.className = "datesvg";
-  checksvg.style.width = "20%";
+  const checksvg = Get_find_check_SVG("", "", "40px", "100%", "green", "");
+  checksvg.id = "date_start_svg";
+  checksvg.className = "date_start_svg";
+  checksvg.style.width = "30%";
   checksvg.style.height = "100%";
   checksvg.style.alignItems = "center";
   checksvg.style.justifyContent = "center";
-  checksvg.style.marginRight = "15px";
+  // checksvg.style.border = "solid 1px";
+  checksvg.style.borderRadius = "10px";
+  checksvg.style.marginRight = "0px";
   checksvg.onclick = findcheckbtn_Click;
 
 
   header_contorls_div.appendChild(header_contorls_findbtn);
   header_contorls_div.appendChild(header_contorls_addformbtn);
   popup_find_div.appendChild(find_IC_SN_div);
-  popup_find_div.appendChild(find_date_div);
+  popup_find_div.appendChild(find_start_date_div);
+  popup_find_div.appendChild(find_end_date_div);
   popup_find_div.appendChild(find_check_div);
 
   find_IC_SN_div.appendChild(IC_SN_svg);
   find_IC_SN_div.appendChild(find_IC_SN_input_div);
-  find_date_div.appendChild(datesvg);
-  find_date_div.appendChild(find_date_input_div);
+  find_start_date_div.appendChild(date_start_svg);
+  find_start_date_div.appendChild(find_start_date_input_div);
+  find_end_date_div.appendChild(date_end_svg);
+  find_end_date_div.appendChild(find_end_date_input_div);
   find_check_div.appendChild(checksvg);
 
   header_contorls_addformbtn.onclick = addform_Click;
@@ -458,48 +532,7 @@ function getNoDataDiv() {
   NoData_div.appendChild(NoData_Text);
   return NoData_div;
 }
-// 創建輸入框元素
 
 
-// 顯示日期選擇器
-function showDatePicker() {
-  var datePicker = document.createElement("div");
-  datePicker.id = "date-picker";
 
-  // 創建年份選擇器
-  var yearSelect = document.createElement("select");
-  yearSelect.id = "year-select";
-  for (var year = 1900; year <= 2100; year++) {
-    var option = document.createElement("option");
-    option.value = year;
-    option.text = year;
-    yearSelect.appendChild(option);
-  }
-  datePicker.appendChild(yearSelect);
-
-  // 創建月份選擇器
-  var monthSelect = document.createElement("select");
-  monthSelect.id = "month-select";
-  for (var month = 1; month <= 12; month++) {
-    var option = document.createElement("option");
-    option.value = month;
-    option.text = month;
-    monthSelect.appendChild(option);
-  }
-  datePicker.appendChild(monthSelect);
-
-  // 創建日期選擇器
-  var dateSelect = document.createElement("select");
-  dateSelect.id = "date-select";
-  for (var date = 1; date <= 31; date++) {
-    var option = document.createElement("option");
-    option.value = date;
-    option.text = date;
-    dateSelect.appendChild(option);
-  }
-  datePicker.appendChild(dateSelect);
-
-  // 將日期選擇器添加到頁面中的某個容器元素
-  document.body.appendChild(datePicker);
-}
 

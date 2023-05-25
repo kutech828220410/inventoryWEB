@@ -42,24 +42,73 @@ async function insertDataIntoTable() {
     const quantityCell = row.insertCell();
     quantityCell.id = _quantityCell_QTY;
     quantityCell.className = 'quantityCell_QTY';
-    quantityCell.innerHTML = 
-    `
-    <BR>
-    <div class="input-group">
-    <div class="input-group-prepend">
-      <div>理論值:</div>
-    </div>
-    <BR>
-    <BR>
-    <input type="text" class="form-control text-right" value="${item.START_QTY}" readonly>
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <div>盤點量:</div>
-      </div>
-      <input id="END_QTY${_index}" type="number" min="0" max="99999" class="form-control" value="${item.END_QTY}" readonly  onblur='checkInput(this , "${GUID}")' onkeydown='checkEnterKey(event, "${GUID}")'>
-      </div>
-      </div>
-    `;
+    quantityCell.style.display = "flex";
+    quantityCell.style.justifyContent = "top";
+    quantityCell.style.flexDirection = "column";
+
+    const start_QTY_div = document.createElement("div");
+    start_QTY_div.id = "start_QTY_div";
+    start_QTY_div.className = "start_QTY_div";
+
+    start_QTY_div.style.width = "100%";
+    start_QTY_div.style.height = "100%";
+    start_QTY_div.style.backgroundColor = "#";
+    start_QTY_div.innerHTML =`理論值`;
+
+    const start_QTY_input = document.createElement("input");
+    start_QTY_input.id = "start_QTY_input";
+    start_QTY_input.className = "start_QTY_input";
+
+    start_QTY_input.style.width = "100%";
+    start_QTY_input.style.height = "20px";
+    start_QTY_input.style.backgroundColor = "#";
+    start_QTY_input.innerHTML =`理論值`;
+    start_QTY_input.value = `${item.START_QTY}`;
+    start_QTY_input.readOnly = true;
+
+    const end_QTY_div = document.createElement("div");
+    end_QTY_div.id = `end_QTY_div_${_index}`;
+    end_QTY_div.className = "end_QTY_div";
+
+    end_QTY_div.style.width = "100%";
+    end_QTY_div.style.height = "100%";
+    end_QTY_div.style.backgroundColor = "#";
+    end_QTY_div.innerHTML =`盤點量`;
+
+    const end_QTY_input = document.createElement("input");
+    end_QTY_input.id = `end_QTY_input_${_index}`;
+    end_QTY_input.className = "end_QTY_input";
+
+    end_QTY_input.style.width = "100%";
+    end_QTY_input.style.height = "20px";
+    end_QTY_input.style.backgroundColor = "#";
+    end_QTY_input.innerHTML =`盤點量`;
+    end_QTY_input.value = `${item.END_QTY}`;
+    end_QTY_input.readOnly = true;
+    
+    quantityCell.appendChild(start_QTY_div);
+    quantityCell.appendChild(start_QTY_input);
+
+    quantityCell.appendChild(end_QTY_div);
+    quantityCell.appendChild(end_QTY_input);
+    // quantityCell.innerHTML = 
+    // `
+    // <BR>
+    // <div class="input-group">
+    // <div class="input-group-prepend">
+    //   <div>理論值:</div>
+    // </div>
+    // <BR>
+    // <BR>
+    // <input type="text" class="form-control text-right" value="${item.START_QTY}" readonly>
+    // <div class="input-group">
+    //   <div class="input-group-prepend">
+    //     <div>盤點量:</div>
+    //   </div>
+    //   <input id="END_QTY${_index}" type="number" min="0" max="99999" class="form-control" value="${item.END_QTY}" readonly  onblur='checkInput(this , "${GUID}")' onkeydown='checkEnterKey(event, "${GUID}")'>
+    //   </div>
+    //   </div>
+    // `;
 
     // 插入新的表格列
     var _myModal = `myModal${_index}`;
@@ -68,11 +117,11 @@ async function insertDataIntoTable() {
     var lot_init = "";
     var date_init = "";
     var qty_init = "";
-    if (item.Sub_content.length > 0) {
-      lot_init = item.Lot_date_datas[0].LOT_NUMBER;
-      date_init = item.Lot_date_datas[0].VAL_DATE;
-      qty_init = item.Lot_date_datas[0].QTY;
-    }
+    // if (item.Sub_content.length > 0) {
+    //   lot_init = item.Lot_date_datas[0].LOT_NUMBER;
+    //   date_init = item.Lot_date_datas[0].VAL_DATE;
+    //   qty_init = item.Lot_date_datas[0].QTY;
+    // }
     const inspectionRow = tbody.insertRow();
     const inspectionCell = inspectionRow.insertCell();
     inspectionCell.colSpan = 2;
@@ -80,7 +129,7 @@ async function insertDataIntoTable() {
     inspectionCell.className = "firstinventory";
     inspectionCell.innerHTML =
       ` 
-    <button  id="druginfo${_index}" style="text-align: left;  display:block; width:100%; height:100%; border:none; background-color:transparent;" onclick="document.getElementById('myModal${_index}').style.display='block'">
+    <button  id="druginfo${_index}" style="text-align: left;  display:block; width:100%; height:100%; border:none; background-color:transparent;" onclick="">
     點選輸入藥品驗收資訊
     <canvas id="${barcode_text}" style="float: right; width:140px; padding-right:10px;"></canvas>
     </button>
@@ -99,12 +148,12 @@ async function insertDataIntoTable() {
     <button class="modalbtn" onclick="validateInput('${_index}' )">確認</button> 
     `;
  
-    for (var i = 0; i < item.Sub_content.length; i++) {
-      const lot = item.Lot_date_datas[i].LOT_NUMBER;
-      const date = item.Lot_date_datas[i].VAL_DATE;
-      const qty = item.Lot_date_datas[i].QTY;
-      AddNewRow(_index, lot, date, qty);
-    }
+    // for (var i = 0; i < item.Sub_content.length; i++) {
+    //   const lot = item.Lot_date_datas[i].LOT_NUMBER;
+    //   const date = item.Lot_date_datas[i].VAL_DATE;
+    //   const qty = item.Lot_date_datas[i].QTY;
+    //   AddNewRow(_index, lot, date, qty);
+    // }
     var START_QTY = parseInt(item.START_QTY);
     var END_QTY = parseInt(item.END_QTY);
     if(START_QTY - END_QTY > 0)
@@ -114,7 +163,7 @@ async function insertDataIntoTable() {
     
 
     const barcodeDiv = document.getElementById(barcode_text);
-    JsBarcode(barcodeDiv, item.CODE, {
+    JsBarcode(barcodeDiv, item.SKDIACODE, {
       format: "code128",
       width: 1,
       height: 12,
@@ -123,12 +172,49 @@ async function insertDataIntoTable() {
 
     });
 
+    var druginfo = document.querySelector(`#druginfo${_index}`);
+    druginfo.className = "druginfo";
+    druginfo.setAttribute("GUID",`${GUID}`)
+    druginfo.setAttribute("_index",`${_index}`)
+    druginfo.setAttribute("_NAME",`${item.NAME}`)
+    druginfo.setAttribute("_SKDIACODE",`${item.SKDIACODE}`)
+    druginfo.setAttribute("_CODE",`${item.CODE}`)
 
+    druginfo.onclick=druginfo_click;
     _index++;
   }
 
 }
-
+async function druginfo_click(event)
+{
+  const  GUID = this.getAttribute("GUID");
+  const _index = this.getAttribute("_index");
+  const _NAME = this.getAttribute("_NAME");
+  const _SKDIACODE = this.getAttribute("_SKDIACODE");
+  const numberInput = window.prompt(`藥名 : ${_NAME}\n請輸入盤點量：`);
+  if(numberInput)
+  {
+    
+     
+     for(var i = 0 ; i < data.Data[0].Contents.length ; i++)
+     {
+      if(data.Data[0].Contents[i].GUID == GUID)
+      {
+         
+          const _Master_GUID = data.Data[0].Contents[i].GUID;
+          var END_QTY = numberInput;
+          var OP = "";
+    
+          const result =  await sub_content_add_single(_Master_GUID,END_QTY,OP);
+          const back_content = await content_get_by_content_GUID(_Master_GUID);
+          data.Data[0].Contents[i].END_QTY = END_QTY;
+          var _end_QTY_input = document.querySelector(`#end_QTY_input_${_index}`);
+          _end_QTY_input.value = END_QTY;
+          console.log(_end_QTY_input);
+      }
+     }
+  }
+}
 function clearInput(input) {
   input.select();
 }

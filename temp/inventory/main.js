@@ -302,6 +302,30 @@ function get_main() {
   main_div.style.marginBottom = "30px";
   return main_div;
 }
+
+//盤點輸入彈跳視窗
+function popup_input_div()
+{
+    const popup_input_div = document.createElement("div");
+    popup_input_div.id = "popup_input_div";
+    popup_input_div.className = "popup_input_div";
+    popup_input_div.style.backgroundColor = "#FFF";
+    popup_input_div.style.width = "92%";
+    popup_input_div.style.height = "100px";
+    popup_input_div.style.position = "absolute";
+    popup_input_div.style.top = "0px";
+    popup_input_div.style.left = "0px";
+    popup_input_div.style.display = "block";
+    popup_input_div.style.visibility = 'hidden';
+    popup_input_div.style.borderRadius = "5px";
+    popup_input_div.style.border = "solid";
+    popup_input_div.style.flexDirection = "column"
+    popup_input_div.style.opacity = "0" ;
+    popup_input_div.style.transition = "opacity 0.5s, visibility 0.5s 0s";
+    popup_input_div.style.zIndex = "11";
+
+    return popup_input_div;
+}
 // function get_main()
 // {
 //   const main_div = document.createElement("div");

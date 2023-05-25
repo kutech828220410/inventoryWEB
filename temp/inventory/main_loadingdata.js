@@ -19,7 +19,6 @@ function get_all_div(_index , item)
     drugInfo_theor_actual_div.style.width = "100%";
     drugInfo_theor_actual_div.style.height= "80%";
     drugInfo_theor_actual_div.style.flexDirection = "row";
-    // all_div.appendChild(drugInfo_theor_actual_div);
     //藥品資訊
     const drugInfo_div = document.createElement("div");
     drugInfo_div.className = "drugInfo_div";
@@ -27,9 +26,19 @@ function get_all_div(_index , item)
     drugInfo_div.style.display = "flex";
     drugInfo_div.style.flexDirection = "column";
     drugInfo_div.style.justifyContent = "flex-start";
-    drugInfo_div.style.width = "65%";
+    drugInfo_div.style.width = "68%";
     drugInfo_div.style.height= "100%";
-    // drugInfo_theor_actual_div.appendChild(drugInfo_div);
+    //盤點單號
+    const IC_SN_div = document.createElement("div");
+    IC_SN_div.className = "IC_SN_div"; 
+    IC_SN_div.id = `IC_SN_div${_index}`;
+    IC_SN_div.innerText = `{_IC_SN}_${_index}`;
+    IC_SN_div.style.paddingLeft = "5px";
+    IC_SN_div.style.display = "flex";
+    IC_SN_div.style.justifyContent = "flex-start";
+    IC_SN_div.style.alignItems = "center";
+    IC_SN_div.style.width = "100%";
+    IC_SN_div.style.height= "10%";
     //藥碼
     const code_div = document.createElement("div");
     code_div.className = "code_div"; 
@@ -41,7 +50,7 @@ function get_all_div(_index , item)
     code_div.style.justifyContent = "flex-start";
     code_div.style.alignItems = "center";
     code_div.style.width = "100%";
-    code_div.style.height= "25%";
+    code_div.style.height= "10%";
     //料號
     const skdiacode_div = document.createElement("div");
     skdiacode_div.className = "skdiacode_div"; 
@@ -53,7 +62,7 @@ function get_all_div(_index , item)
     skdiacode_div.style.justifyContent = "flex-start";
     skdiacode_div.style.alignItems = "center";
     skdiacode_div.style.width = "100%";
-    skdiacode_div.style.height= "25%";
+    skdiacode_div.style.height= "10%";
     //英文名
     const name_div = document.createElement("div");
     name_div.className = "name_div"; 
@@ -63,10 +72,9 @@ function get_all_div(_index , item)
     name_div.style.paddingLeft = "5px";
     name_div.style.color = "orange";
     name_div.style.display = "flex";
-    name_div.style.justifyContent = "flex-start";
-    name_div.style.alignItems = "center";
+    name_div.style.justifyContent = "top";
     name_div.style.width = "100%";
-    name_div.style.height= "25%";
+    name_div.style.height= "35%";
     //中文名
     const cht_name_div = document.createElement("div");
     cht_name_div.className = "cht_name_div"; 
@@ -76,10 +84,10 @@ function get_all_div(_index , item)
     cht_name_div.style.paddingLeft = "5px";
     cht_name_div.style.color = "orange";
     cht_name_div.style.display = "flex";
-    cht_name_div.style.justifyContent = "flex-start";
-    cht_name_div.style.alignItems = "center";
+    cht_name_div.style.justifyContent = "top";
     cht_name_div.style.width = "100%";
-    cht_name_div.style.height= "25%";
+    cht_name_div.style.height= "35%";
+    drugInfo_div.appendChild(IC_SN_div);
     drugInfo_div.appendChild(code_div);
     drugInfo_div.appendChild(skdiacode_div);
     drugInfo_div.appendChild(name_div);
@@ -91,9 +99,8 @@ function get_all_div(_index , item)
     theor_actual_div.style.display = "flex";
     theor_actual_div.style.justifyContent = "top";
     theor_actual_div.style.flexDirection = "column";
-    theor_actual_div.style.width = "35%";
+    theor_actual_div.style.width = "32%";
     theor_actual_div.style.height= "100%";
-    // drugInfo_theor_actual_div.appendChild(theor_actual_div);
     //理論值
     const theor_div = document.createElement("div");
     theor_div.className = "theor_div"; 
@@ -104,7 +111,7 @@ function get_all_div(_index , item)
     theor_div.style.justifyContent = "flex-start";
     theor_div.style.alignItems = "center";
     theor_div.style.width = "100%";
-    theor_div.style.height= "10%";
+    theor_div.style.height= "12%";
     const theor_input = document.createElement("input");
     theor_input.className = "theor_input"; 
     theor_input.id = `theor_input${_index}`;
@@ -117,7 +124,7 @@ function get_all_div(_index , item)
     theor_input.style.justifyContent = "center";
     theor_input.style.alignItems = "center";
     theor_input.style.width = "85%";
-    theor_input.style.height= "10%";
+    theor_input.style.height= "12%";
     theor_input.style.backgroundColor = "lightgray";
     //實際值
     const actual_div = document.createElement("div");
@@ -129,7 +136,7 @@ function get_all_div(_index , item)
     actual_div.style.justifyContent = "flex-start";
     actual_div.style.alignItems = "center";
     actual_div.style.width = "100%";
-    actual_div.style.height= "10%";
+    actual_div.style.height= "12%";
     const actual_input = document.createElement("input");
     actual_input.className = "actual_input"; 
     actual_input.id = `actual_input${_index}`;
@@ -142,50 +149,67 @@ function get_all_div(_index , item)
     actual_input.style.justifyContent = "center";
     actual_input.style.alignItems = "center";
     actual_input.style.width = "85%";
-    actual_input.style.height= "10%";
+    actual_input.style.height= "12%";
     theor_actual_div.appendChild(theor_div);
     theor_actual_div.appendChild(theor_input);
     theor_actual_div.appendChild(actual_div);
     theor_actual_div.appendChild(actual_input);
     //輸入按鈕
-    // const value_input_div = document.createElement("div");
-    // value_input_div.className = "value_input_div"; 
-    // value_input_div.id = `value_input_div${_index}`;
-    // value_input_div.style.display = "flex";
-    // value_input_div.style.justifyContent = "center";
-    // value_input_div.style.alignItems = "center";
-    // value_input_div.style.width = "100%";
-    // value_input_div.style.height= "20%";
-    // all_div.appendChild(value_input_div);
     const  value_input_btn = document.createElement("button");
     value_input_btn.className = "value_input_btn"; 
     value_input_btn.id = `value_input_btn${_index}`;
     value_input_btn.style.display = "flex";
     value_input_btn.style.width = "100%";
     value_input_btn.style.height= "100%";
-    // value_input_div.appendChild(value_input_btn);
+    value_input_btn.style.backgroundColor = "#fff";
+    //Barcoede條碼
     const barcode_div = document.createElement("div");
     barcode_div.className = "barcode_div"; 
     barcode_div.id = `barcode_div${_index}`;
     barcode_div.style.display = "flex";
     barcode_div.style.width = "100%";
-    barcode_div.style.height= "60%";
-    barcode_div.style.backgroundColor = "black";
+    barcode_div.style.height= "30%";
+    barcode_div.style.justifyContent = "center";
+    barcode_div.style.alignItems = "center";
     const barcode = document.createElement("canvas");
     barcode.className = "barcode"; 
     barcode.id = `barcode${_index}`;
-    barcode.style.float
+    barcode.innerText = "885621";
+    barcode.style.display = "flex";
+    barcode.style.height= "50px";
+    barcode.style.width = "140px";
+    barcode.style.justifyContent = "center";
+    barcode.style.alignItems = "center";
+    barcode.style.backgroundColor = "black";
+    //提醒點擊
+    // const pointleft_svg = Get_pointleft_SVG("" ,"", "", "" ,"", "");
+    // pointleft_svg.id = "pointleft_svg";
+    // pointleft_svg.className = "pointleft_svg";
+    // pointleft_svg.style.width = "30%";
+    // pointleft_svg.style.height = "100%";
+    const remind = document.createElement("div");
+    remind.className = "remind"; 
+    remind.id = `remind${_index}`;
+    remind.innerText = `<<<<請點擊輸入`;
+    remind.style.fontWeight = "bolder";
+    remind.style.display = "flex";
+    remind.style.flexDirection = "row-reverse";
+    remind.style.justifyContent = "center";
+    remind.style.alignItems = "center";
+    remind.style.width = "100%";
+    remind.style.height= "12%";
 
 
     all_div.appendChild(value_input_btn);
     value_input_btn.appendChild(drugInfo_div);
     value_input_btn.appendChild(theor_actual_div);
-    theor_actual_div.appendChild(barcode_div)
+    theor_actual_div.appendChild(barcode_div);
+    barcode_div.appendChild(barcode);
+    theor_actual_div.appendChild(remind);
+    // remind.appendChild(pointleft_svg);
 
-//     <canvas id="${barcode_text}" style="float: right; width:140px; padding-right:10px;"></canvas>
     return all_div;
 }
-
 
 // let response = [];
 // let data = [];

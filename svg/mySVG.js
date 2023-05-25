@@ -1,3 +1,41 @@
+function Get_pointleft_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
+{
+    const btn_div = document.createElement("div");
+    const div = document.createElement("div");
+    btn_div.style.width = btn_width;
+    btn_div.style.height= btn_height; 
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.innerHTML = `<?xml version="1.0" ?><svg color="black" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path stroke="" d="M0 220.8C0 266.416 37.765 304 83.2 304h35.647a93.148 93.148 0 0 0 7.929 22.064c-2.507 22.006 3.503 44.978 15.985 62.791C143.9 441.342 180.159 480 242.701 480H264c60.063 0 98.512-40 127.2-40h2.679c5.747 4.952 13.536 8 22.12 8h64c17.673 0 32-12.894 32-28.8V188.8c0-15.906-14.327-28.8-32-28.8h-64c-8.584 0-16.373 3.048-22.12 8H391.2c-6.964 0-14.862-6.193-30.183-23.668l-.129-.148-.131-.146c-8.856-9.937-18.116-20.841-25.851-33.253C316.202 80.537 304.514 32 259.2 32c-56.928 0-92 35.286-92 83.2 0 8.026.814 15.489 2.176 22.4H83.2C38.101 137.6 0 175.701 0 220.8zm48 0c0-18.7 16.775-35.2 35.2-35.2h158.4c0-17.325-26.4-35.2-26.4-70.4 0-26.4 20.625-35.2 44-35.2 8.794 0 20.445 32.712 34.926 56.1 9.074 14.575 19.524 27.225 30.799 39.875 16.109 18.374 33.836 36.633 59.075 39.596v176.752C341.21 396.087 309.491 432 264 432h-21.299c-40.524 0-57.124-22.197-50.601-61.325-14.612-8.001-24.151-33.979-12.925-53.625-19.365-18.225-17.787-46.381-4.95-61.05H83.2C64.225 256 48 239.775 48 220.8zM448 360c13.255 0 24 10.745 24 24s-10.745 24-24 24-24-10.745-24-24 10.745-24 24-24z"/></svg>`;
+    
+    
+  
+    svg.setAttribute("class", "svg");
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", "100%");
+
+    div.style.width = svg_width;
+    div.style.height = svg_height;
+ 
+    div.style.justifyContent = "center";
+    div.style.alignItems = "center";
+    div.style.margin = "auto";   
+    btn_div.style.backgroundColor = backgroundColor;
+    btn_div.addEventListener("mouseover", function() {
+        btn_div.style.backgroundColor = "lightgray";
+      });
+    
+      // 滑鼠移出時的事件處理器
+      btn_div.addEventListener("mouseout", function() {
+        btn_div.style.backgroundColor = backgroundColor;
+      });
+    
+    div.appendChild(svg);
+    btn_div.appendChild(div);
+    
+    return btn_div;
+}
+
 function Get_pill_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
 {
     const btn_div = document.createElement("div");
@@ -6,7 +44,7 @@ function Get_pill_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor,
     btn_div.style.height= btn_height; 
 
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.innerHTML = `<?xml version="1.0" ?><svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><rect fill="none" height="256" width="256"/><path d="M112,208a45.2,45.2,0,0,1-64,0h0a45.2,45.2,0,0,1,0-64L96,96l64,64Z" opacity="0.2"/><rect fill="none" height="90.51" rx="45.3" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" transform="translate(-53 128) rotate(-45)" width="226.3" x="14.9" y="82.7"/><line fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" x1="96" x2="160" y1="96" y2="160"/><line fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" x1="160.1" x2="184.5" y1="112.1" y2="88.5"/></svg>`;
+    svg.innerHTML = `<?xml version="1.0" ?><svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><rect fill="none" height="100%" width="100%"/><path d="M112,208a45.2,45.2,0,0,1-64,0h0a45.2,45.2,0,0,1,0-64L96,96l64,64Z" opacity="0.2"/><rect fill="none" height="90.51" rx="45.3" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" transform="translate(-53 128) rotate(-45)" width="226.3" x="14.9" y="82.7"/><line fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" x1="96" x2="160" y1="96" y2="160"/><line fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" x1="160.1" x2="184.5" y1="112.1" y2="88.5"/></svg>`;
     
     
   
@@ -44,7 +82,9 @@ function Get_find_check_SVG(btn_width ,btn_height, svg_width, svg_height ,stroke
     btn_div.style.height= btn_height; 
 
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.innerHTML = `<?xml version="1.0" ?><svg fill=${backgroundColor} stroke="${strokeColor}  width="100%" height="100%" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"/></svg>`;
+    svg.innerHTML = `<?xml version="1.0" ?><svg color="${backgroundColor}"  width="100%" height="100%" viewBox="0 0 512 512" 
+    xmlns="http://www.w3.org/2000/svg"><path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z" 
+    fill="${strokeColor}" stroke-width="0" /></svg>`; 
     
     
   
@@ -83,7 +123,8 @@ function Get_date_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor,
 
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.innerHTML = `<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-    <svg fill=${backgroundColor} width="100%" height="100%" viewBox="-3 0 19 19" xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg"><path d="M11.882 3.187a.476.476 0 0 1 .475.475v11.063a.476.476 0 0 1-.475.475H1.118a.476.476 0 0 1-.475-.475V3.662a.476.476 0 0 1 .475-.475h1.328v.721a1.425 1.425 0 0 0 2.85 0v-.72H7.71v.72a1.425 1.425 0 0 0 2.85 0v-.72zm-.634 3.37H1.752v7.535h9.496zm-7.384.821H2.621V8.67h1.243zm0 2.292H2.621v1.292h1.243zm0 2.292H2.621v1.291h1.243zm.561-8.054V2.475a.554.554 0 1 0-1.108 0v1.433a.554.554 0 1 0 1.108 0zm1.613 3.47H4.794V8.67h1.244zm0 2.292H4.794v1.292h1.244zm0 2.292H4.794v1.291h1.244zm2.174-4.584H6.968V8.67h1.244zm0 2.292H6.968v1.292h1.244zm0 2.292H6.968v1.291h1.244zm1.477-8.054V2.475a.554.554 0 0 0-1.108 0v1.433a.554.554 0 0 0 1.108 0zm.696 3.47H9.142V8.67h1.243zm0 2.292H9.142v1.292h1.243zm0 2.292H9.142v1.291h1.243z" stroke="${strokeColor}" stroke-width="0.3"/></svg>`;
+    <svg fill=${backgroundColor} width="100%" height="100%" viewBox="-3 0 19 19" xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg"><path d="M11.882 3.187a.476.476 0 0 1 .475.475v11.063a.476.476 0 0 1-.475.475H1.118a.476.476 0 0 1-.475-.475V3.662a.476.476 0 0 1 .475-.475h1.328v.721a1.425 1.425 0 0 0 2.85 0v-.72H7.71v.72a1.425 1.425 0 0 0 2.85 0v-.72zm-.634 3.37H1.752v7.535h9.496zm-7.384.821H2.621V8.67h1.243zm0 2.292H2.621v1.292h1.243zm0 2.292H2.621v1.291h1.243zm.561-8.054V2.475a.554.554 0 1 0-1.108 0v1.433a.554.554 0 1 0 1.108 0zm1.613 3.47H4.794V8.67h1.244zm0 2.292H4.794v1.292h1.244zm0 2.292H4.794v1.291h1.244zm2.174-4.584H6.968V8.67h1.244zm0 2.292H6.968v1.292h1.244zm0 2.292H6.968v1.291h1.244zm1.477-8.054V2.475a.554.554 0 0 0-1.108 0v1.433a.554.554 0 0 0 1.108 0zm.696 3.47H9.142V8.67h1.243zm0 2.292H9.142v1.292h1.243zm0 2.292H9.142v1.291h1.243z"
+     stroke="${strokeColor}" stroke-width="0.3"/></svg>`;
     
     
   

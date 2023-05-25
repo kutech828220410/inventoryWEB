@@ -1,3 +1,6 @@
+var Server = "127.0.0.1";
+var DbName = "ds01";
+
 async function creat_get_by_CT_TIME(date)
 {
   const post_data = 
@@ -13,6 +16,8 @@ async function creat_get_by_CT_TIME(date)
       "Contents": []
     },
     "Code": 0,
+    "Server":`${Server}`,
+    "DbName":`${DbName}`,
     "Result": "",
     "Value": "",
     "TimeTaken": ""
@@ -20,7 +25,7 @@ async function creat_get_by_CT_TIME(date)
   let response = await postDataToAPI(`${inventory_url}/creat_get_by_CT_TIME`,post_data);
   return response;
 }
-async function creat_get_by_CT_TIME_L(date)
+async function creat_get_by_CT_TIME_S(date)
 {
   const post_data = 
   {
@@ -35,6 +40,8 @@ async function creat_get_by_CT_TIME_L(date)
       "Contents": []
     },
     "Code": 0,
+    "Server":`${Server}`,
+    "DbName":`${DbName}`,
     "Result": "",
     "Value": "1",
     "TimeTaken": ""
@@ -42,7 +49,30 @@ async function creat_get_by_CT_TIME_L(date)
   let response = await postDataToAPI(`${inventory_url}/creat_get_by_CT_TIME`,post_data);
   return response;
 }
-
+async function creat_get_by_CT_TIME_ST_END(date_ST,date_END)
+{
+  const post_data = 
+  {
+    "Data": {
+      "GUID": null,
+      "IC_SN": null,
+      "CT": null,
+      "CT_TIME": null,
+      "START_TIME": null,
+      "END_TIME": null,
+      "STATE": null,
+      "Contents": []
+    },
+    "Code": 0,
+    "Server":`${Server}`,
+    "DbName":`${DbName}`,
+    "Result": "",
+    "Value": `${date_ST},${date_END}`,
+    "TimeTaken": ""
+  };
+  let response = await postDataToAPI(`${inventory_url}/creat_get_by_CT_TIME_ST_END`,post_data);
+  return response;
+}
 
 async function creat_get_by_IC_SN(IC_SN)
 {
@@ -59,6 +89,8 @@ async function creat_get_by_IC_SN(IC_SN)
       "Contents": []
     },
     "Code": 0,
+    "Server":`${Server}`,
+    "DbName":`${DbName}`,
     "Result": "",
     "Value": "",
     "TimeTaken": ""
@@ -83,6 +115,8 @@ async function creat_delete_by_IC_SN(IC_SN)
       "Contents": []
     },
     "Code": 0,
+    "Server":`${Server}`,
+    "DbName":`${DbName}`,
     "Result": "",
     "Value": "",
     "TimeTaken": ""
@@ -107,6 +141,8 @@ async function creat_lock_by_IC_SN(IC_SN)
       "Contents": []
     },
     "Code": 0,
+    "Server":`${Server}`,
+    "DbName":`${DbName}`,
     "Result": "",
     "Value": "",
     "TimeTaken": ""
@@ -131,6 +167,8 @@ async function creat_unlock_by_IC_SN(IC_SN)
       "Contents": []
     },
     "Code": 0,
+    "Server":`${Server}`,
+    "DbName":`${DbName}`,
     "Result": "",
     "Value": "",
     "TimeTaken": ""
@@ -140,14 +178,98 @@ async function creat_unlock_by_IC_SN(IC_SN)
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
-async function GET_creat_add()
+async function creat_auto_add()
 {
-  var _url = `${inventory_url}/creat_add?TableName=${BalsicDeviceTableName}`;
-  console.log(_url)
-  let response = await getDataFromAPI(`${_url}`);
+  const post_data = 
+  {
+    "Data": {
+      "GUID": null,
+      "IC_SN": null,
+      "CT": null,
+      "CT_TIME": null,
+      "START_TIME": null,
+      "END_TIME": null,
+      "STATE": null,
+      "Contents": []
+    },
+    "Code": 0,
+    "Server":`${Server}`,
+    "DbName":`${DbName}`,
+    "TableName":`${BalsicDeviceTableName}`,
+    "Result": "",
+    "Value": "",
+    "TimeTaken": ""
+  };
+  var _url = `${inventory_url}/creat_auto_add`;
+  console.log(post_data)
+  let response = await postDataToAPI(`${_url}`,post_data);
+  return response;
+}
+async function sub_content_get_by_content_GUID(_GUID)
+{
+  const post_data = 
+  {
+    "Data": {
+      "GUID": `${_GUID}`,
+
+    },
+    "Master_GUID": 0,
+    "Server":`${Server}`,
+    "DbName":`${DbName}`,
+    "TableName":`${BalsicDeviceTableName}`,
+    "Result": "",
+    "Value": "",
+    "TimeTaken": ""
+  };
+  var _url = `${inventory_url}/sub_content_get_by_content_GUID`;
+  console.log(post_data)
+  let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
 
+async function sub_content_add_single(_Master_GUID, _END_QTY, _OP)
+{
+  const post_data = 
+  {
+    "Data": {
+      "Master_GUID": `${_Master_GUID}`,
+      "END_QTY": `${_END_QTY}`,
+      "OP": `${_OP}`
+    },
+    "Master_GUID": 0,
+    "Server":`${Server}`,
+    "DbName":`${DbName}`,
+    "TableName":`${BalsicDeviceTableName}`,
+    "Result": "",
+    "Value": "",
+    "TimeTaken": ""
+  };
+  var _url = `${inventory_url}/sub_content_add_single`;
+  console.log(post_data)
+  let response = await postDataToAPI(`${_url}`,post_data);
+  return response;
+}
+async function content_get_by_content_GUID(_GUID)
+{
+  const post_data = 
+  {
+    "Data": {
+      "GUID": `${_GUID}`,
+   
+    },
+    "Master_GUID": 0,
+    "Server":`${Server}`,
+    "DbName":`${DbName}`,
+    "TableName":`${BalsicDeviceTableName}`,
+    "Result": "",
+    "Value": "",
+    "TimeTaken": ""
+  };
+  var _url = `${inventory_url}/content_get_by_content_GUID`;
+  console.log(post_data)
+  let response = await postDataToAPI(`${_url}`,post_data);
+  return response;
+}
 async function download_excel_by_IC_SN(IC_SN)
 {
   const post_data = 
@@ -163,6 +285,8 @@ async function download_excel_by_IC_SN(IC_SN)
       "Contents": []
     },
     "Code": 0,
+    "Server":`${Server}`,
+    "DbName":`${DbName}`,
     "Result": "",
     "Value": "",
     "TimeTaken": ""
