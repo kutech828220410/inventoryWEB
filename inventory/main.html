@@ -6,9 +6,11 @@
   <title>盤點操作頁</title>
   <link rel="stylesheet" href="main.css">
   <script src="../ApiURL.js"></script>
+  <script src="../ChatHub.js"></script>
   <script src="../Function/WebApiFunc.js"></script>
   <script src="../dist/JsBarcode.all.js"></script>
   <script src="../Function/Basic.js"></script>
+  <script src="../popup/loading.js"></script>
   <script src="jsonFunc.js"></script>
   <script src="main.js"></script>
   <script src="main_modal.js"></script>
@@ -48,7 +50,7 @@
   
   
   <script>
- var barcode_value = '';
+   var barcode_value = '';
     // 監聽頁面的keydown事件
      window.addEventListener('keydown', function(event) {
         // 判斷按下的按鍵是否是Tab鍵或Enter鍵
@@ -112,12 +114,36 @@
     });
 
     // 解析帶有分隔符的字符串
-    function parseBarcode(scannedCode) {
-    const delimiter = /[\n\r]/g;
-    const matches = scannedCode.split(delimiter);
-    return matches[0];
+    function parseBarcode(scannedCode) 
+    {
+      const delimiter = /[\n\r]/g;
+      const matches = scannedCode.split(delimiter);
+      return matches[0];
     }
-
+    signalR_init();
+    document.addEventListener('ReceivedEvent', function (event) 
+    {   
+      var jsonObject = JSON.parse(event.detail.message); 
+      console.log('ReceivedEvent',jsonObject);
+      if(jsonObject.Method == "content_get_by_content_GUID")
+      {
+        var return_GUID = jsonObject.Data.GUID;
+        var END_QTY = jsonObject.Data.END_QTY;
+        console.log("return_GUID",return_GUID);
+        var _end_QTY_input = document.querySelectorAll(`.end_QTY_input`);
+        for(var i = 0 ; i < _end_QTY_input.length ; i++)
+        {
+          var _GUID = _end_QTY_input[i].getAttribute("_GUID");
+          if(_GUID == return_GUID)
+          {
+            _end_QTY_input[i].value = END_QTY;
+            console.log("END_QTY",END_QTY);
+          }
+          
+        }        
+      }
+      
+    }); 
   </script>
   
   </body>
