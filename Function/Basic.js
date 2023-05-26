@@ -162,3 +162,8 @@ function getDatePartsFromDate(dateString)
   
     checkVisibility();
   }
+
+
+
+
+  

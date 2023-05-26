@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="fronpage.css">
 
     <script src="../ApiURL.js"></script>
+    <script src="../ChatHub.js"></script>
     <script src="../Function/WebApiFunc.js"></script>
     <script src="../svg/mySVG.js"></script>
     <script src="../Function/Basic.js"></script>
@@ -14,12 +15,9 @@
     <script src="jsonFunc.js"></script>
     <script src="frontpage.js"></script>
     <script src="frontpage_addform.js"></script>
-
-    <link href="../UI/H5_Date/css/datepicker.css" rel="stylesheet">
-    <script type="text/javascript" src="../UI/H5_Date/js/jquery-1.9.1.js"></script>
-    <script type="text/javascript" src="../UI/H5_Date/js/iscroll.js"></script>
-    <script type="text/javascript" src="../UI/H5_Date/datepicker.js"></script>
+    <script src="../UI/H5_Date/map.js"></script>
     <!-- <script src="../session_check.js"></script> -->
+
 </head>
 <body>
   <div class="form" id="form" style="width: 100%; height: 100%;">
@@ -78,7 +76,35 @@
           });
         });
 
-  })
+  }) 
+  signalR_init();
+  document.addEventListener('ReceivedEvent', function (event) 
+  {   
+     var jsonObject = JSON.parse(event.detail.message); 
+     console.log('ReceivedEvent',jsonObject);
+
+     const GUID = jsonObject.Data.GUID;
+     
+     if(jsonObject.Method == "creat_lock_by_IC_SN" || jsonObject.Method == "creat_unlock_by_IC_SN")
+     {
+        for (var i = 0; i < data.Data.length; i++)
+        {
+            if (data.Data[i].GUID == GUID)
+            {
+              data.Data[i] = { ...jsonObject.Data };
+            }
+        }
+     }
+     if(jsonObject.Method == "creat_delete_by_IC_SN" || jsonObject.Method == "creat_auto_add")
+     {
+        location.reload();
+        return;
+     }
+
+    page_Init(data);
+     
+  }); 
+
 </script>
 </body>
 

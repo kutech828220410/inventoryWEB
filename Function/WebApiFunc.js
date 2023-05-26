@@ -1,5 +1,8 @@
 
-async function getDataFromAPI(url) {
+async function getDataFromAPI(url)
+{
+    console.log("getDataFromAPI",url);
+
     return fetch(url, {
         method: 'GET',
         headers: {
@@ -16,9 +19,31 @@ async function getDataFromAPI(url) {
             console.error('There was a problem with the fetch operation:', error);
         });
 }
+async function postDataToAPI_NoneReturn(url, data) 
+{
+    try {
+      console.log("postDataToAPI_NoneReturn",url);
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+  
+      if (!response.ok) {
+        throw new Error('请求失败');
+      }
+ 
+    } catch (error) {
+      console.error(error);
+      //throw error;
+    }
+}
 async function postDataToAPI(url, data) 
 {
     try {
+      console.log("postDataToAPI",url);
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -35,7 +60,7 @@ async function postDataToAPI(url, data)
       return responseData;
     } catch (error) {
       console.error(error);
-      throw error;
+      //throw error;
     }
 }
   

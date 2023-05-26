@@ -1,6 +1,7 @@
 function creat_all_div(_index , item) 
 {
     const main_div = document.querySelector('#main_div');
+    
     main_div.style.width = "98%";
     const all_div = document.createElement("div");
     all_div.className = "all_div";
@@ -133,7 +134,13 @@ function creat_all_div(_index , item)
     
     if(item.STATE == '等待盤點')
     {
-        info_div.style.backgroundColor = 'yellow';
+        info_div.style.background ="rgb(255,255,255)";
+        info_div.style.background ="linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(231,236,23,0.3) 50%, rgba(231,236,23,0.7) 100%)"
+    }
+    else
+    {
+        info_div.style.background ="rgb(255,255,255)";
+        info_div.style.background ="linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(236,23,23,0.3) 50%, rgba(236,23,23,0.7) 100%)"
     }
 
     //操作按鈕
@@ -158,9 +165,13 @@ function creat_all_div(_index , item)
     dlbtn.setAttribute("IC_SN",item.IC_SN);
     btn_div.appendChild(dlbtn);
     edit_dlbtn(dlbtn);
-    const lockbtn = Get_unlock_SVG("100%", "60px", "70%","100%","steelblue","");
+    var lockbtn;
+    if(item.STATE == '等待盤點')lockbtn = Get_unlock_SVG("100%", "60px", "70%","100%","steelblue","");
+    else lockbtn = Get_lock_SVG("100%", "60px", "70%","100%","red","");
     lockbtn.className = "div_botton";
     lockbtn.id = `lockbtn${_index}`;
+    lockbtn.setAttribute("IC_SN",item.IC_SN);
+    lockbtn.setAttribute("STATE",item.STATE);
     btn_div.appendChild(lockbtn);
     edit_lockbtn(lockbtn);
 
@@ -403,9 +414,7 @@ function edit_lockbtn(button)
 {
     button.style.width = "100%";
     button.style.height = "33%";
-    button.addEventListener('click', function()
-    {
+    button.onclick = lockbtn_Click;
 
-    });
 }
 

@@ -4,8 +4,9 @@
  * @date    2016-10-09 11:07:00
  * @version $Id$
  */
-
 'use strict';
+
+document.write(`<link href="../UI/H5_Date/css/datepicker.css" rel="stylesheet">`);
 
 (function(root, factory) {
   var $ = root.Zepto ? 'zepto' : 'jquery';

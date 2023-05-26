@@ -1,12 +1,11 @@
-// JavaScript source code
+const api_ip = `http://123.194.228.222:4433/`;
+
 const Enum_Target =
 {
     Dept : 'Dept',
     Phar : 'Phar',
 }
 var Target = Enum_Target.Dept;
-
-
 
 const Enum_BasicDeviceTableName = 
 {
@@ -25,6 +24,7 @@ else if(Target == Enum_Target.Phar)
     BalsicDeviceTableName = Enum_BasicDeviceTableName.Phar;
 }
 
+var MessageAPI_url = `${api_ip}api/Message`;
 
 var person_page_url = 'http://103.1.221.188:4433/api/person_page';
 var session_login_post_url = 'http://103.1.221.188:4433/api/session';
@@ -36,4 +36,4 @@ var inspection_update_post_url = 'http://103.1.221.188:4433/api/inspection/updat
 var inspection_get_od_Date = 'http://103.1.221.188:4433/api/inspection/get_od_Date';
 var inspection_download_excel = 'http://103.1.221.188:4433/api/inspection/download_excel';
 
-var inventory_url = 'http://103.1.221.188:4433/api/inventory';
+var inventory_url = `${api_ip}api/inventory`;

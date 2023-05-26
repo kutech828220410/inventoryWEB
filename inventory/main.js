@@ -3,13 +3,31 @@ let data = [];
 
 window.onload = load;
 async function load()
-{
+{ 
+    const Loadingpopup = GetLoadingpopup();
+    document.body.appendChild(Loadingpopup);
+    Loadingpopup.style.zIndex = "99999";
     var IC_SN = sessionStorage.getItem('IC_SN');    
+    Set_main_div_enable(true);
     data = await creat_get_by_IC_SN(IC_SN);
     console.log(data);
     insertDataIntoTable();
+    Set_main_div_enable(false);
 }
+function Set_main_div_enable(value) {
+  const main_div = document.querySelector('#main_div');
+  if (value) {
+    showLoadingPopup();
+    //  document.body.style.opacity = "0.5"; 
+    document.body.style.pointerEvents = "none";
+  }
+  else {
+    hideLoadingPopup();
+    document.body.style.opacity = "1";
+    document.body.style.pointerEvents = "auto";
 
+  }
+}
 
 async function insertDataIntoTable() {
   // response = await fetch(inspection_get_url); // 替換成您的 API 網址
@@ -76,6 +94,8 @@ async function insertDataIntoTable() {
     end_QTY_div.innerHTML =`盤點量`;
 
     const end_QTY_input = document.createElement("input");
+    end_QTY_input.setAttribute("_GUID",item.GUID);
+    end_QTY_input.className = 'end_QTY_input';
     end_QTY_input.id = `end_QTY_input_${_index}`;
     end_QTY_input.className = "end_QTY_input";
 
@@ -163,7 +183,12 @@ async function insertDataIntoTable() {
     
 
     const barcodeDiv = document.getElementById(barcode_text);
-    JsBarcode(barcodeDiv, item.SKDIACODE, {
+    var Barcode= "";
+    if(Barcode == "")Barcode = item.BARCODE1;
+    if(Barcode == "")Barcode = item.BARCODE2;
+    if(Barcode == "")Barcode = item.SKDIACODE;
+    if(Barcode == "")Barcode = item.CODE;
+    JsBarcode(barcodeDiv, Barcode, {
       format: "code128",
       width: 1,
       height: 12,
@@ -194,24 +219,20 @@ async function druginfo_click(event)
   const numberInput = window.prompt(`藥名 : ${_NAME}\n請輸入盤點量：`);
   if(numberInput)
   {
-    
-     
+        
      for(var i = 0 ; i < data.Data[0].Contents.length ; i++)
      {
-      if(data.Data[0].Contents[i].GUID == GUID)
-      {
-         
-          const _Master_GUID = data.Data[0].Contents[i].GUID;
-          var END_QTY = numberInput;
-          var OP = "";
-    
-          const result =  await sub_content_add_single(_Master_GUID,END_QTY,OP);
-          const back_content = await content_get_by_content_GUID(_Master_GUID);
-          data.Data[0].Contents[i].END_QTY = END_QTY;
-          var _end_QTY_input = document.querySelector(`#end_QTY_input_${_index}`);
-          _end_QTY_input.value = END_QTY;
-          console.log(_end_QTY_input);
-      }
+        if(data.Data[0].Contents[i].GUID == GUID)
+        {
+          
+            const _Master_GUID = data.Data[0].Contents[i].GUID;
+            var END_QTY = numberInput;
+            var OP = "";
+      
+            const result =  await sub_content_add_single(_Master_GUID,END_QTY,OP);
+            const back_content = await content_get_by_content_GUID(_Master_GUID);
+            console.log("back_content",back_content);
+        }
      }
   }
 }
@@ -226,53 +247,10 @@ async function checkEnterKey(event, GUID) {
   }
 }
 function submitForm() {
-  const table = document.querySelector('table');
-  const rows = table.rows;
-
-  const formData = [];
-  for (let i = 0; i < rows.length; i += 2) {
-    const drugInfoCell = rows[i].querySelector();
-    const quantityCell = rows[i].querySelector();
-
-    const drugInfo = drugInfoCell.textContent.trim();
-    const actualQuantity = quantityCell.value.trim();
-
-    formData.push({
-      drugInfo,
-      actualQuantity
-    });
-  }
-
-  postData(inspection_update_post_url, formData)
-    .then(response => {
-      console.log(response);
-      // 在這裡處理回傳的回應
-    })
-    .catch(error => {
-      console.error(error);
-      // 在這裡處理錯誤
-    });
+ 
 }
 
-async function postData(url, data) {
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  });
 
-  if (!response.ok) {
-    throw new Error('送出資料失敗');
-  }
-
-  return response.json();
-}
-async function get_jsondata() {
-  const data = await response.json();
-  return data;
-}
 
 
 function searchItem(data, searchKey) {

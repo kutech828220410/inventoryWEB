@@ -51,12 +51,10 @@ function Set_main_div_enable(value) {
   }
 }
 async function addform_Click(event) {
-
   const confirmResult = confirm("確定建立盤點單?");
   if (confirmResult) {
     Set_main_div_enable(true);
     const returnData = await creat_auto_add();
-    location.reload();
     Set_main_div_enable(false);
   }
 }
@@ -78,15 +76,7 @@ async function lockbtn_Click(event) {
     document.body.style.opacity = "0.5";
     temp = await creat_lock_by_IC_SN(IC_SN);
     document.body.style.opacity = "1";
-    const GUID = temp.Data.GUID;
-    console.log(temp);
-    for (var i = 0; i < data.Data.length; i++) {
-      if (data.Data[i].GUID == GUID) {
-        data.Data[i] = { ...temp.Data };
-      }
-    }
-
-    page_Init(data);
+    
   }
   else {
     const confirmResult = confirm(`確定解鎖盤點單 [${IC_SN}]?`);
@@ -117,7 +107,7 @@ async function delete_btn_Click(event) {
   if (confirmResult) {
     Set_main_div_enable(true);
     await creat_delete_by_IC_SN(IC_SN);
-    location.reload();
+    
     Set_main_div_enable(false);
   }
 }
@@ -304,7 +294,6 @@ function get_header() {
   popup_background_div.position = "absolute";
   popup_background_div.top = "0";
   popup_background_div.left = "0";
-  // popup_background_div.style.display = "none";
   document.body.appendChild(popup_background_div);
 
   const popup_find_div = document.createElement("div");
@@ -461,7 +450,6 @@ function get_header() {
   checksvg.style.height = "100%";
   checksvg.style.alignItems = "center";
   checksvg.style.justifyContent = "center";
-  // checksvg.style.border = "solid 1px";
   checksvg.style.borderRadius = "10px";
   checksvg.style.marginRight = "0px";
   checksvg.onclick = findcheckbtn_Click;
@@ -502,8 +490,7 @@ function get_main() {
 }
 function setUserText() {
   const userText = document.querySelector("#header_user_text");
-  userText.innerText = `使用者:${get_logedName()} ID:${get_loggedID()}`;
-  console.log(userText); 0
+   userText.innerText = `使用者:${get_logedName()} ID:${get_loggedID()}`;
 }
 
 function getNoDataDiv() {
