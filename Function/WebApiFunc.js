@@ -95,4 +95,3 @@ async function downloadExcel(url, jsonData, filename)
     console.error(error);
   }
 }
-

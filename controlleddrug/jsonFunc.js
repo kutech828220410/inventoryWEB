@@ -1,297 +1,78 @@
 var Server = "127.0.0.1";
-var DbName = "ds01";
+var DbName = "";
 
-async function creat_get_by_CT_TIME(date)
+async function serch(CODE, start_time, end_time)
 {
+  var _value = '';
+  if(CODE == null)
+  {
+    return null;
+  }
+  if(start_time == null || end_time == null)
+  {
+    _value = `${CODE}`;
+  }
+  else
+  {
+    _value = `${CODE},${start_time},${end_time}`;
+  }
   const post_data = 
   {
-    "Data": {
-      "GUID": null,
-      "IC_SN": null,
-      "CT": null,
-      "CT_TIME": `${date}`,
-      "START_TIME": null,
-      "END_TIME": null,
-      "STATE": null,
-      "Contents": []
-    },
+    "Data": {},
     "Code": 0,
     "Server":`${Server}`,
     "DbName":`${DbName}`,
     "Result": "",
-    "Value": "",
+    "Value": `${_value}`,
     "TimeTaken": ""
   };
-  let response = await postDataToAPI(`${inventory_url}/creat_get_by_CT_TIME`,post_data);
+  let response = await postDataToAPI(`${transactions_url}/serch`,post_data);
   return response;
 }
-async function creat_get_by_CT_TIME_S(date)
+async function serch_med_information_by_code(CODE)
 {
+ 
+
   const post_data = 
   {
-    "Data": {
-      "GUID": null,
-      "IC_SN": null,
-      "CT": null,
-      "CT_TIME": `${date}`,
-      "START_TIME": null,
-      "END_TIME": null,
-      "STATE": null,
-      "Contents": []
-    },
+    "Data": {},
     "Code": 0,
     "Server":`${Server}`,
     "DbName":`${DbName}`,
     "Result": "",
-    "Value": "1",
+    "Value": `${CODE}`,
     "TimeTaken": ""
   };
-  let response = await postDataToAPI(`${inventory_url}/creat_get_by_CT_TIME`,post_data);
-  return response;
-}
-async function creat_get_by_CT_TIME_ST_END(date_ST,date_END)
-{
-  const post_data = 
-  {
-    "Data": {
-      "GUID": null,
-      "IC_SN": null,
-      "CT": null,
-      "CT_TIME": null,
-      "START_TIME": null,
-      "END_TIME": null,
-      "STATE": null,
-      "Contents": []
-    },
-    "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
-    "Result": "",
-    "Value": `${date_ST},${date_END}`,
-    "TimeTaken": ""
-  };
-  let response = await postDataToAPI(`${inventory_url}/creat_get_by_CT_TIME_ST_END`,post_data);
+  let response = await postDataToAPI(`${transactions_url}/serch_med_information_by_code`,post_data);
   return response;
 }
 
-async function creat_get_by_IC_SN(IC_SN)
+async function download_excel_by_serch(CODE, start_time, end_time)
 {
+  var _value = '';
+  if(CODE == null)
+  {
+    return null;
+  }
+  if(start_time == null || end_time == null)
+  {
+    _value = `${CODE}`;
+  }
+  else
+  {
+    _value = `${CODE},${start_time},${end_time}`;
+  }
   const post_data = 
   {
-    "Data": {
-      "GUID": null,
-      "IC_SN": `${IC_SN}`,
-      "CT": null,
-      "CT_TIME": null,
-      "START_TIME": null,
-      "END_TIME": null,
-      "STATE": null,
-      "Contents": []
-    },
+    "Data": {},
     "Code": 0,
     "Server":`${Server}`,
     "DbName":`${DbName}`,
     "Result": "",
-    "Value": "",
+    "Value": `${_value}`,
     "TimeTaken": ""
   };
-  var _url = `${inventory_url}/creat_get_by_IC_SN`;
-  console.log(_url)
-  let response = await postDataToAPI(`${_url}`,post_data);
-  return response;
-}
-async function creat_delete_by_IC_SN(IC_SN)
-{
-  const post_data = 
-  {
-    "Data": {
-      "GUID": null,
-      "IC_SN": `${IC_SN}`,
-      "CT": null,
-      "CT_TIME": null,
-      "START_TIME": null,
-      "END_TIME": null,
-      "STATE": null,
-      "Contents": []
-    },
-    "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
-    "Result": "",
-    "Value": "",
-    "TimeTaken": ""
-  };
-  var _url = `${inventory_url}/creat_delete_by_IC_SN`;
-  console.log(_url)
-  let response = await postDataToAPI(`${_url}`,post_data);
-  return response;
-}
-async function creat_lock_by_IC_SN(IC_SN)
-{
-  const post_data = 
-  {
-    "Data": {
-      "GUID": null,
-      "IC_SN": `${IC_SN}`,
-      "CT": null,
-      "CT_TIME": null,
-      "START_TIME": null,
-      "END_TIME": null,
-      "STATE": null,
-      "Contents": []
-    },
-    "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
-    "Result": "",
-    "Value": "",
-    "TimeTaken": ""
-  };
-  var _url = `${inventory_url}/creat_lock_by_IC_SN`;
-  console.log(_url)
-  let response = await postDataToAPI(`${_url}`,post_data);
-  return response;
-}
-async function creat_unlock_by_IC_SN(IC_SN)
-{
-  const post_data = 
-  {
-    "Data": {
-      "GUID": null,
-      "IC_SN": `${IC_SN}`,
-      "CT": null,
-      "CT_TIME": null,
-      "START_TIME": null,
-      "END_TIME": null,
-      "STATE": null,
-      "Contents": []
-    },
-    "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
-    "Result": "",
-    "Value": "",
-    "TimeTaken": ""
-  };
-  var _url = `${inventory_url}/creat_unlock_by_IC_SN`;
-  console.log(_url)
-  let response = await postDataToAPI(`${_url}`,post_data);
-  return response;
-}
-async function creat_auto_add()
-{
-  const post_data = 
-  {
-    "Data": {
-      "GUID": null,
-      "IC_SN": null,
-      "CT": null,
-      "CT_TIME": null,
-      "START_TIME": null,
-      "END_TIME": null,
-      "STATE": null,
-      "Contents": []
-    },
-    "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
-    "TableName":`${BalsicDeviceTableName}`,
-    "Result": "",
-    "Value": "",
-    "TimeTaken": ""
-  };
-  var _url = `${inventory_url}/creat_auto_add`;
-  console.log(post_data)
-  let response = await postDataToAPI(`${_url}`,post_data);
-  return response;
-}
-async function sub_content_get_by_content_GUID(_GUID)
-{
-  const post_data = 
-  {
-    "Data": {
-      "GUID": `${_GUID}`,
-
-    },
-    "Master_GUID": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
-    "TableName":`${BalsicDeviceTableName}`,
-    "Result": "",
-    "Value": "",
-    "TimeTaken": ""
-  };
-  var _url = `${inventory_url}/sub_content_get_by_content_GUID`;
-  console.log(post_data)
-  let response = await postDataToAPI(`${_url}`,post_data);
-  return response;
-}
-
-async function sub_content_add_single(_Master_GUID, _END_QTY, _OP)
-{
-  const post_data = 
-  {
-    "Data": {
-      "Master_GUID": `${_Master_GUID}`,
-      "END_QTY": `${_END_QTY}`,
-      "OP": `${_OP}`
-    },
-    "Master_GUID": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
-    "TableName":`${BalsicDeviceTableName}`,
-    "Result": "",
-    "Value": "",
-    "TimeTaken": ""
-  };
-  var _url = `${inventory_url}/sub_content_add_single`;
-  console.log(post_data)
-  let response = await postDataToAPI(`${_url}`,post_data);
-  return response;
-}
-async function content_get_by_content_GUID(_GUID)
-{
-  const post_data = 
-  {
-    "Data": {
-      "GUID": `${_GUID}`,
-   
-    },
-    "Master_GUID": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
-    "TableName":`${BalsicDeviceTableName}`,
-    "Result": "",
-    "Value": "",
-    "TimeTaken": ""
-  };
-  var _url = `${inventory_url}/content_get_by_content_GUID`;
-  console.log(post_data)
-  let response = await postDataToAPI(`${_url}`,post_data);
-  return response;
-}
-async function download_excel_by_IC_SN(IC_SN)
-{
-  const post_data = 
-  {
-    "Data": {
-      "GUID": null,
-      "IC_SN": `${IC_SN}`,
-      "CT": null,
-      "CT_TIME": null,
-      "START_TIME": null,
-      "END_TIME": null,
-      "STATE": null,
-      "Contents": []
-    },
-    "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
-    "Result": "",
-    "Value": "",
-    "TimeTaken": ""
-  };
-  var _url = `${inventory_url}/download_excel_by_IC_SN`;
-  console.log(_url)
-  await downloadExcel(_url,post_data, `${IC_SN}_盤點管理`);
+  var _url = `${transactions_url}/download_excel_by_serch`;
+  console.log("post_data",post_data)
+  await downloadExcel(_url,post_data, `${CODE}_管制結存`);
 }

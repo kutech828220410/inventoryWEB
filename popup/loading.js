@@ -83,6 +83,7 @@ function GetLoadingpopup()
 function showLoadingPopup() 
 {
   const loadingPopup = document.querySelector('#loadingPopup');
+  document.body.style.pointerEvents = "none";
   loadingPopup.style.display = "block";
 }
 
@@ -91,4 +92,6 @@ function hideLoadingPopup()
 {
   const loadingPopup = document.querySelector('#loadingPopup');
   loadingPopup.style.display = "none";
+  document.body.style.opacity = "1";
+  document.body.style.pointerEvents = "auto";
 }
