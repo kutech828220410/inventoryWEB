@@ -5,32 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>管制藥結存頁面</title>
   <link rel="stylesheet" href="main.css">
-  <script src="/ApiURL.js"></script>
-  <script src="/Function/WebApiFunc.js"></script>
+  <script src="../ApiURL.js"></script>
+  <script src="../Function/Basic.js"></script>
   <script src="../dist/JsBarcode.all.js"></script>
-  <script src="/Function/Basic.js"></script>
+  <script src="../svg/mySVG.js"></script>
+  <script src="../UI/H5_Date/map.js"></script>
+  <script src="../popup/loading.js"></script>
+
   <script src="jsonFunc.js"></script>
   <script src="main.js"></script>
   <script src="main_loadingdata.js"></script>
-  <script src="/svg/mySVG.js"></script>
-  <script type="text/javascript" src="/UI/H5_Date/datepicker.js"></script>
+  <script src="main_popup_find.js"></script>
+
 </head>
 <body>
-    <div class="report" id="report" style="width: 100%; height: 100%;">
+  
       <script>
-      const report = document.querySelector("#report");
-      report.style.display = "flex";
-      report.style.width = "100%";
-      report.style.justifyContent = "top";
-      report.style.flexDirection = "column";
-      report.style.backgroundColor = "#";
-      const header_div = get_header();
-      report.appendChild(header_div);
-      const main_div = get_main();
-      report.appendChild(main_div);
+          // document.body.position = "absolute";
+          // document.body.style.display = "flex";
+          // document.body.style.flexDirection = "row";
+          const header_div = get_header();
+          document.body.appendChild(header_div);
+          const main_div = get_main();
+          document.body.appendChild(main_div);
+          const popup_find_div = get_popup_find();
+          document.body.appendChild(popup_find_div);
+          Set_popup_visible(true);
 
-      add_divs();
-      
 
       </script>
    
@@ -38,50 +39,51 @@
   <div class="under-line">
     <B> Copyright ©2023 鴻森整合機電有限公司 </B>
   </div>
-</div>
   
   <script>
-   $(function()
-   {
-        $('.find_start_date_input').focus(function(event) 
+  var barcode_value = '';
+    // 監聽頁面的keydown事件
+     window.addEventListener('keydown', function(event) {
+        // 判斷按下的按鍵是否是Tab鍵或Enter鍵
+        console.log(event.key);
+        if (event.key === 'Tab' || event.key === 'Enter') {
+        // 防止頁面重新載入
+            event.preventDefault();
+            const parsedCode = parseBarcode(barcode_value);
+            
+            // 取得輸入框的值
+            barcode_value = '';
+            // 解析藍牙掃描器返回的數據
+            if(parsedCode != '')
+            {
+                Set_popup_visible(true);
+                const find_code_input = document.querySelector("#find_code_input");
+                find_code_input.value = parsedCode;
+                button_currentDate_Click();
+            }         
+        }
+        else
         {
-          /* Act on the event */
-          $(this).date(
-          {
-            beginyear : 2022,
-            curdate:true
-          },function()
-          {
-            //按下確定
-          },function()
-          {
-            //按下取消
-          });
-        });
-        $('.find_end_date_input').focus(function(event) 
-        {
-          /* Act on the event */
-          $(this).date(
-          {
-            beginyear : 2022,
-            curdate:true
-          },function()
-          {
-            //按下確定
-          },function()
-          {
-            //按下取消
-          });
-        });
+            const isValid = /^[a-zA-Z0-9]+$/.test(event.key);
+            const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
+            const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);
+            
 
-  }) 
-  signalR_init();
-  document.addEventListener('ReceivedEvent', function (event) {
-    console.log('Custom event triggered:', event);
+            if (isValid && (!isControlKey||isNumPadlKey)) {
+                // 將解析後的條碼值設定為輸入框的值
+                barcode_value += event.key;
+            } 
+        }
+    });
 
-    // 在自定义事件被触发时执行的逻辑
-    // 添加您的代码在这里
-  });  
+    // 解析帶有分隔符的字符串
+    function parseBarcode(scannedCode) 
+    {
+      const delimiter = /[\n\r]/g;
+      const matches = scannedCode.split(delimiter);
+      return matches[0];
+    }
+
   </script>
   
   </body>
