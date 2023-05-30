@@ -238,7 +238,7 @@ function get_header()
   header_contorls_findbtn.style.marginTop = "5px";
   header_contorls_findbtn.style.marginRight = "2px";
   header_contorls_findbtn.style.display = "flex";
-  const header_contorls_donebtn = Get_find_check_SVG("100%", "100%", "70%","100%","black","");
+  const header_contorls_donebtn = Get_download_SVG("100%", "100%", "70%","100%","black","");
   header_contorls_donebtn.id = "header_contorls_donebtn";
   header_contorls_donebtn.className = "header_contorls";
   header_contorls_donebtn.style.width = "60px";
@@ -481,7 +481,7 @@ balqty_div.style.flexDirection = "";
 const invqty_div = document.createElement("div");
 invqty_div.id = "invqty_div";
 invqty_div.className = "invqty_div";
-invqty_div.innerText = "盤點量";
+invqty_div.innerText = "盲盤量";
 invqty_div.style.borderStyle = "ridge";
 invqty_div.style.fontWeight = "bolder";
 invqty_div.style.textAlign = "center";

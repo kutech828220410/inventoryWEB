@@ -65,38 +65,29 @@
             // 解析藍牙掃描器返回的數據
             if(parsedCode != '' && document.getElementById("toggleCK").checked)
             {
-                searchItem(data.Data[0].Contents, parsedCode).then((result) =>
+                const druginfo_ary = document.querySelectorAll(".druginfo");
+                console.log("parsedCode",parsedCode);
+                for(var i = 0 ; i < data.Data[0].Contents.length ; i++)
                 {
-
-                  
-                  if(result.length == 0) return;
-                  
-                  if(result.length == 1)
+                  const GUID = data.Data[0].Contents[i].GUID;
+                  const BARCODE1 = data.Data[0].Contents[i].BARCODE1;
+                  const BARCODE2 = data.Data[0].Contents[i].BARCODE2;
+                  const SKDIACODE =  data.Data[0].Contents[i].SKDIACODE;
+                  const CODE = data.Data[0].Contents[i].CODE;
+                  console.log("CODE",CODE);
+                  if(parsedCode == BARCODE1 || parsedCode == BARCODE2 || parsedCode == SKDIACODE || parsedCode == CODE )
                   {
-                    var druginfo = document.querySelectorAll(".druginfo");
-                    if(druginfo.length == 0) return;
-                    for(var i = 0 ; i < druginfo.length ; i++)
+                    for(var k = 0 ; k< druginfo_ary.length ; k++)
                     {
-                      var GUID = druginfo[i].getAttribute("GUID");
-                      if(GUID == result[0].GUID)
-                      {
-                        druginfo[i].onclick();
-                        return;
-                      }  
+                        const _GUID = druginfo_ary[k].getAttribute("GUID");
+                        if(_GUID == GUID)
+                        {
+                          druginfo_ary[k].onclick();
+                        }
                     }
-                   
                   }
-                  else
-                  {
-                    search_By_name(result[0].NAME);
-                    return;
-
-
-                  }                              
-                }).catch((error) => 
-                {
-                  console.error(error);
-                });
+                }
+               
             }         
         }
         else

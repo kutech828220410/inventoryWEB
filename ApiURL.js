@@ -1,4 +1,4 @@
-const api_ip = `http://123.194.228.222:4433/`;
+const api_ip = `http://103.1.221.188:4433/`;
 
 const Enum_Target =
 {
