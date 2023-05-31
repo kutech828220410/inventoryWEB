@@ -1,4 +1,79 @@
-const api_ip = `http://123.194.228.222:4433/`;
+var flag_check_connection_OK = false;
+
+const ipadress1 = '123.194.228.221:4433';
+const ipadress2 = '123.194.228.222:4433';
+
+var api_ip = `http://${ipadress1}/`; 
+var Chat_url = `${api_ip}chatHub`;
+var MessageAPI_url = `${api_ip}api/Message`;
+var inventory_url = `${api_ip}api/inventory`;
+var transactions_url = `${api_ip}api/transactions`;
+
+async function set_ip()
+{
+    if(flag_check_connection_OK) 
+    {
+        console.log('flag_check_connection_OK',flag_check_connection_OK);
+        return;
+    }
+    var api_ip_temp;
+    if(await pingIP(ipadress1))
+    {
+        api_ip_temp = `http://${ipadress1}/`;     
+        flag_check_connection_OK = true;
+    }
+    else if(await pingIP(ipadress2))
+    {
+        api_ip_temp = `http://${ipadress2}/`;     
+        flag_check_connection_OK = true;
+    }
+    if(flag_check_connection_OK)
+    {
+        api_ip = api_ip_temp;
+        console.log("成功設定IP : " ,api_ip)  
+        
+        MessageAPI_url = `${api_ip}api/Message`;
+        Chat_url = `${api_ip}chatHub`;
+        inventory_url = `${api_ip}api/inventory`;
+        transactions_url = `${api_ip}api/transactions`;
+    }
+}
+async function pingIP(ipAddress, timeout = 1000) 
+{
+    const url = `http://${ipAddress}/api/test`;
+    console.log("getDataFromAPI", url);
+  
+    const controller = new AbortController();
+    const signal = controller.signal;
+  
+    const timeoutId = setTimeout(() => {
+      controller.abort();
+    }, timeout);
+  
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        signal: signal
+      });
+  
+      clearTimeout(timeoutId);
+  
+      if (response.ok) {
+        console.log(response);
+        return true;
+      } else {
+        throw new Error('Network response was not ok.');
+      }
+    } catch (error) {
+      console.error('There was a problem with the fetch operation:', error);
+      return false;
+    }
+}
+
+
 
 const Enum_Target =
 {
@@ -24,7 +99,7 @@ else if(Target == Enum_Target.Phar)
     BalsicDeviceTableName = Enum_BasicDeviceTableName.Phar;
 }
 
-var MessageAPI_url = `${api_ip}api/Message`;
+
 
 var person_page_url = 'http://103.1.221.188:4433/api/person_page';
 var session_login_post_url = 'http://103.1.221.188:4433/api/session';
@@ -36,5 +111,5 @@ var inspection_update_post_url = 'http://103.1.221.188:4433/api/inspection/updat
 var inspection_get_od_Date = 'http://103.1.221.188:4433/api/inspection/get_od_Date';
 var inspection_download_excel = 'http://103.1.221.188:4433/api/inspection/download_excel';
 
-var inventory_url = `${api_ip}api/inventory`;
-var transactions_url = `${api_ip}api/transactions`;
+
+

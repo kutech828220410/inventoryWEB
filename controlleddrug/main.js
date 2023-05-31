@@ -11,6 +11,7 @@ function handleResize()
 }
 async function load()
 {
+  await set_ip();
   let rowNum = 1;
   const Loadingpopup = GetLoadingpopup();
   document.body.appendChild(Loadingpopup);

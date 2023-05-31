@@ -8,11 +8,11 @@
 
 loadScript("../signalr/dist/browser/signalr.js");
 
-var Chat_url = `${api_ip}chatHub`;
-
 var connection ;
-function signalR_init()
+async function signalR_init()
 {
+    await set_ip();
+    console.log('Chat_url' , Chat_url);
     connection = new signalR.HubConnectionBuilder()
     .withUrl(`${Chat_url}`)
     .build();

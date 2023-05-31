@@ -29,6 +29,11 @@ async function emgApplicationClick() {
   
 }
 
+async function controlledBtnClick() 
+{
+  location.href = "../controlleddrug/main.html";
+}
+
 
 // function setButtonPermissions(loggedlevel) {
 //   var inventoryButton = document.getElementById("inventory-btn");

@@ -4,6 +4,7 @@ let data = [];
 window.onload = load;
 async function load()
 { 
+    await set_ip();
     const Loadingpopup = GetLoadingpopup();
     document.body.appendChild(Loadingpopup);
     Loadingpopup.style.zIndex = "99999";
