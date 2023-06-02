@@ -1,6 +1,12 @@
 let userData = [];
 let session_login = [];
 
+window.onload = load;
+
+async function load()
+{ 
+    await set_ip();
+}
 
 async function verifyUser(event) {
     event.preventDefault(); // 阻止表单的自动提交

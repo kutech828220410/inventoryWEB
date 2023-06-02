@@ -2,10 +2,12 @@
 
 
 
-window.onload = function() {
+window.onload = load;
 
-  // 在這裡撰寫當網頁載入完成後要執行的程式碼
-};
+async function load()
+{ 
+    await set_ip();
+}
 window.addEventListener('load', function() {
   // 在這裡撰寫當網頁載入完成後要執行的程式碼
   var loggedlevel = sessionStorage.getItem('loggedlevel');

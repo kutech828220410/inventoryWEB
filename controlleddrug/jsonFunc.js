@@ -54,7 +54,7 @@ async function download_excel_by_serch(CODE, start_time, end_time)
   {
     return null;
   }
-  if(start_time == null || end_time == null)
+  if(start_time == '' || end_time == '')
   {
     _value = `${CODE}`;
   }

@@ -1,13 +1,17 @@
 var flag_check_connection_OK = false;
+const ipadress1 = '123.194.228.222:4433';
+const ipadress2 = '103.1.221.188:4433';
 
-const ipadress1 = '123.194.228.221:4433';
-const ipadress2 = '123.194.228.222:4433';
 
 var api_ip = `http://${ipadress1}/`; 
 var Chat_url = `${api_ip}chatHub`;
 var MessageAPI_url = `${api_ip}api/Message`;
 var inventory_url = `${api_ip}api/inventory`;
 var transactions_url = `${api_ip}api/transactions`;
+
+var session_login_post_url = `${api_ip}api/session`;
+var session_check_post_url = `${api_ip}api/session/check`;
+var session_logout_post_url = `${api_ip}api/session/logout`;
 
 async function set_ip()
 {
@@ -36,6 +40,9 @@ async function set_ip()
         Chat_url = `${api_ip}chatHub`;
         inventory_url = `${api_ip}api/inventory`;
         transactions_url = `${api_ip}api/transactions`;
+        session_login_post_url = `${api_ip}api/session`;
+        session_check_post_url = `${api_ip}api/session/check`;
+        session_logout_post_url = `${api_ip}api/session/logout`;
     }
 }
 async function pingIP(ipAddress, timeout = 1000) 
@@ -102,9 +109,7 @@ else if(Target == Enum_Target.Phar)
 
 
 var person_page_url = 'http://103.1.221.188:4433/api/person_page';
-var session_login_post_url = 'http://103.1.221.188:4433/api/session';
-var session_check_post_url = 'http://103.1.221.188:4433/api/session/check';
-var session_logout_post_url = 'http://103.1.221.188:4433/api/session/logout';
+
 
 var inspection_get_url = 'http://103.1.221.188:4433/api/inspection';
 var inspection_update_post_url = 'http://103.1.221.188:4433/api/inspection/update';
