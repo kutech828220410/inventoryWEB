@@ -6,7 +6,7 @@
 // document.write('<script src="../signalr/dist/browser/signalr.js"></script>'); //注意,此處須為相對於index.html的絕對路徑
 //  document.write('../ApiURL.js'); //注意,此處須為相對於index.html的絕對路徑
 
-loadScript("../signalr/dist/browser/signalr.js");
+loadScript("../../signalr/dist/browser/signalr.js");
 
 var connection ;
 async function signalR_init()

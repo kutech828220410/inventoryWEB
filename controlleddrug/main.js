@@ -89,7 +89,8 @@ function handleResize()
   Set_popup_find_position();
 }
 
-function Set_main_div_enable(value) {
+function Set_main_div_enable(value) 
+{
     const main_div = document.querySelector('#main_div');
     if (value) {
       showLoadingPopup();
@@ -115,13 +116,13 @@ async function download_btn()
 function findbtn_Click()
 {
   
-  if(popup_background_div.style.visibility  != 'visible')
+  if(popup_find_div.style.visibility  != 'visible')
   {
-    Set_popup_visible(true);
+    popup_find_div.Set_Visible(true);
   }
   else
   {
-    Set_popup_visible(false);
+    popup_find_div.Set_Visible(false);
 
   }
 }

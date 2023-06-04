@@ -27,15 +27,23 @@ function page_Init(data) {
   const main_div = document.querySelector('#main_div');
   main_div.innerHTML = "";
 
-  for (var i = 0; i < data.Data.length; i++) {
-    const all_div = creat_all_div(i, data.Data[i]);
-  }
-  if (data.Data.length == 0) {
+  
+  if (data.Data.length == 0) 
+  {
     const NoDataDiv = getNoDataDiv();
     console.log(NoDataDiv);
     main_div.appendChild(NoDataDiv);
   }
+  else
+  {
+    for (var i = 0; i < data.Data.length; i++) 
+    {
+      const all_div = creat_all_div(i, data.Data[i]);
+      main_div.appendChild(all_div);
+    }
+  
 
+  }
   setUserText();
 }
 function Set_main_div_enable(value) {

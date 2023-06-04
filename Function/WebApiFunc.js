@@ -1,6 +1,4 @@
 
-
-
 async function getDataFromAPI(url)
 {
     console.log("getDataFromAPI",url);

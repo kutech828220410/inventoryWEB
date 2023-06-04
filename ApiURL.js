@@ -1,6 +1,8 @@
 var flag_check_connection_OK = false;
 const ipadress1 = '123.194.228.222:4433';
-const ipadress2 = '103.1.221.188:4433';
+const ipadress2 = '220.135.128.247:4433';
+
+
 
 
 var api_ip = `http://${ipadress1}/`; 

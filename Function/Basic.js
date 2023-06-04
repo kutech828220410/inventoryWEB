@@ -1,7 +1,28 @@
-loadScript("../Function/WebApiFunc.js");
-loadScript("../Function/dateConvert.js");
+loadScript("../../Function/WebApiFunc.js");
+loadScript("../../Function/dateConvert.js");
+const DeviceType = 
+{
+  MOBILE: "Mobile Phone",
+  TABLET: "Tablet",
+  COMPUTER: "Computer Web Page"
+};
+
+var device = checkDeviceType();
+var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+var screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 
 
+function checkDeviceType() {
+  var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+  if (screenWidth < 768) {
+    return DeviceType.MOBILE;
+  } else if (screenWidth >= 768 && screenWidth < 1024) {
+    return DeviceType.MOBILE;
+  } else {
+    return DeviceType.COMPUTER;
+  }
+}
 
   function getConfigFromURL(url , config_name) 
   {

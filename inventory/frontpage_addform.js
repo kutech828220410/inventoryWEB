@@ -15,7 +15,6 @@ function creat_all_div(_index , item)
     all_div.style.paddingBottom = "10px";
     all_div.style.borderBottom = "2px solid gray";
     all_div.style.flexDirection = "column";
-    main_div.appendChild(all_div);
     //編號刪除按鈕框
     const formnnum_delbtn_div = document.createElement("div");
     formnnum_delbtn_div.className = "formnnum_delbtn_div";

@@ -6,7 +6,7 @@
  */
 'use strict';
 
-document.write(`<link href="../UI/H5_Date/css/datepicker.css" rel="stylesheet">`);
+document.write(`<link href="../../UI/H5_Date/css/datepicker.css" rel="stylesheet">`);
 
 (function(root, factory) {
   var $ = root.Zepto ? 'zepto' : 'jquery';

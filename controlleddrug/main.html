@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>管制藥結存頁面</title>
   <link rel="stylesheet" href="main.css">
-  <script src="../ApiURL.js"></script>
-  <script src="../Function/Basic.js"></script>
-  <script src="../dist/JsBarcode.all.js"></script>
-  <script src="../svg/mySVG.js"></script>
-  <script src="../UI/H5_Date/map.js"></script>
-  <script src="../popup/loading.js"></script>
+  <script src="../../ApiURL.js"></script>
+  <script src="../../Function/Basic.js"></script>
+  <script src="../../dist/JsBarcode.all.js"></script>
+  <script src="../../svg/mySVG.js"></script>
+  <script src="../../UI/H5_Date/map.js"></script>
+  <script src="../../popup/map.js"></script>
 
   <script src="jsonFunc.js"></script>
   <script src="main.js"></script>
@@ -21,18 +21,17 @@
 <body>
   
       <script>
-          // document.body.position = "absolute";
-          // document.body.style.display = "flex";
-          // document.body.style.flexDirection = "row";
+
+    
+          document.body.style.position = 'absolute';
           const header_div = get_header();
           document.body.appendChild(header_div);
           const main_div = get_main();
-          document.body.appendChild(main_div);
+          document.body.appendChild(main_div);    
+          
           const popup_find_div = get_popup_find();
           document.body.appendChild(popup_find_div);
-          Set_popup_visible(true);
-
-
+          popup_find_div.Set_Visible(true);
       </script>
    
 

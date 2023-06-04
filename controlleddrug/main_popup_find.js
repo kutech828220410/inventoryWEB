@@ -1,44 +1,6 @@
 function get_popup_find()
 {
-  const popup_background_div = document.createElement("div");
-  popup_background_div.id = "popup_background_div";
-  popup_background_div.className = "popup_background_div";
-  popup_background_div.style.backgroundColor = "gray";
-  popup_background_div.style.width = "100%";
-  popup_background_div.style.height = "100%";
-  popup_background_div.position = "absolute";
-  // popup_background_div.style.visibility = 'hidden';
-//   popup_background_div.style.transition = "opacity 0.2s, visibility 0.2s 0s";
-  popup_background_div.style.display = "";
-  popup_background_div.style.top = "0";
-  popup_background_div.style.left = "0";
-  popup_background_div.style.zIndex = "99999";
-  document.body.appendChild(popup_background_div);
-
-  const popup_find_div = document.createElement("div");
-  popup_find_div.id = "popup_find_div";
-  popup_find_div.className = "popup_find";
-  popup_find_div.style.backgroundColor = "#FFF";
-  popup_find_div.style.width = "300px";
-  popup_find_div.style.height = "250px";
-  popup_find_div.style.position = "fixed";
-  popup_find_div.style.top = "50%";
-  popup_find_div.style.left = "50%";
-  popup_find_div.style.transform = "translate(-50%, -50%)";
-  popup_find_div.style.display = "block";
-  popup_find_div.style.visibility = '';
-  popup_find_div.style.borderRadius = "5px";
-  popup_find_div.style.border = "solid 2px";
-  popup_find_div.style.flexDirection = "column"
-  popup_find_div.style.opacity = "0" ;
-  popup_find_div.style.transition = "opacity 0.2s, visibility 0.2s 0s";
-  popup_find_div.style.zIndex = "10";
-  popup_find_div.style.visibility = 'visible';
-  popup_find_div.style.paddingTop  = "10px";
-
-  popup_find_div.style.paddingRight  = "10px";
-
-  popup_background_div.appendChild(popup_find_div);
+  const popup_find_div = new Basic_popup_Div('popup_find_div','popup_find_div','300px','260px');
 
   const find_code_input_div = document.createElement("div")
   find_code_input_div.id = "find_code_input_div";
@@ -48,7 +10,6 @@ function get_popup_find()
   find_code_input_div.style.alignItems = "center";
   find_code_input_div.style.justifyContent = "left";
   find_code_input_div.style.display = "flex";
-//   find_code_input_div.style.backgroundColor = "#000FFF";
 
   const pill_svg = Get_pill_SVG("100%", "100%", "52px","100%","black","");
   pill_svg.id = "pill_svg";
@@ -73,7 +34,7 @@ function get_popup_find()
 
   find_code_input_div.appendChild(pill_svg);
   find_code_input_div.appendChild(find_code_input);
-  popup_find_div.appendChild(find_code_input_div);
+
   
 //開始日期
   const find_start_date_div = document.createElement("div")
@@ -202,22 +163,28 @@ function get_popup_find()
   find_check_div.appendChild(button_lastDate);
   find_check_div.appendChild(checksvg);
 
-
-  popup_find_div.appendChild(find_start_date_div);
-  popup_find_div.appendChild(find_end_date_div);
-  popup_find_div.appendChild(find_check_div);
+  popup_find_div.AddControl(find_code_input_div);
+  popup_find_div.AddControl(find_start_date_div);
+  popup_find_div.AddControl(find_end_date_div);
+  popup_find_div.AddControl(find_check_div);
 
 
 
  
 
 
-  
+  console.log(123);
   button_currentDate.onclick = button_currentDate_Click;
   button_lastDate.onclick = button_lastDate_Click;
   checksvg.onclick = checksvg_Click;
+  popup_find_div.onVisible = popup_find_onVisible;
   return popup_find_div;
 }  
+function popup_find_onVisible()
+{
+  const find_code_input = document.querySelector("#find_code_input");
+  find_start_date_input.value = "";
+}
 async function button_currentDate_Click(event)
 {
    const currentDate = getCurrentDate();
@@ -274,7 +241,7 @@ async function checksvg_Click(event)
     }
     if(data.Data.length != 0)
     {
-    Set_popup_visible(false);
+      popup_find_div.Set_Visible(false);
 
     page_Init();
     }
@@ -285,32 +252,12 @@ async function checksvg_Click(event)
 
 
 
-
     Set_main_div_enable(false);
   
 
 }
-function Set_popup_visible(visible)
-{
 
-    Set_popup_find_position();
-    if(visible)
-    {
-        const find_code_input = document.querySelector("#find_code_input");
-        find_start_date_input.value = "";
-        popup_find_div.style.display = "block";
-        popup_find_div.style.opacity = "1" ;
-        popup_find_div.style.visibility  = "visible";
-        document.body.style.overflow = "hidden";
-    }
-    else
-    {
-        popup_find_div.style.display = "block";
-        popup_find_div.style.opacity = "0" ;
-        popup_find_div.style.visibility = "hidden";
-        document.body.style.overflow = "";
-    }
-}
+
 
 function Set_popup_find_position()
 {

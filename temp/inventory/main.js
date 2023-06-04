@@ -1,24 +1,59 @@
-// let data;
-// window.onload = load;
-// window.addEventListener('resize', handleResize);
+let response = [];
+let data = [];
+
+window.onload = load;
 
 function handleResize() 
 {
   Set_popup_find_position();
 }
-// async function load()
-// {
-//     let rowNum = 1;  
-//     data = await creat_get_by_CT_TIME_L(getCurrentDate());
-//     console.log(data);
+async function load()
+{ 
+    await set_ip();
+    const Loadingpopup = GetLoadingpopup();
+    document.body.appendChild(Loadingpopup);
+    var IC_SN = sessionStorage.getItem('IC_SN');  
+    IC_SN = '20230527-0';  
+    Set_main_div_enable(true);
+    data = await creat_get_by_IC_SN(IC_SN);
+    page_Init(data);
+    console.log(data);
+    Set_main_div_enable(false);
+}
+function page_Init(data) {
+  console.log(data);
+  const main_div = document.querySelector('#main_div');
+  main_div.innerHTML = "";
 
-//     const _per_all_div = document.querySelectorAll(".all_div");
-//     for(var i = 0 ; i < data.Data.length ; i++)
-//     {
-//         const all_div = creat_all_div(i, data.Data[i]);
-//     }
-//     setUserText();
-// }
+  for (var i = 0; i < data.Data[0].Contents.length; i++)
+  {
+    const all_div = creat_row_div(i, data.Data[0].Contents[i]);
+    main_div.appendChild(all_div);
+  }
+ 
+  // if (data.Data.length == 0) {
+  //   const NoDataDiv = getNoDataDiv();
+  //   console.log(NoDataDiv);
+  //   main_div.appendChild(NoDataDiv);
+  // }
+
+  // setUserText();
+}
+function Set_main_div_enable(value) {
+  const main_div = document.querySelector('#main_div');
+  if (value) {
+    showLoadingPopup();
+    //  document.body.style.opacity = "0.5"; 
+    document.body.style.pointerEvents = "none";
+  }
+  else {
+    hideLoadingPopup();
+    document.body.style.opacity = "1";
+    document.body.style.pointerEvents = "auto";
+
+  }
+}
+
 async function done_Click() 
 {
   location.href = "frontpage.html"
@@ -297,7 +332,11 @@ function get_main() {
   main_div.className = "main_div";
   main_div.style.width = "100%";
   main_div.style.height = "100%";
-  main_div.style.justifyContent = "flex-start";
+  main_div.style.display = "flex";
+  main_div.style.justifyContent = "left";
+  main_div.style.flexWrap = "wrap";
+  if(device == DeviceType.MOBILE) main_div.style.flexDirection = "row";
+  if(device == DeviceType.COMPUTER) main_div.style.flexDirection = "row";
   main_div.style.marginTop = "100px";
   main_div.style.marginBottom = "30px";
   return main_div;
@@ -326,62 +365,7 @@ function popup_input_div()
 
     return popup_input_div;
 }
-// function get_main()
-// {
-//   const main_div = document.createElement("div");
-//   main_div.id = "main_div";
-//   main_div.className = "main_div";
-//   main_div.style.width = "100%";
-//   main_div.style.height = "100%";
-//   main_div.style.backgroundColor = "#FFFFFF";
-  
-//   const code_qty_div = document.createElement("div");
-//   code_qty_div.id = "code_qty_div";
-//   code_qty_div.className = "code_qty_div";
-//   code_qty_div.style.display = "flex";
-//   code_qty_div.style.textAlign = "left";
-//   code_qty_div.style.width = "100%";
-//   code_qty_div.style.height = "30px";
-//   code_qty_div.style.background = "linear-gradient(90deg, skyblue 0%, #fff 100%)" ;
-//   code_qty_div.style.justifyContent = "";
-//   code_qty_div.style.flexDirection = "";
-  
-//   const code_div = document.createElement("div");
-//   code_div.id = "code_div";
-//   code_div.className = "code_div";
-//   code_div.innerText = "藥品資訊";
-//   code_div.style.fontWeight = "bolder";
-//   code_div.style.paddingLeft= "10px";
-//   code_div.style.textAlign = "left";
-//   code_div.style.display = "flex";
-//   code_div.style.width = "65%";
-//   code_div.style.height = "100%";
-//   code_div.style.border = "";
-//   code_div.style.justifyContent = "";
-//   code_div.style.alignItems= "center";
-//   code_div.style.flexDirection = "";
 
-//   const qty_div = document.createElement("div");
-//   qty_div.id = "qty_div";
-//   qty_div.className = "qty_div";
-//   qty_div.innerText = "盤點數量";
-//   qty_div.style.fontWeight = "bolder";
-//   qty_div.style.paddingLeft= "10px";
-//   qty_div.style.textAlign = "left";
-//   qty_div.style.display = "flex";
-//   qty_div.style.width = "35%";
-//   qty_div.style.height = "100%";
-//   qty_div.style.alignItems= "center";
-//   qty_div.style.backgroundColor = "#";
-//   qty_div.style.justifyContent = "";
-//   qty_div.style.flexDirection = "";
-
-//   main_div.appendChild(code_qty_div);
-//   code_qty_div.appendChild(code_div);
-//   code_qty_div.appendChild(qty_div);
-
-//   return main_div;
-// }
 
 function setUserText()
 {
