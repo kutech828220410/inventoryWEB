@@ -8,26 +8,34 @@ function Replace_data_by_content(creat , content)
          creat.Contents[i] = content;
          const End_QTY_input = document.querySelector(`#End_QTY_input${i}`);
          End_QTY_input.innerText = content.END_QTY;
+
+         const row_div = document.querySelector(`#row_div${i}`);
+         row_div.style.backgroundColor = (creat.Contents[i].Sub_content.length == 0)? "white" : "#baf157";
       }
     }
 }
 function creat_row_div(_index , Contents) 
 {
-
     const row_div = document.createElement("div");
     row_div.setAttribute("GUID", `${Contents.GUID}`);
+    row_div.setAttribute("CODE", `${Contents.CODE}`);
+    row_div.setAttribute("SKDIACODE", `${Contents.SKDIACODE}`);
+    row_div.setAttribute("NAME", `${Contents.NAME}`);
+    row_div.setAttribute("CHT_NAME", `${Contents.CHT_NAME}`);
     row_div.className = "row_div";
     row_div.id = `row_div${_index}`;
-    row_div.style.display = "flex";
+    row_div.style.display = "inline-block";
     row_div.style.justifyContent = "top";
     row_div.style.width = "100%";
-
+    row_div.style.backgroundColor = (Contents.Sub_content.length == 0)? "white" : "#baf157";
     if(device == DeviceType.MOBILE) row_div.style.width = "100%";
     if(device == DeviceType.COMPUTER) row_div.style.width = "400px";
     row_div.style.height= "145px";
     row_div.style.border = "1px solid gray";
     row_div.style.flexDirection = "column";
     row_div.style.margin = "1px";
+    row_div.style.padding = "4px";
+    row_div.style.borderRadius = "2px";
     const Block1_div = get_block1_div(_index, Contents);
     const Block2_div = get_block2_div(_index, Contents);
 
@@ -38,11 +46,16 @@ function creat_row_div(_index , Contents)
     row_div.style.transition = "background-color 0.3s";
     row_div.addEventListener("mouseover", function() 
     {
-       row_div.style.backgroundColor = "lightblue";
+       row_div.style.border = "5px solid #1b05c7";
+       row_div.style.padding = "0px";
+       row_div.style.borderRadius = "5px";
     });
     row_div.addEventListener("mouseout", function()
     {
-       row_div.style.backgroundColor = ""; // 恢复默认颜色
+        row_div.style.border = "1px solid black";
+        row_div.style.padding = "4px";
+        row_div.style.borderRadius = "2px";
+
     });
 
     return row_div;
@@ -59,7 +72,6 @@ function row_div_onclick(event)
             return;
         }
     }
-  
 }
 
 function get_block1_div(_index, item)
@@ -256,11 +268,11 @@ function get_block2_div(_index, item)
     name_div.innerText = `(英)：${item.NAME}`;
     name_div.style.fontWeight = "bolder";
     name_div.style.paddingLeft = "5px";
-    name_div.style.color = "orange";
+    name_div.style.color = "#cf6800";
     name_div.style.display = "flex";
     name_div.style.justifyContent = "top";
     name_div.style.width = "100%";
-    name_div.style.height= "30px";
+    name_div.style.fontFamily = "微軟正黑體";
     //中文名
     const cht_name_div = document.createElement("div");
     cht_name_div.className = "cht_name_div"; 
@@ -268,11 +280,12 @@ function get_block2_div(_index, item)
     cht_name_div.innerText = `(中)：${item.CHT_NAME}`;
     cht_name_div.style.fontWeight = "bolder";
     cht_name_div.style.paddingLeft = "5px";
-    cht_name_div.style.color = "orange";
+    cht_name_div.style.color = "#cf6800";
     cht_name_div.style.display = "flex";
     cht_name_div.style.justifyContent = "top";
     cht_name_div.style.width = "100%";
     cht_name_div.style.height= "50%";
+    cht_name_div.style.fontFamily = "微軟正黑體";
 
     //Barcode
     const barcode_div = document.createElement("div");
@@ -287,26 +300,54 @@ function get_block2_div(_index, item)
     barcode_div.style.marginRight = "10px";
     barcode_div.style.marginLeft = "10px";
 
-    const barcodeCanvas = document.createElement("img");
-     barcodeCanvas.style.width = "120px";
-     barcodeCanvas.style.height= "50px";
-    barcodeCanvas.id = `barcodeCanvas${_index}`;
-    var Barcode= "";
-    if(Barcode == "")Barcode = item.BARCODE1;
-    if(Barcode == "")Barcode = item.BARCODE2;
-    if(Barcode == "")Barcode = item.SKDIACODE;
-    if(Barcode == "")Barcode = item.CODE;
-    JsBarcode(barcodeCanvas, Barcode, {
-      format: "code128",
-      width: "1",
-      height: "10",
-      displayValue: false,
-      margin: 0,
-    });
+    if(device == DeviceType.MOBILE) 
+    {
+        const barcodeCanvas = document.createElement("img");
+        barcodeCanvas.style.width = "120px";
+        barcodeCanvas.style.height= "50px";
+        barcodeCanvas.id = `barcodeCanvas${_index}`;
+        barcodeCanvas.className = `barcodeCanvas`;
+        var Barcode= "";
+        if(Barcode == "")Barcode = item.BARCODE1;
+        if(Barcode == "")Barcode = item.BARCODE2;
+        if(Barcode == "")Barcode = item.SKDIACODE;
+        if(Barcode == "")Barcode = item.CODE;
+        JsBarcode(barcodeCanvas, Barcode, {
+          format: "code128",
+          width: "1",
+          height: "1",
+          displayValue: false,
+          margin: 0,
+        });
+        barcode_div.appendChild(barcodeCanvas);
+    }
+    if(device == DeviceType.COMPUTER) 
+    {
+        barcodeCanvas = document.createElement("canvas");
+        barcodeCanvas.style.width = "120px";
+        barcodeCanvas.style.height= "50px";
+        barcodeCanvas.id = `barcodeCanvas${_index}`;
+        barcodeCanvas.className = `barcodeCanvas`;
+        var Barcode= "";
+        if(Barcode == "")Barcode = item.BARCODE1;
+        if(Barcode == "")Barcode = item.BARCODE2;
+        if(Barcode == "")Barcode = item.SKDIACODE;
+        if(Barcode == "")Barcode = item.CODE;
+        JsBarcode(barcodeCanvas, Barcode, {
+          format: "code128",
+          width: "1",
+          height: "1",
+          displayValue: false,
+          margin: 0,
+        });
+        barcode_div.appendChild(barcodeCanvas);
+    }
+
+
     drugInfo_div.appendChild(name_div);
     drugInfo_div.appendChild(cht_name_div);
 
-    barcode_div.appendChild(barcodeCanvas);
+  
 
     Block1_div.appendChild(drugInfo_div);
     Block1_div.appendChild(barcode_div);

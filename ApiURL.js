@@ -1,6 +1,6 @@
 var flag_check_connection_OK = false;
-const ipadress1 = '123.194.228.222:4433';
-const ipadress2 = '220.135.128.247:4433';
+const ipadress2 = '123.194.228.222:4433';
+const ipadress1 = 'www.ketech.tw:4434';
 
 
 
@@ -45,7 +45,9 @@ async function set_ip()
         session_login_post_url = `${api_ip}api/session`;
         session_check_post_url = `${api_ip}api/session/check`;
         session_logout_post_url = `${api_ip}api/session/logout`;
+        return;
     }
+    set_ip();
 }
 async function pingIP(ipAddress, timeout = 1000) 
 {
@@ -77,7 +79,7 @@ async function pingIP(ipAddress, timeout = 1000)
         throw new Error('Network response was not ok.');
       }
     } catch (error) {
-      console.error('There was a problem with the fetch operation:', error);
+      console.error(`PING 連結失敗! ${ipAddress}`, error);
       return false;
     }
 }

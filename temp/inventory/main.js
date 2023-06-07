@@ -1,6 +1,7 @@
 let response = [];
 let data = [];
-
+var loging_name = "測試";
+var current_IC_SN = "";
 window.onload = load;
 
 function handleResize() 
@@ -14,13 +15,15 @@ async function load()
     document.body.appendChild(Loadingpopup);
     var IC_SN = sessionStorage.getItem('IC_SN');  
     IC_SN = '20230527-0';  
+    current_IC_SN = IC_SN;
+
     Set_main_div_enable(true);
     data = await creat_get_by_IC_SN(IC_SN);
     page_Init(data);
-    console.log(data);
     Set_main_div_enable(false);
 }
-function page_Init(data) {
+function page_Init(data) 
+{
   console.log(data);
   const main_div = document.querySelector('#main_div');
   main_div.innerHTML = "";
@@ -54,11 +57,11 @@ function Set_main_div_enable(value) {
   }
 }
 
+
 async function done_Click() 
 {
   location.href = "frontpage.html"
 }
-
 function findbtn_Click()
 {
   Set_popup_find_position();

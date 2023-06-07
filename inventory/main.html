@@ -3,138 +3,68 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>盤點操作頁</title>
+  <title>盤點操作頁面</title>
   <link rel="stylesheet" href="main.css">
-  <script src="../ApiURL.js"></script>
-  <script src="../ChatHub.js"></script>
-  <script src="../Function/WebApiFunc.js"></script>
-  <script src="../dist/JsBarcode.all.js"></script>
-  <script src="../Function/Basic.js"></script>
-  <script src="../popup/loading.js"></script>
-  <script src="jsonFunc.js"></script>
+  <script src="../../ApiURL.js"></script>
+  <script src="../../ChatHub.js"></script>
+  <script src="../../Function/WebApiFunc.js"></script>
+  <script src="../../svg/mySVG.js"></script>
+  <script src="../../Function/Basic.js"></script>
+  <script src="../../popup/map.js"></script>
+  <script src="../../dist/JsBarcode.all.js"></script>
+  <script src="../../UI/map.js"></script>
   <script src="main.js"></script>
-  <script src="main_modal.js"></script>
+  <script src="main_loadingdata.js"></script>
+  <script src="main_popup_input.js"></script>
+  <script src="main_popup_serch.js"></script>
+  <script src="jsonFunc.js"></script>
   <!-- <script src="../session_check.js"></script> -->
 </head>
 <body>
-  <header>
-  <div class="h1top">
-   <h1 class="h1_inventory">盤點頁面</h1>
-    <div class="pagination">
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="toggleCK" checked>
-        <label class="form-check-label" for="toggleLB">Scanner</label>
-      </div>
-      <button id="submitFormbtn" onclick="submitForm()">結束盤點</button>
-    </div>
-  </div>
-  <div class="serch_div">
-    <input type="text" class="drugNameText" placeholder="藥名搜尋" onkeydown="search_By_name_Event(event)">
-  </div>
-    </header>
-  <div class="table-container">
-    <table>
-        <thead>
-            <tr>
-                <th style="font-weight: bolder;font-size: 18px;">藥品資訊</th>
-                <th style="font-weight: bolder;font-size: 18px;">盤點數量</th>
-            </tr>
-        </thead>         
-    </table>
-  </div>
+      <script>
+        document.body.style.position = 'absolute';
+        const header_div = get_header();
+        document.body.appendChild(header_div);
+        const main_div = get_main();
+        document.body.appendChild(main_div);
+        get_popup_input();
+        document.body.appendChild(popup_input_div.div);
+        get_popup_serch();
+        document.body.appendChild(popup_serch_div.div);
 
+        popup_input_div.Set_Visible(false);
+        popup_serch_div.Set_Visible(true);
+
+      </script>
+   
 
   <div class="under-line">
     <B> Copyright ©2023 鴻森整合機電有限公司 </B>
   </div>
   
-  
   <script>
-   var barcode_value = '';
-    // 監聽頁面的keydown事件
-     window.addEventListener('keydown', function(event) {
-        // 判斷按下的按鍵是否是Tab鍵或Enter鍵
-        console.log(event.key);
-        if (event.key === 'Tab' || event.key === 'Enter') {
-        // 防止頁面重新載入
-            event.preventDefault();
-            const parsedCode = parseBarcode(barcode_value);
-            
-            // 取得輸入框的值
-            barcode_value = '';
-            // 解析藍牙掃描器返回的數據
-            if(parsedCode != '' && document.getElementById("toggleCK").checked)
-            {
-                const druginfo_ary = document.querySelectorAll(".druginfo");
-                console.log("parsedCode",parsedCode);
-                for(var i = 0 ; i < data.Data[0].Contents.length ; i++)
-                {
-                  const GUID = data.Data[0].Contents[i].GUID;
-                  const BARCODE1 = data.Data[0].Contents[i].BARCODE1;
-                  const BARCODE2 = data.Data[0].Contents[i].BARCODE2;
-                  const SKDIACODE =  data.Data[0].Contents[i].SKDIACODE;
-                  const CODE = data.Data[0].Contents[i].CODE;
-                  console.log("CODE",CODE);
-                  if(parsedCode == BARCODE1 || parsedCode == BARCODE2 || parsedCode == SKDIACODE || parsedCode == CODE )
-                  {
-                    for(var k = 0 ; k< druginfo_ary.length ; k++)
-                    {
-                        const _GUID = druginfo_ary[k].getAttribute("GUID");
-                        if(_GUID == GUID)
-                        {
-                          druginfo_ary[k].onclick();
-                        }
-                    }
-                  }
-                }
-               
-            }         
-        }
-        else
-        {
-            const isValid = /^[a-zA-Z0-9]+$/.test(event.key);
-            const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
-            const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);
-            
-
-            if (isValid && (!isControlKey||isNumPadlKey)) {
-                // 將解析後的條碼值設定為輸入框的值
-                barcode_value += event.key;
-            } 
-        }
-    });
-
-    // 解析帶有分隔符的字符串
-    function parseBarcode(scannedCode) 
+ 
+  signalR_init(`${api_ip}chatHub`);
+  ChathubReceivedEvent = ChathubReceived;
+  function ChathubReceived(user, message)
+  {
+    var jsonObject = JSON.parse(message); 
+    console.log('ReceivedEvent',jsonObject);
+    if(jsonObject.Method == 'sub_content_add' || jsonObject.Method == 'sub_contents_delete_by_GUID')
     {
-      const delimiter = /[\n\r]/g;
-      const matches = scannedCode.split(delimiter);
-      return matches[0];
-    }
-    signalR_init();
-    document.addEventListener('ReceivedEvent', function (event) 
-    {   
-      var jsonObject = JSON.parse(event.detail.message); 
-      console.log('ReceivedEvent',jsonObject);
-      if(jsonObject.Method == "content_get_by_content_GUID")
-      {
-        var return_GUID = jsonObject.Data.GUID;
-        var END_QTY = jsonObject.Data.END_QTY;
-        console.log("return_GUID",return_GUID);
-        var _end_QTY_input = document.querySelectorAll(`.end_QTY_input`);
-        for(var i = 0 ; i < _end_QTY_input.length ; i++)
-        {
-          var _GUID = _end_QTY_input[i].getAttribute("_GUID");
-          if(_GUID == return_GUID)
+       if(jsonObject.Data.IC_SN == current_IC_SN)
+       {
+          if(popup_input_div.Get_Visible())
           {
-            _end_QTY_input[i].value = END_QTY;
-            console.log("END_QTY",END_QTY);
+              show_popup_input(jsonObject.Data);
+             
           }
-          
-        }        
-      }
-      
-    }); 
+          Replace_data_by_content(data.Data[0],jsonObject.Data);
+       }
+       
+    }
+  };
+
   </script>
   
   </body>

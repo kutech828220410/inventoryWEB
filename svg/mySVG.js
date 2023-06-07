@@ -35,7 +35,185 @@ function Get_pointleft_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeC
     
     return btn_div;
 }
+function Get_next_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
+{
+    const btn_div = document.createElement("div");
+    const div = document.createElement("div");
+    btn_div.style.width = btn_width;
+    btn_div.style.height= btn_height; 
 
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.innerHTML = `<?xml version="1.0" encoding="utf-8"?>
+    <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+    <svg width="100%" height="100%" viewBox="0 0 1024 1024" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <path d="M364.8 106.666667L298.666667 172.8 637.866667 512 298.666667 851.2l66.133333 66.133333L768 512z" fill="#2196F3" /></svg>`;
+    
+    
+  
+    svg.setAttribute("class", "svg");
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", "100%");
+
+    div.style.width = svg_width;
+    div.style.height = svg_height;
+ 
+    div.style.justifyContent = "center";
+    div.style.alignItems = "center";
+    div.style.margin = "auto";   
+    btn_div.style.backgroundColor = backgroundColor;
+    btn_div.addEventListener("mouseover", function() 
+    {
+      btn_div.style.backgroundColor = "lightgray";
+    });
+  
+    // 滑鼠移出時的事件處理器
+    btn_div.addEventListener("mouseout", function() 
+    {
+      btn_div.style.backgroundColor = '';
+    });
+    
+    div.appendChild(svg);
+    btn_div.appendChild(div);
+    
+    return btn_div;
+}
+function Get_previous_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
+{
+    const btn_div = document.createElement("div");
+    const div = document.createElement("div");
+    btn_div.style.width = btn_width;
+    btn_div.style.height= btn_height; 
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.innerHTML = `<?xml version="1.0" encoding="utf-8"?>
+    <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+    <svg width="100%" height="100%" viewBox="0 0 1024 1024" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <path d="M659.2 917.333333l66.133333-66.133333L386.133333 512 725.333333 172.8 659.2 106.666667 256 512z" fill="#2196F3" /></svg>`;
+    
+    
+  
+    svg.setAttribute("class", "svg");
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", "100%");
+
+    div.style.width = svg_width;
+    div.style.height = svg_height;
+ 
+    div.style.justifyContent = "center";
+    div.style.alignItems = "center";
+    div.style.margin = "auto";   
+    btn_div.style.backgroundColor = backgroundColor;
+    btn_div.addEventListener("mouseover", function() 
+    {
+      btn_div.style.backgroundColor = "lightgray";
+    });
+  
+    // 滑鼠移出時的事件處理器
+    btn_div.addEventListener("mouseout", function()
+    {
+       btn_div.style.backgroundColor = '';
+    });
+ 
+    div.appendChild(svg);
+    btn_div.appendChild(div);
+    
+    return btn_div;
+}
+function Get_confirm_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
+{
+    const btn_div = document.createElement("div");
+    const div = document.createElement("div");
+    btn_div.style.width = btn_width;
+    btn_div.style.height= btn_height; 
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.innerHTML = `<?xml version="1.0" encoding="utf-8"?>
+
+    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+    <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+    <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+       width="100%" height="100%" viewBox="0 0 72 72" enable-background="new 0 0 72 72" xml:space="preserve">
+    <g>
+      <path fill ="${strokeColor}"  d="M24.014,70.462c-2.617,0-5.073-1.016-6.917-2.859L2.175,53.877c-1.908-1.906-2.926-4.364-2.926-6.979
+        s1.018-5.072,2.866-6.92c1.849-1.849,4.307-2.866,6.921-2.866c2.591,0,5.029,1,6.872,2.818l8.102,7.109L55.861,4.618
+        c0.057-0.075,0.119-0.146,0.186-0.213c1.849-1.85,4.307-2.867,6.921-2.867s5.072,1.018,6.921,2.867
+        c3.784,3.784,3.815,9.923,0.093,13.747L31.697,67.416c-0.051,0.065-0.106,0.128-0.165,0.188c-1.914,1.912-4.498,2.926-7.214,2.854
+        C24.216,70.46,24.116,70.462,24.014,70.462z M9.037,41.112c-1.546,0-2.999,0.602-4.093,1.695C3.851,43.9,3.25,45.353,3.25,46.898
+        s0.602,3,1.694,4.093l14.922,13.726c1.148,1.146,2.6,1.914,4.148,1.914l0.227,0.164c0.05,0,0.1,0,0.151,0l0.221-0.164
+        c1.51,0,2.929-0.654,4.008-1.69l38.275-49.294c0.051-0.065,0.105-0.148,0.165-0.207c2.256-2.258,2.256-5.939,0-8.195
+        c-1.094-1.094-2.547-1.701-4.093-1.701c-1.502,0-2.917,0.566-3.999,1.602L25.914,51.169c-0.335,0.445-0.84,0.73-1.394,0.787
+        c-0.551,0.057-1.106-0.118-1.525-0.486l-9.771-8.573c-0.032-0.028-0.064-0.058-0.095-0.089
+        C12.036,41.714,10.583,41.112,9.037,41.112z"/>
+    </g>
+    </svg>`;
+    
+    
+  
+    svg.setAttribute("class", "svg");
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", "100%");
+
+    div.style.width = svg_width;
+    div.style.height = svg_height;
+ 
+    div.style.justifyContent = "center";
+    div.style.alignItems = "center";
+    div.style.margin = "auto";   
+    btn_div.style.backgroundColor = backgroundColor;
+    btn_div.addEventListener("mouseover", function() {
+        btn_div.style.backgroundColor = "lightgray";
+      });
+    
+      // 滑鼠移出時的事件處理器
+      btn_div.addEventListener("mouseout", function() {
+        btn_div.style.backgroundColor = '';
+      });
+    
+    div.appendChild(svg);
+    btn_div.appendChild(div);
+    
+    return btn_div;
+}
+function Get_undo_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
+{
+    const btn_div = document.createElement("div");
+    const div = document.createElement("div");
+    btn_div.style.width = btn_width;
+    btn_div.style.height= btn_height; 
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.innerHTML = `<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+    <svg fill="#000000" width="100%" height="100%" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <path fill ="${strokeColor}" d="M30.939 29.448c-0.011 0-0.023 0-0.034-0.001-0.506-0.017-0.825-0.409-0.868-0.913-0.034-0.371-1.061-9.347-15.070-9.337v5.739c0 0.387-0.223 0.739-0.573 0.904-0.347 0.166-0.764 0.115-1.062-0.132l-12.968-10.743c-0.233-0.191-0.366-0.475-0.365-0.774s0.136-0.584 0.368-0.774l12.967-10.643c0.299-0.244 0.712-0.291 1.061-0.128 0.348 0.166 0.572 0.518 0.572 0.903v5.614c5.811 0.184 10.344 2.053 13.261 5.468 4.748 5.556 3.688 13.63 3.639 13.966-0.074 0.489-0.433 0.849-0.927 0.849zM13.967 17.182l0.002-0c10.007 0.006 13.831 3.385 16.014 6.369-0.32-2.39-1.252-5.273-3.282-7.626-2.698-3.128-7.045-4.777-12.735-4.777-0.553 0-1-0.447-1-1v-4.493l-10.389 8.543 10.389 8.622v-4.637c0-0.265 0.105-0.52 0.294-0.708 0.188-0.187 0.441-0.293 0.707-0.293z"></path>
+    </svg>`;
+    
+    
+  
+    svg.setAttribute("class", "svg");
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", "100%");
+
+    div.style.width = svg_width;
+    div.style.height = svg_height;
+ 
+    div.style.justifyContent = "center";
+    div.style.alignItems = "center";
+    div.style.margin = "auto";   
+    btn_div.style.backgroundColor = backgroundColor;
+    btn_div.addEventListener("mouseover", function() {
+        btn_div.style.backgroundColor = "lightgray";
+      });
+    
+      // 滑鼠移出時的事件處理器
+      btn_div.addEventListener("mouseout", function() {
+        btn_div.style.backgroundColor = '';
+      });
+    
+    div.appendChild(svg);
+    btn_div.appendChild(div);
+    
+    return btn_div;
+}
 function Get_pill_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
 {
     const btn_div = document.createElement("div");
@@ -44,7 +222,8 @@ function Get_pill_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor,
     btn_div.style.height= btn_height; 
 
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.innerHTML = `<?xml version="1.0" ?><svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><rect fill="none" height="100%" width="100%"/><path d="M112,208a45.2,45.2,0,0,1-64,0h0a45.2,45.2,0,0,1,0-64L96,96l64,64Z" opacity="0.2"/><rect fill="none" height="90.51" rx="45.3" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" transform="translate(-53 128) rotate(-45)" width="226.3" x="14.9" y="82.7"/><line fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" x1="96" x2="160" y1="96" y2="160"/><line fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" x1="160.1" x2="184.5" y1="112.1" y2="88.5"/></svg>`;
+    svg.innerHTML = `<?xml version="1.0" ?><svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><rect fill="none" height="100%" width="100%"/><path d="M112,208a45.2,45.2,0,0,1-64,0h0a45.2,45.2,0,0,1,0-64L96,96l64,64Z" opacity="0.2"/><rect fill="none" height="90.51" rx="45.3" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" transform="translate(-53 128) rotate(-45)" width="226.3" x="14.9" y="82.7"/><line fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" x1="96" x2="160" y1="96" y2="160"/><line fill="none" 
+    fill="${strokeColor}" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" x1="160.1" x2="184.5" y1="112.1" y2="88.5"/></svg>`;
     
     
   

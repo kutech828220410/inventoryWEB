@@ -1,12 +1,12 @@
 
 // 创建一个继承自 <div> 元素的自定义类
-class Basic_popup_Div extends HTMLDivElement
+class Basic_popup_Div
 {
     constructor(className ,id, width, height) 
     {     
-      super();
+    //   super();
 
-      const overlay = this;
+      const overlay = document.createElement('div');
       overlay.style.position = 'fixed';
       overlay.style.top = 0;
       overlay.style.left = 0;
@@ -31,49 +31,71 @@ class Basic_popup_Div extends HTMLDivElement
       popup_div.style.display = "block";
       popup_div.style.visibility = '';
       popup_div.style.borderRadius = "5px";
-      popup_div.style.border = "solid 2px";
+      popup_div.style.border = "solid 1px";
       popup_div.style.flexDirection = "column"
+      popup_div.style.justifyContent = `center`;
+      popup_div.style.alignItems = `center`;
       popup_div.style.opacity = "0" ;
       popup_div.style.transition = "opacity 0.2s, visibility 0.2s 0s";
       popup_div.style.zIndex = "10";
       popup_div.style.visibility = 'visible';
-      popup_div.style.paddingTop  = "10px";
-      popup_div.style.paddingRight  = "10px";
+
       popup_div.style.opacity = '1';
       this._popup_div = popup_div;
+      this.div = overlay;
       overlay.appendChild(popup_div);
+    }
+    Get_Div()
+    {
+        return this.div;
     }
     AddControl(control)
     {
         this._popup_div.appendChild(control);
     }
+    Set_Size(width, height)
+    {
+        this._popup_div.style.width = width;
+        this._popup_div.style.height = height;  
+    }
+    Set_Width(width)
+    {
+        this._popup_div.style.width = width;
+    }
+    Set_Height(height)
+    {
+        this._popup_div.style.height = height;
+    }
     Set_Visible(visible)
     {
-        console.log(visible);
         if(visible)
         {
             if(typeof this.onVisible != "undefined") this.onVisible();
-            this.style.display = "block";
-            this.style.opacity = "1" ;
-            this.style.visibility  = "visible";
+            this.div.style.display = "block";
+            this.div.style.opacity = "1" ;
+            this.div.style.visibility  = "visible";
             document.body.style.overflow = "hidden";
-
    
         }
         else
         {
             if(typeof this.onDisvisble != "undefined") this.onDisvisble();
-            this.style.display = "block";
-            this.style.opacity = "0" ;
-            this.style.visibility = "hidden";
+            this.div.style.display = "none";
+            this.div.style.opacity = "0" ;
+            this.div.style.visibility = "hidden";
             document.body.style.overflow = "";
 
             // var overlay = document.querySelector('.overlay');
             // document.body.removeChild(overlay);
         }
     }
+    Get_Visible()
+    {
+        return this.div.style.visibility == "visible";
+    }
     onVisible;
     onDisvisble;
     _popup_div;
+    div;
 }
 customElements.define('basic-popup-div', Basic_popup_Div, { extends: 'div' });

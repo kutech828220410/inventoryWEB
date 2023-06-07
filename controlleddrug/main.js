@@ -12,6 +12,8 @@ function handleResize()
 async function load()
 {
   await set_ip();
+
+
   let rowNum = 1;
   const Loadingpopup = GetLoadingpopup();
   document.body.appendChild(Loadingpopup);
@@ -22,14 +24,12 @@ async function load()
   date_start = getDateStr(date_start);
   date_end = getDateStr(date_end);
   
-  
-
   Set_main_div_enable(false);
   page_Init();
 }
 async function page_Init() 
 {
-  console.log(data);
+  console.log("data",data);
   const main_div = document.querySelector('#main_div');
   main_div.innerHTML = "";
   var toltal_TXN_QTY = 0;
@@ -116,13 +116,13 @@ async function download_btn()
 function findbtn_Click()
 {
   
-  if(popup_find_div.style.visibility  != 'visible')
+  if(popup_find_div.Get_Visible())
   {
-    popup_find_div.Set_Visible(true);
+    popup_find_div.Set_Visible(false);
   }
   else
   {
-    popup_find_div.Set_Visible(false);
+    popup_find_div.Set_Visible(true);
 
   }
 }

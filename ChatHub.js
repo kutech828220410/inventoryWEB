@@ -43,7 +43,10 @@ function SendMessage(msg)
 {
     connection.invoke("SendMessage","", msg);
 }
-function triggerReceivedEvent(user, message) {
+var ChathubReceivedEvent;
+
+function triggerReceivedEvent(user, message) 
+{
     // 创建自定义事件
     var customEvent = new CustomEvent('ReceivedEvent', {
         detail: {
@@ -51,7 +54,10 @@ function triggerReceivedEvent(user, message) {
             message: message
         }
     });
-
+    if(typeof ChathubReceivedEvent == "function") 
+    {
+        ChathubReceivedEvent(user , message);
+    }
     // 触发自定义事件
     document.dispatchEvent(customEvent);
 }

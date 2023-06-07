@@ -1,7 +1,8 @@
 function get_popup_find()
 {
   const popup_find_div = new Basic_popup_Div('popup_find_div','popup_find_div','300px','260px');
-
+  popup_find_div.div.style.paddingTop  = "10px";
+  popup_find_div.div.style.paddingRight  = "10px";
   const find_code_input_div = document.createElement("div")
   find_code_input_div.id = "find_code_input_div";
   find_code_input_div.className = "find_code_input_div";
@@ -173,7 +174,7 @@ function get_popup_find()
  
 
 
-  console.log(123);
+
   button_currentDate.onclick = button_currentDate_Click;
   button_lastDate.onclick = button_lastDate_Click;
   checksvg.onclick = checksvg_Click;

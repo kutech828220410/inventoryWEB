@@ -12,28 +12,23 @@
   <script src="../../Function/Basic.js"></script>
   <script src="../../popup/map.js"></script>
   <script src="../../dist/JsBarcode.all.js"></script>
-  <script src="../../UI/H5_Date/map.js"></script>
+  <script src="../../UI/map.js"></script>
   <script src="main.js"></script>
   <script src="main_loadingdata.js"></script>
+  <script src="mian_popup_input.js"></script>
   <script src="jsonFunc.js"></script>
   <!-- <script src="../session_check.js"></script> -->
 </head>
 <body>
-    <div class="form" id="form" style="width: 100%; height: 100%;">
       <script>
-      const form = document.querySelector("#form");
-      form.style.display = "flex";
-      form.style.width = "100%";
-      form.style.height = "100%";
-      form.style.justifyContent = "top";
-      form.style.flexDirection = "column";
-      form.style.backgroundColor = "#";
-      const header_div = get_header();
-      form.appendChild(header_div);
-      const main_div = get_main();
- 
-      form.appendChild(main_div);
-   
+        document.body.style.position = 'absolute';
+        const header_div = get_header();
+        document.body.appendChild(header_div);
+        const main_div = get_main();
+        document.body.appendChild(main_div);
+        get_popup_input();
+        document.body.appendChild(popup_input_div.div);
+        popup_input_div.Set_Visible(false);
 
       </script>
    
@@ -41,10 +36,29 @@
   <div class="under-line">
     <B> Copyright ©2023 鴻森整合機電有限公司 </B>
   </div>
-</div>
   
   <script>
-
+ 
+  signalR_init(`${api_ip}chatHub`);
+  ChathubReceivedEvent = ChathubReceived;
+  function ChathubReceived(user, message)
+  {
+    var jsonObject = JSON.parse(message); 
+    console.log('ReceivedEvent',jsonObject);
+    if(jsonObject.Method == 'sub_content_add' || jsonObject.Method == 'sub_contents_delete_by_GUID')
+    {
+       if(jsonObject.Data.IC_SN == current_IC_SN)
+       {
+          if(popup_input_div.Get_Visible())
+          {
+              show_popup_input(jsonObject.Data);
+             
+          }
+          Replace_data_by_content(data.Data[0],jsonObject.Data);
+       }
+       
+    }
+  };
 
   </script>
   

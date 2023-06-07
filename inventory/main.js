@@ -1,271 +1,321 @@
 let response = [];
 let data = [];
+var loging_name = "測試";
+var current_IC_SN = "";
+let allrows = [];
 
 window.onload = load;
+
+function handleResize() 
+{
+  Set_popup_find_position();
+}
 async function load()
 { 
     await set_ip();
     const Loadingpopup = GetLoadingpopup();
     document.body.appendChild(Loadingpopup);
-    Loadingpopup.style.zIndex = "99999";
-    var IC_SN = sessionStorage.getItem('IC_SN');    
+    var IC_SN = sessionStorage.getItem('IC_SN');  
+    IC_SN = '20230527-0';  
+    current_IC_SN = IC_SN;
+
     Set_main_div_enable(true);
     data = await creat_get_by_IC_SN(IC_SN);
-    console.log(data);
-    insertDataIntoTable();
+    page_Init(data);
     Set_main_div_enable(false);
+}
+function page_Init(data) 
+{
+  console.log(data);
+  const main_div = document.querySelector('#main_div');
+  main_div.innerHTML = "";
+
+  for (var i = 0; i < data.Data[0].Contents.length; i++)
+  {
+    const all_div = creat_row_div(i, data.Data[0].Contents[i]);
+    allrows.push(all_div);
+    main_div.appendChild(all_div);
+  }
+ 
+  // if (data.Data.length == 0) {
+  //   const NoDataDiv = getNoDataDiv();
+  //   console.log(NoDataDiv);
+  //   main_div.appendChild(NoDataDiv);
+  // }
+
+  // setUserText();
 }
 function Set_main_div_enable(value) {
   const main_div = document.querySelector('#main_div');
-  if (value) {
+  if (value)
+  {
     showLoadingPopup();
     //  document.body.style.opacity = "0.5"; 
     document.body.style.pointerEvents = "none";
   }
-  else {
+  else 
+  {
     hideLoadingPopup();
     document.body.style.opacity = "1";
     document.body.style.pointerEvents = "auto";
-
   }
 }
 
-async function insertDataIntoTable() {
-  // response = await fetch(inspection_get_url); // 替換成您的 API 網址
-  // data = await response.json();
-  // console.log(data);
-  const table = document.querySelector('table');
-  const tbody = document.createElement('tbody'); // 新增 tbody 元素
-  table.appendChild(tbody); // 加入 table 元素中
-  var _index = 0;
 
-  for (const item of data.Data[0].Contents) {
-    // 插入新的表格列
-    var GUID = item.GUID;
-    const row = tbody.insertRow(); // 改為插入 tbody 元素的內容
-
-    // 插入藥品資訊儲存格
-    const drugInfoCell = row.insertCell();
-    drugInfoCell.innerHTML =
-     `
-        <div><b style="font-size: 12px; padding-right:5px; padding-left:5px; border-style:dashed; margin-top: -6px;">${_index + 1}</b><span style="padding-left: 10px;">${item.IC_SN}</span></div>
-        <div style="display:none;"><b>GUID: ${item.GUID}</b></div>
-        <div><b>藥碼: ${item.CODE}</b></div>
-        <div><b>料號: ${item.SKDIACODE}</b></div>
-        <div style="color: orange;"><b>(英)  ${item.NAME}</b></div>
-        <div style="color: orange;"><b>(中)  ${item.CHT_NAME}</b></div>
-    `;
-
-    // 插入數量儲存格
-    var _quantityCell_QTY = `quantityCell_QTY${_index}`;
-    const quantityCell = row.insertCell();
-    quantityCell.id = _quantityCell_QTY;
-    quantityCell.className = 'quantityCell_QTY';
-    quantityCell.style.display = "flex";
-    quantityCell.style.justifyContent = "top";
-    quantityCell.style.flexDirection = "column";
-
-    const start_QTY_div = document.createElement("div");
-    start_QTY_div.id = "start_QTY_div";
-    start_QTY_div.className = "start_QTY_div";
-
-    start_QTY_div.style.width = "100%";
-    start_QTY_div.style.height = "100%";
-    start_QTY_div.style.backgroundColor = "#";
-    start_QTY_div.innerHTML =`理論值`;
-
-    const start_QTY_input = document.createElement("input");
-    start_QTY_input.id = "start_QTY_input";
-    start_QTY_input.className = "start_QTY_input";
-
-    start_QTY_input.style.width = "100%";
-    start_QTY_input.style.height = "20px";
-    start_QTY_input.style.backgroundColor = "#";
-    start_QTY_input.innerHTML =`理論值`;
-    start_QTY_input.value = `${item.START_QTY}`;
-    start_QTY_input.readOnly = true;
-
-    const end_QTY_div = document.createElement("div");
-    end_QTY_div.id = `end_QTY_div_${_index}`;
-    end_QTY_div.className = "end_QTY_div";
-
-    end_QTY_div.style.width = "100%";
-    end_QTY_div.style.height = "100%";
-    end_QTY_div.style.backgroundColor = "#";
-    end_QTY_div.innerHTML =`盤點量`;
-
-    const end_QTY_input = document.createElement("input");
-    end_QTY_input.setAttribute("_GUID",item.GUID);
-    end_QTY_input.className = 'end_QTY_input';
-    end_QTY_input.id = `end_QTY_input_${_index}`;
-    end_QTY_input.className = "end_QTY_input";
-
-    end_QTY_input.style.width = "100%";
-    end_QTY_input.style.height = "20px";
-    end_QTY_input.style.backgroundColor = "#";
-    end_QTY_input.innerHTML =`盤點量`;
-    end_QTY_input.value = `${item.END_QTY}`;
-    end_QTY_input.readOnly = true;
-    
-    quantityCell.appendChild(start_QTY_div);
-    quantityCell.appendChild(start_QTY_input);
-
-    quantityCell.appendChild(end_QTY_div);
-    quantityCell.appendChild(end_QTY_input);
-    // quantityCell.innerHTML = 
-    // `
-    // <BR>
-    // <div class="input-group">
-    // <div class="input-group-prepend">
-    //   <div>理論值:</div>
-    // </div>
-    // <BR>
-    // <BR>
-    // <input type="text" class="form-control text-right" value="${item.START_QTY}" readonly>
-    // <div class="input-group">
-    //   <div class="input-group-prepend">
-    //     <div>盤點量:</div>
-    //   </div>
-    //   <input id="END_QTY${_index}" type="number" min="0" max="99999" class="form-control" value="${item.END_QTY}" readonly  onblur='checkInput(this , "${GUID}")' onkeydown='checkEnterKey(event, "${GUID}")'>
-    //   </div>
-    //   </div>
-    // `;
-
-    // 插入新的表格列
-    var _myModal = `myModal${_index}`;
-    var barcode_text = `barcode${_index}`;
-    //取得初始化第一個效期批號數量
-    var lot_init = "";
-    var date_init = "";
-    var qty_init = "";
-    // if (item.Sub_content.length > 0) {
-    //   lot_init = item.Lot_date_datas[0].LOT_NUMBER;
-    //   date_init = item.Lot_date_datas[0].VAL_DATE;
-    //   qty_init = item.Lot_date_datas[0].QTY;
-    // }
-    const inspectionRow = tbody.insertRow();
-    const inspectionCell = inspectionRow.insertCell();
-    inspectionCell.colSpan = 2;
-    inspectionCell.id = `firstinventory${_index}`;
-    inspectionCell.className = "firstinventory";
-    inspectionCell.innerHTML =
-      ` 
-    <button  id="druginfo${_index}" style="text-align: left;  display:block; width:100%; height:100%; border:none; background-color:transparent;" onclick="">
-    點選輸入藥品驗收資訊
-    <canvas id="${barcode_text}" style="float: right; width:140px; padding-right:10px;"></canvas>
-    </button>
-    
-    <div id="myModal${_index}" class="modal" _index="${item._index}" IC_SN="${item.IC_SN}" START_QTY="${item.START_QTY}" END_QTY="${item.END_QTY}" GUID = "${GUID}">
-    <div class="modal-content">
-      <div class=myModal_title>
-      <b>[${item.IC_SN}]</b>
-      <br>
-      <div><b> 藥名 : ${item.NAME}</b></div>
-      <div><b> 庫存理論值 : ${item.START_QTY}</b></div>
-      </div>
-      <button class="addRowBtn" id="addRowBtn${_index}" onclick="Check_addNewRow('${_index}')">新增盤點藥品</button>  
-    <div class="Modalrows" id="rows${_index}">
-    </div>
-    <button class="modalbtn" onclick="validateInput('${_index}' )">確認</button> 
-    `;
- 
-    // for (var i = 0; i < item.Sub_content.length; i++) {
-    //   const lot = item.Lot_date_datas[i].LOT_NUMBER;
-    //   const date = item.Lot_date_datas[i].VAL_DATE;
-    //   const qty = item.Lot_date_datas[i].QTY;
-    //   AddNewRow(_index, lot, date, qty);
-    // }
-    var START_QTY = parseInt(item.START_QTY);
-    var END_QTY = parseInt(item.END_QTY);
-    if(START_QTY - END_QTY > 0)
-    {
-      AddNewRow(_index,null,null,(START_QTY - END_QTY));
-    }
-    
-
-    const barcodeDiv = document.getElementById(barcode_text);
-    var Barcode= "";
-    if(Barcode == "")Barcode = item.BARCODE1;
-    if(Barcode == "")Barcode = item.BARCODE2;
-    if(Barcode == "")Barcode = item.SKDIACODE;
-    if(Barcode == "")Barcode = item.CODE;
-    JsBarcode(barcodeDiv, Barcode, {
-      format: "code128",
-      width: 1,
-      height: 12,
-      displayValue: false,
-      margin: 0,
-
-    });
-
-    var druginfo = document.querySelector(`#druginfo${_index}`);
-    druginfo.className = "druginfo";
-    druginfo.setAttribute("GUID",`${GUID}`)
-    druginfo.setAttribute("_index",`${_index}`)
-    druginfo.setAttribute("_NAME",`${item.NAME}`)
-    druginfo.setAttribute("_SKDIACODE",`${item.SKDIACODE}`)
-    druginfo.setAttribute("_CODE",`${item.CODE}`)
-
-    druginfo.onclick=druginfo_click;
-    _index++;
-  }
-
-}
-async function druginfo_click(event)
+async function done_Click() 
 {
-  const  GUID = this.getAttribute("GUID");
-  const _index = this.getAttribute("_index");
-  const _NAME = this.getAttribute("_NAME");
-  const _SKDIACODE = this.getAttribute("_SKDIACODE");
-  const numberInput = window.prompt(`藥名 : ${_NAME}\n請輸入盤點量：`);
-  if(numberInput)
-  {
-        
-     for(var i = 0 ; i < data.Data[0].Contents.length ; i++)
-     {
-        if(data.Data[0].Contents[i].GUID == GUID)
-        {
-          
-            const _Master_GUID = data.Data[0].Contents[i].GUID;
-            var END_QTY = numberInput;
-            var OP = "";
-      
-            const result =  await sub_content_add_single(_Master_GUID,END_QTY,OP);
-            const back_content = await content_get_by_content_GUID(_Master_GUID);
-            console.log("back_content",back_content);
-        }
-     }
-  }
+   location.href = "frontpage.html";
 }
-function clearInput(input) {
-  input.select();
+function findbtn_Click()
+{
+    show_popup_serch();
 }
-async function checkEnterKey(event, GUID) {
-  if (event.key === 'Enter') {
-    const input = event.target;
-    input.value = await set_END_QTY(GUID, input.value);
 
-  }
-}
-function submitForm() {
+
+function Set_popup_find_position()
+{
  
+  const header_contorls_findbtn = document.querySelector("#header_contorls_findbtn");
+  var position_header_contorls_findbtn = getAbsolutePosition(header_contorls_findbtn);
+  const popup_find_div = document.querySelector("#popup_find_div");
+  var position_popup_find_div = getAbsolutePosition(popup_find_div);
+  
+  const top = `${position_header_contorls_findbtn.top + position_header_contorls_findbtn.height + 5}px`;
+  const left = `${position_header_contorls_findbtn.left + position_header_contorls_findbtn.width / 2- position_popup_find_div.width}px`;
+ 
+  popup_find_div.style.top = `${top}`;
+  popup_find_div.style.left = `${left}`;
+  
+}
+function get_header()
+{
+  const coverage_div =document.createElement("div");
+  coverage_div.style.width = "100%";
+  coverage_div.style.height = "100%";
+  coverage_div.style.display = "flex";
+  coverage_div.style.flexDirection = "row";
+
+  const header_div = document.createElement("div");
+  header_div.id = "header_div";
+  header_div.className = "header_div";
+  header_div.style.width = "100%";
+  header_div.style.height = "70px";
+  header_div.style.position= "fixed";
+  header_div.style.top= "0";
+  header_div.style.left= "0";
+  header_div.style.zIndex= "9";
+  header_div.style.background = "rgb(186, 185, 208)";
+  header_div.style.background = "linear-gradient(90deg, rgba(186, 185, 208, 1) 0%, rgba(235, 235, 235, 1) 100%)";
+  header_div.style.display = "flex";
+  header_div.style.justifyContent = "left";
+  header_div.style.flexDirection = "row";
+  header_div.style.overflowX = "hidden";
+  coverage_div.appendChild(header_div);
+
+
+  const header_title_user_div = document.createElement("div");
+  header_title_user_div.id = "header_title_user_div";
+  header_title_user_div.className = "header_title_user_div";
+  header_title_user_div.style.display = "flex";
+  header_title_user_div.style.justifyContent = "top";
+  header_title_user_div.style.flexDirection = "column";
+  header_title_user_div.style.width = "70%";
+  header_title_user_div.style.height = "100%";
+  header_title_user_div.style.backgroundColor = "#";
+
+  const header_title_div = document.createElement("div");
+  header_title_div.innerHTML = `<b class="h1">盤點作業</b>`;
+  header_title_div.style.display = "flex";
+  header_title_div.id = "header_title_div";
+  header_title_div.className = "header_title_div";
+  header_title_div.style.textAlign = "left";
+  header_title_div.style.width = "75%";
+  header_title_div.style.height = "50%";
+  header_title_div.style.backgroundColor = "#";
+  header_title_div.style.justifyContent = "";
+  header_title_div.style.flexDirection = "";
+
+
+  const header_user_div = document.createElement("div");
+  header_user_div.innerHTML = `<span ><p id="header_user_text" style="font-family: 微軟正黑體; font-size: 12px; margin-left: 20px; word-spacing: 5px; letter-spacing: 3px;">使用者名稱:</p><span>`;
+  header_user_div.id = "header_user_div";
+  header_user_div.style.display = "flex";
+  header_user_div.className = "header_user_div";
+  header_user_div.style.textAlign = "left";
+  header_user_div.style.width = "100%";
+  header_user_div.style.height = "50%";
+  header_user_div.style.backgroundColor = "#";
+  header_user_div.style.justifyContent = "";
+  header_user_div.style.flexDirection = "";
+  header_title_user_div.appendChild(header_title_div);
+  header_title_user_div.appendChild(header_user_div);
+
+  const header_contorls_div = document.createElement("div");
+  header_contorls_div.id = "header_contorls_div";
+  header_contorls_div.className = "header_contorls_div";
+  header_contorls_div.style.display = "flex";
+  header_contorls_div.style.justifyContent = "flex-end";
+  header_contorls_div.style.flexDirection = "row";
+  header_contorls_div.style.width = "30%";
+  header_contorls_div.style.height = "100%";
+  header_contorls_div.style.paddingRight = "5px";
+
+  const header_contorls_findbtn = Get_find_in_page_SVG("100%", "100%", "70%","100%","black","");
+  header_contorls_findbtn.id = "header_contorls_findbtn";
+  header_contorls_findbtn.className = "header_contorls";
+  header_contorls_findbtn.style.width = "60px";
+  header_contorls_findbtn.style.height = "80%";
+  header_contorls_findbtn.style.marginTop = "5px";
+  header_contorls_findbtn.style.marginRight = "2px";
+  header_contorls_findbtn.style.display = "flex";
+
+
+  const header_contorls_donebtn = Get_find_check_SVG("100%", "100%", "70%","100%","black","");
+  header_contorls_donebtn.id = "header_contorls_donebtn";
+  header_contorls_donebtn.className = "header_contorls";
+  header_contorls_donebtn.style.width = "60px";
+  header_contorls_donebtn.style.height = "80%";
+  header_contorls_donebtn.style.marginTop = "5px";
+  header_contorls_donebtn.style.marginRight = "2px";
+  header_contorls_donebtn.style.display = "flex";
+
+  //彈跳視窗
+  const popup_background_div = document.createElement("div");
+  popup_background_div.id = "popup_background_div";
+  popup_background_div.className = "popup_background_div";
+  popup_background_div.style.backgroundColor = "gray";
+  popup_background_div.style.width = "100%";
+  popup_background_div.style.height = "100%";
+  popup_background_div.position = "absolute";
+  popup_background_div.top = "0";
+  popup_background_div.left = "0";
+  document.body.appendChild(popup_background_div);
+
+  const popup_find_div = document.createElement("div");
+  popup_find_div.id = "popup_find_div";
+  popup_find_div.className = "popup_find";
+  popup_find_div.style.backgroundColor = "#FFF";
+  popup_find_div.style.width = "220px";
+  popup_find_div.style.height = "100px";
+  popup_find_div.style.position = "absolute";
+  popup_find_div.style.top = "0px";
+  popup_find_div.style.left = "0px";
+  popup_find_div.style.display = "block";
+  popup_find_div.style.visibility = 'hidden';
+  popup_find_div.style.borderRadius = "5px";
+  popup_find_div.style.border = "solid";
+  popup_find_div.style.flexDirection = "column"
+  popup_find_div.style.opacity = "0" ;
+  popup_find_div.style.transition = "opacity 0.5s, visibility 0.5s 0s";
+  popup_find_div.style.zIndex = "10";
+  popup_background_div.appendChild(popup_find_div);
+
+  const find_code_input_div = document.createElement("div")
+  find_code_input_div.id = "find_code_input_div";
+  find_code_input_div.className = "find_code_input_div";
+  find_code_input_div.style.width = "100%";
+  find_code_input_div.style.height = "50%";
+  find_code_input_div.style.alignItems = "center";
+  find_code_input_div.style.justifyContent = "center";
+  find_code_input_div.style.display = "flex";
+
+  const pill_svg = Get_pill_SVG("100%", "100%", "","100%","black","");
+  pill_svg.id = "pill_svg";
+  pill_svg.className = "pill_svg";
+  pill_svg.style.width = "30%";
+  pill_svg.style.height = "100%";
+  pill_svg.style.alignItems = "center";
+  pill_svg.style.justifyContent = "center";
+
+  const find_code_input = document.createElement("input")
+  find_code_input.id = "find_code_input";
+  find_code_input.className = "find_code_input";
+  find_code_input.style.width = "150px";
+  find_code_input.style.height = "35%";
+  find_code_input.style.textAlign = "center";
+  find_code_input.style.marginRight = "8px";
+  find_code_input.placeholder = "請輸入藥碼/藥名";
+
+  const find_check_div = document.createElement("div")
+  find_check_div.id = "find_check";
+  find_check_div.className = "find_check";
+  find_check_div.style.width = "100%";
+  find_check_div.style.height = "50%";
+  find_check_div.style.display = "flex";
+  find_check_div.style.alignItems = "center";
+  find_check_div.style.justifyContent = "flex-end";
+
+  const checksvg =  Get_find_check_SVG("", "", "40px","100%","black","");
+  checksvg.id = "datesvg";
+  checksvg.className = "datesvg";
+  checksvg.style.width = "20%";
+  checksvg.style.height = "100%";
+  checksvg.style.alignItems = "center";
+  checksvg.style.justifyContent = "center";
+  checksvg.style.marginRight = "15px";
+
+  header_contorls_div.appendChild(header_contorls_findbtn);
+  header_contorls_div.appendChild(header_contorls_donebtn);
+  popup_find_div.appendChild(find_code_input_div);
+  popup_find_div.appendChild(find_check_div);
+  find_code_input_div.appendChild(pill_svg);
+  find_code_input_div.appendChild(find_code_input);
+  find_check_div.appendChild(checksvg);
+
+  header_contorls_donebtn.onclick = done_Click;
+  header_contorls_findbtn.onclick = findbtn_Click;
+
+  header_div.appendChild(header_title_user_div);
+  header_div.appendChild(header_contorls_div);
+  
+
+
+  return coverage_div;
+}
+function get_main() {
+  const main_div = document.createElement("div");
+  main_div.id = "main_div";
+  main_div.className = "main_div";
+  main_div.style.width = "100%";
+  main_div.style.height = "100%";
+  main_div.style.display = "flex";
+  main_div.style.justifyContent = "left";
+  main_div.style.flexWrap = "wrap";
+  if(device == DeviceType.MOBILE) main_div.style.flexDirection = "row";
+  if(device == DeviceType.COMPUTER) main_div.style.flexDirection = "row";
+  main_div.style.marginTop = "100px";
+  main_div.style.marginBottom = "30px";
+  return main_div;
+}
+
+//盤點輸入彈跳視窗
+function popup_input_div()
+{
+    const popup_input_div = document.createElement("div");
+    popup_input_div.id = "popup_input_div";
+    popup_input_div.className = "popup_input_div";
+    popup_input_div.style.backgroundColor = "#FFF";
+    popup_input_div.style.width = "92%";
+    popup_input_div.style.height = "100px";
+    popup_input_div.style.position = "absolute";
+    popup_input_div.style.top = "0px";
+    popup_input_div.style.left = "0px";
+    popup_input_div.style.display = "block";
+    popup_input_div.style.visibility = 'hidden';
+    popup_input_div.style.borderRadius = "5px";
+    popup_input_div.style.border = "solid";
+    popup_input_div.style.flexDirection = "column"
+    popup_input_div.style.opacity = "0" ;
+    popup_input_div.style.transition = "opacity 0.5s, visibility 0.5s 0s";
+    popup_input_div.style.zIndex = "11";
+
+    return popup_input_div;
 }
 
 
-
-
-function searchItem(data, searchKey) {
-  return new Promise((resolve, reject) => {
-    const result = data.filter((item) => {
-      return item.CODE == searchKey;
-    });
-    if (result.length > 0) {
-      resolve(result);
-    } else {
-      reject("No result found.");
-    }
-  });
+function setUserText()
+{
+   const userText = document.querySelector("#header_user_text");
+   userText.innerText = `使用者:${get_logedName()} ID:${get_loggedID()}`;
+   console.log(userText);0
 }
-//insertDataIntoTable();
-
-

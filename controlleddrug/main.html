@@ -9,7 +9,7 @@
   <script src="../../Function/Basic.js"></script>
   <script src="../../dist/JsBarcode.all.js"></script>
   <script src="../../svg/mySVG.js"></script>
-  <script src="../../UI/H5_Date/map.js"></script>
+  <script src="../../UI/map.js"></script>
   <script src="../../popup/map.js"></script>
 
   <script src="jsonFunc.js"></script>
@@ -22,7 +22,7 @@
   
       <script>
 
-    
+          
           document.body.style.position = 'absolute';
           const header_div = get_header();
           document.body.appendChild(header_div);
@@ -30,7 +30,7 @@
           document.body.appendChild(main_div);    
           
           const popup_find_div = get_popup_find();
-          document.body.appendChild(popup_find_div);
+          document.body.appendChild(popup_find_div.div);
           popup_find_div.Set_Visible(true);
       </script>
    
@@ -55,10 +55,10 @@
             // 解析藍牙掃描器返回的數據
             if(parsedCode != '')
             {
-                Set_popup_visible(true);
+                popup_find_div.Set_Visible(false);
                 const find_code_input = document.querySelector("#find_code_input");
                 find_code_input.value = parsedCode;
-                button_currentDate_Click();
+                checksvg_Click();
             }         
         }
         else
