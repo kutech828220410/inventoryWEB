@@ -1,4 +1,31 @@
-
+var device_buf =[];
+window.onresize = function() 
+{
+    const device = checkDeviceType();
+    if(device != device_buf)
+    {
+        device_buf = device;
+        console.log(device_buf);
+        if(device_buf == DeviceType.MOBILE) 
+        {
+            const row_div = document.querySelectorAll(".row_div");
+            for(var i = 0 ; i < row_div.length ; i++)
+            {
+                row_div[i].style.width = "100%";
+            }
+        }
+        if(device_buf == DeviceType.COMPUTER)
+        {
+            const row_div = document.querySelectorAll(".row_div");
+            for(var i = 0 ; i < row_div.length ; i++)
+            {
+                row_div[i].style.width = "300px";
+            }
+        }
+    }
+   
+ 
+}
 function Replace_data_by_content(creat , content)
 {
     for(var i = 0 ; i < creat.Contents.length ; i++)
@@ -13,6 +40,7 @@ function Replace_data_by_content(creat , content)
          row_div.style.backgroundColor = (creat.Contents[i].Sub_content.length == 0)? "white" : "#baf157";
       }
     }
+    edit_herader_view_QTY();
 }
 function creat_row_div(_index , Contents) 
 {
@@ -28,8 +56,14 @@ function creat_row_div(_index , Contents)
     row_div.style.justifyContent = "top";
     row_div.style.width = "100%";
     row_div.style.backgroundColor = (Contents.Sub_content.length == 0)? "white" : "#baf157";
-    if(device == DeviceType.MOBILE) row_div.style.width = "100%";
-    if(device == DeviceType.COMPUTER) row_div.style.width = "400px";
+    if(device == DeviceType.MOBILE) 
+    {
+        row_div.style.width = "100%";
+    }
+    if(device == DeviceType.COMPUTER)
+    {
+        row_div.style.width = "300px";
+    } 
     row_div.style.height= "145px";
     row_div.style.border = "1px solid gray";
     row_div.style.flexDirection = "column";
@@ -300,7 +334,7 @@ function get_block2_div(_index, item)
     barcode_div.style.marginRight = "10px";
     barcode_div.style.marginLeft = "10px";
 
-    if(device == DeviceType.MOBILE) 
+    if(!isDesktop) 
     {
         const barcodeCanvas = document.createElement("img");
         barcodeCanvas.style.width = "120px";
@@ -321,7 +355,7 @@ function get_block2_div(_index, item)
         });
         barcode_div.appendChild(barcodeCanvas);
     }
-    if(device == DeviceType.COMPUTER) 
+    if(isDesktop) 
     {
         barcodeCanvas = document.createElement("canvas");
         barcodeCanvas.style.width = "120px";

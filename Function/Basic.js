@@ -1,10 +1,13 @@
 loadScript("../../Function/WebApiFunc.js");
 loadScript("../../Function/dateConvert.js");
+var isDesktop = /Windows|Linux|Macintosh/i.test(navigator.userAgent);
+
 const DeviceType = 
 {
   MOBILE: "Mobile Phone",
   TABLET: "Tablet",
-  COMPUTER: "Computer Web Page"
+  COMPUTER: "Computer Web Page",
+  NONE: "None"
 };
 
 var device = checkDeviceType();
@@ -12,14 +15,19 @@ var screenWidth = window.innerWidth || document.documentElement.clientWidth || d
 var screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 
 
-function checkDeviceType() {
+function checkDeviceType() 
+{
   var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
-  if (screenWidth < 768) {
+  if (screenWidth < 768)
+  {
     return DeviceType.MOBILE;
-  } else if (screenWidth >= 768 && screenWidth < 1024) {
-    return DeviceType.MOBILE;
-  } else {
+  } 
+  else if (screenWidth >= 768 && screenWidth < 1024) 
+  {
+    return DeviceType.COMPUTER;
+  } else 
+  {
     return DeviceType.COMPUTER;
   }
 }

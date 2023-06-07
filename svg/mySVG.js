@@ -35,6 +35,115 @@ function Get_pointleft_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeC
     
     return btn_div;
 }
+function Get_all_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
+{
+    const btn_div = document.createElement("div");
+    const div = document.createElement("div");
+    btn_div.style.width = btn_width;
+    btn_div.style.height= btn_height; 
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.innerHTML = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+    <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+    <svg 
+       xmlns:dc="http://purl.org/dc/elements/1.1/"
+       xmlns:cc="http://creativecommons.org/ns#"
+       xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+       xmlns:svg="http://www.w3.org/2000/svg"
+       xmlns="http://www.w3.org/2000/svg"
+       xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+       xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+       width="100%"
+       height="100%"
+       viewBox="0 0 30 30"
+       version="1.1"
+       id="svg822"
+       inkscape:version="0.92.4 (f8dce91, 2019-08-02)"
+       sodipodi:docname="view-all.svg">
+      <defs
+         id="defs816" />
+      <sodipodi:namedview
+         id="base"
+         pagecolor="#ffffff"
+         bordercolor="#666666"
+         borderopacity="1.0"
+         inkscape:pageopacity="0.0"
+         inkscape:pageshadow="2"
+         inkscape:zoom="17.833333"
+         inkscape:cx="15"
+         inkscape:cy="15"
+         inkscape:document-units="px"
+         inkscape:current-layer="layer1"
+         showgrid="true"
+         units="px"
+         inkscape:window-width="1366"
+         inkscape:window-height="713"
+         inkscape:window-x="0"
+         inkscape:window-y="0"
+         inkscape:window-maximized="1"
+         inkscape:snap-global="true"
+         inkscape:snap-bbox="true"
+         showguides="false">
+        <inkscape:grid
+           type="xygrid"
+           id="grid816" />
+      </sodipodi:namedview>
+      <metadata
+         id="metadata819">
+        <rdf:RDF>
+          <cc:Work
+             rdf:about="">
+            <dc:format>image/svg+xml</dc:format>
+            <dc:type
+               rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+            <dc:title>
+    
+    </dc:title>
+          </cc:Work>
+        </rdf:RDF>
+      </metadata>
+      <g
+         inkscape:label="Layer 1"
+         inkscape:groupmode="layer"
+         id="layer1"
+         transform="translate(0,-289.0625)">
+        <path
+           style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="M 6 4 C 4.892 4 4 4.892 4 6 L 4 14 L 14 14 L 14 4 L 6 4 z M 16 4 L 16 14 L 26 14 L 26 6 C 26 4.892 25.108 4 24 4 L 16 4 z M 4 16 L 4 24 C 4 25.108 4.892 26 6 26 L 14 26 L 14 16 L 4 16 z M 16 16 L 16 26 L 24 26 C 25.108 26 26 25.108 26 24 L 26 16 L 16 16 z "
+           transform="translate(0,289.0625)"
+           id="rect888" />
+      </g>
+    </svg>`;
+    
+    
+  
+    svg.setAttribute("class", "svg");
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", "100%");
+
+    div.style.width = svg_width;
+    div.style.height = svg_height;
+ 
+    div.style.justifyContent = "center";
+    div.style.alignItems = "center";
+    div.style.margin = "auto";   
+    btn_div.style.backgroundColor = backgroundColor;
+    btn_div.addEventListener("mouseover", function() {
+        btn_div.style.backgroundColor = "lightgray";
+      });
+    
+      // 滑鼠移出時的事件處理器
+      btn_div.addEventListener("mouseout", function() {
+        btn_div.style.backgroundColor = backgroundColor;
+      });
+    
+    div.appendChild(svg);
+    btn_div.appendChild(div);
+    
+    return btn_div;
+}
 function Get_next_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
 {
     const btn_div = document.createElement("div");

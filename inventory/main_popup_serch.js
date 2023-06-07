@@ -27,15 +27,9 @@ function show_popup_serch()
     serch_SKDIACODE_input.value = '';
     serch_NAME_input.value = '';
     serch_CHT_NAME_input.value = '';
-    console.log(serch_CODE_input);
-    console.log(serch_SKDIACODE_input);
-    console.log(serch_NAME_input);
-    console.log(serch_CHT_NAME_input);
 
     popup_serch_div.Set_Visible(true);  
     updateDivHeight(popup_serch_div._popup_div , 10);
-
-
 }
 function hide_popup_serch()
 {
@@ -58,28 +52,27 @@ function confirm_popup_serch()
         {
             for(var i = 0; i < allrows.length ; i++)
             {
-                allrows[i].style.display = "flex";
+                allrows[i].style.display = "inline-block";
                 allrows[i].style.visibility = "visible";
             }
-       
             return;
         }
-        if(serch_CODE_input.value)
+        const ratio_button_byNormal_input = document.querySelector('#ratio_button_byNormal_input_popup_serch');
+        const ratio_button_bylike_input = document.querySelector('#ratio_button_bylike_input_popup_serch');
+        const ratio_button_bystartWith_input = document.querySelector('#ratio_button_bystartWith_input_popup_serch');
+        if(ratio_button_byNormal_input.checked)
         {
-            for(var i = 0; i < allrows.length ; i++)
-            {
-                const CODE = allrows[i].getAttribute("CODE");
-                if(CODE == serch_CODE_input.value) 
-                {
-                    allrows[i].style.display = "flex";
-                    allrows[i].style.visibility = "visible";
-                }
-                else 
-                {
-                    allrows[i].style.display = "none";
-                    allrows[i].style.visibility = "hidden";
-                }
-            }
+            popup_serch_ByNormal();
+            return;
+        }
+        if(ratio_button_bylike_input.checked)
+        {
+            popup_serch_ByLike();
+            return;
+        }
+        if(ratio_button_bystartWith_input.checked)
+        {
+            popup_serch_ByStartWith();
             return;
         }
     }
@@ -88,8 +81,159 @@ function confirm_popup_serch()
     {
         hide_popup_serch();
     }
-    
+}
+function popup_serch_ByStartWith()
+{
+    const serch_CODE_input = document.querySelector('#serch_CODE_input_popup_serch');
+    const serch_SKDIACODE_input = document.querySelector('#serch_SKDIACODE_input_popup_serch');
+    const serch_NAME_input = document.querySelector('#serch_NAME_input_popup_serch');
+    const serch_CHT_NAME_input = document.querySelector('#serch_CHT_NAME_input_popup_serch');
+
+    var serch_value0 = '';
+    var serch_value1 = '';
+    if(serch_CODE_input.value)
+    {
+        serch_value0 = serch_CODE_input.value;
+        serch_value0.toUpperCase();
+    }
+    if(serch_SKDIACODE_input.value)
+    {
+        serch_value0 = serch_SKDIACODE_input.value;
+        serch_value0.toUpperCase();
+    }
+    if(serch_NAME_input.value)
+    {
+        serch_value0 = serch_NAME_input.value;
+        serch_value0.toUpperCase();
+    }
+    if(serch_CHT_NAME_input.value)
+    {
+        serch_value0 = serch_CHT_NAME_input.value;
+        serch_value0.toUpperCase();
+    }
+
+    if(serch_value0 == '') return;
+
+    for(var i = 0; i < allrows.length ; i++)
+    {
+        if(serch_CODE_input.value) serch_value1 = allrows[i].getAttribute("CODE").toUpperCase();  
+        if(serch_SKDIACODE_input.value) serch_value1 = allrows[i].getAttribute("SKDIACODE").toUpperCase();  
+        if(serch_NAME_input.value) serch_value1 = allrows[i].getAttribute("NAME").toUpperCase();  
+        if(serch_CHT_NAME_input.value) serch_value1 = allrows[i].getAttribute("CHT_NAME").toUpperCase();  
+       
+        var serch_value1 = serch_value1.substring(0, serch_value0.length);
+
+        if (serch_value0 == serch_value1)
+        {
+            allrows[i].style.display = "inline-block";
+            allrows[i].style.visibility = "visible";
+        }
+        else 
+        {
+            allrows[i].style.display = "none";
+            allrows[i].style.visibility = "hidden";
+        }
+        
+    }
+}
+function popup_serch_ByLike()
+{
+    const serch_CODE_input = document.querySelector('#serch_CODE_input_popup_serch');
+    const serch_SKDIACODE_input = document.querySelector('#serch_SKDIACODE_input_popup_serch');
+    const serch_NAME_input = document.querySelector('#serch_NAME_input_popup_serch');
+    const serch_CHT_NAME_input = document.querySelector('#serch_CHT_NAME_input_popup_serch');
+
+    var serch_value0 = '';
+    var serch_value1 = '';
+    if(serch_CODE_input.value)
+    {
+        serch_value0 = serch_CODE_input.value;
+        serch_value0.toUpperCase();
+    }
+    if(serch_SKDIACODE_input.value)
+    {
+        serch_value0 = serch_SKDIACODE_input.value;
+        serch_value0.toUpperCase();
+    }
+    if(serch_NAME_input.value)
+    {
+        serch_value0 = serch_NAME_input.value;
+        serch_value0.toUpperCase();
+    }
+    if(serch_CHT_NAME_input.value)
+    {
+        serch_value0 = serch_CHT_NAME_input.value;
+        serch_value0.toUpperCase();
+    }
+    if(serch_value0 == '') return;
    
+    for(var i = 0; i < allrows.length ; i++)
+    {
+        if(serch_CODE_input.value) serch_value1 = allrows[i].getAttribute("CODE").toUpperCase();  
+        if(serch_SKDIACODE_input.value) serch_value1 = allrows[i].getAttribute("SKDIACODE").toUpperCase();  
+        if(serch_NAME_input.value) serch_value1 = allrows[i].getAttribute("NAME").toUpperCase();  
+        if(serch_CHT_NAME_input.value) serch_value1 = allrows[i].getAttribute("CHT_NAME").toUpperCase();  
+        if (serch_value1.indexOf(serch_value0) !== -1)
+        {
+            allrows[i].style.display = "inline-block";
+            allrows[i].style.visibility = "visible";
+        }
+        else 
+        {
+            allrows[i].style.display = "none";
+            allrows[i].style.visibility = "hidden";
+        }
+        
+    }
+}
+function popup_serch_ByNormal()
+{
+    const serch_CODE_input = document.querySelector('#serch_CODE_input_popup_serch');
+    const serch_SKDIACODE_input = document.querySelector('#serch_SKDIACODE_input_popup_serch');
+    const serch_NAME_input = document.querySelector('#serch_NAME_input_popup_serch');
+    const serch_CHT_NAME_input = document.querySelector('#serch_CHT_NAME_input_popup_serch');
+
+    var serch_value0 = '';
+    var serch_value1 = '';
+    if(serch_CODE_input.value)
+    {
+        serch_value0 = serch_CODE_input.value;
+        serch_value0.toUpperCase();
+    }
+    if(serch_SKDIACODE_input.value)
+    {
+        serch_value0 = serch_SKDIACODE_input.value;
+        serch_value0.toUpperCase();
+    }
+    if(serch_NAME_input.value)
+    {
+        serch_value0 = serch_NAME_input.value;
+        serch_value0.toUpperCase();
+    }
+    if(serch_CHT_NAME_input.value)
+    {
+        serch_value0 = serch_CHT_NAME_input.value;
+        serch_value0.toUpperCase();
+    }
+    if(serch_value0 == '') return;
+
+    for(var i = 0; i < allrows.length ; i++)
+    {
+        if(serch_CODE_input.value) serch_value1 = allrows[i].getAttribute("CODE").toUpperCase();  
+        if(serch_SKDIACODE_input.value) serch_value1 = allrows[i].getAttribute("SKDIACODE").toUpperCase();  
+        if(serch_NAME_input.value) serch_value1 = allrows[i].getAttribute("NAME").toUpperCase();  
+        if(serch_CHT_NAME_input.value) serch_value1 = allrows[i].getAttribute("CHT_NAME").toUpperCase();  
+        if(serch_value1 == serch_value0) 
+        {
+            allrows[i].style.display = "inline-block";
+            allrows[i].style.visibility = "visible";
+        }
+        else 
+        {
+            allrows[i].style.display = "none";
+            allrows[i].style.visibility = "hidden";
+        }
+    }
 }
 
 function get_title_popup_serch()
@@ -219,9 +363,62 @@ function get_serch_box_popup_serch()
 function get_underline_popup_serch()
 {
     const underline_div = document.createElement('div');
-    My_Div.Init(underline_div, 'underline_div_serch_div','underline_div_serch_div', '100%','60px','');
+    My_Div.Init(underline_div, 'underline_div_serch_div_popup_serch','underline_div_serch_div_popup_serch', '100%','60px','');
     My_Div.Set_Block(underline_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
     underline_div.style.alignItems = "center";
+
+    const underline_serchtype_div = document.createElement('div');
+    My_Div.Init(underline_serchtype_div, 'underline_serchtype_div_popup_serch','underline_serchtype_div_popup_serch', '72%','100%','');
+    My_Div.Set_Block(underline_serchtype_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
+    underline_div.style.alignItems = "center";
+    
+
+    const ratio_button_bylike_input = document.createElement('input');
+    ratio_button_bylike_input.id= 'ratio_button_bylike_input_popup_serch';
+    ratio_button_bylike_input.type = "radio";
+    ratio_button_bylike_input.name = "serch_type";
+    ratio_button_bylike_input.style.width = "15px";
+    ratio_button_bylike_input.style.height = "15px";
+    ratio_button_bylike_input.style.marginRight = "3px";
+    ratio_button_bylike_input.checked = "true";
+
+    underline_serchtype_div.appendChild(ratio_button_bylike_input);
+    
+    const serch_bylike_text = document.createElement('div');
+    My_Div.Init(serch_bylike_text,'serch_bylike_text_popup_serch','serch_bylike_text_popup_serch', '35px','100%','');
+    My_Div.Set_Text(serch_bylike_text ,"模糊" , TextAlignEnum.CENTER , "14px", false ,"微軟正黑體","black");
+    serch_bylike_text.style.marginRight = "5px";
+    underline_serchtype_div.appendChild(serch_bylike_text);
+
+    const ratio_button_bystartWith_input = document.createElement('input');
+    ratio_button_bystartWith_input.type = "radio";
+    ratio_button_bystartWith_input.id= 'ratio_button_bystartWith_input_popup_serch';
+    ratio_button_bystartWith_input.name = "serch_type";
+    ratio_button_bystartWith_input.style.width = "15px";
+    ratio_button_bystartWith_input.style.height = "15px";
+    ratio_button_bystartWith_input.style.marginRight = "3px";
+    underline_serchtype_div.appendChild(ratio_button_bystartWith_input);
+
+    const serch_bystartWith_text = document.createElement('div');
+    My_Div.Init(serch_bystartWith_text,'serch_bystartWith_text_popup_serch','serch_bystartWith_text_popup_serch', '35px','100%','');
+    My_Div.Set_Text(serch_bystartWith_text ,"前綴" , TextAlignEnum.CENTER , "14px", false ,"微軟正黑體","black");
+    serch_bystartWith_text.style.marginRight = "5px";
+    underline_serchtype_div.appendChild(serch_bystartWith_text);
+
+    const ratio_button_byNormal_input = document.createElement('input');
+    ratio_button_byNormal_input.type = "radio";
+    ratio_button_byNormal_input.id= 'ratio_button_byNormal_input_popup_serch';
+    ratio_button_byNormal_input.name = "serch_type";
+    ratio_button_byNormal_input.style.width = "15px";
+    ratio_button_byNormal_input.style.height = "15px";
+    ratio_button_byNormal_input.style.marginRight = "3px";
+    underline_serchtype_div.appendChild(ratio_button_byNormal_input);
+
+    const serch_byNormal_text = document.createElement('div');
+    My_Div.Init(serch_byNormal_text,'serch_byNormal_text_popup_serch','serch_byNormal_text_popup_serch', '35px','100%','');
+    My_Div.Set_Text(serch_byNormal_text ,"標準" , TextAlignEnum.CENTER , "14px", false ,"微軟正黑體","black");
+    serch_byNormal_text.style.marginRight = "5px";
+    underline_serchtype_div.appendChild(serch_byNormal_text);
 
     const svg_confirm_SVG = Get_confirm_SVG("40px","100%" ,"60%","100%","green");
     My_Div.Init(svg_confirm_SVG, 'svg_confirm_SVG_popup_input','svg_confirm_SVG_popup_input', '40px', '40px', '');
@@ -241,6 +438,7 @@ function get_underline_popup_serch()
     {
         undo_popup_serch();
     });
+    underline_div.appendChild(underline_serchtype_div);
 
     underline_div.appendChild(svg_undo_SVG);
     underline_div.appendChild(svg_confirm_SVG);

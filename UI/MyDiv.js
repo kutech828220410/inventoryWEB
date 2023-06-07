@@ -116,7 +116,7 @@ class My_Div
 
     }
  
-    static Set_position(div ,positionEnum , top, left)
+    static Set_position(div ,positionEnum , left, top)
     {
         if(positionEnum!= undefined)
         {
