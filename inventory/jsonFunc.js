@@ -383,20 +383,20 @@ async function device_all()
   var result = await getDataFromAPI(_url);
   return result;
 }
-async function sub_contents_delete_by_GUID(Color, device_basic)
+async function device_light(Color, device_basic)
 {
   const post_data = 
   {
-    "Data": `${device_basic}`,
+    "Data": device_basic,
     "Master_GUID": 0,
     "Server":``,
     "DbName":``,
     "TableName":``,
     "Result": "",
-    "Value": "",
+    "Value": Color,
     "TimeTaken": ""
   };
-  var _url = `${inventory_url}/sub_contents_delete_by_GUID`;
+  var _url = `${device_url}/light`;
   console.log("post_data",post_data)
   let response = await postDataToAPI(`${_url}`,post_data);
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
