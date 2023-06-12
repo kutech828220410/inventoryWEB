@@ -399,7 +399,6 @@ async function device_light(Color, device_basic)
   var _url = `${device_url}/light`;
   console.log("post_data",post_data)
   let response = await postDataToAPI(`${_url}`,post_data);
-  await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
   return response;
 }
 //#endregion

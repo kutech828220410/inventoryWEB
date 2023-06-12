@@ -80,70 +80,15 @@ function Set_main_div_enable(value)
 }
 function get_header() 
 {
-
   const header_div = document.createElement('div');
   My_Div.Init(header_div, 'header_div','header_div', '100%', '50px', '');
   My_Div.Set_Block(header_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  // header_div.style.background = "linear-gradient(90deg, rgba(186, 185, 208, 1) 0%, rgba(235, 235, 235, 1) 100%)";
   header_div.style.overflowX = "hidden";
-  // header_div.style.borderBottom = "3px solid";
-
-
-  // const header_title_user_div = document.createElement('div');
-  // My_Div.Init(header_title_user_div, 'header_title_user_div','header_title_user_div', '100%', '100%', '');
-  // My_Div.Set_Block(header_title_user_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.TOP);
-
   const header_title_text = document.createElement('div');
   My_Div.Init(header_title_text, 'header_title_text','header_title_text', '100%', '50%', '');
   My_Div.Set_Text(header_title_text ,"智慧藥局系統" , TextAlignEnum.CENTER , "32px", true,"微軟正黑體","#FFF");
-
-  // header_title_text.className = "h1";
   header_title_text.id = "header_title_text";
-  // header_title_text.style.marginLeft = "20px";
-  // header_title_text.style.marginTop = "5px";
   header_div.appendChild(header_title_text);
-
-  // const header_user_text = document.createElement('div');
-  // My_Div.Init(header_user_text, 'header_user_text','header_user_text', '100%', '50%', '');
-  // My_Div.Set_Text(header_user_text ,"使用者:" , TextAlignEnum.LEFT , "14px", false,"微軟正黑體","");
-  // header_user_text.className = "header_user_text";
-  // header_user_text.id = "header_user_text";
-  // header_user_text.style.marginLeft = "50px";
-  // header_user_text.style.marginBottom = "5px";
-  // header_user_text.style.wordSpacing = "2px";;
-  // header_user_text.style.letterSpacing = "2px";
-  // header_title_user_div.appendChild(header_user_text);
-
-
-  const header_contorls_div = document.createElement('div');
-  My_Div.Init(header_contorls_div, 'header_contorls_div','header_contorls_div', '100%', '100%', '');
-  My_Div.Set_Block(header_contorls_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
-  header_contorls_div.style.paddingRight = "5px";
-
-  const header_contorls_findsvg = Get_find_in_page_SVG("100%", "100%", "70%","100%","black","");
-  My_Div.Init(header_contorls_findsvg, 'header_contorls_findsvg','header_contorls_findsvg', '60px', '80%', '');
-  My_Div.Set_Block(header_contorls_findsvg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
-  header_contorls_findsvg.style.border = "1px solid black";
-  header_contorls_findsvg.onclick = header_findsvg_Click;
-  header_contorls_findsvg.style.marginRight = "3px";
-  header_contorls_findsvg.style.borderRadius = "3px";
-  header_contorls_div.appendChild(header_contorls_findsvg);
-
-  const header_contorls_addsvg = Get_add_SVG("100%", "100%", "70%","100%","black","");
-  My_Div.Init(header_contorls_addsvg, 'header_contorls_addsvg','header_contorls_addsvg', '60px', '80%', '');
-  My_Div.Set_Block(header_contorls_addsvg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
-  header_contorls_addsvg.style.border = "1px solid black";
-  header_contorls_addsvg.style.marginRight = "3px";
-  header_contorls_addsvg.style.borderRadius = "3px";
-  header_contorls_addsvg.onclick = header_addsvg_Click;
-  header_contorls_div.appendChild(header_contorls_addsvg);  
-
-  
-
-  // header_div.appendChild(header_title_user_div);
-  // header_div.appendChild(header_contorls_div);
-
-
   return header_div;
 }
 function get_main() 
@@ -151,7 +96,6 @@ function get_main()
   const main_div = document.createElement("div");
   My_Div.Init(main_div, 'main_div','main_div', '100%', '100%', '');
   My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.TOP);
-  
   const choose_text_div = document.createElement("div");
   My_Div.Init(choose_text_div, 'choose_text_div','choose_text_div', '100%', '5%', '');
   My_Div.Set_Block(choose_text_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.TOP);
@@ -322,182 +266,34 @@ function get_ward()
 
 function get_userinfo()
 {
-  const ward_div = document.createElement("div");
-  My_Div.Init(ward_div, 'ward_div','ward_div', '240px', '60px', 'rgba(255, 255, 255, 0.85)');
-  My_Div.Set_Block(ward_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.TOP);
-  ward_div.style.borderRadius = "10px";
-  ward_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
-  ward_div.style.marginTop = "10px";
+  const userinfo_div = document.createElement("div");
+  My_Div.Init(userinfo_div, 'userinfo_div','userinfo_div', '240px', '50px', 'rgba(255, 255, 255, 0.85)');
+  My_Div.Set_Block(userinfo_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  userinfo_div.style.borderRadius = "10px";
+  userinfo_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
+  userinfo_div.style.marginTop = "10px";
 
-  const ward_svg = Get_user_SVG("80%", "80%", "80%","80%","gray","");
-  My_Div.Init(ward_svg, 'ward_svg','ward_svg', '30%', '100%', '');
-  My_Div.Set_Block(ward_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
+  const userinfo_svg = Get_user_SVG("70%", "70%", "70%","70%","","none");
+  My_Div.Init(userinfo_svg, 'userinfo_svg','userinfo_svg', '30%', '100%', '');
+  My_Div.Set_Block(userinfo_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
 
-  const all_text_div = document.createElement("div");
-  My_Div.Init(all_text_div, 'all_text_div','all_text_div', '70%', '100%', '');
-  My_Div.Set_Block(all_text_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.CENTER);
+  const userinfo_text_div = document.createElement("div");
+  My_Div.Init(userinfo_text_div, 'userinfo_text_div','userinfo_text_div', '40%', '100%', '');
+  My_Div.Set_Block(userinfo_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  My_Div.Set_Text(userinfo_text_div ,"鴻森整合" , TextAlignEnum.CENTER , "22px", true,"","");
 
+  const logout_svg = Get_logout_SVG("80%", "80%", "80%","80%","","none");
+  My_Div.Init(logout_svg, 'logout_svg','logout_svg', '30%', '100%', '');
+  My_Div.Set_Block(logout_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  logout_svg.onclick = logout_Click;
 
-  const ward_text_div = document.createElement("div");
-  My_Div.Init(ward_text_div, 'ward_text_div','ward_text_div', '100%', '30%', '');
-  My_Div.Set_Block(ward_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text(ward_text_div ,"護理站" , TextAlignEnum.CENTER , "30px", true,"微軟正黑體","");
-  ward_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
-  ward_text_div.style.backgroundClip = 'text';
-  ward_text_div.style.webkitBackgroundClip = 'text';
-  ward_text_div.style.webkitTextFillColor = 'transparent';
-  ward_text_div.style.borderTopRightRadius = "10px";
-  ward_text_div.style.borderBottomRightRadius = "10px";
-
-  const ward_text_eng_div = document.createElement("div");
-  My_Div.Init( ward_text_eng_div, ' ward_text_eng_div',' ward_text_eng_div', '100%', '30%', '');
-  My_Div.Set_Block( ward_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text( ward_text_eng_div ,"Nursing Station" , TextAlignEnum.CENTER , "20px", true,"","");
-   ward_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
-   ward_text_eng_div.style.backgroundClip = 'text';
-   ward_text_eng_div.style.wordBreak = "break-word";
-   ward_text_eng_div.style.webkitBackgroundClip = 'text';
-   ward_text_eng_div.style.webkitTextFillColor = 'transparent';
-   ward_text_eng_div.style.borderTopRightRadius = "10px";
-   ward_text_eng_div.style.borderBottomRightRadius = "10px";
-
-  ward_div.appendChild(ward_svg);
-  ward_div.appendChild(all_text_div);
-  all_text_div.appendChild(ward_text_div);
-  all_text_div.appendChild(ward_text_eng_div);
-  return ward_div;
-}
-//#endregion
-
-//#region [rgba(0, 255, 0, 0.03)] Event
-// window.onload = load;
-// async function load() 
-// {
-//   await set_ip();
-//   let rowNum = 1;
-//   const Loadingpopup = GetLoadingpopup();
-//   document.body.appendChild(Loadingpopup);
-//   Set_main_div_enable(true);
-//   const currentDate = new Date();
-//   var date_end = DateTimeAddDays(currentDate, 1);
-//   var date_start = DateTimeAddDays(currentDate, -30);
-//   date_start = getDateStr(date_start);
-//   date_end = getDateStr(date_end);
-  
-//   data = await creat_get_by_CT_TIME_ST_END(date_start,date_end);
-//   Set_main_div_enable(false);
-//   page_Init(data);
-// }
-async function header_addsvg_Click(event) 
-{
-  show_popup_add();
-
-}
-function header_findsvg_Click(event)
-{
-  show_popup_serch();
+   userinfo_div.appendChild(userinfo_svg);
+   userinfo_div.appendChild(userinfo_text_div);
+   userinfo_div.appendChild(logout_svg);
+  return userinfo_div;
 }
 
-
-
-async function findcheckbtn_Click(event)
-{
-  popup_find_div.style.display = "block";
-  popup_find_div.style.opacity = "0";
-  popup_find_div.style.visibility = "hidden";
-  var IC_SN = find_IC_SN_input.value;
-  var date_start = find_start_date_input.value;
-  var date_end = find_end_date_input.value;
-  find_IC_SN_input.value = '';
-  find_start_date_input.value = '';
-  if (IC_SN) 
-  {
-    Set_main_div_enable(true);
-    data = await creat_get_by_IC_SN(IC_SN);
-    Set_main_div_enable(false);
-    if (data.Code <= 0) 
-    {
-      alert("查無資料!");
-      return;
-    }
-    page_Init(data);
-    return;
-  }
-  if (date_start || date_end)
-  {
-    var num = 0;
-    if(date_start)num++;
-    if(date_end)num++;
-    if(num == 2)
-    {
-      var date_end = DateTimeAddDays(date_end, 1);
-      date_start = getDateStr(date_start);
-      date_end = getDateStr(date_end);
-      Set_main_div_enable(true);
-      data = await creat_get_by_CT_TIME_ST_END(date_start,date_end);
-      Set_main_div_enable(false);
-    }
-    else
-    {
-       if(date_start)
-       {
-          Set_main_div_enable(true);
-          data = await creat_get_by_CT_TIME_S(date_start);
-          Set_main_div_enable(false);
-       }
-       if(date_end)
-       {
-          Set_main_div_enable(true);
-          data = await creat_get_by_CT_TIME_S(date_end);
-          Set_main_div_enable(false);
-       }
-    }
-  
-    if (data.Data.length <= 0) 
-    {
-      alert("查無資料!");
-      return;
-    }
-    page_Init(data);
-    return;
-  }
+async function logout_Click()
+ {
+  location.href = "http://www.ketech.tw:5500/login.html";
 }
-//#endregion
-
-
-//#region [rgba(255, 0, 0, 0.03)] private Function
-function getNoDataDiv() 
-{
-  const NoData_div = document.createElement("div");
-  NoData_div.id = "NoData_div";
-  NoData_div.className = "NoData_div";
-  NoData_div.style.width = "100%";
-  NoData_div.style.height = "150px";
-  NoData_div.style.display = "flex";
-
-  NoData_div.style.textAlign = "center";
-  NoData_div.style.backgroundColor = "";
-  NoData_div.style.alignItems = "center";
-  NoData_div.style.justifyContent = "center";
-
-
-  NoData_Text = document.createElement("div");
-  NoData_Text.innerText = "今日無盤點單,請搜尋或創建新單號!";
-  NoData_Text.style.width = "100%"
-  NoData_Text.style.textAlign = "center";
-  NoData_Text.style.backgroundColor = "";
-  NoData_Text.style.color = "red";
-  NoData_Text.style.fontWeight = "bold";
-  NoData_Text.style.fontSize = "30px";
-
-  NoData_div.appendChild(NoData_Text);
-  return NoData_div;
-}
-function setUserText() 
-{
-  const userText = document.querySelector("#header_user_text");
-   userText.innerText = `使用者:${get_logedName()} ID:${get_loggedID()}`;
-}
-//#endregion
-
-

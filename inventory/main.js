@@ -84,11 +84,15 @@ function Sort_device_basic_byCode(Code)
   }
   return ary;
 }
+async function light_device_by_Code(Code ,Color)
+{
+  const temp = Sort_device_basic_byCode(Code)
+  device_light(Color , temp);
+}
 
 async function donesvg_Click() 
 {
-    const temp = Sort_device_basic_byCode("OGLU5")
-    console.log(temp);
+
     location.href = "frontpage.html";
 }
 function findsvg_Click()

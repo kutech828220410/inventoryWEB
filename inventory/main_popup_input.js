@@ -22,10 +22,13 @@ function show_popup_input(Content , page_Initial)
     popup_input_div.Set_Visible(true);
     const END_QTY_input = document.querySelector('#END_QTY_input_popup_input');
     END_QTY_input.focus();
+    if(popup_input_div_Content != undefined) light_device_by_Code(popup_input_div_Content.CODE, "255,255,0");
+ 
 }
 function hide_popup_input()
 {
      popup_input_div.Set_Visible(false);
+     if(popup_input_div_Content != undefined) light_device_by_Code(popup_input_div_Content.CODE, "0,0,0");
 }
 
 function next_page_popup_input() 
