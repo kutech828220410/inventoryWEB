@@ -2,29 +2,50 @@ var device_buf =[];
 window.onresize = function() 
 {
     const device = checkDeviceType();
-    if(device != device_buf)
-    {
-        device_buf = device;
-        console.log(device_buf);
-        if(device_buf == DeviceType.MOBILE) 
+    const screenWidth = getScreenWidth();   
+      
+    if(device == DeviceType.MOBILE) 
+    { 
+        if(device != device_buf)
         {
             const row_div = document.querySelectorAll(".row_div");
             for(var i = 0 ; i < row_div.length ; i++)
             {
                 row_div[i].style.width = "100%";
             }
-        }
-        if(device_buf == DeviceType.COMPUTER)
+            device_buf = device;
+        }      
+    
+    }
+    else
+    {
+        if(device != device_buf) device_buf = device;
+        const temp = Math.floor(screenWidth / 300);
+        const row_width = screenWidth / temp - 20;
+        const row_div = document.querySelectorAll(".row_div");
+        for(var i = 0 ; i < row_div.length ; i++)
         {
-            const row_div = document.querySelectorAll(".row_div");
-            for(var i = 0 ; i < row_div.length ; i++)
-            {
-                row_div[i].style.width = "300px";
-            }
+            row_div[i].style.width = `${row_width}px`;
         }
     }
-   
- 
+    
+}
+function row_div_onclick(event)
+{
+    sub_row_div_onclick(this);
+}
+function sub_row_div_onclick(row_div)
+{
+    const GUID = row_div.getAttribute("GUID");
+    console.log(GUID);
+    for(var i = 0 ; i <data.Data[0].Contents.length ; i++)
+    {
+        if(data.Data[0].Contents[i].GUID == GUID)
+        {
+            show_popup_input(data.Data[0].Contents[i] , true);
+            return;
+        }
+    }
 }
 function Replace_data_by_content(creat , content)
 {
@@ -62,7 +83,9 @@ function creat_row_div(_index , Contents)
     }
     if(device == DeviceType.COMPUTER)
     {
-        row_div.style.width = "300px";
+        const temp = Math.floor(screenWidth / 300);
+        const row_width = screenWidth / temp - 20;
+        row_div.style.width = `${row_width}px`;
     } 
     row_div.style.height= "145px";
     row_div.style.border = "1px solid gray";
@@ -94,19 +117,7 @@ function creat_row_div(_index , Contents)
 
     return row_div;
 }
-function row_div_onclick(event)
-{
-    const GUID = this.getAttribute("GUID");
-    console.log(GUID);
-    for(var i = 0 ; i <data.Data[0].Contents.length ; i++)
-    {
-        if(data.Data[0].Contents[i].GUID == GUID)
-        {
-            show_popup_input(data.Data[0].Contents[i] , true);
-            return;
-        }
-    }
-}
+
 
 function get_block1_div(_index, item)
 {

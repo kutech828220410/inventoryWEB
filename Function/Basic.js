@@ -11,22 +11,22 @@ const DeviceType =
 };
 
 var device = checkDeviceType();
-var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+var screenWidth = getScreenWidth();
 var screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 
-
+function getScreenWidth()
+{
+  return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+}
 function checkDeviceType() 
 {
   var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
-  if (screenWidth < 768)
+  if (screenWidth < 500)
   {
     return DeviceType.MOBILE;
   } 
-  else if (screenWidth >= 768 && screenWidth < 1024) 
-  {
-    return DeviceType.COMPUTER;
-  } else 
+  else 
   {
     return DeviceType.COMPUTER;
   }
@@ -78,6 +78,11 @@ function updateDivHeight(div , offsetHeight)
   }
   console.log('totalHeight', totalHeight);
   div.style.height = totalHeight + offsetHeight + 'px';
+}
+
+function isStringNull(str)
+{
+  if(str === null || str === undefined || str === "") return true;
 }
 
 function isScriptLoaded(scriptSrc)

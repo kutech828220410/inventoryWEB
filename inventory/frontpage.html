@@ -4,43 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>盤點單管理</title>
-    <link rel="stylesheet" href="fronpage.css">
+    <link rel="stylesheet" href="frontpage.css">
     <script src="../../ApiURL.js"></script>
     <script src="../../ChatHub.js"></script>
     <script src="../../Function/WebApiFunc.js"></script>
     <script src="../../svg/mySVG.js"></script>
     <script src="../../Function/Basic.js"></script>
-    <script src="../../popup/loading.js"></script>
-    <script src="../../UI/H5_Date/map.js"></script>
+    <script src="../../popup/map.js"></script>
+    <script src="../../dist/JsBarcode.all.js"></script>
+    <script src="../../UI/map.js"></script>
 
     <script src="jsonFunc.js"></script>
     <script src="frontpage.js"></script>
-    <script src="frontpage_addform.js"></script>
+    <script src="frontpage_loadingdata.js"></script>
+    <script src="forntpage_popup_serch.js"></script>
+    <script src="frontpage_popup_add.js"></script>
  
+    
     <!-- <script src="../session_check.js"></script> -->
     
 </head>
 <body>
-  <div class="form" id="form" style="width: 100%; height: 100%;">
     <script>
      
-    const form = document.querySelector("#form");
-    form.style.display = "flex";
-    form.style.width = "100%";
-    form.style.justifyContent = "top";
-    form.style.flexDirection = "column";
-    form.style.backgroundColor = "#";
- 
-    const header_div = get_header();
-    form.appendChild(header_div);
+     document.body.style.position = 'absolute';
+     const header_div = get_header();
+     document.body.appendChild(header_div);
 
-    const main_div = get_main();
-    form.appendChild(main_div);
-    
-    </script>
-  </div>
-  
-  
+     const main_div = get_main();
+     document.body.appendChild(main_div);
+
+     get_popup_serch();
+     get_popup_add();
+     document.body.appendChild(popup_serch_div.div);
+
+     popup_serch_div.Set_Visible(false);
+     popup_add_div.Set_Visible(false);
+
+    </script>  
 <div class="under-line">
   <B> Copyright ©2023 鴻森整合機電有限公司 </B>
 </div>
@@ -78,7 +79,6 @@
             //按下取消
           });
         });
-
   }) 
   
 
@@ -89,8 +89,7 @@
      var jsonObject = JSON.parse(event.detail.message); 
      console.log('ReceivedEvent',jsonObject);
 
-     const GUID = jsonObject.Data.GUID;
-     
+     const GUID = jsonObject.Data.GUID;  
      if(jsonObject.Method == "creat_lock_by_IC_SN" || jsonObject.Method == "creat_unlock_by_IC_SN")
      {
         for (var i = 0; i < data.Data.length; i++)
@@ -101,7 +100,7 @@
             }
         }
      }
-     if(jsonObject.Method == "creat_delete_by_IC_SN" || jsonObject.Method == "creat_auto_add")
+     if(jsonObject.Method == "creat_delete_by_IC_SN" || jsonObject.Method == "creat_add")
      {
         location.reload();
         return;

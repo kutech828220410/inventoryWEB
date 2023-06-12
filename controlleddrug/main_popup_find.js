@@ -259,39 +259,13 @@ async function checksvg_Click(event)
 }
 
 
-
-function Set_popup_find_position()
-{
- 
-  // const header_contorls_findbtn = document.querySelector("#header_contorls_findbtn");
-  // var position_header_contorls_findbtn = getAbsolutePosition(header_contorls_findbtn);
-  // const popup_find_div = document.querySelector("#popup_find_div");
-  // var position_popup_find_div = getAbsolutePosition(popup_find_div);
-  
-  // const top = `${position_header_contorls_findbtn.top + position_header_contorls_findbtn.height + 5}px`;
-  // const left = `${position_header_contorls_findbtn.left + position_header_contorls_findbtn.width / 2- position_popup_find_div.width}px`;
- 
-  // popup_find_div.style.top = `${top}`;
-  // popup_find_div.style.left = `${left}`;
-
-  // var popupDiv = document.getElementById("popup_find_div");
-  // var windowHeight = window.innerHeight;
-  // var windowWidth = window.innerWidth;
-  // var popupHeight = popupDiv.offsetHeight;
-  // var popupWidth = popupDiv.offsetWidth;
-  // var topPosition = Math.max((windowHeight - popupHeight) / 2, 0);
-  // var leftPosition = Math.max((windowWidth - popupWidth) / 2, 0);
-  // popupDiv.style.top = topPosition + "px";
-  // popupDiv.style.left = leftPosition + "px";
-
-}
 function find_start_date_input_Y_Click()
 {
     const find_start_date_input = document.querySelector("#find_start_date_input");
     const find_end_date_input = document.querySelector("#find_end_date_input");
     if(find_end_date_input.value == "")return;
-    const start_date = StringToDatime(find_start_date_input.value);
-    const end_date = StringToDatime(find_end_date_input.value);
+    const start_date = StringToDateime(find_start_date_input.value);
+    const end_date = StringToDateime(find_end_date_input.value);
     if(start_date > end_date)
     {
         alert("'開始時間'不得大於'結束時間'!");
@@ -307,8 +281,8 @@ function find_end_date_input_Y_Click()
     const find_start_date_input = document.querySelector("#find_start_date_input");
     const find_end_date_input = document.querySelector("#find_end_date_input");
     if(find_start_date_input.value == "")return;
-    const start_date = StringToDatime(find_start_date_input.value);
-    const end_date = StringToDatime(find_end_date_input.value);
+    const start_date = StringToDateime(find_start_date_input.value);
+    const end_date = StringToDateime(find_end_date_input.value);
     if(start_date > end_date)
     {
         alert("'結束時間'不得小於'開始時間'!");

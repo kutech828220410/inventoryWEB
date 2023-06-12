@@ -360,7 +360,7 @@ document.write(`<link href="../../UI/H5_Date/css/datepicker.css" rel="stylesheet
           strY = $('#yearwrapper').find('li').eq(indexY).html();
           strY = strY.length > 0 ? strY.substr(0, strY.length - 1) : '';
           opts.endday = checkdays(strY, strM);
-
+          if(strY == undefined) return;
           $('#daywrapper').find('ul').html(createDayUl());
           dayScroll.refresh();
         }
@@ -371,6 +371,7 @@ document.write(`<link href="../../UI/H5_Date/css/datepicker.css" rel="stylesheet
           indexM = Math.round((this.y / opts.liH) * (-1)) + 1;
           //console.log(indexM);
           strM = $('#monthwrapper').find('li').eq(indexM).html();
+          if(strM == undefined) return;
           strM = strM.length > 0 ? strM.substr(0, strM.length - 1) : '';
 
           opts.endday = checkdays(strY, strM);

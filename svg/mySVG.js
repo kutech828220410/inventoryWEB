@@ -690,7 +690,7 @@ function Get_unlock_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColo
     
     return btn_div;
 }
-function Get_right_direction_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
+function Get_right_direction_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor, clickOn)
 {
     const btn_div = document.createElement("div");
     const div = document.createElement("div");
@@ -718,14 +718,21 @@ function Get_right_direction_SVG(btn_width ,btn_height, svg_width, svg_height ,s
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() {
-        btn_div.style.backgroundColor = "lightgray";
+    if(clickOn == undefined) clickOn =true;
+    if(clickOn)
+    {
+      btn_div.addEventListener("mouseover", function() 
+      {
+          btn_div.style.backgroundColor = "lightgray";
       });
-    
+      
       // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() {
+      btn_div.addEventListener("mouseout", function() 
+      {
         btn_div.style.backgroundColor = backgroundColor;
       });
+    }
+  
     
     div.appendChild(svg);
     btn_div.appendChild(div);

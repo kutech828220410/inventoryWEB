@@ -3,6 +3,11 @@ let data = [];
 var loging_name = "測試";
 var current_IC_SN = "";
 let allrows = [];
+setInterval(function() 
+{
+
+}, 200);
+
 
 window.onload = load;
 
@@ -23,6 +28,8 @@ async function load()
     page_Init(data);
     edit_herader_view_QTY();
     Set_main_div_enable(false);
+
+
 }
 function page_Init(data) 
 {
@@ -45,7 +52,8 @@ function page_Init(data)
 
   // setUserText();
 }
-function Set_main_div_enable(value) {
+function Set_main_div_enable(value) 
+{
   const main_div = document.querySelector('#main_div');
   if (value)
   {
@@ -173,7 +181,6 @@ function get_header()
   herader_view_QTY_text.style.marginLeft = "5px";
   herader_view_div.appendChild(herader_view_QTY_text);
 
-
   header_div.appendChild(header_title_user_div);
   header_div.appendChild(header_contorls_div);
   coverage_div.appendChild(header_div);
@@ -194,21 +201,22 @@ function edit_herader_view_QTY()
 function get_main() {
 
   const main_div = document.createElement('div');
-  My_Div.Init(main_div, 'main_div','main_div', '100%', '100%', '');
-
-  My_Div.Set_position(main_div ,PositionEnum.FIXED ,0 ,112);
+  My_Div.Init(main_div, 'main_div','main_div', '100%', '1000px', '');
   main_div.style.flexWrap = "wrap";
   if(!isDesktop) 
   {
-    My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.TOP);
+    console.log("!isDesktop");
+    My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   }
   else
   {
-    My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
+    console.log("isDesktop");
+    My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   }
+  My_Div.Set_position(main_div ,PositionEnum.FIXED ,0 ,112);
+
   main_div.style.marginBottom = "30px";
-  main_div.style.overflowX = "hidden";
-  // main_div.style.overflowY = "hidden";
+  main_div.style.overflow = "scroll";
 
   return main_div;
 }

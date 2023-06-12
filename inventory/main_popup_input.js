@@ -25,7 +25,7 @@ function show_popup_input(Content , page_Initial)
 }
 function hide_popup_input()
 {
-    popup_input_div.Set_Visible(false);
+     popup_input_div.Set_Visible(false);
 }
 
 function next_page_popup_input() 
@@ -52,9 +52,11 @@ async function confirm_popup_input()
     }
     const GUID = popup_input_div_Content.GUID;
     const END_QTY = END_QTY_input.value;
+    END_QTY_input.value = '';
     const OP = loging_name;
-    await sub_content_add(GUID , END_QTY , OP);
+    sub_content_add(GUID , END_QTY , OP);
     hide_popup_input();
+    
 }
 async function delete_row_popup_input(GUID , Master_GUID)
 {
@@ -319,7 +321,7 @@ function get_underline_popup_input()
     });
     END_QTY_input.addEventListener("blur", function(event)
     {
-        confirm_popup_input();
+           confirm_popup_input();
     });
     END_QTY_input_div.appendChild(END_QTY_input);
 

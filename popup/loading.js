@@ -38,7 +38,7 @@ function GetLoadingpopup()
   popup.style.width = "100%";
   popup.style.height = "100%";
   popup.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-  popup.style.zIndex = "0";
+  popup.style.zIndex = "999999";
   
   // 創建彈跳視窗內容元素
   var popupContent = document.createElement("div");

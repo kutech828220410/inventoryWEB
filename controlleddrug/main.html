@@ -42,48 +42,49 @@
   <script>
   var barcode_value = '';
     // 監聽頁面的keydown事件
-     window.addEventListener('keydown', function(event) {
-        // 判斷按下的按鍵是否是Tab鍵或Enter鍵
-        console.log(event.key);
-        if (event.key === 'Tab' || event.key === 'Enter') {
-        // 防止頁面重新載入
-            event.preventDefault();
-            const parsedCode = parseBarcode(barcode_value);
-            
-            // 取得輸入框的值
-            barcode_value = '';
-            // 解析藍牙掃描器返回的數據
-            if(parsedCode != '')
-            {
-                popup_find_div.Set_Visible(false);
-                const find_code_input = document.querySelector("#find_code_input");
-                find_code_input.value = parsedCode;
-                checksvg_Click();
-            }         
-        }
-        else
+  window.addEventListener('keydown', function(event) 
+  {
+    // 判斷按下的按鍵是否是Tab鍵或Enter鍵
+    console.log(event.key);
+    if (event.key === 'Tab' || event.key === 'Enter') {
+    // 防止頁面重新載入
+        event.preventDefault();
+        const parsedCode = parseBarcode(barcode_value);
+        
+        // 取得輸入框的值
+        barcode_value = '';
+        // 解析藍牙掃描器返回的數據
+        if(parsedCode != '')
         {
-            const isValid = /^[a-zA-Z0-9]+$/.test(event.key);
-            const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
-            const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);
-            
-
-            if (isValid && (!isControlKey||isNumPadlKey)) {
-                // 將解析後的條碼值設定為輸入框的值
-                barcode_value += event.key;
-            } 
-        }
-    });
-
-    // 解析帶有分隔符的字符串
-    function parseBarcode(scannedCode) 
-    {
-      const delimiter = /[\n\r]/g;
-      const matches = scannedCode.split(delimiter);
-      return matches[0];
+            popup_find_div.Set_Visible(false);
+            const find_code_input = document.querySelector("#find_code_input");
+            find_code_input.value = parsedCode;
+            checksvg_Click();
+        }         
     }
+    else
+    {
+        const isValid = /^[a-zA-Z0-9]+$/.test(event.key);
+        const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
+        const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);
+        
 
-  </script>
+        if (isValid && (!isControlKey||isNumPadlKey)) {
+            // 將解析後的條碼值設定為輸入框的值
+            barcode_value += event.key;
+        } 
+    }
+});
+
+// 解析帶有分隔符的字符串
+function parseBarcode(scannedCode) 
+{
+  const delimiter = /[\n\r]/g;
+  const matches = scannedCode.split(delimiter);
+  return matches[0];
+}
+
+</script>
   
-  </body>
+</body>
 </html>

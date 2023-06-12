@@ -17,20 +17,31 @@ function getDatePartsFromDate(dateString)
     dayOfWeek : dayOfWeek
     };
 }
-function StringToDatime(dateStr)
+function StringToDateime(dateStr)
 {
     const parts = dateStr.split(" "); // 分割日期和時間部分
     const dateParts = parts[0].split("-"); // 分割日期部分
-    const timeParts = parts[1].split(":"); // 分割時間部分
+   
 
     const year = parseInt(dateParts[0]);
     const month = parseInt(dateParts[1]) - 1; // 月份從 0 開始計數，所以減去 1
     const day = parseInt(dateParts[2]);
-    const hour = parseInt(timeParts[0]);
-    const minute = parseInt(timeParts[1]);
-    const second = parseInt(timeParts[2]);
-
-    return new Date(year, month, day, hour, minute, second);
+    try
+    {
+        const timeParts = parts[1].split(":"); // 分割時間部分
+        const hour = parseInt(timeParts[0]);
+        const minute = parseInt(timeParts[1]);
+        const second = parseInt(timeParts[2]);
+        return new Date(year, month, day, hour, minute, second);
+    }
+    catch
+    {
+        const hour = 00;
+        const minute = 00;
+        const second = 00;
+        return new Date(year, month, day, hour, minute, second);
+    }
+   
 }
 function getDateTimeStr(date)
 {

@@ -51,6 +51,33 @@ async function creat_get_by_CT_TIME_S(date)
   let response = await postDataToAPI(`${inventory_url}/creat_get_by_CT_TIME`,post_data);
   return response;
 }
+
+
+async function creat_update_startime_by_IC_SN(ICSN)
+{
+  const post_data = 
+  {
+    "Data": {
+      "GUID": null,
+      "IC_SN": `${ICSN}`,
+      "CT": null,
+      "CT_TIME": null,
+      "START_TIME": null,
+      "END_TIME": null,
+      "STATE": null,
+      "Contents": []
+    },
+    "Code": 0,
+    "Server":`${Server}`,
+    "DbName":`${DbName}`,
+    "Result": "",
+    "Value": ``,
+    "TimeTaken": ""
+  };
+  console.log("post_data",post_data);
+  let response = await postDataToAPI(`${inventory_url}/creat_update_startime_by_IC_SN`,post_data);
+  return response;
+}
 async function creat_get_by_CT_TIME_ST_END(date_ST,date_END)
 {
   const post_data = 
@@ -72,6 +99,7 @@ async function creat_get_by_CT_TIME_ST_END(date_ST,date_END)
     "Value": `${date_ST},${date_END}`,
     "TimeTaken": ""
   };
+  console.log("post_data",post_data);
   let response = await postDataToAPI(`${inventory_url}/creat_get_by_CT_TIME_ST_END`,post_data);
   return response;
 }
@@ -181,7 +209,7 @@ async function creat_unlock_by_IC_SN(IC_SN)
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
   return response;
 }
-async function creat_auto_add()
+async function creat_auto_add(IC_NAME)
 {
   const post_data = 
   {
@@ -193,6 +221,7 @@ async function creat_auto_add()
       "START_TIME": null,
       "END_TIME": null,
       "STATE": null,
+      "IC_NAME" : `${IC_NAME}`,
       "Contents": []
     },
     "Code": 0,
