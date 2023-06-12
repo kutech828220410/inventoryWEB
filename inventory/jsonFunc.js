@@ -2,7 +2,7 @@ var Server = "127.0.0.1";
 var DbName = "ds01";
 
 
-
+//#region  API inventory
 async function creat_get_by_CT_TIME(date)
 {
   const post_data = 
@@ -350,10 +350,6 @@ async function sub_contents_delete_by_GUID(_GUID, Master_GUID)
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
   return response;
 }
-
-
-
-
 async function download_excel_by_IC_SN(IC_SN)
 {
   const post_data = 
@@ -379,3 +375,31 @@ async function download_excel_by_IC_SN(IC_SN)
   console.log("post_data",post_data)
   await downloadExcel(_url,post_data, `${IC_SN}_盤點管理`);
 }
+//#endregion
+//#region API Device
+async function device_all()
+{
+  var _url = `${device_url}/all`;
+  var result = await getDataFromAPI(_url);
+  return result;
+}
+async function sub_contents_delete_by_GUID(Color, device_basic)
+{
+  const post_data = 
+  {
+    "Data": `${device_basic}`,
+    "Master_GUID": 0,
+    "Server":``,
+    "DbName":``,
+    "TableName":``,
+    "Result": "",
+    "Value": "",
+    "TimeTaken": ""
+  };
+  var _url = `${inventory_url}/sub_contents_delete_by_GUID`;
+  console.log("post_data",post_data)
+  let response = await postDataToAPI(`${_url}`,post_data);
+  await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
+  return response;
+}
+//#endregion
