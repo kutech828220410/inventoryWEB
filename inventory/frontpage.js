@@ -57,7 +57,7 @@ function get_header()
 
 
   const header_title_user_div = document.createElement('div');
-  My_Div.Init(header_title_user_div, 'header_title_user_div','header_title_user_div', '800px', '100%', '');
+  My_Div.Init(header_title_user_div, 'header_title_user_div','header_title_user_div', '100%', '100%', '');
   My_Div.Set_Block(header_title_user_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.TOP);
 
   const header_title_text = document.createElement('div');
@@ -66,7 +66,7 @@ function get_header()
   header_title_text.className = "h1";
   header_title_text.id = "header_title_text";
   header_title_text.style.marginLeft = "20px";
-  header_title_text.style.marginTop = "5repx";
+  header_title_text.style.marginTop = "5px";
   header_title_user_div.appendChild(header_title_text);
 
   const header_user_text = document.createElement('div');

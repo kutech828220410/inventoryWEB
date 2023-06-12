@@ -1,4 +1,4 @@
-function Get_pointleft_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
+function Get_ward_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
 {
     const btn_div = document.createElement("div");
     const div = document.createElement("div");
@@ -6,7 +6,7 @@ function Get_pointleft_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeC
     btn_div.style.height= btn_height; 
 
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.innerHTML = `<?xml version="1.0" ?><svg color="black" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path stroke="" d="M0 220.8C0 266.416 37.765 304 83.2 304h35.647a93.148 93.148 0 0 0 7.929 22.064c-2.507 22.006 3.503 44.978 15.985 62.791C143.9 441.342 180.159 480 242.701 480H264c60.063 0 98.512-40 127.2-40h2.679c5.747 4.952 13.536 8 22.12 8h64c17.673 0 32-12.894 32-28.8V188.8c0-15.906-14.327-28.8-32-28.8h-64c-8.584 0-16.373 3.048-22.12 8H391.2c-6.964 0-14.862-6.193-30.183-23.668l-.129-.148-.131-.146c-8.856-9.937-18.116-20.841-25.851-33.253C316.202 80.537 304.514 32 259.2 32c-56.928 0-92 35.286-92 83.2 0 8.026.814 15.489 2.176 22.4H83.2C38.101 137.6 0 175.701 0 220.8zm48 0c0-18.7 16.775-35.2 35.2-35.2h158.4c0-17.325-26.4-35.2-26.4-70.4 0-26.4 20.625-35.2 44-35.2 8.794 0 20.445 32.712 34.926 56.1 9.074 14.575 19.524 27.225 30.799 39.875 16.109 18.374 33.836 36.633 59.075 39.596v176.752C341.21 396.087 309.491 432 264 432h-21.299c-40.524 0-57.124-22.197-50.601-61.325-14.612-8.001-24.151-33.979-12.925-53.625-19.365-18.225-17.787-46.381-4.95-61.05H83.2C64.225 256 48 239.775 48 220.8zM448 360c13.255 0 24 10.745 24 24s-10.745 24-24 24-24-10.745-24-24 10.745-24 24-24z"/></svg>`;
+    svg.innerHTML = `<?xml version="1.0" ?><svg height="100%" id="svg8" version="1.1" viewBox="0 0 8.4666665 8.4666669" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg"><defs id="defs2"/><g id="layer1" transform="translate(0,-288.53332)"><path d="m 2.1760249,290.47035 v -1.25149 h 4.1716537 v 1.25149" id="path4197" style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:6.80813837;stroke-opacity:1;paint-order:stroke fill markers"/><path d="m 0.79919825,290.85356 v 5.45106 H 7.7245053 v -5.45106 z" id="path4199" style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:6.80813837;stroke-opacity:1;paint-order:markers fill stroke"/><path d="m 4.2618518,292.58525 c 0,0.0772 0,1.98768 0,1.98768" id="path4201" style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:6.80813837;stroke-opacity:1;paint-order:markers fill stroke"/><path d="m 5.2556941,293.57909 c -0.077147,0 -1.9876847,0 -1.9876847,0" id="path4203" style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:6.80813837;stroke-opacity:1;paint-order:markers fill stroke"/></g></svg>`;
     
     
   
@@ -21,20 +21,66 @@ function Get_pointleft_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeC
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() {
-        btn_div.style.backgroundColor = "lightgray";
-      });
-    
-      // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() {
-        btn_div.style.backgroundColor = backgroundColor;
-      });
+    btn_div.addEventListener("mouseover", function() 
+    {
+      btn_div.style.backgroundColor = "lightgray";
+    });
+  
+    // 滑鼠移出時的事件處理器
+    btn_div.addEventListener("mouseout", function() 
+    {
+      btn_div.style.backgroundColor = '';
+    });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
     
     return btn_div;
 }
+
+
+function Get_warehouse_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
+{
+    const btn_div = document.createElement("div");
+    const div = document.createElement("div");
+    btn_div.style.width = btn_width;
+    btn_div.style.height= btn_height; 
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.innerHTML = `<?xml version="1.0" ?><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><defs><style>.a{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;}</style></defs><title/><rect class="a" height="6" rx="0.75" ry="0.75" width="6" x="5.999" y="17.15"/><rect class="a" height="6" rx="0.75" ry="0.75" width="6" x="11.999" y="17.15"/><rect class="a" height="6" rx="0.75" ry="0.75" width="6" x="8.999" y="11.15"/><path class="a" d="M23.249,23.15V7.55a1.5,1.5,0,0,0-.794-1.324l-9.75-5.2a1.5,1.5,0,0,0-1.412,0l-9.75,5.2A1.5,1.5,0,0,0,.749,7.55v15.6"/></svg>`;
+    
+    
+  
+    svg.setAttribute("class", "svg");
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", "100%");
+
+    div.style.width = svg_width;
+    div.style.height = svg_height;
+ 
+    div.style.justifyContent = "center";
+    div.style.alignItems = "center";
+    div.style.margin = "auto";   
+    btn_div.style.backgroundColor = backgroundColor;
+    btn_div.addEventListener("mouseover", function() 
+    {
+      btn_div.style.backgroundColor = "lightgray";
+    });
+  
+    // 滑鼠移出時的事件處理器
+    btn_div.addEventListener("mouseout", function() 
+    {
+      btn_div.style.backgroundColor = '';
+    });
+    
+    div.appendChild(svg);
+    btn_div.appendChild(div);
+    
+    return btn_div;
+}
+
+
+
 function Get_all_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
 {
     const btn_div = document.createElement("div");

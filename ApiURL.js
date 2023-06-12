@@ -1,6 +1,6 @@
 var flag_check_connection_OK = false;
-const ipadress1 = '123.194.228.222:4433';
-const ipadress2 = 'www.ketech.tw:4433';
+const ipadress1 = 'www.ketech.tw:4435';
+const ipadress2 = 'www.ketech.tw:4436';
 
 var api_ip = `http://${ipadress1}/`; 
 var Chat_url = `${api_ip}chatHub`;
