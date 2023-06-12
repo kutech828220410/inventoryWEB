@@ -1,5 +1,6 @@
 let response = [];
 let data = [];
+let device_basic = [];
 var loging_name = "測試";
 var current_IC_SN = "";
 let allrows = [];
@@ -25,6 +26,9 @@ async function load()
 
     Set_main_div_enable(true);
     data = await creat_get_by_IC_SN(IC_SN);
+    const device_basic_result = await device_all();
+    device_basic = device_basic_result.Data;
+    console.log("device_basic" , device_basic);
     page_Init(data);
     edit_herader_view_QTY();
     Set_main_div_enable(false);
@@ -68,10 +72,23 @@ function Set_main_div_enable(value)
     document.body.style.pointerEvents = "auto";
   }
 }
-
+function Sort_device_basic_byCode(Code)
+{
+  let ary = [];
+  for(var i = 0; i < device_basic.length; i++)
+  {
+     if(device_basic[i].Code == Code)
+     {
+       ary.push(device_basic[i]);
+     }
+  }
+  return ary;
+}
 
 async function donesvg_Click() 
 {
+    const temp = Sort_device_basic_byCode("OGLU5")
+    console.log(temp);
     location.href = "frontpage.html";
 }
 function findsvg_Click()

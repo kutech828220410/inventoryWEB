@@ -95,7 +95,7 @@ function get_header()
 
   const header_title_text = document.createElement('div');
   My_Div.Init(header_title_text, 'header_title_text','header_title_text', '100%', '50%', '');
-  My_Div.Set_Text(header_title_text ,"智慧藥局系統" , TextAlignEnum.CENTER , "24px", true,"微軟正黑體","#FFF");
+  My_Div.Set_Text(header_title_text ,"智慧藥局系統" , TextAlignEnum.CENTER , "32px", true,"微軟正黑體","#FFF");
 
   // header_title_text.className = "h1";
   header_title_text.id = "header_title_text";
@@ -180,7 +180,7 @@ function get_main()
 function get_pharmacy()
 {
   const pharmacy_div = document.createElement("div");
-  My_Div.Init(pharmacy_div, 'pharmacy_div','pharmacy_div', '240px', '120px', 'rgba(255, 255, 255, 1)');
+  My_Div.Init(pharmacy_div, 'pharmacy_div','pharmacy_div', '240px', '120px', 'rgba(255, 255, 255, 0.85)');
   My_Div.Set_Block(pharmacy_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.TOP);
   pharmacy_div.style.borderRadius = "10px";
   pharmacy_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
@@ -210,8 +210,7 @@ function get_pharmacy()
   const pharmacy_text_eng_div = document.createElement("div");
   My_Div.Init(pharmacy_text_eng_div, 'pharmacy_text_eng_div','pharmacy_text_eng_div', '100%', '30%', '');
   My_Div.Set_Block(pharmacy_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text(pharmacy_text_eng_div ,"Pharmacy" , TextAlignEnum.CENTER , "22px", true,"微軟正黑體","");
-  pharmacy_text_eng_div.style.textTransform = 'uppercase';
+  My_Div.Set_Text(pharmacy_text_eng_div ,"Pharmacy" , TextAlignEnum.CENTER , "22px", true,"","");
   pharmacy_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
   pharmacy_text_eng_div.style.backgroundClip = 'text';
   pharmacy_text_eng_div.style.webkitBackgroundClip = 'text';
@@ -229,7 +228,7 @@ function get_pharmacy()
 function get_warehouse()
 {
   const warehouse_div = document.createElement("div");
-  My_Div.Init(warehouse_div, 'warehouse_div','warehouse_div', '240px', '120px', 'rgba(255, 255, 255, 1)');
+  My_Div.Init(warehouse_div, 'warehouse_div','warehouse_div', '240px', '120px', 'rgba(255, 255, 255, 0.85)');
   My_Div.Set_Block(warehouse_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.TOP);
   warehouse_div.style.borderRadius = "10px";
   warehouse_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
@@ -248,7 +247,6 @@ function get_warehouse()
   My_Div.Init(warehouse_text_div, 'warehouse_text_div','warehouse_text_div', '100%', '30%', '');
   My_Div.Set_Block(warehouse_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   My_Div.Set_Text(warehouse_text_div ,"藥庫" , TextAlignEnum.CENTER , "30px", true,"微軟正黑體","");
-  warehouse_text_div.style.textTransform = 'uppercase';
   warehouse_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
   warehouse_text_div.style.backgroundClip = 'text';
   warehouse_text_div.style.webkitBackgroundClip = 'text';
@@ -259,8 +257,7 @@ function get_warehouse()
   const warehouse_text_eng_div = document.createElement("div");
   My_Div.Init( warehouse_text_eng_div, ' warehouse_text_eng_div',' warehouse_text_eng_div', '100%', '30%', '');
   My_Div.Set_Block( warehouse_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text( warehouse_text_eng_div ,"storehouse" , TextAlignEnum.CENTER , "22px", true,"微軟正黑體","");
-   warehouse_text_eng_div.style.textTransform = 'uppercase';
+  My_Div.Set_Text( warehouse_text_eng_div ,"Storehouse" , TextAlignEnum.CENTER , "22px", true,"","");
    warehouse_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
    warehouse_text_eng_div.style.backgroundClip = 'text';
    warehouse_text_eng_div.style.webkitBackgroundClip = 'text';
@@ -278,7 +275,7 @@ function get_warehouse()
 function get_ward()
 {
   const ward_div = document.createElement("div");
-  My_Div.Init(ward_div, 'ward_div','ward_div', '240px', '120px', 'rgba(255, 255, 255, 1)');
+  My_Div.Init(ward_div, 'ward_div','ward_div', '240px', '120px', 'rgba(255, 255, 255, 0.85)');
   My_Div.Set_Block(ward_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.TOP);
   ward_div.style.borderRadius = "10px";
   ward_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
@@ -297,7 +294,6 @@ function get_ward()
   My_Div.Init(ward_text_div, 'ward_text_div','ward_text_div', '100%', '30%', '');
   My_Div.Set_Block(ward_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   My_Div.Set_Text(ward_text_div ,"護理站" , TextAlignEnum.CENTER , "30px", true,"微軟正黑體","");
-  ward_text_div.style.textTransform = 'uppercase';
   ward_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
   ward_text_div.style.backgroundClip = 'text';
   ward_text_div.style.webkitBackgroundClip = 'text';
@@ -308,10 +304,58 @@ function get_ward()
   const ward_text_eng_div = document.createElement("div");
   My_Div.Init( ward_text_eng_div, ' ward_text_eng_div',' ward_text_eng_div', '100%', '30%', '');
   My_Div.Set_Block( ward_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text( ward_text_eng_div ,"Nursing Station" , TextAlignEnum.CENTER , "18px", true,"微軟正黑體","");
-   ward_text_eng_div.style.textTransform = 'uppercase';
+  My_Div.Set_Text( ward_text_eng_div ,"Nursing Station" , TextAlignEnum.CENTER , "20px", true,"","");
    ward_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
    ward_text_eng_div.style.backgroundClip = 'text';
+   ward_text_eng_div.style.wordBreak = "break-word";
+   ward_text_eng_div.style.webkitBackgroundClip = 'text';
+   ward_text_eng_div.style.webkitTextFillColor = 'transparent';
+   ward_text_eng_div.style.borderTopRightRadius = "10px";
+   ward_text_eng_div.style.borderBottomRightRadius = "10px";
+
+  ward_div.appendChild(ward_svg);
+  ward_div.appendChild(all_text_div);
+  all_text_div.appendChild(ward_text_div);
+  all_text_div.appendChild(ward_text_eng_div);
+  return ward_div;
+}
+
+function get_userinfo()
+{
+  const ward_div = document.createElement("div");
+  My_Div.Init(ward_div, 'ward_div','ward_div', '240px', '60px', 'rgba(255, 255, 255, 0.85)');
+  My_Div.Set_Block(ward_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.TOP);
+  ward_div.style.borderRadius = "10px";
+  ward_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
+  ward_div.style.marginTop = "10px";
+
+  const ward_svg = Get_user_SVG("80%", "80%", "80%","80%","gray","");
+  My_Div.Init(ward_svg, 'ward_svg','ward_svg', '30%', '100%', '');
+  My_Div.Set_Block(ward_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
+
+  const all_text_div = document.createElement("div");
+  My_Div.Init(all_text_div, 'all_text_div','all_text_div', '70%', '100%', '');
+  My_Div.Set_Block(all_text_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.CENTER);
+
+
+  const ward_text_div = document.createElement("div");
+  My_Div.Init(ward_text_div, 'ward_text_div','ward_text_div', '100%', '30%', '');
+  My_Div.Set_Block(ward_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  My_Div.Set_Text(ward_text_div ,"護理站" , TextAlignEnum.CENTER , "30px", true,"微軟正黑體","");
+  ward_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
+  ward_text_div.style.backgroundClip = 'text';
+  ward_text_div.style.webkitBackgroundClip = 'text';
+  ward_text_div.style.webkitTextFillColor = 'transparent';
+  ward_text_div.style.borderTopRightRadius = "10px";
+  ward_text_div.style.borderBottomRightRadius = "10px";
+
+  const ward_text_eng_div = document.createElement("div");
+  My_Div.Init( ward_text_eng_div, ' ward_text_eng_div',' ward_text_eng_div', '100%', '30%', '');
+  My_Div.Set_Block( ward_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  My_Div.Set_Text( ward_text_eng_div ,"Nursing Station" , TextAlignEnum.CENTER , "20px", true,"","");
+   ward_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
+   ward_text_eng_div.style.backgroundClip = 'text';
+   ward_text_eng_div.style.wordBreak = "break-word";
    ward_text_eng_div.style.webkitBackgroundClip = 'text';
    ward_text_eng_div.style.webkitTextFillColor = 'transparent';
    ward_text_eng_div.style.borderTopRightRadius = "10px";
