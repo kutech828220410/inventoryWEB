@@ -8,10 +8,7 @@ var MessageAPI_url = `${api_ip}api/Message`;
 var inventory_url = `${api_ip}api/inventory`;
 var transactions_url = `${api_ip}api/transactions`;
 var device_url = `${api_ip}api/device`;
-
-var session_login_post_url = `${api_ip}api/session`;
-var session_check_post_url = `${api_ip}api/session/check`;
-var session_logout_post_url = `${api_ip}api/session/logout`;
+var session_url = `${api_ip}api/session`;
 
 async function set_ip()
 {
@@ -42,9 +39,7 @@ async function set_ip()
         transactions_url = `${api_ip}api/transactions`;
         device_url = `${api_ip}api/device`;
         
-        session_login_post_url = `${api_ip}api/session`;
-        session_check_post_url = `${api_ip}api/session/check`;
-        session_logout_post_url = `${api_ip}api/session/logout`;
+        session_url = `${api_ip}api/session`;
         return;
     }
     set_ip();

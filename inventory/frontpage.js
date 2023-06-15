@@ -1,5 +1,4 @@
 let data;
-
 //#region [rgba(0, 0, 255, 0.03)] public Function
 function page_Init(data) 
 {
@@ -28,7 +27,7 @@ function page_Init(data)
   
 
   }
-  // setUserText();
+   setUserText();
 }
 function Set_main_div_enable(value) 
 {
@@ -129,6 +128,9 @@ window.onload = load;
 async function load() 
 {
   await set_ip();
+  permissions = GetApipermissions();
+  console.log(permissions);
+
   let rowNum = 1;
   const Loadingpopup = GetLoadingpopup();
   document.body.appendChild(Loadingpopup);

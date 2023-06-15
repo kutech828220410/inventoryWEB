@@ -16,13 +16,14 @@ function creat_row_div(_index , item)
     formnnum_delbtn_div.style.marginLeft = "5px";
     all_div.appendChild(formnnum_delbtn_div);
 
-    const del_btn_div = Get_trashBox_SVG("30px", "100%", "70%","100%","red","");
+    const del_btn_div = Get_trashBox_SVG("30px", "100%", "100%","100%","red","");
     My_Div.Init(del_btn_div,`del_botton${_index}`,'del_botton', '30px','100%','');
     My_Div.Set_Block(del_btn_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
     del_btn_div.setAttribute("IC_SN",item.IC_SN);
     del_btn_div.style.border = "1px solid gray";
     del_btn_div.style.borderRadius = "3px";
     del_btn_div.onclick = delete_btn_Click;
+    del_btn_div.disabled = !GetPermissions("盤點報表刪除");
     formnnum_delbtn_div.appendChild(del_btn_div);
 
     //盤點編號
@@ -161,7 +162,6 @@ function creat_row_div(_index , item)
     selectbtn.setAttribute("IC_SN",item.IC_SN);
     selectbtn.style.border = "1px solid gray";
     selectbtn.style.borderRadius = "5px";
-   
     btn_div.appendChild(selectbtn);
 
     const downloadbtn = Get_download_SVG("100%", "60px", "70%","100%","steelblue","");
@@ -170,12 +170,13 @@ function creat_row_div(_index , item)
     downloadbtn.style.border = "1px solid gray";
     downloadbtn.style.borderRadius = "5px";
     downloadbtn.style.marginTop = "3px";
+    downloadbtn.disabled = !GetPermissions("盤點報表下載");
     downloadbtn.onclick = downloadbtn_Click;
     btn_div.appendChild(downloadbtn);
 
     var lockbtn;
     if(item.STATE == '鎖定')lockbtn = Get_lock_SVG("100%", "60px", "70%","100%","red","");
-    else lockbtn = Get_unlock_SVG("100%", "60px", "70%","100%","steelblue","");
+    else lockbtn = Get_unlock_SVG("100%", "60px", "70%","100%","steelblue",""); 
     My_Div.Init(lockbtn,`lockbtn${_index}`,'lockbtn', '100%','33%','');
     lockbtn.setAttribute("IC_SN",item.IC_SN);
     lockbtn.setAttribute("STATE",item.STATE);
@@ -183,6 +184,7 @@ function creat_row_div(_index , item)
     lockbtn.style.borderRadius = "5px";
     lockbtn.style.marginTop = "3px";
     lockbtn.onclick = lockbtn_Click;
+    lockbtn.disabled = !GetPermissions("盤點報表鎖定");
     btn_div.appendChild(lockbtn);
 
 

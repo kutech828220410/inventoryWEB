@@ -41,9 +41,10 @@ async function confirm_popup_add()
             Set_main_div_enable(true);
             const serch_IC_NAME_input  = document.querySelector("#serch_IC_NAME_input_popup_serch");
             console.log(serch_IC_NAME_input.value);
-            const returnData = await creat_auto_add(serch_IC_NAME_input.value);
-            Set_main_div_enable(false);
+            const returnData = await creat_auto_add(serch_IC_NAME_input.value , get_logedName());
+          
             hide_popup_add();
+            Set_main_div_enable(false);
         }
       
     }

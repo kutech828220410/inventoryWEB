@@ -1,7 +1,7 @@
 let response = [];
 let data = [];
 let device_basic = [];
-var loging_name = "測試";
+var loging_name = get_logedName();
 var current_IC_SN = "";
 let allrows = [];
 setInterval(function() 
@@ -54,7 +54,7 @@ function page_Init(data)
   //   main_div.appendChild(NoDataDiv);
   // }
 
-  // setUserText();
+  setUserText();
 }
 function Set_main_div_enable(value) 
 {

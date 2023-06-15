@@ -209,14 +209,14 @@ async function creat_unlock_by_IC_SN(IC_SN)
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
   return response;
 }
-async function creat_auto_add(IC_NAME)
+async function creat_auto_add(IC_NAME , CT)
 {
   const post_data = 
   {
     "Data": {
       "GUID": null,
       "IC_SN": null,
-      "CT": null,
+      "CT": `${CT}`,
       "CT_TIME": null,
       "START_TIME": null,
       "END_TIME": null,

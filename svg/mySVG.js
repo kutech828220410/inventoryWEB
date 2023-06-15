@@ -121,7 +121,7 @@ function Get_ward_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor,
 }
 
 
-function Get_warehouse_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
+function Get_storehouse_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
 {
     const btn_div = document.createElement("div");
     const div = document.createElement("div");
@@ -726,8 +726,8 @@ function Get_add_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, 
 }
 function Get_lock_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
 {
-    const btn_div = document.createElement("div");
-    const div = document.createElement("div");
+    const btn_div = document.createElement("button");
+    const div = document.createElement("button");
     btn_div.style.width = btn_width;
     btn_div.style.height= btn_height; 
 
@@ -773,7 +773,7 @@ function Get_lock_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor,
 }
 function Get_unlock_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
 {
-    const btn_div = document.createElement("div");
+    const btn_div = document.createElement("button");
     const div = document.createElement("div");
     btn_div.style.width = btn_width;
     btn_div.style.height= btn_height; 
@@ -820,7 +820,7 @@ function Get_unlock_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColo
 }
 function Get_right_direction_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor, clickOn)
 {
-    const btn_div = document.createElement("div");
+    const btn_div = document.createElement("button");
     const div = document.createElement("div");
     btn_div.style.width = btn_width;
     btn_div.style.height= btn_height; 
@@ -869,7 +869,7 @@ function Get_right_direction_SVG(btn_width ,btn_height, svg_width, svg_height ,s
 }
 function Get_download_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
 {
-    const btn_div = document.createElement("div");
+    const btn_div = document.createElement("button");
     const div = document.createElement("div");
     btn_div.style.width = btn_width;
     btn_div.style.height= btn_height; 
@@ -915,7 +915,7 @@ function Get_download_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeCo
 
 function Get_trashBox_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
 {
-    const btn_div = document.createElement("div");
+    const btn_div = document.createElement("button");
     const div = document.createElement("div");
     btn_div.style.width = btn_width;
     btn_div.style.height= btn_height; 
