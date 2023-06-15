@@ -55,6 +55,7 @@ async function verifyUser(event)
         sessionStorage.setItem('loggedEmployer', session_login.Data.Employer);
         sessionStorage.setItem('loggedlevel', session_login.Data.level);
         sessionStorage.setItem('loggedTime', session_login.Data.loginTime);
+        sessionStorage.setItem('color', session_login.Data.color);
         window.location.href = "frontpage.html"; // 跳轉到 frontpage.html 頁面
     }
     return false; // 防止表單提交
@@ -67,12 +68,15 @@ async function showConfirm()
         await logout(ID);
         session_login = await login(ID, password);
         sessionStorage.setItem('GUID', session_login.Data.GUID);
+        sessionStorage.setItem('GUID', session_login.Data.CO);
         sessionStorage.setItem('loggedID', session_login.Data.ID);
         sessionStorage.setItem('loggedPassword', session_login.Data.Password);
         sessionStorage.setItem('loggedName', session_login.Data.Name);        
         sessionStorage.setItem('loggedEmployer', session_login.Data.Employer);
         sessionStorage.setItem('loggedlevel', session_login.Data.level);
         sessionStorage.setItem('loggedTime', session_login.Data.loginTime);
+        sessionStorage.setItem('color', session_login.Data.color);
+
         window.location.href = "frontpage.html"; // 跳轉到 frontpage.html 頁面
         return true;
     } else 

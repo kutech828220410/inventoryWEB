@@ -22,7 +22,7 @@ function show_popup_input(Content , page_Initial)
     popup_input_div.Set_Visible(true);
     const END_QTY_input = document.querySelector('#END_QTY_input_popup_input');
     END_QTY_input.focus();
-    if(popup_input_div_Content != undefined) light_device_by_Code(popup_input_div_Content.CODE, "255,255,0");
+    if(popup_input_div_Content != undefined) light_device_by_Code(popup_input_div_Content.CODE, get_loggedColor());
  
 }
 function hide_popup_input()

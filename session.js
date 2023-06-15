@@ -8,6 +8,11 @@ function get_loggedID()
     var loggedName = sessionStorage.getItem('loggedID');
     return loggedName;
 }
+function get_loggedColor()
+{
+    var color = sessionStorage.getItem('color');
+    return color;
+}
 async function login(id, password)
 {
 
