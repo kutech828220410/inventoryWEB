@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="main.css">
     <script src="../../ApiURL.js"></script>
     <script src="../../ChatHub.js"></script>
-    <script src="../../Function/WebApiFunc.js"></script>
     <script src="../../svg/mySVG.js"></script>
     <script src="../../Function/Basic.js"></script>
     <script src="../../popup/map.js"></script>
     <script src="../../dist/JsBarcode.all.js"></script>
     <script src="../../UI/map.js"></script>
+    <script src="../../session.js"></script>
 
     <script src="main.js"></script>
 
@@ -35,12 +35,12 @@
      document.body.appendChild(main_div);
 
       const row1_div = document.createElement("div");
-      My_Div.Init(row1_div, 'row1_div','row1_div', '260px', '120px', '');
+      My_Div.Init(row1_div, 'row1_div','row1_div', '100%', '120px', '');
       My_Div.Set_Block(row1_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
       row1_div.style.marginTop = "10px";
 
       const row2_div = document.createElement("div");
-      My_Div.Init(row2_div, 'row2_div','row2_div', '260px', '120px', '');
+      My_Div.Init(row2_div, 'row2_div','row2_div', '100%', '120px', '');
       My_Div.Set_Block(row2_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
       row2_div.style.marginTop = "10px";
 

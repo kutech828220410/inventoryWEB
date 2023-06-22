@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>智慧藥局系統</title>
-    <link rel="stylesheet" href="frontpage.css">
+    <link rel="stylesheet" href="main.css">
     <script src="../../ApiURL.js"></script>
     <script src="../../ChatHub.js"></script>
-    <script src="../../Function/WebApiFunc.js"></script>
+    <script src="../../session.js"></script>
     <script src="../../svg/mySVG.js"></script>
     <script src="../../Function/Basic.js"></script>
     <script src="../../popup/map.js"></script>
     <script src="../../dist/JsBarcode.all.js"></script>
     <script src="../../UI/map.js"></script>
 
-    <script src="frontpage.js"></script>
+    <script src="main.js"></script>
 
 
 </head>
@@ -39,17 +39,9 @@
      const storehouse_div = get_storehouse();
      const ward_div = get_ward();
      main_div.appendChild(userinfo_div);
-     main_div.appendChild(pharmacy_div);
      main_div.appendChild(storehouse_div);
+     main_div.appendChild(pharmacy_div);
      main_div.appendChild(ward_div);
-
-
-    //  get_popup_serch();
-    //  get_popup_add();
-    //  document.body.appendChild(popup_serch_div.div);
-
-    //  popup_serch_div.Set_Visible(false);
-    //  popup_add_div.Set_Visible(false);
 
     </script>  
 <div class="under-line">

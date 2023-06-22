@@ -17,9 +17,3 @@ function Loadtxt(filename) {
     });
   }
 
-async function LoadAPIServer()
-{
-  const json = await Loadtxt(".//.//config.txt");
-  console.log(json);
-
-}

@@ -1,37 +1,45 @@
 let data;
-// var device_buf =[];
-// window.onresize = function() 
-// {
-//     const device = checkDeviceType();
-//     const screenWidth = getScreenWidth();   
-      
-//     if(device == DeviceType.MOBILE) 
-//     { 
-//         if(device != device_buf)
-//         {
-//             const row_div = document.querySelectorAll(".row_div");
-//             for(var i = 0 ; i < row_div.length ; i++)
-//             {
-//                 row_div[i].style.width = "100%";
-//             }
-//             device_buf = device;
-//         }      
-    
-//     }
-//     else
-//     {
-//         if(device != device_buf) device_buf = device;
-//         const temp = Math.floor(screenWidth / 300);
-//         const row_width = screenWidth / temp - 20;
-//         const row_div = document.querySelectorAll(".row_div");
-//         for(var i = 0 ; i < row_div.length ; i++)
-//         {
-//             row_div[i].style.width = `${row_width}px`;
-//         }
-//     }
-    
-// }
-//#region [rgba(0, 0, 255, 0.03)] public Function
+window.onload = load;
+async function load()
+{ 
+    await set_ip();
+
+}
+
+async function logout_Click()
+{
+  logout();
+  location.href = "../../login.html";
+}
+
+async function inspection_Click()
+{
+  console.log("inspection");
+}
+
+async function inventory_Click()
+{
+  console.log("inventory");
+  location.href = "../../storehouse/inventory/frontpage.html";
+}
+
+async function orderpicking_Click()
+{
+  console.log("orderpicking");
+}
+
+async function settingbarcode_Click()
+{
+  console.log("orderpicking");
+}
+
+
+async function lock_Click()
+ {
+  console.log("license");
+  window.alert("需要解鎖此功能，請聯繫「鴻森整合機電」電話號碼為：02-82822040");
+}
+
 function page_Init(data) 
 {
   console.log(data);
@@ -91,6 +99,35 @@ function get_header()
   header_div.appendChild(header_title_text);
   return header_div;
 }
+function get_userinfo()
+{
+  const userinfo_div = document.createElement("div");
+  My_Div.Init(userinfo_div, 'userinfo_div','userinfo_div', '250px', '60px', 'rgba(255, 255, 255, 0.85)');
+  My_Div.Set_Block(userinfo_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  userinfo_div.style.borderRadius = "5px";
+  userinfo_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
+  userinfo_div.style.marginTop = "10px";
+
+  const userinfo_svg = Get_user_SVG("70%", "70%", "70%","70%","","none");
+  My_Div.Init(userinfo_svg, 'userinfo_svg','userinfo_svg', '30%', '100%', '');
+  My_Div.Set_Block(userinfo_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+
+  const userinfo_text_div = document.createElement("div");
+  My_Div.Init(userinfo_text_div, 'userinfo_text_div','userinfo_text_div', '40%', '100%', '');
+  My_Div.Set_Block(userinfo_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  My_Div.Set_Text(userinfo_text_div ,get_logedName() , TextAlignEnum.CENTER , "22px", true,"","");
+
+  const logout_svg = Get_logout_SVG("80%", "80%", "80%","80%","","none");
+  My_Div.Init(logout_svg, 'logout_svg','logout_svg', '30%', '100%', '');
+  My_Div.Set_Block(logout_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  logout_svg.onclick = logout_Click;
+
+   userinfo_div.appendChild(userinfo_svg);
+   userinfo_div.appendChild(userinfo_text_div);
+   userinfo_div.appendChild(logout_svg);
+  return userinfo_div;
+}
+
 function get_main() 
 {
   const main_div = document.createElement("div");
@@ -124,9 +161,9 @@ function get_main()
   function get_inspection()
 {
   const inspection_div = document.createElement("div");
-  My_Div.Init(inspection_div, 'inspection_div','inspection_div', '120px', '120px', 'rgba(255, 255, 255, 0.85)');
+  My_Div.Init(inspection_div, 'inspection_div','inspection_div', '180px', '120px', 'rgba(255, 255, 255, 0.85)');
   My_Div.Set_Block(inspection_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.CENTER);
-  inspection_div.style.borderRadius = "10px";
+  inspection_div.style.borderRadius = "5px";
   inspection_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
   inspection_div.style.margin = "5px";
   inspection_div.onclick =  inspection_Click;
@@ -138,13 +175,13 @@ function get_main()
   const inspection_svg = Get_pill_SVG("80%", "80%", "80%","80%","black","");
   My_Div.Init(inspection_svg, 'inspection_svg','inspection_svg', '30%', '100%', '');
   My_Div.Set_Block(inspection_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
-
+  inspection_svg.style.marginLeft = '10px';
   const inspection_text_div = document.createElement("div");
   My_Div.Init(inspection_text_div, 'inspection_text_div','inspection_text_div', '70%', '100%', '');
   My_Div.Set_Block(inspection_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   My_Div.Set_Text(inspection_text_div ,"驗收" , TextAlignEnum.CENTER , "30px", true,"微軟正黑體","");
   inspection_text_div.style.textTransform = 'uppercase';
-  inspection_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
+  inspection_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
   inspection_text_div.style.backgroundClip = 'text';
   inspection_text_div.style.webkitBackgroundClip = 'text';
   inspection_text_div.style.webkitTextFillColor = 'transparent';
@@ -155,7 +192,7 @@ function get_main()
   My_Div.Init(inspection_text_eng_div, 'inspection_text_eng_div','inspection_text_eng_div', '100%', '20%', '');
   My_Div.Set_Block(inspection_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   My_Div.Set_Text(inspection_text_eng_div ,"Inspection" , TextAlignEnum.CENTER , "18px", true,"","");
-  inspection_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
+  inspection_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
   inspection_text_eng_div.style.backgroundClip = 'text';
   inspection_text_eng_div.style.webkitBackgroundClip = 'text';
   inspection_text_eng_div.style.webkitTextFillColor = 'transparent';
@@ -172,9 +209,9 @@ function get_main()
 function get_inventory()
 {
   const inventory_div = document.createElement("div");
-  My_Div.Init(inventory_div, 'inventory_div','inventory_div', '120px', '120px', 'rgba(255, 255, 255, 0.85)');
+  My_Div.Init(inventory_div, 'inventory_div','inventory_div', '180px', '120px', 'rgba(255, 255, 255, 0.85)');
   My_Div.Set_Block(inventory_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.CENTER);
-  inventory_div.style.borderRadius = "10px";
+  inventory_div.style.borderRadius = "5px";
   inventory_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
   inventory_div.style.margin = "5px";
   inventory_div.onclick =  inventory_Click;
@@ -186,12 +223,12 @@ function get_inventory()
   const inventory_svg = Get_storehouse_SVG("80%", "80%", "80%","80%","black","");
   My_Div.Init(inventory_svg, 'inventory_svg','inventory_svg', '30%', '100%', '');
   My_Div.Set_Block(inventory_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
-
+  inventory_svg.style.marginLeft = '10px';
   const inventory_text_div = document.createElement("div");
   My_Div.Init(inventory_text_div, 'inventory_text_div','inventory_text_div', '70%', '100%', '');
   My_Div.Set_Block(inventory_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   My_Div.Set_Text(inventory_text_div ,"盤點" , TextAlignEnum.CENTER , "30px", true,"微軟正黑體","");
-  inventory_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
+  inventory_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
   inventory_text_div.style.backgroundClip = 'text';
   inventory_text_div.style.webkitBackgroundClip = 'text';
   inventory_text_div.style.webkitTextFillColor = 'transparent';
@@ -202,12 +239,12 @@ function get_inventory()
   My_Div.Init( inventory_text_eng_div, ' inventory_text_eng_div',' inventory_text_eng_div', '100%', '20%', '');
   My_Div.Set_Block( inventory_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   My_Div.Set_Text( inventory_text_eng_div ,"Inventory" , TextAlignEnum.CENTER , "18px", true,"","");
-   inventory_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
-   inventory_text_eng_div.style.backgroundClip = 'text';
-   inventory_text_eng_div.style.webkitBackgroundClip = 'text';
-   inventory_text_eng_div.style.webkitTextFillColor = 'transparent';
-   inventory_text_eng_div.style.borderTopRightRadius = "10px";
-   inventory_text_eng_div.style.borderBottomRightRadius = "10px";
+  inventory_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
+  inventory_text_eng_div.style.backgroundClip = 'text';
+  inventory_text_eng_div.style.webkitBackgroundClip = 'text';
+  inventory_text_eng_div.style.webkitTextFillColor = 'transparent';
+  inventory_text_eng_div.style.borderTopRightRadius = "10px";
+  inventory_text_eng_div.style.borderBottomRightRadius = "10px";
 
   inventory_div.appendChild(svg_text_div);
   svg_text_div.appendChild(inventory_svg);
@@ -219,9 +256,9 @@ function get_inventory()
 function get_orderpicking()
 {
   const orderpicking_div = document.createElement("div");
-  My_Div.Init(orderpicking_div, 'orderpicking_div','orderpicking_div', '120px', '120px', 'rgba(255, 255, 255, 0.85)');
+  My_Div.Init(orderpicking_div, 'orderpicking_div','orderpicking_div', '180px', '120px', 'rgba(255, 255, 255, 0.85)');
   My_Div.Set_Block(orderpicking_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.CENTER);
-  orderpicking_div.style.borderRadius = "10px";
+  orderpicking_div.style.borderRadius = "5px";
   orderpicking_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
   orderpicking_div.style.margin = "5px";
   orderpicking_div.id = "orderpicking_div";
@@ -234,12 +271,12 @@ function get_orderpicking()
   const orderpicking_svg = Get_ward_SVG("80%", "80%", "80%","80%","gray","");
   My_Div.Init(orderpicking_svg, 'orderpicking_svg','orderpicking_svg', '30%', '100%', '');
   My_Div.Set_Block(orderpicking_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
-
+  orderpicking_svg.style.marginLeft = '10px';
   const orderpicking_text_div = document.createElement("div");
   My_Div.Init(orderpicking_text_div, 'orderpicking_text_div','orderpicking_text_div', '70%', '100%', '');
   My_Div.Set_Block(orderpicking_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   My_Div.Set_Text(orderpicking_text_div ,"揀貨" , TextAlignEnum.CENTER , "30px", true,"微軟正黑體","");
-  orderpicking_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
+  orderpicking_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
   orderpicking_text_div.style.backgroundClip = 'text';
   orderpicking_text_div.style.webkitBackgroundClip = 'text';
   orderpicking_text_div.style.webkitTextFillColor = 'transparent';
@@ -250,13 +287,13 @@ function get_orderpicking()
   My_Div.Init( orderpicking_text_eng_div, ' orderpicking_text_eng_div',' orderpicking_text_eng_div', '100%', '30%', '');
   My_Div.Set_Block( orderpicking_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   My_Div.Set_Text( orderpicking_text_eng_div ,"Order Picking" , TextAlignEnum.CENTER , "17px", true,"","");
-   orderpicking_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
-   orderpicking_text_eng_div.style.backgroundClip = 'text';
-   orderpicking_text_eng_div.style.wordBreak = "break-word";
-   orderpicking_text_eng_div.style.webkitBackgroundClip = 'text';
-   orderpicking_text_eng_div.style.webkitTextFillColor = 'transparent';
-   orderpicking_text_eng_div.style.borderTopRightRadius = "10px";
-   orderpicking_text_eng_div.style.borderBottomRightRadius = "10px";
+  orderpicking_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
+  orderpicking_text_eng_div.style.backgroundClip = 'text';
+  orderpicking_text_eng_div.style.wordBreak = "break-word";
+  orderpicking_text_eng_div.style.webkitBackgroundClip = 'text';
+  orderpicking_text_eng_div.style.webkitTextFillColor = 'transparent';
+  orderpicking_text_eng_div.style.borderTopRightRadius = "10px";
+  orderpicking_text_eng_div.style.borderBottomRightRadius = "10px";
 
   orderpicking_div.appendChild(svg_text_div);
   svg_text_div.appendChild(orderpicking_svg);
@@ -273,9 +310,9 @@ function get_orderpicking()
 function get_settingbarcode()
 {
   const settingbarcode_div = document.createElement("div");
-  My_Div.Init(settingbarcode_div, 'settingbarcode_div','settingbarcode_div', '120px', '120px', 'rgba(255, 255, 255, 0.85)');
+  My_Div.Init(settingbarcode_div, 'settingbarcode_div','settingbarcode_div', '180px', '120px', 'rgba(255, 255, 255, 0.85)');
   My_Div.Set_Block(settingbarcode_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.CENTER);
-  settingbarcode_div.style.borderRadius = "10px";
+  settingbarcode_div.style.borderRadius = "5px";
   settingbarcode_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
   settingbarcode_div.style.margin = "5px";
   settingbarcode_div.id = "settingbarcode_div";
@@ -288,12 +325,12 @@ function get_settingbarcode()
   const settingbarcode_svg = Get_ward_SVG("80%", "80%", "80%","80%","gray","");
   My_Div.Init(settingbarcode_svg, 'settingbarcode_svg','settingbarcode_svg', '30%', '100%', '');
   My_Div.Set_Block(settingbarcode_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
-
+  settingbarcode_svg.style.marginLeft = '10px';
   const settingbarcode_text_div = document.createElement("div");
   My_Div.Init(settingbarcode_text_div, 'settingbarcode_text_div','settingbarcode_text_div', '70%', '100%', '');
   My_Div.Set_Block(settingbarcode_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text(settingbarcode_text_div ,'條碼\n建置' ,TextAlignEnum.CENTER , "22px", true,"微軟正黑體","");;
-  settingbarcode_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
+  My_Div.Set_Text(settingbarcode_text_div ,'條碼建置' ,TextAlignEnum.CENTER , "22px", true,"微軟正黑體","");;
+  settingbarcode_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
   settingbarcode_text_div.style.backgroundClip = 'text';
   settingbarcode_text_div.style.webkitBackgroundClip = 'text';
   settingbarcode_text_div.style.webkitTextFillColor = 'transparent';
@@ -304,7 +341,7 @@ function get_settingbarcode()
   My_Div.Init( settingbarcode_text_eng_div, ' settingbarcode_text_eng_div',' settingbarcode_text_eng_div', '100%', '30%', '');
   My_Div.Set_Block( settingbarcode_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   My_Div.Set_Text( settingbarcode_text_eng_div ,"Setting Barcode" , TextAlignEnum.CENTER , "15px", true,"","");
-   settingbarcode_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
+   settingbarcode_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
    settingbarcode_text_eng_div.style.backgroundClip = 'text';
    settingbarcode_text_eng_div.style.wordBreak = "break-word";
    settingbarcode_text_eng_div.style.webkitBackgroundClip = 'text';
@@ -324,34 +361,7 @@ function get_settingbarcode()
   return settingbarcode_div;
 }
 
-function get_userinfo()
-{
-  const userinfo_div = document.createElement("div");
-  My_Div.Init(userinfo_div, 'userinfo_div','userinfo_div', '250px', '50px', 'rgba(255, 255, 255, 0.85)');
-  My_Div.Set_Block(userinfo_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  userinfo_div.style.borderRadius = "10px";
-  userinfo_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
-  userinfo_div.style.marginTop = "10px";
 
-  const userinfo_svg = Get_user_SVG("70%", "70%", "70%","70%","","none");
-  My_Div.Init(userinfo_svg, 'userinfo_svg','userinfo_svg', '30%', '100%', '');
-  My_Div.Set_Block(userinfo_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-
-  const userinfo_text_div = document.createElement("div");
-  My_Div.Init(userinfo_text_div, 'userinfo_text_div','userinfo_text_div', '40%', '100%', '');
-  My_Div.Set_Block(userinfo_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text(userinfo_text_div ,"鴻森整合" , TextAlignEnum.CENTER , "22px", true,"","");
-
-  const logout_svg = Get_logout_SVG("80%", "80%", "80%","80%","","none");
-  My_Div.Init(logout_svg, 'logout_svg','logout_svg', '30%', '100%', '');
-  My_Div.Set_Block(logout_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  logout_svg.onclick = logout_Click;
-
-   userinfo_div.appendChild(userinfo_svg);
-   userinfo_div.appendChild(userinfo_text_div);
-   userinfo_div.appendChild(logout_svg);
-  return userinfo_div;
-}
 
 function get_Lock()
 {
@@ -359,7 +369,7 @@ function get_Lock()
   My_Div.Init(lock_div, 'lock_div','lock_div', '240px', '120px', 'rgba(128, 128, 128, 0.85)');
   My_Div.Set_Block(lock_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   lock_div.style.position= "absolute";
-  lock_div.style.borderRadius = "10px";
+  lock_div.style.borderRadius = "5px";
 
   const lock_svg = Get_licenselock_SVG("80%", "80%", "80%","80%","darkred","none");
   My_Div.Init(lock_svg, 'lock_svg','lock_svg', '100%', '100%', '');
@@ -379,34 +389,3 @@ function get_Lock()
   });
 }
 
-async function logout_Click()
- {
-  location.href = "http://www.ketech.tw:5500/login.html";
-}
-
-async function inspection_Click()
- {
-  console.log("inspection");
-}
-
-async function inventory_Click()
- {
-  console.log("Stroehouse");
-}
-
-async function orderpicking_Click()
- {
-  console.log("orderpicking");
-}
-
-async function settingbarcode_Click()
- {
-  console.log("orderpicking");
-}
-
-
-async function lock_Click()
- {
-  console.log("license");
-  window.alert("需要解鎖此功能，請聯繫「鴻森整合機電」電話號碼為：02-82822040");
-}

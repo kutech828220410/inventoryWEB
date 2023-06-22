@@ -1,5 +1,3 @@
-
-
 setInterval(check_session, 5000);
 var permissions;
 async function GetApipermissions()
@@ -93,6 +91,6 @@ async function check_session()
         console.log(data_0);
         sessionStorage.clear();
         alert(data.Result);
-        window.location.href = "login.html";
+        window.location.href = "../../login.html";
     }
 }

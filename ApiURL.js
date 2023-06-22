@@ -1,6 +1,6 @@
 var flag_check_connection_OK = false;
-const ipadress1 = 'www.ketech.tw:4435';
-const ipadress2 = 'www.ketech.tw:4436';
+var ipadress1 = '';
+var ipadress2 = '';
 
 var api_ip = `http://${ipadress1}/`; 
 var Chat_url = `${api_ip}chatHub`;
@@ -10,8 +10,28 @@ var transactions_url = `${api_ip}api/transactions`;
 var device_url = `${api_ip}api/device`;
 var session_url = `${api_ip}api/session`;
 
+async function LoadAPIServer()
+{
+  const json = await Loadtxt("../../config.txt");
+  console.log("json.API_Server",json.API_Server);
+  const json_return =  await getDataFromAPI(`${json.API_Server}/api/ServerSetting`);
+  console.log("json_return",json_return);
+  const json_API_Server = searchJSON(json_return.Data,"type","網頁")
+  console.log("json_API_Server",json_API_Server);
+  const API01 = searchJSON(json_API_Server,"content","API01");
+  console.log("API01",API01[0].server);
+  ipadress1 = API01[0].server;
+  const API02 = searchJSON(json_API_Server,"content","API02");
+  ipadress2 = API02[0].server;
+  const API_Session = searchJSON(json_API_Server,"content","API_Session");
+  session_url = `${API_Session[0].server}/api/session`;
+  console.log("session_url",session_url);
+
+}
+
 async function set_ip()
 {
+    await LoadAPIServer();
     if(flag_check_connection_OK) 
     {
         console.log('flag_check_connection_OK',flag_check_connection_OK);
@@ -20,12 +40,12 @@ async function set_ip()
     var api_ip_temp;
     if(await pingIP(ipadress1))
     {
-        api_ip_temp = `http://${ipadress1}/`;     
+        api_ip_temp = `${ipadress1}/`;     
         flag_check_connection_OK = true;
     }
     else if(await pingIP(ipadress2))
     {
-        api_ip_temp = `http://${ipadress2}/`;     
+        api_ip_temp = `${ipadress2}/`;     
         flag_check_connection_OK = true;
     }
     if(flag_check_connection_OK)
@@ -39,14 +59,13 @@ async function set_ip()
         transactions_url = `${api_ip}api/transactions`;
         device_url = `${api_ip}api/device`;
         
-        session_url = `${api_ip}api/session`;
         return;
     }
     set_ip();
 }
 async function pingIP(ipAddress, timeout = 1000) 
 {
-    const url = `http://${ipAddress}/api/test`;
+    const url = `${ipAddress}/api/test`;
     console.log("getDataFromAPI", url);
   
     const controller = new AbortController();

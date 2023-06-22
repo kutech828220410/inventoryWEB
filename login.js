@@ -6,7 +6,6 @@ var ID = "";
 var password = "";
 async function load()
 { 
-    await LoadAPIServer();
     await set_ip();
 
   
@@ -59,7 +58,7 @@ async function verifyUser(event)
         sessionStorage.setItem('loggedlevel', session_login.Data.level);
         sessionStorage.setItem('loggedTime', session_login.Data.loginTime);
         sessionStorage.setItem('color', session_login.Data.color);
-        window.location.href = "frontpage.html"; // 跳轉到 frontpage.html 頁面
+        window.location.href = "frontpage/main.html"; // 跳轉到 frontpage.html 頁面
     }
     return false; // 防止表單提交
 }
@@ -80,7 +79,7 @@ async function showConfirm()
         sessionStorage.setItem('loggedTime', session_login.Data.loginTime);
         sessionStorage.setItem('color', session_login.Data.color);
 
-        window.location.href = "frontpage.html"; // 跳轉到 frontpage.html 頁面
+        window.location.href = "frontpage/main.html"; // 跳轉到 frontpage.html 頁面
         return true;
     } else 
     {
