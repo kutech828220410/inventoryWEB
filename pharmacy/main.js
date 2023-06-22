@@ -86,7 +86,7 @@ function get_header()
   header_div.style.overflowX = "hidden";
   const header_title_text = document.createElement('div');
   My_Div.Init(header_title_text, 'header_title_text','header_title_text', '100%', '50%', '');
-  My_Div.Set_Text(header_title_text ,"智慧藥庫功能選單" , TextAlignEnum.CENTER , "32px", true,"微軟正黑體","#FFF");
+  My_Div.Set_Text(header_title_text ,"智慧藥局功能選單" , TextAlignEnum.CENTER , "32px", true,"微軟正黑體","#FFF");
   header_title_text.id = "header_title_text";
   header_div.appendChild(header_title_text);
   return header_div;
@@ -121,52 +121,52 @@ function get_main()
   return main_div;
 }
 
-  function get_inspection()
+  function get_drugsreport()
 {
-  const inspection_div = document.createElement("div");
-  My_Div.Init(inspection_div, 'inspection_div','inspection_div', '120px', '120px', 'rgba(255, 255, 255, 0.85)');
-  My_Div.Set_Block(inspection_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.CENTER);
-  inspection_div.style.borderRadius = "10px";
-  inspection_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
-  inspection_div.style.margin = "5px";
-  inspection_div.onclick =  inspection_Click;
+  const drugsreport_div = document.createElement("div");
+  My_Div.Init(drugsreport_div, 'drugsreport_div','drugsreport_div', '120px', '120px', 'rgba(255, 255, 255, 0.85)');
+  My_Div.Set_Block(drugsreport_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.CENTER);
+  drugsreport_div.style.borderRadius = "10px";
+  drugsreport_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
+  drugsreport_div.style.margin = "5px";
+  drugsreport_div.onclick =  drugsreport_Click;
 
   const svg_text_div = document.createElement("div");
   My_Div.Init(svg_text_div, 'svg_text_div','svg_text_div', '100%', '50%', '');
   My_Div.Set_Block(svg_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
 
-  const inspection_svg = Get_pill_SVG("80%", "80%", "80%","80%","black","");
-  My_Div.Init(inspection_svg, 'inspection_svg','inspection_svg', '30%', '100%', '');
-  My_Div.Set_Block(inspection_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
+  const drugsreport_svg = Get_pill_SVG("80%", "80%", "80%","80%","black","");
+  My_Div.Init(drugsreport_svg, 'drugsreport_svg','drugsreport_svg', '30%', '100%', '');
+  My_Div.Set_Block(drugsreport_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
 
-  const inspection_text_div = document.createElement("div");
-  My_Div.Init(inspection_text_div, 'inspection_text_div','inspection_text_div', '70%', '100%', '');
-  My_Div.Set_Block(inspection_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text(inspection_text_div ,"驗收" , TextAlignEnum.CENTER , "30px", true,"微軟正黑體","");
-  inspection_text_div.style.textTransform = 'uppercase';
-  inspection_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
-  inspection_text_div.style.backgroundClip = 'text';
-  inspection_text_div.style.webkitBackgroundClip = 'text';
-  inspection_text_div.style.webkitTextFillColor = 'transparent';
-  inspection_text_div.style.borderTopRightRadius = "10px";
-  inspection_text_div.style.borderBottomRightRadius = "10px";
+  const drugsreport_text_div = document.createElement("div");
+  My_Div.Init(drugsreport_text_div, 'drugsreport_text_div','drugsreport_text_div', '70%', '100%', '');
+  My_Div.Set_Block(drugsreport_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  My_Div.Set_Text(drugsreport_text_div ,'管制藥\n結存報表' , TextAlignEnum.CENTER , "19px", true,"微軟正黑體","");
+  drugsreport_text_div.style.textTransform = 'uppercase';
+  drugsreport_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
+  drugsreport_text_div.style.backgroundClip = 'text';
+  drugsreport_text_div.style.webkitBackgroundClip = 'text';
+  drugsreport_text_div.style.webkitTextFillColor = 'transparent';
+  drugsreport_text_div.style.borderTopRightRadius = "10px";
+  drugsreport_text_div.style.borderBottomRightRadius = "10px";
 
-  const inspection_text_eng_div = document.createElement("div");
-  My_Div.Init(inspection_text_eng_div, 'inspection_text_eng_div','inspection_text_eng_div', '100%', '20%', '');
-  My_Div.Set_Block(inspection_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text(inspection_text_eng_div ,"Inspection" , TextAlignEnum.CENTER , "18px", true,"","");
-  inspection_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
-  inspection_text_eng_div.style.backgroundClip = 'text';
-  inspection_text_eng_div.style.webkitBackgroundClip = 'text';
-  inspection_text_eng_div.style.webkitTextFillColor = 'transparent';
-  inspection_text_eng_div.style.borderTopRightRadius = "10px";
-  inspection_text_eng_div.style.borderBottomRightRadius = "10px";
+  const drugsreport_text_eng_div = document.createElement("div");
+  My_Div.Init(drugsreport_text_eng_div, 'drugsreport_text_eng_div','drugsreport_text_eng_div', '100%', '30%', '');
+  My_Div.Set_Block(drugsreport_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  My_Div.Set_Text(drugsreport_text_eng_div ,'Controlled\nDrugs Report' , TextAlignEnum.CENTER , "14px", true,"","");
+  drugsreport_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
+  drugsreport_text_eng_div.style.backgroundClip = 'text';
+  drugsreport_text_eng_div.style.webkitBackgroundClip = 'text';
+  drugsreport_text_eng_div.style.webkitTextFillColor = 'transparent';
+  drugsreport_text_eng_div.style.borderTopRightRadius = "10px";
+  drugsreport_text_eng_div.style.borderBottomRightRadius = "10px";
 
-  inspection_div.appendChild(svg_text_div);
-  svg_text_div.appendChild(inspection_svg);
-  svg_text_div.appendChild(inspection_text_div);
-  inspection_div.appendChild(inspection_text_eng_div);
-  return inspection_div;
+  drugsreport_div.appendChild(svg_text_div);
+  svg_text_div.appendChild(drugsreport_svg);
+  svg_text_div.appendChild(drugsreport_text_div);
+  drugsreport_div.appendChild(drugsreport_text_eng_div);
+  return drugsreport_div;
 }
 
 function get_inventory()
@@ -216,112 +216,112 @@ function get_inventory()
   return inventory_div;
 }
 
-function get_orderpicking()
+function get_inventoryreport()
 {
-  const orderpicking_div = document.createElement("div");
-  My_Div.Init(orderpicking_div, 'orderpicking_div','orderpicking_div', '120px', '120px', 'rgba(255, 255, 255, 0.85)');
-  My_Div.Set_Block(orderpicking_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.CENTER);
-  orderpicking_div.style.borderRadius = "10px";
-  orderpicking_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
-  orderpicking_div.style.margin = "5px";
-  orderpicking_div.id = "orderpicking_div";
-  orderpicking_div.onclick =  orderpicking_Click;
+  const inventoryreport_div = document.createElement("div");
+  My_Div.Init(inventoryreport_div, 'inventoryreport_div','inventoryreport_div', '120px', '120px', 'rgba(255, 255, 255, 0.85)');
+  My_Div.Set_Block(inventoryreport_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.CENTER);
+  inventoryreport_div.style.borderRadius = "10px";
+  inventoryreport_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
+  inventoryreport_div.style.margin = "5px";
+  inventoryreport_div.id = "inventoryreport_div";
+  inventoryreport_div.onclick =  inventoryreport_Click;
 
   const svg_text_div = document.createElement("div");
   My_Div.Init(svg_text_div, 'svg_text_div','svg_text_div', '100%', '50%', '');
   My_Div.Set_Block(svg_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
 
-  const orderpicking_svg = Get_ward_SVG("80%", "80%", "80%","80%","gray","");
-  My_Div.Init(orderpicking_svg, 'orderpicking_svg','orderpicking_svg', '30%', '100%', '');
-  My_Div.Set_Block(orderpicking_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
+  const inventoryreport_svg = Get_ward_SVG("80%", "80%", "80%","80%","gray","");
+  My_Div.Init(inventoryreport_svg, 'inventoryreport_svg','inventoryreport_svg', '30%', '100%', '');
+  My_Div.Set_Block(inventoryreport_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
 
-  const orderpicking_text_div = document.createElement("div");
-  My_Div.Init(orderpicking_text_div, 'orderpicking_text_div','orderpicking_text_div', '70%', '100%', '');
-  My_Div.Set_Block(orderpicking_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text(orderpicking_text_div ,"揀貨" , TextAlignEnum.CENTER , "30px", true,"微軟正黑體","");
-  orderpicking_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
-  orderpicking_text_div.style.backgroundClip = 'text';
-  orderpicking_text_div.style.webkitBackgroundClip = 'text';
-  orderpicking_text_div.style.webkitTextFillColor = 'transparent';
-  orderpicking_text_div.style.borderTopRightRadius = "10px";
-  orderpicking_text_div.style.borderBottomRightRadius = "10px";
+  const inventoryreport_text_div = document.createElement("div");
+  My_Div.Init(inventoryreport_text_div, 'inventoryreport_text_div','inventoryreport_text_div', '70%', '100%', '');
+  My_Div.Set_Block(inventoryreport_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  My_Div.Set_Text(inventoryreport_text_div ,'每日庫存\n消耗量' , TextAlignEnum.CENTER , "19px", true,"微軟正黑體","");
+  inventoryreport_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
+  inventoryreport_text_div.style.backgroundClip = 'text';
+  inventoryreport_text_div.style.webkitBackgroundClip = 'text';
+  inventoryreport_text_div.style.webkitTextFillColor = 'transparent';
+  inventoryreport_text_div.style.borderTopRightRadius = "10px";
+  inventoryreport_text_div.style.borderBottomRightRadius = "10px";
 
-  const orderpicking_text_eng_div = document.createElement("div");
-  My_Div.Init( orderpicking_text_eng_div, ' orderpicking_text_eng_div',' orderpicking_text_eng_div', '100%', '30%', '');
-  My_Div.Set_Block( orderpicking_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text( orderpicking_text_eng_div ,"Order Picking" , TextAlignEnum.CENTER , "17px", true,"","");
-   orderpicking_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
-   orderpicking_text_eng_div.style.backgroundClip = 'text';
-   orderpicking_text_eng_div.style.wordBreak = "break-word";
-   orderpicking_text_eng_div.style.webkitBackgroundClip = 'text';
-   orderpicking_text_eng_div.style.webkitTextFillColor = 'transparent';
-   orderpicking_text_eng_div.style.borderTopRightRadius = "10px";
-   orderpicking_text_eng_div.style.borderBottomRightRadius = "10px";
+  const inventoryreport_text_eng_div = document.createElement("div");
+  My_Div.Init( inventoryreport_text_eng_div, ' inventoryreport_text_eng_div',' inventoryreport_text_eng_div', '100%', '30%', '');
+  My_Div.Set_Block( inventoryreport_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  My_Div.Set_Text( inventoryreport_text_eng_div ,"Inventory Report" , TextAlignEnum.CENTER , "14px", true,"","");
+   inventoryreport_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
+   inventoryreport_text_eng_div.style.backgroundClip = 'text';
+   inventoryreport_text_eng_div.style.wordBreak = "break-word";
+   inventoryreport_text_eng_div.style.webkitBackgroundClip = 'text';
+   inventoryreport_text_eng_div.style.webkitTextFillColor = 'transparent';
+   inventoryreport_text_eng_div.style.borderTopRightRadius = "10px";
+   inventoryreport_text_eng_div.style.borderBottomRightRadius = "10px";
 
-  orderpicking_div.appendChild(svg_text_div);
-  svg_text_div.appendChild(orderpicking_svg);
-  svg_text_div.appendChild(orderpicking_text_div);
-  orderpicking_div.appendChild(orderpicking_text_eng_div);
+  inventoryreport_div.appendChild(svg_text_div);
+  svg_text_div.appendChild(inventoryreport_svg);
+  svg_text_div.appendChild(inventoryreport_text_div);
+  inventoryreport_div.appendChild(inventoryreport_text_eng_div);
 
   // //沒有LICENSE上鎖
   // const lock_div = get_Lock(); // 呼叫 get_Lock 函式獲取 lock_div
-  // orderpicking_div.appendChild(lock_div); // 添加 lock_div 到 orderpicking_div 中
+  // inventoryreport_div.appendChild(lock_div); // 添加 lock_div 到 inventoryreport_div 中
 
-  return orderpicking_div;
+  return inventoryreport_div;
 }
 
-function get_settingbarcode()
+function get_appropriation()
 {
-  const settingbarcode_div = document.createElement("div");
-  My_Div.Init(settingbarcode_div, 'settingbarcode_div','settingbarcode_div', '120px', '120px', 'rgba(255, 255, 255, 0.85)');
-  My_Div.Set_Block(settingbarcode_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.CENTER);
-  settingbarcode_div.style.borderRadius = "10px";
-  settingbarcode_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
-  settingbarcode_div.style.margin = "5px";
-  settingbarcode_div.id = "settingbarcode_div";
-  settingbarcode_div.onclick = settingbarcode_Click;
+  const appropriation_div = document.createElement("div");
+  My_Div.Init(appropriation_div, 'appropriation_div','appropriation_div', '120px', '120px', 'rgba(255, 255, 255, 0.85)');
+  My_Div.Set_Block(appropriation_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.CENTER);
+  appropriation_div.style.borderRadius = "10px";
+  appropriation_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
+  appropriation_div.style.margin = "5px";
+  appropriation_div.id = "appropriation_div";
+  // appropriation_div.onclick = appropriation_Click;
 
   const svg_text_div = document.createElement("div");
   My_Div.Init(svg_text_div, 'svg_text_div','svg_text_div', '100%', '50%', '');
   My_Div.Set_Block(svg_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
 
-  const settingbarcode_svg = Get_ward_SVG("80%", "80%", "80%","80%","gray","");
-  My_Div.Init(settingbarcode_svg, 'settingbarcode_svg','settingbarcode_svg', '30%', '100%', '');
-  My_Div.Set_Block(settingbarcode_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
+  const appropriation_svg = Get_ward_SVG("80%", "80%", "80%","80%","gray","");
+  My_Div.Init(appropriation_svg, 'appropriation_svg','appropriation_svg', '30%', '100%', '');
+  My_Div.Set_Block(appropriation_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
 
-  const settingbarcode_text_div = document.createElement("div");
-  My_Div.Init(settingbarcode_text_div, 'settingbarcode_text_div','settingbarcode_text_div', '70%', '100%', '');
-  My_Div.Set_Block(settingbarcode_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text(settingbarcode_text_div ,'條碼\n建置' ,TextAlignEnum.CENTER , "22px", true,"微軟正黑體","");;
-  settingbarcode_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
-  settingbarcode_text_div.style.backgroundClip = 'text';
-  settingbarcode_text_div.style.webkitBackgroundClip = 'text';
-  settingbarcode_text_div.style.webkitTextFillColor = 'transparent';
-  settingbarcode_text_div.style.borderTopRightRadius = "10px";
-  settingbarcode_text_div.style.borderBottomRightRadius = "10px";
+  const appropriation_text_div = document.createElement("div");
+  My_Div.Init(appropriation_text_div, 'appropriation_text_div','appropriation_text_div', '70%', '100%', '');
+  My_Div.Set_Block(appropriation_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  My_Div.Set_Text(appropriation_text_div ,'撥補' ,TextAlignEnum.CENTER , "30px", true,"微軟正黑體","");
+  appropriation_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
+  appropriation_text_div.style.backgroundClip = 'text';
+  appropriation_text_div.style.webkitBackgroundClip = 'text';
+  appropriation_text_div.style.webkitTextFillColor = 'transparent';
+  appropriation_text_div.style.borderTopRightRadius = "10px";
+  appropriation_text_div.style.borderBottomRightRadius = "10px";
 
-  const settingbarcode_text_eng_div = document.createElement("div");
-  My_Div.Init( settingbarcode_text_eng_div, ' settingbarcode_text_eng_div',' settingbarcode_text_eng_div', '100%', '30%', '');
-  My_Div.Set_Block( settingbarcode_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text( settingbarcode_text_eng_div ,"Setting Barcode" , TextAlignEnum.CENTER , "15px", true,"","");
-   settingbarcode_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
-   settingbarcode_text_eng_div.style.backgroundClip = 'text';
-   settingbarcode_text_eng_div.style.wordBreak = "break-word";
-   settingbarcode_text_eng_div.style.webkitBackgroundClip = 'text';
-   settingbarcode_text_eng_div.style.webkitTextFillColor = 'transparent';
-   settingbarcode_text_eng_div.style.borderTopRightRadius = "10px";
-   settingbarcode_text_eng_div.style.borderBottomRightRadius = "10px";
+  const appropriation_text_eng_div = document.createElement("div");
+  My_Div.Init( appropriation_text_eng_div, ' appropriation_text_eng_div',' appropriation_text_eng_div', '100%', '20%', '');
+  My_Div.Set_Block( appropriation_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  My_Div.Set_Text( appropriation_text_eng_div ,"Appropriation" , TextAlignEnum.CENTER , "16px", true,"","");
+   appropriation_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
+   appropriation_text_eng_div.style.backgroundClip = 'text';
+   appropriation_text_eng_div.style.wordBreak = "break-word";
+   appropriation_text_eng_div.style.webkitBackgroundClip = 'text';
+   appropriation_text_eng_div.style.webkitTextFillColor = 'transparent';
+   appropriation_text_eng_div.style.borderTopRightRadius = "10px";
+   appropriation_text_eng_div.style.borderBottomRightRadius = "10px";
 
-  settingbarcode_div.appendChild(svg_text_div);
-  svg_text_div.appendChild(settingbarcode_svg);
-  svg_text_div.appendChild(settingbarcode_text_div);
-  settingbarcode_div.appendChild(settingbarcode_text_eng_div);
+  appropriation_div.appendChild(svg_text_div);
+  svg_text_div.appendChild(appropriation_svg);
+  svg_text_div.appendChild(appropriation_text_div);
+  appropriation_div.appendChild(appropriation_text_eng_div);
 
-  // //沒有LICENSE上鎖
-  // const lock_div = get_Lock(); // 呼叫 get_Lock 函式獲取 lock_div
-  // settingbarcode_div.appendChild(lock_div); // 添加 lock_div 到 settingbarcode_div 中
+  //沒有LICENSE上鎖
+  const lock_div = get_Lock(); // 呼叫 get_Lock 函式獲取 lock_div
+  appropriation_div.appendChild(lock_div); // 添加 lock_div 到 appropriation_div 中
 
-  return settingbarcode_div;
+  return appropriation_div;
 }
 
 function get_userinfo()
@@ -356,7 +356,7 @@ function get_userinfo()
 function get_Lock()
 {
   const lock_div = document.createElement("div");
-  My_Div.Init(lock_div, 'lock_div','lock_div', '240px', '120px', 'rgba(128, 128, 128, 0.85)');
+  My_Div.Init(lock_div, 'lock_div','lock_div', '120px', '120px', 'rgba(128, 128, 128, 0.85)');
   My_Div.Set_Block(lock_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   lock_div.style.position= "absolute";
   lock_div.style.borderRadius = "10px";
@@ -371,11 +371,11 @@ function get_Lock()
 
   return lock_div;
 
-  document.getElementById("orderpicking_div").addEventListener("scroll", function() {
-    // 取得 orderpicking_div 的位置
-    const orderpickingDivRect = document.getElementById("orderpicking_div").getBoundingClientRect();
-    lock_div.style.top = orderpickingDivRect.top + "px";
-    lock_div.style.left = orderpickingDivRect.left + "px";
+  document.getElementById("inventoryreport_div").addEventListener("scroll", function() {
+    // 取得 inventoryreport_div 的位置
+    const inventoryreportDivRect = document.getElementById("inventoryreport_div").getBoundingClientRect();
+    lock_div.style.top = inventoryreportDivRect.top + "px";
+    lock_div.style.left = inventoryreportDivRect.left + "px";
   });
 }
 
@@ -384,9 +384,9 @@ async function logout_Click()
   location.href = "http://www.ketech.tw:5500/login.html";
 }
 
-async function inspection_Click()
+async function drugsreport_Click()
  {
-  console.log("inspection");
+  console.log("drugsreport");
 }
 
 async function inventory_Click()
@@ -394,14 +394,14 @@ async function inventory_Click()
   console.log("Stroehouse");
 }
 
-async function orderpicking_Click()
+async function inventoryreport_Click()
  {
-  console.log("orderpicking");
+  console.log("inventoryreport");
 }
 
-async function settingbarcode_Click()
+async function appropriation_Click()
  {
-  console.log("orderpicking");
+  console.log("inventoryreport");
 }
 
 

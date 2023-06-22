@@ -6,7 +6,10 @@ var ID = "";
 var password = "";
 async function load()
 { 
+    await LoadAPIServer();
     await set_ip();
+
+  
 }
 
 async function verifyUser(event) 

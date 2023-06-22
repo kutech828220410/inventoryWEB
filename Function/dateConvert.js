@@ -36,9 +36,9 @@ function StringToDateime(dateStr)
     }
     catch
     {
-        const hour = 00;
-        const minute = 00;
-        const second = 00;
+        const hour = 0;
+        const minute = 0;
+        const second = 0;
         return new Date(year, month, day, hour, minute, second);
     }
    

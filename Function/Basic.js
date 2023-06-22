@@ -1,5 +1,6 @@
 loadScript("../../Function/WebApiFunc.js");
 loadScript("../../Function/dateConvert.js");
+loadScript("../../Function/FileStream.js");
 var isDesktop = /Windows|Linux|Macintosh/i.test(navigator.userAgent);
 
 const DeviceType = 

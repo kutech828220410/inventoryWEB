@@ -227,7 +227,7 @@ function get_ward()
   ward_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
   ward_div.style.marginTop = "10px";
   ward_div.id = "ward_div";
-  ward_div.onclick =  ward_Click;
+  // ward_div.onclick =  ward_Click;
 
   const ward_svg = Get_ward_SVG("80%", "80%", "80%","80%","gray","");
   My_Div.Init(ward_svg, 'ward_svg','ward_svg', '30%', '100%', '');
@@ -266,9 +266,9 @@ function get_ward()
   all_text_div.appendChild(ward_text_div);
   all_text_div.appendChild(ward_text_eng_div);
 
-  // //沒有LICENSE上鎖
-  // const lock_div = get_Lock(); // 呼叫 get_Lock 函式獲取 lock_div
-  // ward_div.appendChild(lock_div); // 添加 lock_div 到 ward_div 中
+  //沒有LICENSE上鎖
+  const lock_div = get_Lock(); // 呼叫 get_Lock 函式獲取 lock_div
+  ward_div.appendChild(lock_div); // 添加 lock_div 到 ward_div 中
 
   return ward_div;
 }
