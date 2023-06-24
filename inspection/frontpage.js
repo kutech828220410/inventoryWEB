@@ -127,7 +127,8 @@ function get_main()
 window.onload = load;
 async function load() 
 {
-  await set_ip();
+  check_session_off();
+  await set_ip("debug");
   permissions = GetApipermissions();
   console.log(permissions);
 

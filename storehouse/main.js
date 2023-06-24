@@ -89,15 +89,47 @@ function Set_main_div_enable(value)
 function get_header() 
 {
   const header_div = document.createElement('div');
-  My_Div.Init(header_div, 'header_div','header_div', '100%', '50px', '');
+  My_Div.Init(header_div, 'header_div','header_div', '100%', '55px', '');
   My_Div.Set_Block(header_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   header_div.style.overflowX = "hidden";
   const header_title_text = document.createElement('div');
   My_Div.Init(header_title_text, 'header_title_text','header_title_text', '100%', '50%', '');
   My_Div.Set_Text(header_title_text ,"智慧藥庫功能選單" , TextAlignEnum.CENTER , "32px", true,"微軟正黑體","#FFF");
   header_title_text.id = "header_title_text";
+  header_title_text.style.marginTop = "5px";
   header_div.appendChild(header_title_text);
   return header_div;
+}
+
+
+function get_main() 
+{
+  const main_div = document.createElement("div");
+  My_Div.Init(main_div, 'main_div','main_div', '100%', '100%', '');
+  My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.TOP);
+  const choose_text_div = document.createElement("div");
+  const row1_div = document.createElement("div");
+  My_Div.Init(row1_div, 'row1_div','row1_div', '100%', '120px', '');
+  My_Div.Set_Block(row1_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  row1_div.style.marginTop = "10px";
+
+  const row2_div = document.createElement("div");
+  My_Div.Init(row2_div, 'row2_div','row2_div', '100%', '120px', '');
+  My_Div.Set_Block(row2_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  row2_div.style.marginTop = "10px";
+
+  const inspection_div = get_inspection();
+  const inventory_div = get_inventory();
+  const orderpicking_div = get_orderpicking();
+  const settingbarcode_div = get_settingbarcode();
+
+  main_div.appendChild(row1_div);
+  main_div.appendChild(row2_div);
+  row1_div.appendChild(inspection_div);
+  row1_div.appendChild(inventory_div);
+  row2_div.appendChild(orderpicking_div);
+  row2_div.appendChild(settingbarcode_div);
+  return main_div;
 }
 function get_userinfo()
 {
@@ -128,11 +160,8 @@ function get_userinfo()
   return userinfo_div;
 }
 
-function get_main() 
+function get_choose_text_div()
 {
-  const main_div = document.createElement("div");
-  My_Div.Init(main_div, 'main_div','main_div', '100%', '100%', '');
-  My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.TOP);
   const choose_text_div = document.createElement("div");
   My_Div.Init(choose_text_div, 'choose_text_div','choose_text_div', '100%', '5%', '');
   My_Div.Set_Block(choose_text_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.TOP);
@@ -143,22 +172,9 @@ function get_main()
   choose_text_div.style.backgroundClip = 'text';
   choose_text_div.style.webkitBackgroundClip = 'text';
   choose_text_div.style.webkitTextFillColor = 'transparent';
-
-  // if(device == DeviceType.MOBILE) 
-  // {
-  //   main_div.style.width = "100%";
-  // }
-  // if(device == DeviceType.COMPUTER)
-  // {
-  //     const temp = Math.floor(screenWidth / 300);
-  //     const row_width = screenWidth / temp - 20;
-  //     main_div.style.width = `${row_width}px`;
-  // } 
-  main_div.appendChild(choose_text_div);
-  return main_div;
+  return choose_text_div;
 }
-
-  function get_inspection()
+function get_inspection()
 {
   const inspection_div = document.createElement("div");
   My_Div.Init(inspection_div, 'inspection_div','inspection_div', '180px', '120px', 'rgba(255, 255, 255, 0.85)');

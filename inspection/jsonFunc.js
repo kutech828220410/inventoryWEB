@@ -1,6 +1,5 @@
-var Server = "127.0.0.1";
-var DbName = "ds01";
-
+var ServerName = "";
+var ServerType = "";
 
 //#region  API inventory
 async function creat_get_by_CT_TIME(date)
@@ -18,8 +17,6 @@ async function creat_get_by_CT_TIME(date)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "Result": "",
     "Value": "",
     "TimeTaken": ""
@@ -42,8 +39,6 @@ async function creat_get_by_CT_TIME_S(date)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "Result": "",
     "Value": "1",
     "TimeTaken": ""
@@ -68,8 +63,6 @@ async function creat_update_startime_by_IC_SN(ICSN)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "Result": "",
     "Value": ``,
     "TimeTaken": ""
@@ -93,8 +86,6 @@ async function creat_get_by_CT_TIME_ST_END(date_ST,date_END)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "Result": "",
     "Value": `${date_ST},${date_END}`,
     "TimeTaken": ""
@@ -119,8 +110,6 @@ async function creat_get_by_IC_SN(IC_SN)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "Result": "",
     "Value": "",
     "TimeTaken": ""
@@ -146,8 +135,6 @@ async function creat_delete_by_IC_SN(IC_SN)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "Result": "",
     "Value": "",
     "TimeTaken": ""
@@ -172,8 +159,6 @@ async function creat_lock_by_IC_SN(IC_SN)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "Result": "",
     "Value": "",
     "TimeTaken": ""
@@ -198,8 +183,6 @@ async function creat_unlock_by_IC_SN(IC_SN)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "Result": "",
     "Value": "",
     "TimeTaken": ""
@@ -225,8 +208,6 @@ async function creat_auto_add(IC_NAME , CT)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "TableName":`${BalsicDeviceTableName}`,
     "Result": "",
     "Value": "",
@@ -247,8 +228,6 @@ async function content_get_by_content_GUID(_GUID)
    
     },
     "Master_GUID": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "TableName":`${BalsicDeviceTableName}`,
     "Result": "",
     "Value": "",
@@ -270,8 +249,6 @@ async function sub_content_get_by_content_GUID(_GUID)
 
     },
     "Master_GUID": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "TableName":`${BalsicDeviceTableName}`,
     "Result": "",
     "Value": "",
@@ -293,8 +270,6 @@ async function sub_content_add_single(_Master_GUID, _END_QTY, _OP)
       "OP": `${_OP}`
     },
     "Master_GUID": 0,
-    "Server":``,
-    "DbName":``,
     "TableName":``,
     "Result": "",
     "Value": "",
@@ -315,8 +290,6 @@ async function sub_content_add(_Master_GUID, _END_QTY, _OP)
       "OP": `${_OP}`
     },
     "Master_GUID": 0,
-    "Server":``,
-    "DbName":``,
     "TableName":``,
     "Result": "",
     "Value": "",
@@ -337,8 +310,6 @@ async function sub_contents_delete_by_GUID(_GUID, Master_GUID)
       "Master_GUID" : `${Master_GUID}`
     }],
     "Master_GUID": 0,
-    "Server":``,
-    "DbName":``,
     "TableName":``,
     "Result": "",
     "Value": "",
@@ -365,8 +336,6 @@ async function download_excel_by_IC_SN(IC_SN)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "Result": "",
     "Value": "",
     "TimeTaken": ""
@@ -389,8 +358,6 @@ async function device_light(Color, device_basic)
   {
     "Data": device_basic,
     "Master_GUID": 0,
-    "Server":``,
-    "DbName":``,
     "TableName":``,
     "Result": "",
     "Value": Color,

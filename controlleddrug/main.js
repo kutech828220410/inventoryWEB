@@ -217,7 +217,7 @@ function get_header()
   header_contorls_download_btn.id = "header_contorls_download_btn";
   header_contorls_download_btn.className = "header_contorls";
   header_contorls_download_btn.style.width = "60px";
-  header_contorls_download_btn.style.height = "80%";
+  header_contorls_download_btn.style.height = "83%";
   header_contorls_download_btn.style.marginTop = "5px";
   header_contorls_download_btn.style.marginRight = "2px";
   header_contorls_download_btn.style.display = "flex";

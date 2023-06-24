@@ -18,6 +18,7 @@ function handleResize()
 }
 async function load()
 { 
+    check_session_off();
     await set_ip();
     const Loadingpopup = GetLoadingpopup();
     document.body.appendChild(Loadingpopup);

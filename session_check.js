@@ -1,5 +1,6 @@
-setInterval(check_session, 5000);
+//setInterval(check_session, 5000);
 var permissions;
+var flag_session_check = true;
 async function GetApipermissions()
 {
     var loggedID = sessionStorage.getItem('loggedID');
@@ -21,7 +22,7 @@ async function GetApipermissions()
         "TimeTaken": ""
     };
     const get_permissions = await postDataToAPI(`${session_url}/get_permissions`, post_data);
-    console.log(get_permissions.Data.Permissions);
+    // console.log(get_permissions.Data.Permissions);
     permissions = get_permissions.Data.Permissions;
     return get_permissions.Data.Permissions;
 }
@@ -37,8 +38,14 @@ function GetPermissions(name)
     }
     return false;
 }
+function check_session_off()
+{
+    flag_session_check = false;
+}
 async function check_session()
 {
+    console.log("Checking session",flag_session_check);
+    if(!flag_session_check) return;
     var GUID = sessionStorage.getItem('GUID');
 
     var loggedID = sessionStorage.getItem('loggedID');

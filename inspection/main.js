@@ -18,7 +18,8 @@ function handleResize()
 }
 async function load()
 { 
-    await set_ip();
+    check_session_off();
+    await set_ip("debug");
     const Loadingpopup = GetLoadingpopup();
     document.body.appendChild(Loadingpopup);
     var IC_SN = sessionStorage.getItem('IC_SN');  

@@ -1,6 +1,5 @@
-var Server = "127.0.0.1";
-var DbName = "ds01";
-
+var ServerName = "";
+var ServerType = "";
 
 //#region  API inventory
 async function creat_get_by_CT_TIME(date)
@@ -18,10 +17,10 @@ async function creat_get_by_CT_TIME(date)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "Result": "",
     "Value": "",
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
     "TimeTaken": ""
   };
   let response = await postDataToAPI(`${inventory_url}/creat_get_by_CT_TIME`,post_data);
@@ -42,10 +41,10 @@ async function creat_get_by_CT_TIME_S(date)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "Result": "",
     "Value": "1",
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
     "TimeTaken": ""
   };
   let response = await postDataToAPI(`${inventory_url}/creat_get_by_CT_TIME`,post_data);
@@ -68,10 +67,10 @@ async function creat_update_startime_by_IC_SN(ICSN)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "Result": "",
     "Value": ``,
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
     "TimeTaken": ""
   };
   console.log("post_data",post_data);
@@ -93,10 +92,10 @@ async function creat_get_by_CT_TIME_ST_END(date_ST,date_END)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "Result": "",
     "Value": `${date_ST},${date_END}`,
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
     "TimeTaken": ""
   };
   console.log("post_data",post_data);
@@ -119,10 +118,10 @@ async function creat_get_by_IC_SN(IC_SN)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "Result": "",
     "Value": "",
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/creat_get_by_IC_SN`;
@@ -146,10 +145,10 @@ async function creat_delete_by_IC_SN(IC_SN)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "Result": "",
     "Value": "",
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/creat_delete_by_IC_SN`;
@@ -172,10 +171,10 @@ async function creat_lock_by_IC_SN(IC_SN)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "Result": "",
     "Value": "",
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/creat_lock_by_IC_SN`;
@@ -198,10 +197,10 @@ async function creat_unlock_by_IC_SN(IC_SN)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "Result": "",
     "Value": "",
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/creat_unlock_by_IC_SN`;
@@ -225,11 +224,11 @@ async function creat_auto_add(IC_NAME , CT)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "TableName":`${BalsicDeviceTableName}`,
     "Result": "",
     "Value": "",
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/creat_auto_add`;
@@ -247,11 +246,11 @@ async function content_get_by_content_GUID(_GUID)
    
     },
     "Master_GUID": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "TableName":`${BalsicDeviceTableName}`,
     "Result": "",
     "Value": "",
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/content_get_by_content_GUID`;
@@ -270,11 +269,11 @@ async function sub_content_get_by_content_GUID(_GUID)
 
     },
     "Master_GUID": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "TableName":`${BalsicDeviceTableName}`,
     "Result": "",
     "Value": "",
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/sub_content_get_by_content_GUID`;
@@ -293,11 +292,11 @@ async function sub_content_add_single(_Master_GUID, _END_QTY, _OP)
       "OP": `${_OP}`
     },
     "Master_GUID": 0,
-    "Server":``,
-    "DbName":``,
     "TableName":``,
     "Result": "",
     "Value": "",
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/sub_content_add_single`;
@@ -315,11 +314,11 @@ async function sub_content_add(_Master_GUID, _END_QTY, _OP)
       "OP": `${_OP}`
     },
     "Master_GUID": 0,
-    "Server":``,
-    "DbName":``,
     "TableName":``,
     "Result": "",
     "Value": "",
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/sub_content_add`;
@@ -337,11 +336,11 @@ async function sub_contents_delete_by_GUID(_GUID, Master_GUID)
       "Master_GUID" : `${Master_GUID}`
     }],
     "Master_GUID": 0,
-    "Server":``,
-    "DbName":``,
     "TableName":``,
     "Result": "",
     "Value": "",
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/sub_contents_delete_by_GUID`;
@@ -365,10 +364,10 @@ async function download_excel_by_IC_SN(IC_SN)
       "Contents": []
     },
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
     "Result": "",
     "Value": "",
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/download_excel_by_IC_SN`;
@@ -389,11 +388,11 @@ async function device_light(Color, device_basic)
   {
     "Data": device_basic,
     "Master_GUID": 0,
-    "Server":``,
-    "DbName":``,
     "TableName":``,
     "Result": "",
     "Value": Color,
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
     "TimeTaken": ""
   };
   var _url = `${device_url}/light`;

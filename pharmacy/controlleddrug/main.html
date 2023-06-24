@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>管制藥結存頁面</title>
+  <link rel="stylesheet" href="main.css">
+  <script src="../../ApiURL.js"></script>
+  <script src="../../Function/Basic.js"></script>
+  <script src="../../dist/JsBarcode.all.js"></script>
+  <script src="../../svg/mySVG.js"></script>
+  <script src="../../UI/map.js"></script>
+  <script src="../../popup/map.js"></script>
+
+  <script src="jsonFunc.js"></script>
+  <script src="main.js"></script>
+  <script src="main_loadingdata.js"></script>
+  <script src="main_popup_find.js"></script>
+
+</head>
+<body>
+  
+      <script>
+
+          
+          document.body.style.position = 'absolute';
+          const header_div = get_header();
+          document.body.appendChild(header_div);
+          const main_div = get_main();
+          document.body.appendChild(main_div);    
+          
+          const popup_find_div = get_popup_find();
+          document.body.appendChild(popup_find_div.div);
+          popup_find_div.Set_Visible(true);
+      </script>
+   
+
+  <div class="under-line">
+    <B> Copyright ©2023 鴻森整合機電有限公司 </B>
+  </div>
+  
+  <script>
+  var barcode_value = '';
+    // 監聽頁面的keydown事件
+  window.addEventListener('keydown', function(event) 
+  {
+    // 判斷按下的按鍵是否是Tab鍵或Enter鍵
+    console.log(event.key);
+    if (event.key === 'Tab' || event.key === 'Enter') {
+    // 防止頁面重新載入
+        event.preventDefault();
+        const parsedCode = parseBarcode(barcode_value);
+        
+        // 取得輸入框的值
+        barcode_value = '';
+        // 解析藍牙掃描器返回的數據
+        if(parsedCode != '')
+        {
+            popup_find_div.Set_Visible(false);
+            const find_code_input = document.querySelector("#find_code_input");
+            find_code_input.value = parsedCode;
+            checksvg_Click();
+        }         
+    }
+    else
+    {
+        const isValid = /^[a-zA-Z0-9]+$/.test(event.key);
+        const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
+        const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);
+        
+
+        if (isValid && (!isControlKey||isNumPadlKey)) {
+            // 將解析後的條碼值設定為輸入框的值
+            barcode_value += event.key;
+        } 
+    }
+});
+
+// 解析帶有分隔符的字符串
+function parseBarcode(scannedCode) 
+{
+  const delimiter = /[\n\r]/g;
+  const matches = scannedCode.split(delimiter);
+  return matches[0];
+}
+
+</script>
+  
+</body>
+</html>

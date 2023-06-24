@@ -11,7 +11,7 @@ loadScript("../../signalr/dist/browser/signalr.js");
 var connection ;
 async function signalR_init()
 {
-    await set_ip();
+    await Set_ChatHub_url();
     console.log('Chat_url' , Chat_url);
     connection = new signalR.HubConnectionBuilder()
     .withUrl(`${Chat_url}`)

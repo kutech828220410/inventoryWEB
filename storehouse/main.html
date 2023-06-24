@@ -30,32 +30,12 @@
      
      const header_div = get_header();
      document.body.appendChild(header_div);
-
+     document.body.appendChild(get_choose_text_div());
+     document.body.appendChild(get_userinfo());
      const main_div = get_main();
      document.body.appendChild(main_div);
 
-      const row1_div = document.createElement("div");
-      My_Div.Init(row1_div, 'row1_div','row1_div', '100%', '120px', '');
-      My_Div.Set_Block(row1_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-      row1_div.style.marginTop = "10px";
-
-      const row2_div = document.createElement("div");
-      My_Div.Init(row2_div, 'row2_div','row2_div', '100%', '120px', '');
-      My_Div.Set_Block(row2_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-      row2_div.style.marginTop = "10px";
-
-     const userinfo_div = get_userinfo();
-     const inspection_div = get_inspection();
-     const inventory_div = get_inventory();
-     const orderpicking_div = get_orderpicking();
-     const settingbarcode_div = get_settingbarcode();
-     main_div.appendChild(userinfo_div);
-     main_div.appendChild(row1_div);
-     main_div.appendChild(row2_div);
-     row1_div.appendChild(inspection_div);
-     row1_div.appendChild(inventory_div);
-     row2_div.appendChild(orderpicking_div);
-     row2_div.appendChild(settingbarcode_div);
+    
 
 
     //  get_popup_serch();

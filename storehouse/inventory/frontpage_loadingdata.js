@@ -17,7 +17,7 @@ function creat_row_div(_index , item)
     all_div.appendChild(formnnum_delbtn_div);
 
     const del_btn_div = Get_trashBox_SVG("30px", "100%", "100%","100%","red","");
-    My_Div.Init(del_btn_div,`del_botton${_index}`,'del_botton', '30px','100%','');
+    My_Div.Init(del_btn_div,`del_botton${_index}`,'del_botton', '40px','100%','');
     My_Div.Set_Block(del_btn_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
     del_btn_div.setAttribute("IC_SN",item.IC_SN);
     del_btn_div.style.border = "1px solid gray";
@@ -136,7 +136,7 @@ function creat_row_div(_index , item)
     }
     //操作按鈕
     const btn_div = document.createElement('div');
-    My_Div.Init(btn_div,`btn_div${_index}`,'btn_div', '85px','170px','');
+    My_Div.Init(btn_div,`btn_div${_index}`,'btn_div', '100px','170px','');
     My_Div.Set_Block(btn_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
     btn_div.style.paddingTop = "5px";
     btn_div.style.paddingRight = "7px";
@@ -148,13 +148,13 @@ function creat_row_div(_index , item)
     var selectbtn;
     if(item.STATE == '鎖定')  
     {
-      selectbtn = Get_right_direction_SVG("100%", "60px", "70%","100%","gray","" , false);
+      selectbtn = Get_right_direction_SVG("100%", "60px", "90%","100%","gray","" , false);
       My_Div.Init(selectbtn,`selectbtn${_index}`,'selectbtn', '100%','33%','');
       selectbtn.style.backgroundColor = "lightgray";
     }
     else
     {
-      selectbtn = Get_right_direction_SVG("100%", "60px", "70%","100%","steelblue","" , true);
+      selectbtn = Get_right_direction_SVG("100%", "60px", "90%","100%","steelblue","" , true);
       My_Div.Init(selectbtn,`selectbtn${_index}`,'selectbtn', '100%','33%','');
       selectbtn.onclick = select_btn_Click;
     }
@@ -164,7 +164,7 @@ function creat_row_div(_index , item)
     selectbtn.style.borderRadius = "5px";
     btn_div.appendChild(selectbtn);
 
-    const downloadbtn = Get_download_SVG("100%", "60px", "70%","100%","steelblue","");
+    const downloadbtn = Get_download_SVG("100%", "60px", "90%","100%","steelblue","");
     My_Div.Init(downloadbtn,`downloadbtn${_index}`,'downloadbtn', '100%','33%','');
     downloadbtn.setAttribute("IC_SN",item.IC_SN);
     downloadbtn.style.border = "1px solid gray";
@@ -175,8 +175,8 @@ function creat_row_div(_index , item)
     btn_div.appendChild(downloadbtn);
 
     var lockbtn;
-    if(item.STATE == '鎖定')lockbtn = Get_lock_SVG("100%", "60px", "70%","100%","red","");
-    else lockbtn = Get_unlock_SVG("100%", "60px", "70%","100%","steelblue",""); 
+    if(item.STATE == '鎖定')lockbtn = Get_lock_SVG("100%", "60px", "90%","100%","red","");
+    else lockbtn = Get_unlock_SVG("100%", "60px", "90%","100%","steelblue",""); 
     My_Div.Init(lockbtn,`lockbtn${_index}`,'lockbtn', '100%','33%','');
     lockbtn.setAttribute("IC_SN",item.IC_SN);
     lockbtn.setAttribute("STATE",item.STATE);

@@ -775,7 +775,7 @@ function Get_licenselock_SVG(btn_width ,btn_height, svg_width, svg_height ,strok
 function Get_lock_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
 {
     const btn_div = document.createElement("button");
-    const div = document.createElement("button");
+    const div = document.createElement("div");
     btn_div.style.width = btn_width;
     btn_div.style.height= btn_height; 
 

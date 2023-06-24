@@ -1,3 +1,5 @@
+
+
 let response = [];
 let data = [];
 let device_basic = [];
@@ -18,7 +20,18 @@ function handleResize()
 }
 async function load()
 { 
-    await set_ip();
+    check_session_off();
+    ServerName = "DS01";
+    ServerType = "藥庫";
+    TableName = "medicine_page_firstclass";
+    APIServer = await LoadAPIServer();
+    const API01 = serch_APIServer(ServerName,ServerType,"API01");
+    const API02 = serch_APIServer(ServerName,ServerType,"API02");
+    console.log("API01",API01);
+    console.log("API02",API02);
+    await check_ip(API01[0].server,API02[0].server);
+    console.log("inventory_url",inventory_url);
+
     const Loadingpopup = GetLoadingpopup();
     document.body.appendChild(Loadingpopup);
     var IC_SN = sessionStorage.getItem('IC_SN');  

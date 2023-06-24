@@ -1,37 +1,44 @@
 let data;
-// var device_buf =[];
-// window.onresize = function() 
-// {
-//     const device = checkDeviceType();
-//     const screenWidth = getScreenWidth();   
-      
-//     if(device == DeviceType.MOBILE) 
-//     { 
-//         if(device != device_buf)
-//         {
-//             const row_div = document.querySelectorAll(".row_div");
-//             for(var i = 0 ; i < row_div.length ; i++)
-//             {
-//                 row_div[i].style.width = "100%";
-//             }
-//             device_buf = device;
-//         }      
-    
-//     }
-//     else
-//     {
-//         if(device != device_buf) device_buf = device;
-//         const temp = Math.floor(screenWidth / 300);
-//         const row_width = screenWidth / temp - 20;
-//         const row_div = document.querySelectorAll(".row_div");
-//         for(var i = 0 ; i < row_div.length ; i++)
-//         {
-//             row_div[i].style.width = `${row_width}px`;
-//         }
-//     }
-    
-// }
-//#region [rgba(0, 0, 255, 0.03)] public Function
+var ServerName = "";
+window.onload = load;
+async function load() 
+{
+   ServerName =  sessionStorage.getItem('ServerName');
+   console.log(ServerName ,"ServerName");
+}
+
+async function logout_Click()
+{
+  logout();
+  location.href = "../../login.html";
+}
+
+async function drugsreport_Click()
+{
+  console.log("drugsreport");
+}
+
+async function inventory_Click()
+{
+  
+  if(ServerName == null)
+  {
+    alert("未選擇調劑台號,將返回主頁面");
+    logout_Click();
+  }
+  location.href = "../../pharmacy/inventory/frontpage.html";
+}
+
+async function inventoryreport_Click()
+{
+  console.log("inventoryreport");
+}
+
+async function appropriation_Click()
+ {
+  console.log("inventoryreport");
+}
+
 function page_Init(data) 
 {
   console.log(data);
@@ -80,14 +87,16 @@ function Set_main_div_enable(value)
 }
 function get_header() 
 {
+  ServerName =  sessionStorage.getItem('ServerName');
   const header_div = document.createElement('div');
-  My_Div.Init(header_div, 'header_div','header_div', '100%', '50px', '');
+  My_Div.Init(header_div, 'header_div','header_div', '100%', '55px', '');
   My_Div.Set_Block(header_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   header_div.style.overflowX = "hidden";
   const header_title_text = document.createElement('div');
   My_Div.Init(header_title_text, 'header_title_text','header_title_text', '100%', '50%', '');
-  My_Div.Set_Text(header_title_text ,"智慧藥局功能選單" , TextAlignEnum.CENTER , "32px", true,"微軟正黑體","#FFF");
+  My_Div.Set_Text(header_title_text ,`${ServerName} 智慧藥局功能選單` , TextAlignEnum.CENTER , "32px", true,"微軟正黑體","#FFF");
   header_title_text.id = "header_title_text";
+  header_title_text.style.marginTop = "5px";
   header_div.appendChild(header_title_text);
   return header_div;
 }
@@ -96,6 +105,59 @@ function get_main()
   const main_div = document.createElement("div");
   My_Div.Init(main_div, 'main_div','main_div', '100%', '100%', '');
   My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.TOP);
+  const row1_div = document.createElement("div");
+  My_Div.Init(row1_div, 'row1_div','row1_div', '100%', '120px', '');
+  My_Div.Set_Block(row1_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  row1_div.style.marginTop = "10px";
+
+  const row2_div = document.createElement("div");
+  My_Div.Init(row2_div, 'row2_div','row2_div', '100%', '120px', '');
+  My_Div.Set_Block(row2_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  row2_div.style.marginTop = "10px";
+
+  const drugsreport_div = get_drugsreport();
+  const inventory_div = get_inventory();
+  const inventoryreport_div = get_inventoryreport();
+  const appropriation_div = get_appropriation();
+  main_div.appendChild(row1_div);
+  main_div.appendChild(row2_div);
+  row1_div.appendChild(drugsreport_div);
+  row1_div.appendChild(inventory_div);
+  row2_div.appendChild(inventoryreport_div);
+  row2_div.appendChild(appropriation_div);
+  return main_div;
+}
+function get_userinfo()
+{
+  const userinfo_div = document.createElement("div");
+  My_Div.Init(userinfo_div, 'userinfo_div','userinfo_div', '250px', '60px', 'rgba(255, 255, 255, 0.85)');
+  My_Div.Set_Block(userinfo_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  userinfo_div.style.borderRadius = "5px";
+  userinfo_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
+  userinfo_div.style.marginTop = "10px";
+  userinfo_div.style.marginBottom = "5px";
+
+  const userinfo_svg = Get_user_SVG("70%", "70%", "70%","70%","","none");
+  My_Div.Init(userinfo_svg, 'userinfo_svg','userinfo_svg', '30%', '100%', '');
+  My_Div.Set_Block(userinfo_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+
+  const userinfo_text_div = document.createElement("div");
+  My_Div.Init(userinfo_text_div, 'userinfo_text_div','userinfo_text_div', '40%', '100%', '');
+  My_Div.Set_Block(userinfo_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  My_Div.Set_Text(userinfo_text_div ,get_logedName() , TextAlignEnum.CENTER , "22px", true,"","");
+
+  const logout_svg = Get_logout_SVG("80%", "80%", "80%","80%","","none");
+  My_Div.Init(logout_svg, 'logout_svg','logout_svg', '30%', '100%', '');
+  My_Div.Set_Block(logout_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  logout_svg.onclick = logout_Click;
+
+   userinfo_div.appendChild(userinfo_svg);
+   userinfo_div.appendChild(userinfo_text_div);
+   userinfo_div.appendChild(logout_svg);
+  return userinfo_div;
+}
+function get_choose_text_div()
+{
   const choose_text_div = document.createElement("div");
   My_Div.Init(choose_text_div, 'choose_text_div','choose_text_div', '100%', '5%', '');
   My_Div.Set_Block(choose_text_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.TOP);
@@ -106,22 +168,9 @@ function get_main()
   choose_text_div.style.backgroundClip = 'text';
   choose_text_div.style.webkitBackgroundClip = 'text';
   choose_text_div.style.webkitTextFillColor = 'transparent';
-
-  // if(device == DeviceType.MOBILE) 
-  // {
-  //   main_div.style.width = "100%";
-  // }
-  // if(device == DeviceType.COMPUTER)
-  // {
-  //     const temp = Math.floor(screenWidth / 300);
-  //     const row_width = screenWidth / temp - 20;
-  //     main_div.style.width = `${row_width}px`;
-  // } 
-  main_div.appendChild(choose_text_div);
-  return main_div;
+  return choose_text_div;
 }
-
-  function get_drugsreport()
+function get_drugsreport()
 {
   const drugsreport_div = document.createElement("div");
   My_Div.Init(drugsreport_div, 'drugsreport_div','drugsreport_div', '180px', '120px', 'rgba(255, 255, 255, 0.85)');
@@ -142,7 +191,7 @@ function get_main()
   const drugsreport_text_div = document.createElement("div");
   My_Div.Init(drugsreport_text_div, 'drugsreport_text_div','drugsreport_text_div', '70%', '100%', '');
   My_Div.Set_Block(drugsreport_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text(drugsreport_text_div ,'管制藥\n結存報表' , TextAlignEnum.CENTER , "21px", true,"微軟正黑體","#1CB5E0");
+  My_Div.Set_Text(drugsreport_text_div ,'管制藥\n結存報表' , TextAlignEnum.CENTER , "21px", true,"微軟正黑體","#000046");
   drugsreport_text_div.style.textTransform = 'uppercase';
   drugsreport_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
   drugsreport_text_div.style.backgroundClip = 'text';
@@ -152,10 +201,10 @@ function get_main()
   drugsreport_text_div.style.borderBottomRightRadius = "10px";
 
   const drugsreport_text_eng_div = document.createElement("div");
-  My_Div.Init(drugsreport_text_eng_div, 'drugsreport_text_eng_div','drugsreport_text_eng_div', '100%', '30%', '');
+  My_Div.Init(drugsreport_text_eng_div, 'drugsreport_text_eng_div','drugsreport_text_eng_div', '100%', '20%', '');
   My_Div.Set_Block(drugsreport_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text(drugsreport_text_eng_div ,'Controlled\nDrugs Report' , TextAlignEnum.CENTER , "14px", true,"","");
-  drugsreport_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
+  My_Div.Set_Text(drugsreport_text_eng_div ,'Controlled Drugs Report' , TextAlignEnum.CENTER , "14px", true,"","");
+  drugsreport_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
   drugsreport_text_eng_div.style.backgroundClip = 'text';
   drugsreport_text_eng_div.style.webkitBackgroundClip = 'text';
   drugsreport_text_eng_div.style.webkitTextFillColor = 'transparent';
@@ -165,7 +214,7 @@ function get_main()
   drugsreport_div.appendChild(svg_text_div);
   svg_text_div.appendChild(drugsreport_svg);
   svg_text_div.appendChild(drugsreport_text_div);
-  // drugsreport_div.appendChild(drugsreport_text_eng_div);
+  drugsreport_div.appendChild(drugsreport_text_eng_div);
   return drugsreport_div;
 }
 
@@ -213,7 +262,7 @@ function get_inventory()
   inventory_div.appendChild(svg_text_div);
   svg_text_div.appendChild(inventory_svg);
   svg_text_div.appendChild(inventory_text_div);
-  // inventory_div.appendChild(inventory_text_eng_div);
+  inventory_div.appendChild(inventory_text_eng_div);
   return inventory_div;
 }
 
@@ -249,10 +298,10 @@ function get_inventoryreport()
   inventoryreport_text_div.style.borderBottomRightRadius = "10px";
 
   const inventoryreport_text_eng_div = document.createElement("div");
-  My_Div.Init( inventoryreport_text_eng_div, ' inventoryreport_text_eng_div',' inventoryreport_text_eng_div', '100%', '30%', '');
+  My_Div.Init( inventoryreport_text_eng_div, ' inventoryreport_text_eng_div',' inventoryreport_text_eng_div', '100%', '20%', '');
   My_Div.Set_Block( inventoryreport_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   My_Div.Set_Text( inventoryreport_text_eng_div ,"Inventory Report" , TextAlignEnum.CENTER , "14px", true,"","");
-   inventoryreport_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
+   inventoryreport_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
    inventoryreport_text_eng_div.style.backgroundClip = 'text';
    inventoryreport_text_eng_div.style.wordBreak = "break-word";
    inventoryreport_text_eng_div.style.webkitBackgroundClip = 'text';
@@ -263,7 +312,7 @@ function get_inventoryreport()
   inventoryreport_div.appendChild(svg_text_div);
   svg_text_div.appendChild(inventoryreport_svg);
   svg_text_div.appendChild(inventoryreport_text_div);
-  // inventoryreport_div.appendChild(inventoryreport_text_eng_div);
+  inventoryreport_div.appendChild(inventoryreport_text_eng_div);
 
   return inventoryreport_div;
 }
@@ -303,7 +352,7 @@ function get_appropriation()
   My_Div.Init( appropriation_text_eng_div, ' appropriation_text_eng_div',' appropriation_text_eng_div', '100%', '20%', '');
   My_Div.Set_Block( appropriation_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   My_Div.Set_Text( appropriation_text_eng_div ,"Appropriation" , TextAlignEnum.CENTER , "16px", true,"","");
-   appropriation_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #1CB5E0)';
+   appropriation_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
    appropriation_text_eng_div.style.backgroundClip = 'text';
    appropriation_text_eng_div.style.wordBreak = "break-word";
    appropriation_text_eng_div.style.webkitBackgroundClip = 'text';
@@ -314,7 +363,7 @@ function get_appropriation()
   appropriation_div.appendChild(svg_text_div);
   svg_text_div.appendChild(appropriation_svg);
   svg_text_div.appendChild(appropriation_text_div);
-  // appropriation_div.appendChild(appropriation_text_eng_div);
+  appropriation_div.appendChild(appropriation_text_eng_div);
 
   //沒有LICENSE上鎖
   const lock_div = get_Lock(); // 呼叫 get_Lock 函式獲取 lock_div
@@ -323,42 +372,16 @@ function get_appropriation()
   return appropriation_div;
 }
 
-function get_userinfo()
-{
-  const userinfo_div = document.createElement("div");
-  My_Div.Init(userinfo_div, 'userinfo_div','userinfo_div', '250px', '50px', 'rgba(255, 255, 255, 0.85)');
-  My_Div.Set_Block(userinfo_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  userinfo_div.style.borderRadius = "5px";
-  userinfo_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
-  userinfo_div.style.marginTop = "10px";
 
-  const userinfo_svg = Get_user_SVG("70%", "70%", "70%","70%","","none");
-  My_Div.Init(userinfo_svg, 'userinfo_svg','userinfo_svg', '30%', '100%', '');
-  My_Div.Set_Block(userinfo_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
 
-  const userinfo_text_div = document.createElement("div");
-  My_Div.Init(userinfo_text_div, 'userinfo_text_div','userinfo_text_div', '40%', '100%', '');
-  My_Div.Set_Block(userinfo_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text(userinfo_text_div ,"鴻森整合" , TextAlignEnum.CENTER , "22px", true,"","");
-
-  const logout_svg = Get_logout_SVG("80%", "80%", "80%","80%","","none");
-  My_Div.Init(logout_svg, 'logout_svg','logout_svg', '30%', '100%', '');
-  My_Div.Set_Block(logout_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  logout_svg.onclick = logout_Click;
-
-   userinfo_div.appendChild(userinfo_svg);
-   userinfo_div.appendChild(userinfo_text_div);
-   userinfo_div.appendChild(logout_svg);
-  return userinfo_div;
-}
-
+//上鎖功能
 function get_Lock()
 {
   const lock_div = document.createElement("div");
-  My_Div.Init(lock_div, 'lock_div','lock_div', '120px', '120px', 'rgba(128, 128, 128, 0.85)');
+  My_Div.Init(lock_div, 'lock_div','lock_div', '180px', '120px', 'rgba(128, 128, 128, 0.85)');
   My_Div.Set_Block(lock_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   lock_div.style.position= "absolute";
-  lock_div.style.borderRadius = "10px";
+  lock_div.style.borderRadius = "5px";
 
   const lock_svg = Get_licenselock_SVG("80%", "80%", "80%","80%","darkred","none");
   My_Div.Init(lock_svg, 'lock_svg','lock_svg', '100%', '100%', '');
@@ -370,42 +393,15 @@ function get_Lock()
 
   return lock_div;
 
-  document.getElementById("inventoryreport_div").addEventListener("scroll", function() {
+  document.getElementById(" appropriation_div").addEventListener("scroll", function() {
     // 取得 inventoryreport_div 的位置
-    const inventoryreportDivRect = document.getElementById("inventoryreport_div").getBoundingClientRect();
-    lock_div.style.top = inventoryreportDivRect.top + "px";
-    lock_div.style.left = inventoryreportDivRect.left + "px";
+    const appropriationDivRect = document.getElementById(" appropriation_div").getBoundingClientRect();
+    lock_div.style.top = appropriationDivRect.top + "px";
+    lock_div.style.left = appropriationDivRect.left + "px";
   });
 }
-
-async function logout_Click()
- {
-  location.href = "http://www.ketech.tw:5500/login.html";
-}
-
-async function drugsreport_Click()
- {
-  console.log("drugsreport");
-}
-
-async function inventory_Click()
- {
-  console.log("Stroehouse");
-}
-
-async function inventoryreport_Click()
- {
-  console.log("inventoryreport");
-}
-
-async function appropriation_Click()
- {
-  console.log("inventoryreport");
-}
-
-
 async function lock_Click()
- {
+{
   console.log("license");
   window.alert("功能未開放,請聯繫服務商!");
 }
