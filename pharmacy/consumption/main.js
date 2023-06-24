@@ -7,12 +7,24 @@ window.addEventListener('resize', handleResize);
 
 function handleResize() 
 {
-  Set_popup_find_position();
+   //Set_popup_find_position();
 }
 async function load()
 {
-  await set_ip();
-
+  check_session_off();
+  var serverName = sessionStorage.getItem('ServerName');  
+  console.log("ServerName",serverName);
+  ServerName = serverName;
+  ServerType = "調劑台";
+  TableName = "medicine_page";
+  APIServer = await LoadAPIServer();
+  const API01 = serch_APIServer(serverName,"調劑台","API01");
+  const API02 = serch_APIServer(serverName,"調劑台","API02");
+  console.log("API01",API01);
+  console.log("API02",API02);
+  check_ip(API01[0].server,API02[0].server);
+  permissions = await GetApipermissions();
+  console.log(permissions);
 
   let rowNum = 1;
   const Loadingpopup = GetLoadingpopup();
@@ -23,7 +35,8 @@ async function load()
   var date_start = DateTimeAddDays(currentDate, -30);
   date_start = getDateStr(date_start);
   date_end = getDateStr(date_end);
-  
+  // data = await serch_by_ST_END(date_start,date_end);
+
   Set_main_div_enable(false);
   page_Init();
 }
@@ -35,6 +48,12 @@ async function page_Init()
   var toltal_TXN_QTY = 0;
   if(data != null)
   {
+    if(data.Data.length == 0)
+    {
+      const NoDataDiv = getNoDataDiv();
+      main_div.appendChild(NoDataDiv);
+      return;
+    }
     creat_table(data);
 
     for (var i = 0; i < data.Data.length; i++) 
@@ -46,39 +65,16 @@ async function page_Init()
   else
   {
     const NoDataDiv = getNoDataDiv();
-    console.log(NoDataDiv);
     main_div.appendChild(NoDataDiv);
     return;
   }
-  
 
-  const numOfdata = document.querySelector("#numOfdata");
-  numOfdata.innerText = `總筆數 : ${data.Data.length}`;
-  const useqty_div = document.querySelector("#useqty_div");
-
-  useqty_div.innerText = `消耗量 : ${toltal_TXN_QTY * -1}`;
-
-  const code_div = document.querySelector("#code_div");
-  code_div.innerText = `藥碼 : ${data_information.Data.CODE}`;
- 
-  const name_div = document.querySelector("#name_div");
-  name_div.innerHTML = `<p style='color:orange;margin-right:6px'>(英)</p>${data_information.Data.NAME}`;
-
-  const chtname_div = document.querySelector("#chtname_div");
-  chtname_div.innerHTML = `<p style='color:orange;margin-right:6px'>(中)</p>${data_information.Data.CHT_NAME}`;
-
-  const controlledlevel_div = document.querySelector("#controlledlevel_div");
-  var SKDIACODE = data_information.SKDIACODE;
-  if ( SKDIACODE == null) SKDIACODE = "N";
-  controlledlevel_div.innerText = `${SKDIACODE}`;
-
-  const find_start_date_input = document.querySelector("#find_start_date_input");
-  const find_end_date_input = document.querySelector("#find_end_date_input");
+  const find_start_date_input = document.querySelector("#serch_start_date_input_popup_serch");
+  const find_end_date_input = document.querySelector("#serch_end_date_input_popup_serch");
   const startdate_div = document.querySelector("#startdate_div");
   const enddate_div = document.querySelector("#enddate_div");
   startdate_div.innerText = `始 : ${find_start_date_input.value}`;
   enddate_div.innerText = `末 : ${find_end_date_input.value}`;
-
 
   setUserText();
 
@@ -86,7 +82,7 @@ async function page_Init()
 
 function handleResize() 
 {
-  Set_popup_find_position();
+  // Set_popup_find_position();
 }
 
 function Set_main_div_enable(value) 
@@ -102,14 +98,12 @@ function Set_main_div_enable(value)
   }
 async function download_btn() 
 {
-  const find_code_input = document.querySelector("#find_code_input");
-  const find_start_date_input = document.querySelector("#find_start_date_input");
-  const find_end_date_input = document.querySelector("#find_end_date_input");
-  const Code = find_code_input.value;
+  const find_start_date_input = document.querySelector("#serch_start_date_input_popup_serch");
+  const find_end_date_input = document.querySelector("#serch_end_date_input_popup_serch");
   const start_time = find_start_date_input.value;
   const end_time = find_end_date_input.value;
   Set_main_div_enable(true);
-  download_excel_by_serch(Code,start_time,end_time);
+  download_excel_by_serch(start_time,end_time);
   Set_main_div_enable(false);
 }
 
@@ -126,10 +120,6 @@ function findbtn_Click()
 
   }
 }
-
-
-
-
 
 
 function get_header()
@@ -157,7 +147,6 @@ function get_header()
   header_div.style.overflowX = "hidden";
   coverage_div.appendChild(header_div);
 
-
   const header_title_user_div = document.createElement("div");
   header_title_user_div.id = "header_title_user_div";
   header_title_user_div.className = "header_title_user_div";
@@ -169,7 +158,7 @@ function get_header()
   header_title_user_div.style.backgroundColor = "#";
 
   const header_title_div = document.createElement("div");
-  header_title_div.innerHTML = `<b class="h1">藥品交易量查詢</b>`;
+  header_title_div.innerHTML = `<b class="h1">交易量查詢</b>`;
   header_title_div.style.display = "flex";
   header_title_div.id = "header_title_div";
   header_title_div.className = "header_title_div";
@@ -179,7 +168,6 @@ function get_header()
   header_title_div.style.backgroundColor = "#";
   header_title_div.style.justifyContent = "";
   header_title_div.style.flexDirection = "";
-
 
   const header_user_div = document.createElement("div");
   header_user_div.innerHTML = `<span ><p id="header_user_text" style="font-family: 微軟正黑體; font-size: 12px; margin-left: 20px; word-spacing: 5px; letter-spacing: 3px;">使用者名稱:</p><span>`;
@@ -213,7 +201,7 @@ function get_header()
   header_contorls_findbtn.style.marginTop = "5px";
   header_contorls_findbtn.style.marginRight = "2px";
   header_contorls_findbtn.style.display = "flex";
-  const header_contorls_download_btn = Get_download_SVG("100%", "100%", "70%","100%","black","");
+  const header_contorls_download_btn = Get_download_SVG("100%", "100%", "90%","100%","black","");
   header_contorls_download_btn.id = "header_contorls_download_btn";
   header_contorls_download_btn.className = "header_contorls";
   header_contorls_download_btn.style.width = "60px";
@@ -239,7 +227,7 @@ function get_header()
 
   const level_code_date_div = document.createElement("div");
   level_code_date_div.style.width = "100%";
-  level_code_date_div.style.height = "30px";
+  level_code_date_div.style.height = "50px";
   level_code_date_div.style.justifyContent = "center";
   level_code_date_div.style.alignItems= "center";
   level_code_date_div.style.flexDirection = "row";
@@ -247,34 +235,15 @@ function get_header()
   level_code_date_div.style.marginTop = "70px";
 
   const startdate_div = document.createElement("div");
-  startdate_div.id = "startdate_div";
-  startdate_div.className = "startdate_div";
-  startdate_div.innerText = "始 : YYYY-MM-DD";
-  startdate_div.style.fontWeight = "bolder";
-  startdate_div.style.textAlign = "center";
-  startdate_div.style.display = "flex";
-  startdate_div.style.width = "50%";
-  startdate_div.style.height = "100%";
-  startdate_div.style.border = "";
-  startdate_div.style.justifyContent = "center";
-  startdate_div.style.alignItems= "center";
-  startdate_div.style.flexDirection = "";
-  startdate_div.style.fontSize = "14px"; 
+  My_Div.Init(startdate_div, 'startdate_div',`startdate_div`, "50%", '100%', '');
+  My_Div.Set_Text(startdate_div ,"始 : YYYY-MM-DD" , TextAlignEnum.CENTER , "16px", true,"微軟正黑體","");
+
 
   const enddate_div = document.createElement("div");
-  enddate_div.id = "enddate_div";
-  enddate_div.className = "enddate_div";
-  enddate_div.innerText = "末 : YYYY-MM-DD";
-  enddate_div.style.fontWeight = "bolder";
-  enddate_div.style.textAlign = "center";
-  enddate_div.style.display = "flex";
-  enddate_div.style.width = "50%";
-  enddate_div.style.height = "100%";
-  enddate_div.style.border = "";
-  enddate_div.style.justifyContent = "center";
-  enddate_div.style.alignItems= "center";
-  enddate_div.style.flexDirection = "";
-  enddate_div.style.fontSize = "14px"; 
+  My_Div.Init(enddate_div, 'enddate_div',`enddate_div`, "50%", '100%', '');
+  My_Div.Set_Text(enddate_div ,"末 : YYYY-MM-DD" , TextAlignEnum.CENTER , "16px", true,"微軟正黑體","");
+
+
   //藥品資訊表頭
   const tablehead_div = creat_column_div();
 
@@ -283,15 +252,8 @@ function get_header()
   coverage_div.appendChild(level_code_date_div);
   coverage_div.appendChild(tablehead_div);
 
-
-
-
   header_contorls_div.appendChild(header_contorls_findbtn);
   header_contorls_div.appendChild(header_contorls_download_btn);
-
- 
-  
- 
 
   header_contorls_download_btn.onclick = download_btn;
   header_contorls_findbtn.onclick = findbtn_Click;
@@ -300,11 +262,10 @@ function get_header()
   header_div.appendChild(header_title_user_div);
   header_div.appendChild(header_contorls_div);
   
-
-
   return coverage_div;
 }
-function get_main() {
+function get_main() 
+{
   const main_div = document.createElement("div");
   main_div.id = "main_div";
   main_div.className = "main_div";
@@ -312,7 +273,7 @@ function get_main() {
   main_div.style.width = "100%";
   main_div.style.height = "100%";
   main_div.style.justifyContent = "flex-start";
-  main_div.style.marginTop = "120px";
+  main_div.style.marginTop = "0px";
   return main_div;
 }
 

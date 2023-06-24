@@ -1,5 +1,7 @@
-var Server = "127.0.0.1";
-var DbName = "";
+var ServerName = "";
+var ServerType = "";
+var TableName = "";
+var DeviceTableName = "";
 
 async function serch(CODE, start_time, end_time)
 {
@@ -20,8 +22,9 @@ async function serch(CODE, start_time, end_time)
   {
     "Data": {},
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
+    "TableName" : TableName,
     "Result": "",
     "Value": `${_value}`,
     "TimeTaken": ""
@@ -37,8 +40,9 @@ async function serch_med_information_by_code(CODE)
   {
     "Data": {},
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
+    "TableName" : TableName,
     "Result": "",
     "Value": `${CODE}`,
     "TimeTaken": ""
@@ -66,8 +70,9 @@ async function download_excel_by_serch(CODE, start_time, end_time)
   {
     "Data": {},
     "Code": 0,
-    "Server":`${Server}`,
-    "DbName":`${DbName}`,
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
+    "TableName" : TableName,
     "Result": "",
     "Value": `${_value}`,
     "TimeTaken": ""

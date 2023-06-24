@@ -1,9 +1,16 @@
 let data;
 window.onload = load;
+var functionality = [];
 async function load()
 { 
-    await set_ip();
-
+  ServerName = "DS01";
+  ServerType = "藥庫";
+  APIServer = await LoadAPIServer();
+  const data = serch_APIServer(ServerName,ServerType,"功能");
+  functionality = JSON.parse( data[0].value);
+  console.log("functionality",functionality);
+  const main_div = get_main();
+  document.body.appendChild(main_div);
 }
 
 async function logout_Click()
@@ -15,6 +22,7 @@ async function logout_Click()
 async function inspection_Click()
 {
   console.log("inspection");
+  location.href = "../../storehouse/inspection/frontpage.html";
 }
 
 async function inventory_Click()
@@ -37,7 +45,7 @@ async function settingbarcode_Click()
 async function lock_Click()
  {
   console.log("license");
-  window.alert("需要解鎖此功能，請聯繫「鴻森整合機電」電話號碼為：02-82822040");
+  window.alert("功能未開放,請聯繫服務商!");
 }
 
 function page_Init(data) 
@@ -182,7 +190,7 @@ function get_inspection()
   inspection_div.style.borderRadius = "5px";
   inspection_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
   inspection_div.style.margin = "5px";
-  inspection_div.onclick =  inspection_Click;
+ 
 
   const svg_text_div = document.createElement("div");
   My_Div.Init(svg_text_div, 'svg_text_div','svg_text_div', '100%', '50%', '');
@@ -219,6 +227,16 @@ function get_inspection()
   svg_text_div.appendChild(inspection_svg);
   svg_text_div.appendChild(inspection_text_div);
   inspection_div.appendChild(inspection_text_eng_div);
+
+  if(GetFunctionality("驗收"))
+  {
+    inspection_div.onclick = inspection_Click;
+  }
+  else
+  {
+    inspection_div.appendChild(get_Lock());
+  }
+
   return inspection_div;
 }
 
@@ -230,7 +248,7 @@ function get_inventory()
   inventory_div.style.borderRadius = "5px";
   inventory_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
   inventory_div.style.margin = "5px";
-  inventory_div.onclick =  inventory_Click;
+
 
   const svg_text_div = document.createElement("div");
   My_Div.Init(svg_text_div, 'svg_text_div','svg_text_div', '100%', '50%', '');
@@ -266,6 +284,16 @@ function get_inventory()
   svg_text_div.appendChild(inventory_svg);
   svg_text_div.appendChild(inventory_text_div);
   inventory_div.appendChild(inventory_text_eng_div);
+
+  if(GetFunctionality("盤點"))
+  {
+    inventory_div.onclick =  inventory_Click;
+  }
+  else
+  {
+    inventory_div.appendChild(get_Lock());
+  }
+
   return inventory_div;
 }
 
@@ -278,7 +306,6 @@ function get_orderpicking()
   orderpicking_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
   orderpicking_div.style.margin = "5px";
   orderpicking_div.id = "orderpicking_div";
-  orderpicking_div.onclick =  orderpicking_Click;
 
   const svg_text_div = document.createElement("div");
   My_Div.Init(svg_text_div, 'svg_text_div','svg_text_div', '100%', '50%', '');
@@ -316,9 +343,14 @@ function get_orderpicking()
   svg_text_div.appendChild(orderpicking_text_div);
   orderpicking_div.appendChild(orderpicking_text_eng_div);
 
-  // //沒有LICENSE上鎖
-  // const lock_div = get_Lock(); // 呼叫 get_Lock 函式獲取 lock_div
-  // orderpicking_div.appendChild(lock_div); // 添加 lock_div 到 orderpicking_div 中
+  if(GetFunctionality("揀貨"))
+  {
+    orderpicking_div.onclick =  orderpicking_Click;
+  }
+  else
+  {
+    orderpicking_div.appendChild(get_Lock());
+  }
 
   return orderpicking_div;
 }
@@ -332,7 +364,7 @@ function get_settingbarcode()
   settingbarcode_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
   settingbarcode_div.style.margin = "5px";
   settingbarcode_div.id = "settingbarcode_div";
-  settingbarcode_div.onclick = settingbarcode_Click;
+ 
 
   const svg_text_div = document.createElement("div");
   My_Div.Init(svg_text_div, 'svg_text_div','svg_text_div', '100%', '50%', '');
@@ -370,9 +402,14 @@ function get_settingbarcode()
   svg_text_div.appendChild(settingbarcode_text_div);
   settingbarcode_div.appendChild(settingbarcode_text_eng_div);
 
-  // //沒有LICENSE上鎖
-  // const lock_div = get_Lock(); // 呼叫 get_Lock 函式獲取 lock_div
-  // settingbarcode_div.appendChild(lock_div); // 添加 lock_div 到 settingbarcode_div 中
+  if(GetFunctionality("條碼建置"))
+  {
+    settingbarcode_div.onclick = settingbarcode_Click;
+  }
+  else
+  {
+    settingbarcode_div.appendChild(get_Lock());
+  }
 
   return settingbarcode_div;
 }
@@ -382,7 +419,7 @@ function get_settingbarcode()
 function get_Lock()
 {
   const lock_div = document.createElement("div");
-  My_Div.Init(lock_div, 'lock_div','lock_div', '240px', '120px', 'rgba(128, 128, 128, 0.85)');
+  My_Div.Init(lock_div, 'lock_div','lock_div', '180px', '120px', 'rgba(128, 128, 128, 0.85)');
   My_Div.Set_Block(lock_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   lock_div.style.position= "absolute";
   lock_div.style.borderRadius = "5px";
@@ -405,3 +442,14 @@ function get_Lock()
   });
 }
 
+function GetFunctionality(name)
+{
+    for(var i = 0; i < functionality.length; i++)
+    {      
+        if(functionality[i] == name)
+        {
+            return true;
+        }
+    }
+    return false;
+}

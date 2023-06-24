@@ -1,4 +1,36 @@
 let data;
+window.onload = load;
+
+async function load() 
+{
+  check_session_off();
+  ServerName = "DS01";
+  ServerType = "藥庫";
+  TableName = "medicine_page_firstclass";
+  APIServer = await LoadAPIServer();
+  const API01 = serch_APIServer(ServerName,ServerType,"API01");
+  const API02 = serch_APIServer(ServerName,ServerType,"API02");
+  console.log("API01",API01);
+  console.log("API02",API02);
+  check_ip(API01[0].server,API02[0].server);
+  permissions = await GetApipermissions();
+  console.log(permissions);
+
+  let rowNum = 1;
+  const Loadingpopup = GetLoadingpopup();
+  document.body.appendChild(Loadingpopup);
+  Set_main_div_enable(true);
+  const currentDate = new Date();
+  var date_end = DateTimeAddDays(currentDate, 1);
+  var date_start = DateTimeAddDays(currentDate, -30);
+  date_start = getDateStr(date_start);
+  date_end = getDateStr(date_end);
+  
+  data = await creat_get_by_CT_TIME_ST_END(date_start,date_end);
+  Set_main_div_enable(false);
+  page_Init(data);
+}
+
 //#region [rgba(0, 0, 255, 0.03)] public Function
 function page_Init(data) 
 {
@@ -61,7 +93,7 @@ function get_header()
 
   const header_title_text = document.createElement('div');
   My_Div.Init(header_title_text, 'header_title_text','header_title_text', '100%', '50%', '');
-  My_Div.Set_Text(header_title_text ,"盤點單號" , TextAlignEnum.LEFT , "24px", true,"微軟正黑體","");
+  My_Div.Set_Text(header_title_text ,"驗收單號" , TextAlignEnum.LEFT , "24px", true,"微軟正黑體","");
   header_title_text.className = "h1";
   header_title_text.id = "header_title_text";
   header_title_text.style.marginLeft = "20px";
@@ -101,7 +133,7 @@ function get_header()
   header_contorls_addsvg.style.marginRight = "3px";
   header_contorls_addsvg.style.borderRadius = "3px";
   header_contorls_addsvg.onclick = header_addsvg_Click;
-  header_contorls_div.appendChild(header_contorls_addsvg);  
+  // header_contorls_div.appendChild(header_contorls_addsvg);  
 
   
 
@@ -124,27 +156,7 @@ function get_main()
 //#endregion
 
 //#region [rgba(0, 255, 0, 0.03)] Event
-window.onload = load;
-async function load() 
-{
-  await set_ip();
-  permissions = GetApipermissions();
-  console.log(permissions);
 
-  let rowNum = 1;
-  const Loadingpopup = GetLoadingpopup();
-  document.body.appendChild(Loadingpopup);
-  Set_main_div_enable(true);
-  const currentDate = new Date();
-  var date_end = DateTimeAddDays(currentDate, 1);
-  var date_start = DateTimeAddDays(currentDate, -30);
-  date_start = getDateStr(date_start);
-  date_end = getDateStr(date_end);
-  
-  data = await creat_get_by_CT_TIME_ST_END(date_start,date_end);
-  Set_main_div_enable(false);
-  page_Init(data);
-}
 async function header_addsvg_Click(event) 
 {
   show_popup_add();
@@ -239,7 +251,7 @@ function getNoDataDiv()
 
 
   NoData_Text = document.createElement("div");
-  NoData_Text.innerText = "今日無盤點單,請搜尋或創建新單號!";
+  NoData_Text.innerText = "今日無驗收單,請搜尋或創建新單號!";
   NoData_Text.style.width = "100%"
   NoData_Text.style.textAlign = "center";
   NoData_Text.style.backgroundColor = "";

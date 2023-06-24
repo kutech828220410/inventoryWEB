@@ -9,6 +9,7 @@ var Chat_url = `${api_ip}chatHub`;
 var MessageAPI_url = `${api_ip}api/Message`;
 var inventory_url = `${api_ip}api/inventory`;
 var transactions_url = `${api_ip}api/transactions`;
+var consumption_url = `${api_ip}api/consumption`;
 var device_url = `${api_ip}api/device`;
 var session_url = `${api_ip}api/session`;
 
@@ -54,7 +55,7 @@ async function check_ip(ip0 , ip1)
         inventory_url = `${api_ip_temp}api/inventory`;
         transactions_url = `${api_ip_temp}api/transactions`;
         device_url = `${api_ip_temp}api/device`;
-        
+        consumption_url = `${api_ip_temp}api/consumption`;
         return;
     }
     check_ip(ip0 ,ip1);

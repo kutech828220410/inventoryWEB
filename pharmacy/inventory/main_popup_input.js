@@ -396,7 +396,7 @@ function get_block2_popup_input(Sub_content)
 
     const block2_Date = document.createElement('div');
     My_Div.Init(block2_Date, 'block2_Date_popup_input','block2_Date_popup_input', '85%',"100%");
-    My_Div.Set_Text(block2_Date, `時間 : \n ${Sub_content.OP_TIME}`, TextAlignEnum.LEFT, "13px", true,"微軟正黑體","black" );
+    My_Div.Set_Text(block2_Date, `盤點時間 : \n ${Sub_content.OP_TIME}`, TextAlignEnum.LEFT, "13px", true,"微軟正黑體","black" );
     block2_Date.style.marginLeft = "5px";
 
     const block2_Value = document.createElement('div');

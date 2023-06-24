@@ -1,4 +1,36 @@
 let data;
+window.onload = load;
+
+async function load() 
+{
+  check_session_off();
+  ServerName = "DS01";
+  ServerType = "藥庫";
+  TableName = "medicine_page_firstclass";
+  APIServer = await LoadAPIServer();
+  const API01 = serch_APIServer(ServerName,ServerType,"API01");
+  const API02 = serch_APIServer(ServerName,ServerType,"API02");
+  console.log("API01",API01);
+  console.log("API02",API02);
+  check_ip(API01[0].server,API02[0].server);
+  permissions = await GetApipermissions();
+  console.log(permissions);
+
+  let rowNum = 1;
+  const Loadingpopup = GetLoadingpopup();
+  document.body.appendChild(Loadingpopup);
+  Set_main_div_enable(true);
+  const currentDate = new Date();
+  var date_end = DateTimeAddDays(currentDate, 1);
+  var date_start = DateTimeAddDays(currentDate, -30);
+  date_start = getDateStr(date_start);
+  date_end = getDateStr(date_end);
+  
+  data = await creat_get_by_CT_TIME_ST_END(date_start,date_end);
+  Set_main_div_enable(false);
+  page_Init(data);
+}
+
 //#region [rgba(0, 0, 255, 0.03)] public Function
 function page_Init(data) 
 {
@@ -124,28 +156,7 @@ function get_main()
 //#endregion
 
 //#region [rgba(0, 255, 0, 0.03)] Event
-window.onload = load;
-async function load() 
-{
-  check_session_off();
-  await set_ip("debug");
-  permissions = GetApipermissions();
-  console.log(permissions);
 
-  let rowNum = 1;
-  const Loadingpopup = GetLoadingpopup();
-  document.body.appendChild(Loadingpopup);
-  Set_main_div_enable(true);
-  const currentDate = new Date();
-  var date_end = DateTimeAddDays(currentDate, 1);
-  var date_start = DateTimeAddDays(currentDate, -30);
-  date_start = getDateStr(date_start);
-  date_end = getDateStr(date_end);
-  
-  data = await creat_get_by_CT_TIME_ST_END(date_start,date_end);
-  Set_main_div_enable(false);
-  page_Init(data);
-}
 async function header_addsvg_Click(event) 
 {
   show_popup_add();

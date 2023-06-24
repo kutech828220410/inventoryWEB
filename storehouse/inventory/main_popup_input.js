@@ -376,7 +376,7 @@ function get_block1_popup_input(Sub_content)
     };
     const block1_user_text = document.createElement('div');
     My_Div.Init(block1_user_text, 'block1_user_text_popup_input','block1_user_text_popup_input', '100%',"100%" , '');
-    My_Div.Set_Text(block1_user_text, `操作人 : ${Sub_content.OP}`, TextAlignEnum.LEFT, "18px", true,"微軟正黑體","black" );
+    My_Div.Set_Text(block1_user_text, `盤點人 : ${Sub_content.OP}`, TextAlignEnum.LEFT, "18px", true,"微軟正黑體","black" );
     block1_user_text.style.marginLeft = "5px";
 
     block1_user_delete_div.appendChild(block1_user_text);

@@ -26,8 +26,8 @@ async function ward_Click()
 }
 
 async function lock_Click()
- {
-  window.alert("需要解鎖此功能，請聯繫「鴻森整合機電」電話號碼為：02-82822040");
+{
+  window.alert("功能未開放,請聯繫服務商!");
 }
 function page_Init(data) 
 {

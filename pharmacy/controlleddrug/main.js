@@ -7,11 +7,24 @@ window.addEventListener('resize', handleResize);
 
 function handleResize() 
 {
-  Set_popup_find_position();
+    //Set_popup_serch_position();
 }
 async function load()
 {
-  await set_ip();
+  check_session_off();
+  var serverName = sessionStorage.getItem('ServerName');  
+  console.log("ServerName",serverName);
+  ServerName = serverName;
+  ServerType = "調劑台";
+  TableName = "medicine_page";
+  APIServer = await LoadAPIServer();
+  const API01 = serch_APIServer(serverName,"調劑台","API01");
+  const API02 = serch_APIServer(serverName,"調劑台","API02");
+  console.log("API01",API01);
+  console.log("API02",API02);
+  check_ip(API01[0].server,API02[0].server);
+  permissions = await GetApipermissions();
+  console.log(permissions);
 
 
   let rowNum = 1;
@@ -23,7 +36,7 @@ async function load()
   var date_start = DateTimeAddDays(currentDate, -30);
   date_start = getDateStr(date_start);
   date_end = getDateStr(date_end);
-  
+
   Set_main_div_enable(false);
   page_Init();
 }
@@ -72,12 +85,12 @@ async function page_Init()
   if ( SKDIACODE == null) SKDIACODE = "N";
   controlledlevel_div.innerText = `${SKDIACODE}`;
 
-  const find_start_date_input = document.querySelector("#find_start_date_input");
-  const find_end_date_input = document.querySelector("#find_end_date_input");
+  const serch_start_date_input = document.querySelector("#serch_start_date_input");
+  const serch_end_date_input = document.querySelector("#serch_end_date_input");
   const startdate_div = document.querySelector("#startdate_div");
   const enddate_div = document.querySelector("#enddate_div");
-  startdate_div.innerText = `始 : ${find_start_date_input.value}`;
-  enddate_div.innerText = `末 : ${find_end_date_input.value}`;
+  startdate_div.innerText = `始 : ${serch_start_date_input.value}`;
+  enddate_div.innerText = `末 : ${serch_end_date_input.value}`;
 
 
   setUserText();
@@ -86,7 +99,7 @@ async function page_Init()
 
 function handleResize() 
 {
-  Set_popup_find_position();
+  Set_popup_serch_position();
 }
 
 function Set_main_div_enable(value) 
@@ -102,29 +115,20 @@ function Set_main_div_enable(value)
   }
 async function download_btn() 
 {
-  const find_code_input = document.querySelector("#find_code_input");
-  const find_start_date_input = document.querySelector("#find_start_date_input");
-  const find_end_date_input = document.querySelector("#find_end_date_input");
-  const Code = find_code_input.value;
-  const start_time = find_start_date_input.value;
-  const end_time = find_end_date_input.value;
+  const serch_code_input = document.querySelector("#serch_code_input");
+  const serch_start_date_input = document.querySelector("#serch_start_date_input");
+  const serch_end_date_input = document.querySelector("#serch_end_date_input");
+  const Code = serch_code_input.value;
+  const start_time = serch_start_date_input.value;
+  const end_time = serch_end_date_input.value;
   Set_main_div_enable(true);
   download_excel_by_serch(Code,start_time,end_time);
   Set_main_div_enable(false);
 }
 
-function findbtn_Click()
+function serchbtn_Click()
 {
-  
-  if(popup_find_div.Get_Visible())
-  {
-    popup_find_div.Set_Visible(false);
-  }
-  else
-  {
-    popup_find_div.Set_Visible(true);
-
-  }
+  show_popup_serch();
 }
 
 
@@ -169,7 +173,7 @@ function get_header()
   header_title_user_div.style.backgroundColor = "#";
 
   const header_title_div = document.createElement("div");
-  header_title_div.innerHTML = `<b class="h1">管制藥結存頁面</b>`;
+  header_title_div.innerHTML = `<b class="h1">管制藥結存</b>`;
   header_title_div.style.display = "flex";
   header_title_div.id = "header_title_div";
   header_title_div.className = "header_title_div";
@@ -205,15 +209,15 @@ function get_header()
   header_contorls_div.style.height = "100%";
   header_contorls_div.style.paddingRight = "5px";
 
-  const header_contorls_findbtn = Get_find_in_page_SVG("100%", "100%", "70%","100%","black","");
-  header_contorls_findbtn.id = "header_contorls_findbtn";
-  header_contorls_findbtn.className = "header_contorls";
-  header_contorls_findbtn.style.width = "60px";
-  header_contorls_findbtn.style.height = "80%";
-  header_contorls_findbtn.style.marginTop = "5px";
-  header_contorls_findbtn.style.marginRight = "2px";
-  header_contorls_findbtn.style.display = "flex";
-  const header_contorls_download_btn = Get_download_SVG("100%", "100%", "70%","100%","black","");
+  const header_contorls_serchbtn = Get_find_in_page_SVG("100%", "100%", "70%","100%","black","");
+  header_contorls_serchbtn.id = "header_contorls_serchbtn";
+  header_contorls_serchbtn.className = "header_contorls";
+  header_contorls_serchbtn.style.width = "60px";
+  header_contorls_serchbtn.style.height = "80%";
+  header_contorls_serchbtn.style.marginTop = "5px";
+  header_contorls_serchbtn.style.marginRight = "2px";
+  header_contorls_serchbtn.style.display = "flex";
+  const header_contorls_download_btn = Get_download_SVG("100%", "100%", "90%","100%","black","");
   header_contorls_download_btn.id = "header_contorls_download_btn";
   header_contorls_download_btn.className = "header_contorls";
   header_contorls_download_btn.style.width = "60px";
@@ -416,7 +420,7 @@ function get_header()
 
 
 
-  header_contorls_div.appendChild(header_contorls_findbtn);
+  header_contorls_div.appendChild(header_contorls_serchbtn);
   header_contorls_div.appendChild(header_contorls_download_btn);
 
  
@@ -424,7 +428,7 @@ function get_header()
  
 
   header_contorls_download_btn.onclick = download_btn;
-  header_contorls_findbtn.onclick = findbtn_Click;
+  header_contorls_serchbtn.onclick = serchbtn_Click;
   
 
   header_div.appendChild(header_title_user_div);

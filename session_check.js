@@ -29,8 +29,7 @@ async function GetApipermissions()
 function GetPermissions(name)
 {
     for(var i = 0; i < permissions.length; i++)
-    {
-      
+    {      
         if(permissions[i] == name)
         {
             return true;

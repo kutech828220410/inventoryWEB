@@ -18,6 +18,10 @@ function show_popup_serch()
 {
     popup_serch_div.Set_Visible(true);  
     updateDivHeight(popup_serch_div._popup_div , 10);
+    const serch_start_date_input = document.querySelector('#serch_start_date_input_popup_serch');
+    const serch_end_date_input = document.querySelector('#serch_end_date_input_popup_serch');
+    serch_start_date_input.value = '';
+    serch_end_date_input.value = '';
 }
 function hide_popup_serch()
 {
@@ -34,66 +38,30 @@ async function confirm_popup_serch()
 {
     try
     {
-        const serch_ICSN_input = document.querySelector('#serch_ICSN_input_popup_serch');
         const serch_start_date_input = document.querySelector('#serch_start_date_input_popup_serch');
         const serch_end_date_input = document.querySelector('#serch_end_date_input_popup_serch');
-        var IC_SN = serch_ICSN_input.value;
         var date_start = serch_start_date_input.value;
         var date_end = serch_end_date_input.value;
-        serch_ICSN_input.value = '';
-        serch_start_date_input.value = '';
-        if (IC_SN) 
-        {
-            Set_main_div_enable(true);
-            data = await creat_get_by_IC_SN(IC_SN);
-            Set_main_div_enable(false);
-            if (data.Code <= 0) 
-            {
-            alert("查無資料!");
-            return;
-            }
-            page_Init(data);
-            return;
-        }
-        if (date_start || date_end)
-        {
-            var num = 0;
-            if(date_start)num++;
-            if(date_end)num++;
-            if(num == 2)
-            {
-            var date_end = DateTimeAddDays(date_end, 1);
-            date_start = getDateStr(date_start);
-            date_end = getDateStr(date_end);
-            Set_main_div_enable(true);
-            data = await creat_get_by_CT_TIME_ST_END(date_start,date_end);
-            Set_main_div_enable(false);
-            }
-            else
-            {
-            if(date_start)
-            {
-                Set_main_div_enable(true);
-                data = await creat_get_by_CT_TIME_S(date_start);
-                Set_main_div_enable(false);
-            }
-            if(date_end)
-            {
-                Set_main_div_enable(true);
-                data = await creat_get_by_CT_TIME_S(date_end);
-                Set_main_div_enable(false);
-            }
-            }
+
         
-            if (data.Data.length <= 0) 
+        if (date_start && date_end)
+        {
+            data = await serch_by_ST_END(date_start,date_end);
+            if(data == null)
             {
-            alert("查無資料!");
-            return;
+                alert("查無資料!");
+                return;
+            }
+            if(data.Data.length == 0)
+            {
+                alert("查無資料!");
+                return;
             }
             page_Init(data);
+            hide_popup_serch();
             return;
         }
-        hide_popup_serch();
+   
     }
     catch (e) 
     {}
@@ -122,20 +90,6 @@ function get_serch_box_popup_serch()
     serch_box_div.style.alignItems = "center";
     serch_box_div.style.flexWrap  = "wrap";
 
-    const serch_ICSN_input = document.createElement('input');
-    My_Div.Init(serch_ICSN_input,'serch_ICSN_input_popup_serch','serch_ICSN_input_popup_serch', '90%','40px','');
-    My_Div.Set_Text(serch_ICSN_input ,"" , TextAlignEnum.CENTER , "18px", false ,"微軟正黑體","black");
-    serch_ICSN_input.placeholder = '請輸入盤點單號';
-    serch_ICSN_input.style.borderRadius = "3px";
-    serch_ICSN_input.style.border = "1px solid gray";
-    serch_ICSN_input.style.paddingLeft = "10px";
-    serch_ICSN_input.type = "email";
-    serch_ICSN_input.inputMode = "latin";
-    serch_ICSN_input.onfocus = function()
-    {
-       this.select();       
-    };
-
     const serch_start_date_input = document.createElement('input');
     My_Div.Init(serch_start_date_input,'serch_start_date_input_popup_serch','serch_start_date_input_popup_serch', '90%','40px','');
     My_Div.Set_Text(serch_start_date_input ,"" , TextAlignEnum.CENTER , "18px", false ,"微軟正黑體","black");
@@ -158,7 +112,6 @@ function get_serch_box_popup_serch()
     serch_end_date_input.inputMode = "latin";
     serch_end_date_input.style.marginTop = "10px";
 
-    serch_box_div.appendChild(serch_ICSN_input);
     serch_box_div.appendChild(serch_start_date_input);
     serch_box_div.appendChild(serch_end_date_input);
 
@@ -168,41 +121,78 @@ function get_serch_box_popup_serch()
 function get_underline_popup_serch()
 {
     const underline_div = document.createElement('div');
-    My_Div.Init(underline_div, 'underline_div_serch_div_popup_serch','underline_div_serch_div_popup_serch', '100%','60px','');
-    My_Div.Set_Block(underline_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
+    My_Div.Init(underline_div, 'underline_div_serch_div_popup_serch','underline_div_serch_div_popup_serch', '100%','55px','');
+    My_Div.Set_Block(underline_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
     underline_div.style.alignItems = "center";
-
-    const underline_serchtype_div = document.createElement('div');
-    My_Div.Init(underline_serchtype_div, 'underline_serchtype_div_popup_serch','underline_serchtype_div_popup_serch', '72%','100%','');
-    My_Div.Set_Block(underline_serchtype_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
-    underline_div.style.alignItems = "center";
-    
 
     const svg_confirm_SVG = Get_confirm_SVG("40px","100%" ,"60%","100%","green");
     My_Div.Init(svg_confirm_SVG, 'svg_confirm_SVG_popup_input','svg_confirm_SVG_popup_input', '40px', '40px', '');
     svg_confirm_SVG.style.border = "1px solid gray";
     svg_confirm_SVG.style.borderRadius = "3px";
-    svg_confirm_SVG.style.marginRight = "5px";
+    svg_confirm_SVG.style.marginLeft = "10px";
     svg_confirm_SVG.addEventListener('click', function()
     {
         confirm_popup_serch();
     });
+
     const svg_undo_SVG = Get_undo_SVG("40px","100%" ,"60%","100%","");
     My_Div.Init(svg_undo_SVG, 'svg_undo_SVG_popup_input','svg_undo_SVG_popup_input', '40px', '40px', '');
     svg_undo_SVG.style.border = "1px solid gray";
     svg_undo_SVG.style.borderRadius = "3px";
-    svg_undo_SVG.style.marginRight = "5px";
+    svg_undo_SVG.style.marginLeft = "85px";
     svg_undo_SVG.addEventListener('click', function()
     {
         undo_popup_serch();
     });
-    underline_div.appendChild(underline_serchtype_div);
+    
+    const button_currentDate = document.createElement("button")
+    button_currentDate.style.width = "60px";
+    button_currentDate.style.height = "75%";
+    button_currentDate.innerText = "當日";
+    button_currentDate.style.fontSize = "14px";
+    button_currentDate.style.marginLeft = "10px";
 
+    const button_lastDate = document.createElement("button")
+    button_lastDate.style.width = "60px";
+    button_lastDate.style.height = "75%";
+    button_lastDate.innerText = "前日";
+    button_lastDate.style.fontSize = "14px";
+    button_lastDate.style.marginLeft = "10px";
+
+    button_currentDate.onclick = button_currentDate_Click;
+    button_lastDate.onclick = button_lastDate_Click;
+
+    underline_div.appendChild(button_currentDate);
+    underline_div.appendChild(button_lastDate);
     underline_div.appendChild(svg_undo_SVG);
     underline_div.appendChild(svg_confirm_SVG);
     return underline_div;
 }
+async function button_currentDate_Click(event)
+{
+   const currentDate = getCurrentDate();
+   const start_datetime = `${currentDate}`;
+   const end_datetime = `${currentDate}`;
 
+   const serch_start_date_input = document.querySelector("#serch_start_date_input_popup_serch");
+   const serch_end_date_input = document.querySelector("#serch_end_date_input_popup_serch");
+   serch_start_date_input.value = start_datetime;
+   serch_end_date_input.value = end_datetime;
+   
+}
+async function button_lastDate_Click(event)
+{
+    var currentDate = getCurrentDate();
+    currentDate = DateTimeAddDays(currentDate , -1);
+    currentDate = getDateStr(currentDate);
+    const start_datetime = `${currentDate}`;
+    const end_datetime = `${currentDate}`;
+ 
+    const serch_start_date_input = document.querySelector("#serch_start_date_input_popup_serch");
+    const serch_end_date_input = document.querySelector("#serch_end_date_input_popup_serch");
+    serch_start_date_input.value = start_datetime;
+    serch_end_date_input.value = end_datetime;
+}
 function serch_start_date_input_Y_Click()
 {
     const serch_start_date_input = document.querySelector("#serch_start_date_input_popup_serch");

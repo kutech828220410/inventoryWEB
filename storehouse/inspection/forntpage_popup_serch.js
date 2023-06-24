@@ -125,7 +125,7 @@ function get_serch_box_popup_serch()
     const serch_ICSN_input = document.createElement('input');
     My_Div.Init(serch_ICSN_input,'serch_ICSN_input_popup_serch','serch_ICSN_input_popup_serch', '90%','40px','');
     My_Div.Set_Text(serch_ICSN_input ,"" , TextAlignEnum.CENTER , "18px", false ,"微軟正黑體","black");
-    serch_ICSN_input.placeholder = '請輸入盤點單號';
+    serch_ICSN_input.placeholder = '請輸入驗收單號';
     serch_ICSN_input.style.borderRadius = "3px";
     serch_ICSN_input.style.border = "1px solid gray";
     serch_ICSN_input.style.paddingLeft = "10px";

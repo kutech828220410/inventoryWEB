@@ -15,7 +15,12 @@ async function logout_Click()
 
 async function drugsreport_Click()
 {
-  console.log("drugsreport");
+  if(ServerName == null)
+  {
+    alert("未選擇調劑台號,將返回主頁面");
+    logout_Click();
+  }
+  location.href = "../../pharmacy/controlleddrug/main.html";
 }
 
 async function inventory_Click()
@@ -29,14 +34,15 @@ async function inventory_Click()
   location.href = "../../pharmacy/inventory/frontpage.html";
 }
 
-async function inventoryreport_Click()
+async function consumptionreport_Click()
 {
-  console.log("inventoryreport");
+  console.log("consumptionreport");
+  location.href = "../../pharmacy/consumption/main.html";
 }
 
 async function appropriation_Click()
  {
-  console.log("inventoryreport");
+  console.log("appropriation");
 }
 
 function page_Init(data) 
@@ -117,13 +123,13 @@ function get_main()
 
   const drugsreport_div = get_drugsreport();
   const inventory_div = get_inventory();
-  const inventoryreport_div = get_inventoryreport();
+  const consumptionreport_div = get_consumptionreport();
   const appropriation_div = get_appropriation();
   main_div.appendChild(row1_div);
   main_div.appendChild(row2_div);
   row1_div.appendChild(drugsreport_div);
   row1_div.appendChild(inventory_div);
-  row2_div.appendChild(inventoryreport_div);
+  row2_div.appendChild(consumptionreport_div);
   row2_div.appendChild(appropriation_div);
   return main_div;
 }
@@ -266,55 +272,55 @@ function get_inventory()
   return inventory_div;
 }
 
-function get_inventoryreport()
+function get_consumptionreport()
 {
-  const inventoryreport_div = document.createElement("div");
-  My_Div.Init(inventoryreport_div, 'inventoryreport_div','inventoryreport_div', '180px', '120px', 'rgba(255, 255, 255, 0.85)');
-  My_Div.Set_Block(inventoryreport_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.CENTER);
-  inventoryreport_div.style.borderRadius = "5px";
-  inventoryreport_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
-  inventoryreport_div.style.margin = "5px";
-  inventoryreport_div.id = "inventoryreport_div";
-  inventoryreport_div.onclick =  inventoryreport_Click;
+  const consumptionreport_div = document.createElement("div");
+  My_Div.Init(consumptionreport_div, 'consumptionreport_div','consumptionreport_div', '180px', '120px', 'rgba(255, 255, 255, 0.85)');
+  My_Div.Set_Block(consumptionreport_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.CENTER);
+  consumptionreport_div.style.borderRadius = "5px";
+  consumptionreport_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
+  consumptionreport_div.style.margin = "5px";
+  consumptionreport_div.id = "consumptionreport_div";
+  consumptionreport_div.onclick =  consumptionreport_Click;
 
   const svg_text_div = document.createElement("div");
   My_Div.Init(svg_text_div, 'svg_text_div','svg_text_div', '100%', '50%', '');
   My_Div.Set_Block(svg_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
 
-  const inventoryreport_svg = Get_ward_SVG("80%", "80%", "80%","80%","gray","");
-  My_Div.Init(inventoryreport_svg, 'inventoryreport_svg','inventoryreport_svg', '30%', '100%', '');
-  My_Div.Set_Block(inventoryreport_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
-  inventoryreport_svg.style.margin = "5px";
+  const consumptionreport_svg = Get_ward_SVG("80%", "80%", "80%","80%","gray","");
+  My_Div.Init(consumptionreport_svg, 'consumptionreport_svg','consumptionreport_svg', '30%', '100%', '');
+  My_Div.Set_Block(consumptionreport_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
+  consumptionreport_svg.style.margin = "5px";
 
-  const inventoryreport_text_div = document.createElement("div");
-  My_Div.Init(inventoryreport_text_div, 'inventoryreport_text_div','inventoryreport_text_div', '70%', '100%', '');
-  My_Div.Set_Block(inventoryreport_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text(inventoryreport_text_div ,'每日庫存\n消耗量' , TextAlignEnum.CENTER , "21px", true,"微軟正黑體","");
-  inventoryreport_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
-  inventoryreport_text_div.style.backgroundClip = 'text';
-  inventoryreport_text_div.style.webkitBackgroundClip = 'text';
-  inventoryreport_text_div.style.webkitTextFillColor = 'transparent';
-  inventoryreport_text_div.style.borderTopRightRadius = "10px";
-  inventoryreport_text_div.style.borderBottomRightRadius = "10px";
+  const consumptionreport_text_div = document.createElement("div");
+  My_Div.Init(consumptionreport_text_div, 'consumptionreport_text_div','consumptionreport_text_div', '70%', '100%', '');
+  My_Div.Set_Block(consumptionreport_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  My_Div.Set_Text(consumptionreport_text_div ,'藥品\n耗用量' , TextAlignEnum.CENTER , "21px", true,"微軟正黑體","");
+  consumptionreport_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
+  consumptionreport_text_div.style.backgroundClip = 'text';
+  consumptionreport_text_div.style.webkitBackgroundClip = 'text';
+  consumptionreport_text_div.style.webkitTextFillColor = 'transparent';
+  consumptionreport_text_div.style.borderTopRightRadius = "10px";
+  consumptionreport_text_div.style.borderBottomRightRadius = "10px";
 
-  const inventoryreport_text_eng_div = document.createElement("div");
-  My_Div.Init( inventoryreport_text_eng_div, ' inventoryreport_text_eng_div',' inventoryreport_text_eng_div', '100%', '20%', '');
-  My_Div.Set_Block( inventoryreport_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text( inventoryreport_text_eng_div ,"Inventory Report" , TextAlignEnum.CENTER , "14px", true,"","");
-   inventoryreport_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
-   inventoryreport_text_eng_div.style.backgroundClip = 'text';
-   inventoryreport_text_eng_div.style.wordBreak = "break-word";
-   inventoryreport_text_eng_div.style.webkitBackgroundClip = 'text';
-   inventoryreport_text_eng_div.style.webkitTextFillColor = 'transparent';
-   inventoryreport_text_eng_div.style.borderTopRightRadius = "10px";
-   inventoryreport_text_eng_div.style.borderBottomRightRadius = "10px";
+  const consumptionreport_text_eng_div = document.createElement("div");
+  My_Div.Init( consumptionreport_text_eng_div, ' consumptionreport_text_eng_div',' consumptionreport_text_eng_div', '100%', '20%', '');
+  My_Div.Set_Block( consumptionreport_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  My_Div.Set_Text( consumptionreport_text_eng_div ,"Consumption Report" , TextAlignEnum.CENTER , "16px", true,"","");
+   consumptionreport_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
+   consumptionreport_text_eng_div.style.backgroundClip = 'text';
+   consumptionreport_text_eng_div.style.wordBreak = "break-word";
+   consumptionreport_text_eng_div.style.webkitBackgroundClip = 'text';
+   consumptionreport_text_eng_div.style.webkitTextFillColor = 'transparent';
+   consumptionreport_text_eng_div.style.borderTopRightRadius = "10px";
+   consumptionreport_text_eng_div.style.borderBottomRightRadius = "10px";
 
-  inventoryreport_div.appendChild(svg_text_div);
-  svg_text_div.appendChild(inventoryreport_svg);
-  svg_text_div.appendChild(inventoryreport_text_div);
-  inventoryreport_div.appendChild(inventoryreport_text_eng_div);
+  consumptionreport_div.appendChild(svg_text_div);
+  svg_text_div.appendChild(consumptionreport_svg);
+  svg_text_div.appendChild(consumptionreport_text_div);
+  consumptionreport_div.appendChild(consumptionreport_text_eng_div);
 
-  return inventoryreport_div;
+  return consumptionreport_div;
 }
 
 function get_appropriation()
@@ -394,7 +400,7 @@ function get_Lock()
   return lock_div;
 
   document.getElementById(" appropriation_div").addEventListener("scroll", function() {
-    // 取得 inventoryreport_div 的位置
+    // 取得 consumptionreport_div 的位置
     const appropriationDivRect = document.getElementById(" appropriation_div").getBoundingClientRect();
     lock_div.style.top = appropriationDivRect.top + "px";
     lock_div.style.left = appropriationDivRect.left + "px";

@@ -17,16 +17,16 @@ function creat_row_div(_index , item)
     all_div.appendChild(formnnum_delbtn_div);
 
     const del_btn_div = Get_trashBox_SVG("30px", "100%", "100%","100%","red","");
-    My_Div.Init(del_btn_div,`del_botton${_index}`,'del_botton', '30px','100%','');
+    My_Div.Init(del_btn_div,`del_botton${_index}`,'del_botton', '40px','100%','');
     My_Div.Set_Block(del_btn_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
     del_btn_div.setAttribute("IC_SN",item.IC_SN);
     del_btn_div.style.border = "1px solid gray";
     del_btn_div.style.borderRadius = "3px";
     del_btn_div.onclick = delete_btn_Click;
-    del_btn_div.disabled = !GetPermissions("盤點報表刪除");
-    formnnum_delbtn_div.appendChild(del_btn_div);
+    // del_btn_div.disabled = !GetPermissions("盤點報表刪除");
+    // formnnum_delbtn_div.appendChild(del_btn_div);
 
-    //盤點編號
+    //驗收編號
     const formnnum_div = document.createElement('div');
     My_Div.Init(formnnum_div,`formnnum_div${_index}`,'formnnum_div', '100%','100%','');
     My_Div.Set_Text(formnnum_div ,`編號 : ${_index + 1}` , TextAlignEnum.LEFT , "16px", true ,"微軟正黑體","black");
@@ -52,7 +52,7 @@ function creat_row_div(_index , item)
     const calendar_div = get_Time_info(_index , dateString);
     time_info_btn_div.appendChild(calendar_div);
 
-    // 盤點資訊
+    // 驗收資訊
     const info_div = document.createElement('div');
     My_Div.Init(info_div,`info_div${_index}`,'info_div', '100%','100%','');
     My_Div.Set_Block(info_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.LEFT);
@@ -62,23 +62,23 @@ function creat_row_div(_index , item)
     info_div.style.borderRadius = "5px" ;
     time_info_btn_div.appendChild(info_div);
 
-    // 盤點資訊-單號
+    // 驗收資訊-單號
     const IC_SN_div = document.createElement('div');
-    My_Div.Init(IC_SN_div,`IC_SN_div${_index}`,'formnnum_div', '100%','20px','');
-    My_Div.Set_Text(IC_SN_div ,`單號 : ${item.IC_SN}` , TextAlignEnum.LEFT , "16px", true ,"","black");
+    My_Div.Init(IC_SN_div,`IC_SN_div${_index}`,'formnnum_div', '100%','50px','');
+    My_Div.Set_Text(IC_SN_div ,`單號 : ${item.IC_SN}` , TextAlignEnum.LEFT , "20px", true ,"","black");
     IC_SN_div.setAttribute("IC_SN",item.IC_SN);
     IC_SN_div.style.marginLeft = "10px";
     IC_SN_div.style.marginTop = "5px";
     info_div.appendChild(IC_SN_div);
 
-    // 盤點資訊-名稱
+    // 驗收資訊-名稱
     const IC_NAME_div = document.createElement('div');
     My_Div.Init(IC_NAME_div,`IC_NAME_div${_index}`,'formnnum_div', '100%','20px','');
     My_Div.Set_Text(IC_NAME_div ,`名稱 : ${(isStringNull(item.IC_NAME))? "無" : item.IC_NAME}` , TextAlignEnum.LEFT , "16px", true ,"","black");
     IC_NAME_div.setAttribute("IC_NAME",item.IC_NAME);
     IC_NAME_div.style.marginLeft = "10px";
     IC_NAME_div.style.marginTop = "5px";
-    info_div.appendChild(IC_NAME_div);
+    // info_div.appendChild(IC_NAME_div);
 
     // 盤點資訊-建表人
     const CT_div = document.createElement('div');
@@ -87,56 +87,56 @@ function creat_row_div(_index , item)
     CT_div.setAttribute("CT",item.CT);
     CT_div.style.marginLeft = "10px";
     CT_div.style.marginTop = "5px";
-    info_div.appendChild(CT_div);
+    // info_div.appendChild(CT_div);
    
-    // 盤點資訊-開始時間
+    // 驗收資訊-開始時間
     const START_TIME_div = document.createElement('div');
     My_Div.Init(START_TIME_div,`START_TIME_div${_index}`,'formnnum_div', '100%','20px','');
     My_Div.Set_Text(START_TIME_div ,`開始 : ${item.START_TIME}` , TextAlignEnum.LEFT , "14px", true ,"","black");
     START_TIME_div.setAttribute("START_TIME",item.START_TIME);
     START_TIME_div.style.marginLeft = "10px";
     START_TIME_div.style.marginTop = "5px";
-    info_div.appendChild(START_TIME_div);
+    // info_div.appendChild(START_TIME_div);
     
-    // 盤點資訊-結束時間
+    // 驗收資訊-結束時間
 
     const END_TIME_div = document.createElement('div');
     My_Div.Init(END_TIME_div,`END_TIME_div${_index}`,'formnnum_div', '100%','20px','');
-    My_Div.Set_Text(END_TIME_div ,`結束 : ${item.END_TIME}` , TextAlignEnum.LEFT , "14px", true ,"","black");
+    My_Div.Set_Text(END_TIME_div ,`驗收時間 :\n ${item.END_TIME}` , TextAlignEnum.LEFT , "14px", true ,"","black");
     END_TIME_div.setAttribute("END_TIME",item.END_TIME);
     END_TIME_div.style.marginLeft = "10px";
     END_TIME_div.style.marginTop = "5px";
     info_div.appendChild(END_TIME_div);
 
     
-    // 盤點資訊-狀態
+    // 驗收資訊-狀態
 
     const STATE_div = document.createElement('div');
-    My_Div.Init(STATE_div,`STATE_div${_index}`,'formnnum_div', '100%','20px','');
+    My_Div.Init(STATE_div,`STATE_div${_index}`,'formnnum_div', '100%','35px','');
     My_Div.Set_Text(STATE_div ,`狀態 : ${item.STATE}` , TextAlignEnum.LEFT , "16px", true ,"","black");
     STATE_div.setAttribute("STATE",item.STATE);
     STATE_div.style.marginLeft = "10px";
-    STATE_div.style.marginTop = "5px";
+    STATE_div.style.marginTop = "15px";
     info_div.appendChild(STATE_div);
     
-    if(item.STATE == '等待盤點')
+    if(item.STATE == '等待驗收')
     {
         info_div.style.background ="rgb(255,255,255)";
         info_div.style.background ="linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(231,236,23,0.3) 50%, rgba(231,236,23,0.7) 100%)"
     }
-    else if(item.STATE == '盤點中')
+    else if(item.STATE == '驗收中')
     {
         info_div.style.background ="rgb(255,255,255)";
         info_div.style.background ="linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(236,23,23,0.3) 50%, rgba(236,23,23,0.7) 100%)"
     }
-    else if(item.STATE == '鎖定')
+    else if(item.STATE == '鎖定驗收')
     {
         info_div.style.background ="rgb(255,255,255)";
         info_div.style.background ="linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(23,236,23,0.3) 50%, rgba(23,236,23,0.7) 100%)"
     }
     //操作按鈕
     const btn_div = document.createElement('div');
-    My_Div.Init(btn_div,`btn_div${_index}`,'btn_div', '85px','170px','');
+    My_Div.Init(btn_div,`btn_div${_index}`,'btn_div', '100px','170px','');
     My_Div.Set_Block(btn_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
     btn_div.style.paddingTop = "5px";
     btn_div.style.paddingRight = "7px";
@@ -146,15 +146,15 @@ function creat_row_div(_index , item)
     time_info_btn_div.appendChild(btn_div);
 
     var selectbtn;
-    if(item.STATE == '鎖定')  
+    if(item.STATE == '鎖定驗收')  
     {
-      selectbtn = Get_right_direction_SVG("100%", "60px", "70%","100%","gray","" , false);
+      selectbtn = Get_right_direction_SVG("100%", "60px", "90%","100%","gray","" , false);
       My_Div.Init(selectbtn,`selectbtn${_index}`,'selectbtn', '100%','33%','');
       selectbtn.style.backgroundColor = "lightgray";
     }
     else
     {
-      selectbtn = Get_right_direction_SVG("100%", "60px", "70%","100%","steelblue","" , true);
+      selectbtn = Get_right_direction_SVG("100%", "60px", "90%","100%","steelblue","" , true);
       My_Div.Init(selectbtn,`selectbtn${_index}`,'selectbtn', '100%','33%','');
       selectbtn.onclick = select_btn_Click;
     }
@@ -164,19 +164,19 @@ function creat_row_div(_index , item)
     selectbtn.style.borderRadius = "5px";
     btn_div.appendChild(selectbtn);
 
-    const downloadbtn = Get_download_SVG("100%", "60px", "70%","100%","steelblue","");
+    const downloadbtn = Get_download_SVG("100%", "60px", "90%","100%","steelblue","");
     My_Div.Init(downloadbtn,`downloadbtn${_index}`,'downloadbtn', '100%','33%','');
     downloadbtn.setAttribute("IC_SN",item.IC_SN);
     downloadbtn.style.border = "1px solid gray";
     downloadbtn.style.borderRadius = "5px";
     downloadbtn.style.marginTop = "3px";
-    downloadbtn.disabled = !GetPermissions("盤點報表下載");
+    downloadbtn.disabled = !GetPermissions("驗收報表下載");
     downloadbtn.onclick = downloadbtn_Click;
     btn_div.appendChild(downloadbtn);
 
     var lockbtn;
-    if(item.STATE == '鎖定')lockbtn = Get_lock_SVG("100%", "60px", "70%","100%","red","");
-    else lockbtn = Get_unlock_SVG("100%", "60px", "70%","100%","steelblue",""); 
+    if(item.STATE == '鎖定驗收')lockbtn = Get_lock_SVG("100%", "60px", "90%","100%","red","");
+    else lockbtn = Get_unlock_SVG("100%", "60px", "90%","100%","steelblue",""); 
     My_Div.Init(lockbtn,`lockbtn${_index}`,'lockbtn', '100%','33%','');
     lockbtn.setAttribute("IC_SN",item.IC_SN);
     lockbtn.setAttribute("STATE",item.STATE);
@@ -184,7 +184,7 @@ function creat_row_div(_index , item)
     lockbtn.style.borderRadius = "5px";
     lockbtn.style.marginTop = "3px";
     lockbtn.onclick = lockbtn_Click;
-    lockbtn.disabled = !GetPermissions("盤點報表鎖定");
+    lockbtn.disabled = !GetPermissions("驗收報表鎖定");
     btn_div.appendChild(lockbtn);
 
 
@@ -196,7 +196,7 @@ function creat_row_div(_index , item)
 async function downloadbtn_Click(event)
 {
   var IC_SN = this.getAttribute("IC_SN");
-  const confirmResult = confirm(`確定下載盤點單 [${IC_SN}]?`);
+  const confirmResult = confirm(`確定下載驗收單 [${IC_SN}]?`);
   if (!confirmResult) return;
   Set_main_div_enable(true);
   await download_excel_by_IC_SN(IC_SN);
@@ -207,9 +207,9 @@ async function lockbtn_Click(event)
   var IC_SN = this.getAttribute("IC_SN");
   var STATE = this.getAttribute("STATE");
   var msg = '';
-  if (STATE == '等待盤點' || STATE == '盤點中') 
+  if (STATE == '等待驗收' || STATE == '驗收中') 
   {
-    const confirmResult = confirm(`確定鎖定盤點單 [${IC_SN}]?`);
+    const confirmResult = confirm(`確定鎖定驗收單 [${IC_SN}]?`);
     if (!confirmResult) return;
     document.body.style.opacity = "0.5";
     temp = await creat_lock_by_IC_SN(IC_SN);
@@ -219,7 +219,7 @@ async function lockbtn_Click(event)
   }
   else 
   {
-    const confirmResult = confirm(`確定解鎖盤點單 [${IC_SN}]?`);
+    const confirmResult = confirm(`確定解鎖驗收單 [${IC_SN}]?`);
     if (!confirmResult) return;
     Set_main_div_enable(true);
     temp = await creat_unlock_by_IC_SN(IC_SN);
@@ -240,7 +240,7 @@ async function select_btn_Click(event)
   console.log(IC_SN);
   sessionStorage.setItem('IC_SN', IC_SN);
   await creat_update_startime_by_IC_SN(IC_SN);
-  location.href = "../inventory/main.html"
+  location.href = "../inspection/main.html"
 }
 
 async function delete_btn_Click(event) {

@@ -1,5 +1,7 @@
 var ServerName = "";
 var ServerType = "";
+var TableName = "";
+var DeviceTableName = "";
 
 //#region  API inventory
 async function creat_get_by_CT_TIME(date)
@@ -21,6 +23,7 @@ async function creat_get_by_CT_TIME(date)
     "Value": "",
     "ServerName" : ServerName,
     "ServerType" : ServerType,
+    "TableName" : TableName,
     "TimeTaken": ""
   };
   let response = await postDataToAPI(`${inventory_url}/creat_get_by_CT_TIME`,post_data);
@@ -45,6 +48,7 @@ async function creat_get_by_CT_TIME_S(date)
     "Value": "1",
     "ServerName" : ServerName,
     "ServerType" : ServerType,
+    "TableName" : TableName,
     "TimeTaken": ""
   };
   let response = await postDataToAPI(`${inventory_url}/creat_get_by_CT_TIME`,post_data);
@@ -71,6 +75,7 @@ async function creat_update_startime_by_IC_SN(ICSN)
     "Value": ``,
     "ServerName" : ServerName,
     "ServerType" : ServerType,
+    "TableName" : TableName,
     "TimeTaken": ""
   };
   console.log("post_data",post_data);
@@ -96,6 +101,7 @@ async function creat_get_by_CT_TIME_ST_END(date_ST,date_END)
     "Value": `${date_ST},${date_END}`,
     "ServerName" : ServerName,
     "ServerType" : ServerType,
+    "TableName" : TableName,
     "TimeTaken": ""
   };
   console.log("post_data",post_data);
@@ -122,11 +128,12 @@ async function creat_get_by_IC_SN(IC_SN)
     "Value": "",
     "ServerName" : ServerName,
     "ServerType" : ServerType,
+    "TableName" : TableName,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/creat_get_by_IC_SN`;
-  console.log(_url)
-  console.log("post_data",post_data)
+  console.log("creat_get_by_IC_SN" , _url);
+  console.log("post_data",post_data);
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
@@ -149,6 +156,7 @@ async function creat_delete_by_IC_SN(IC_SN)
     "Value": "",
     "ServerName" : ServerName,
     "ServerType" : ServerType,
+    "TableName" : TableName,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/creat_delete_by_IC_SN`;
@@ -175,6 +183,7 @@ async function creat_lock_by_IC_SN(IC_SN)
     "Value": "",
     "ServerName" : ServerName,
     "ServerType" : ServerType,
+    "TableName" : TableName,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/creat_lock_by_IC_SN`;
@@ -201,6 +210,7 @@ async function creat_unlock_by_IC_SN(IC_SN)
     "Value": "",
     "ServerName" : ServerName,
     "ServerType" : ServerType,
+    "TableName" : TableName,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/creat_unlock_by_IC_SN`;
@@ -229,6 +239,7 @@ async function creat_auto_add(IC_NAME , CT)
     "Value": "",
     "ServerName" : ServerName,
     "ServerType" : ServerType,
+    "TableName" : TableName,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/creat_auto_add`;
@@ -251,6 +262,7 @@ async function content_get_by_content_GUID(_GUID)
     "Value": "",
     "ServerName" : ServerName,
     "ServerType" : ServerType,
+    "TableName" : TableName,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/content_get_by_content_GUID`;
@@ -274,6 +286,7 @@ async function sub_content_get_by_content_GUID(_GUID)
     "Value": "",
     "ServerName" : ServerName,
     "ServerType" : ServerType,
+    "TableName" : TableName,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/sub_content_get_by_content_GUID`;
@@ -297,6 +310,7 @@ async function sub_content_add_single(_Master_GUID, _END_QTY, _OP)
     "Value": "",
     "ServerName" : ServerName,
     "ServerType" : ServerType,
+    "TableName" : TableName,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/sub_content_add_single`;
@@ -319,6 +333,7 @@ async function sub_content_add(_Master_GUID, _END_QTY, _OP)
     "Value": "",
     "ServerName" : ServerName,
     "ServerType" : ServerType,
+    "TableName" : TableName,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/sub_content_add`;
@@ -341,6 +356,7 @@ async function sub_contents_delete_by_GUID(_GUID, Master_GUID)
     "Value": "",
     "ServerName" : ServerName,
     "ServerType" : ServerType,
+    "TableName" : TableName,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/sub_contents_delete_by_GUID`;
@@ -368,6 +384,7 @@ async function download_excel_by_IC_SN(IC_SN)
     "Value": "",
     "ServerName" : ServerName,
     "ServerType" : ServerType,
+    "TableName" : TableName,
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/download_excel_by_IC_SN`;
@@ -378,9 +395,32 @@ async function download_excel_by_IC_SN(IC_SN)
 //#region API Device
 async function device_all()
 {
+
+  const post_data = 
+  {
+    "Data": {
+      "GUID": null,
+      "IC_SN": null,
+      "CT": null,
+      "CT_TIME": null,
+      "START_TIME": null,
+      "END_TIME": null,
+      "STATE": null,
+      "Contents": []
+    },
+    "Code": 0,
+    "Result": "",
+    "Value": "",
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
+    "TableName" : TableName,
+    "TimeTaken": ""
+  };
+
   var _url = `${device_url}/all`;
-  var result = await getDataFromAPI(_url);
-  return result;
+  console.log("post_data",post_data)
+  let response = await postDataToAPI(`${_url}`,post_data);
+  return response;
 }
 async function device_light(Color, device_basic)
 {
@@ -393,6 +433,7 @@ async function device_light(Color, device_basic)
     "Value": Color,
     "ServerName" : ServerName,
     "ServerType" : ServerType,
+    "TableName" : TableName,
     "TimeTaken": ""
   };
   var _url = `${device_url}/light`;

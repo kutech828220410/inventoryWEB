@@ -1,3 +1,5 @@
+
+
 let response = [];
 let data = [];
 let device_basic = [];
@@ -19,7 +21,17 @@ function handleResize()
 async function load()
 { 
     check_session_off();
-    await set_ip();
+    ServerName = "DS01";
+    ServerType = "藥庫";
+    TableName = "medicine_page_firstclass";
+    APIServer = await LoadAPIServer();
+    const API01 = serch_APIServer(ServerName,ServerType,"API01");
+    const API02 = serch_APIServer(ServerName,ServerType,"API02");
+    console.log("API01",API01);
+    console.log("API02",API02);
+    await check_ip(API01[0].server,API02[0].server);
+    console.log("inventory_url",inventory_url);
+
     const Loadingpopup = GetLoadingpopup();
     document.body.appendChild(Loadingpopup);
     var IC_SN = sessionStorage.getItem('IC_SN');  
@@ -131,7 +143,7 @@ function get_header()
 
   const header_title_text = document.createElement('div');
   My_Div.Init(header_title_text, 'header_title_text','header_title_text', '100%', '50%', '');
-  My_Div.Set_Text(header_title_text ,"盤點作業" , TextAlignEnum.LEFT , "24px", true,"微軟正黑體","");
+  My_Div.Set_Text(header_title_text ,"驗收作業" , TextAlignEnum.LEFT , "24px", true,"微軟正黑體","");
   header_title_text.className = "h1";
   header_title_text.id = "header_title_text";
   header_title_text.style.marginLeft = "20px";
@@ -193,7 +205,7 @@ function get_header()
 
   const herader_view_QTY_Tile_text = document.createElement('div');
   My_Div.Init(herader_view_QTY_Tile_text, 'herader_view_QTY_Tile_text','herader_view_QTY_Tile_text', '70px', '100%', '');
-  My_Div.Set_Text(herader_view_QTY_Tile_text ,"已盤/總數" , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","");
+  My_Div.Set_Text(herader_view_QTY_Tile_text ,"已驗/總數" , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","");
   herader_view_QTY_Tile_text.style.marginLeft = "5px";
   herader_view_div.appendChild(herader_view_QTY_Tile_text);
 
