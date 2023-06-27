@@ -1,4 +1,6 @@
 var device_buf =[];
+var NumOfRow = 0;
+var rowHeight = 145;
 window.onresize = function() 
 {
     const device = checkDeviceType();
@@ -15,7 +17,7 @@ window.onresize = function()
             }
             device_buf = device;
         }      
-    
+        NumOfRow = 1;
     }
     else
     {
@@ -27,8 +29,25 @@ window.onresize = function()
         {
             row_div[i].style.width = `${row_width}px`;
         }
+        NumOfRow = temp;
     }
-    
+    Set_rowTotalHeight();
+}
+function Set_rowTotalHeight()
+{
+    const row_div = document.querySelectorAll(".row_div");
+  
+    var temp = 0;
+    for(var i = 0 ; i < row_div.length ; i++)
+    {
+        if(row_div[i].style.visibility != "hidden")temp++;
+    }
+    var num =  temp / NumOfRow;
+    if((temp % NumOfRow) != 0) num++;
+    const main_div = document.querySelector('#main_div');
+    const height = `${(num * rowHeight) + 100}`;
+    main_div.style.height = `${height}px`;
+    if(height > screenHeight) main_div.style.height = "110%";    
 }
 function row_div_onclick(event)
 {
@@ -80,14 +99,16 @@ function creat_row_div(_index , Contents)
     if(device == DeviceType.MOBILE) 
     {
         row_div.style.width = "100%";
+        NumOfRow = 1;
     }
     if(device == DeviceType.COMPUTER)
     {
         const temp = Math.floor(screenWidth / 300);
         const row_width = screenWidth / temp - 20;
         row_div.style.width = `${row_width}px`;
+        NumOfRow = temp;
     } 
-    row_div.style.height= "145px";
+    row_div.style.height= `${rowHeight}px`;
     row_div.style.border = "1px solid gray";
     row_div.style.flexDirection = "column";
     row_div.style.margin = "1px";

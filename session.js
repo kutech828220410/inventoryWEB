@@ -32,8 +32,9 @@ async function login(id, password)
         "Value": "",
         "TimeTaken": ""
     };
+    console.log("session_login_url login :",session_login_url)
     console.log("post_data" , post_data);
-    const data = await postDataToAPI(`${session_url}/login`, post_data);
+    const data = await postDataToAPI(`${session_login_url}`, post_data);
     console.log("data",data);
     return data;
 }

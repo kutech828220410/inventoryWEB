@@ -2,7 +2,7 @@
 window.onload = load;
 async function load()
 { 
-    await set_ip();
+   // await set_ip();
 
 }
 async function logout_Click()

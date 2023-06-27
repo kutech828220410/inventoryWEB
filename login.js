@@ -6,8 +6,14 @@ var ID = "";
 var password = "";
 async function load()
 { 
-    await set_ip();
-
+    ServerName ="";
+    ServerType = "網頁";
+    APIServer = await LoadAPIServer();
+    const API01 = serch_APIServer(ServerName,ServerType,"API01");
+    const API02 = serch_APIServer(ServerName,ServerType,"API02");
+    console.log("API01",API01);
+    console.log("API02",API02);
+    check_ip(API01[0].server,API02[0].server);
   
 }
 

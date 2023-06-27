@@ -60,7 +60,7 @@ function page_Init(data)
     allrows.push(all_div);
     main_div.appendChild(all_div);
   }
- 
+  Set_rowTotalHeight();
   // if (data.Data.length == 0) {
   //   const NoDataDiv = getNoDataDiv();
   //   console.log(NoDataDiv);

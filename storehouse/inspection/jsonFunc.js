@@ -3,7 +3,7 @@ var ServerType = "";
 var TableName = "";
 var DeviceTableName = "";
 
-//#region  API inventory
+//#region  API inspection
 async function creat_get_by_CT_TIME(date)
 {
   const post_data = 
@@ -26,7 +26,7 @@ async function creat_get_by_CT_TIME(date)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  let response = await postDataToAPI(`${inventory_url}/creat_get_by_CT_TIME`,post_data);
+  let response = await postDataToAPI(`${inspection_url}/creat_get_by_CT_TIME`,post_data);
   return response;
 }
 async function creat_get_by_CT_TIME_S(date)
@@ -51,7 +51,7 @@ async function creat_get_by_CT_TIME_S(date)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  let response = await postDataToAPI(`${inventory_url}/creat_get_by_CT_TIME`,post_data);
+  let response = await postDataToAPI(`${inspection_url}/creat_get_by_CT_TIME`,post_data);
   return response;
 }
 
@@ -79,7 +79,7 @@ async function creat_update_startime_by_IC_SN(ICSN)
     "TimeTaken": ""
   };
   console.log("post_data",post_data);
-  let response = await postDataToAPI(`${inventory_url}/creat_update_startime_by_IC_SN`,post_data);
+  let response = await postDataToAPI(`${inspection_url}/creat_update_startime_by_IC_SN`,post_data);
   return response;
 }
 async function creat_get_by_CT_TIME_ST_END(date_ST,date_END)
@@ -105,7 +105,7 @@ async function creat_get_by_CT_TIME_ST_END(date_ST,date_END)
     "TimeTaken": ""
   };
   console.log("post_data",post_data);
-  let response = await postDataToAPI(`${inventory_url}/creat_get_by_CT_TIME_ST_END`,post_data);
+  let response = await postDataToAPI(`${inspection_url}/creat_get_by_CT_TIME_ST_END`,post_data);
   return response;
 }
 
@@ -131,7 +131,7 @@ async function creat_get_by_IC_SN(IC_SN)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  var _url = `${inventory_url}/creat_get_by_IC_SN`;
+  var _url = `${inspection_url}/creat_get_by_IC_SN`;
   console.log("creat_get_by_IC_SN" , _url);
   console.log("post_data",post_data);
   let response = await postDataToAPI(`${_url}`,post_data);
@@ -159,7 +159,7 @@ async function creat_delete_by_IC_SN(IC_SN)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  var _url = `${inventory_url}/creat_delete_by_IC_SN`;
+  var _url = `${inspection_url}/creat_delete_by_IC_SN`;
   let response = await postDataToAPI(`${_url}`,post_data);
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
   return response;
@@ -186,7 +186,7 @@ async function creat_lock_by_IC_SN(IC_SN)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  var _url = `${inventory_url}/creat_lock_by_IC_SN`;
+  var _url = `${inspection_url}/creat_lock_by_IC_SN`;
   let response = await postDataToAPI(`${_url}`,post_data);
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
   return response;
@@ -213,7 +213,7 @@ async function creat_unlock_by_IC_SN(IC_SN)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  var _url = `${inventory_url}/creat_unlock_by_IC_SN`;
+  var _url = `${inspection_url}/creat_unlock_by_IC_SN`;
   let response = await postDataToAPI(`${_url}`,post_data);
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
   return response;
@@ -242,7 +242,7 @@ async function creat_auto_add(IC_NAME , CT)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  var _url = `${inventory_url}/creat_auto_add`;
+  var _url = `${inspection_url}/creat_auto_add`;
   console.log("post_data",post_data)
   let response = await postDataToAPI(`${_url}`,post_data);
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
@@ -265,7 +265,7 @@ async function content_get_by_content_GUID(_GUID)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  var _url = `${inventory_url}/content_get_by_content_GUID`;
+  var _url = `${inspection_url}/content_get_by_content_GUID`;
   console.log("post_data",post_data)
   let response = await postDataToAPI(`${_url}`,post_data);
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
@@ -289,20 +289,22 @@ async function sub_content_get_by_content_GUID(_GUID)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  var _url = `${inventory_url}/sub_content_get_by_content_GUID`;
+  var _url = `${inspection_url}/sub_content_get_by_content_GUID`;
   console.log(post_data)
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
 
-async function sub_content_add_single(_Master_GUID, _END_QTY, _OP)
+async function sub_content_add_single(_Master_GUID, _END_QTY, _OP , _VAL,_LOT)
 {
   const post_data = 
   {
     "Data": {
       "Master_GUID": `${_Master_GUID}`,
       "END_QTY": `${_END_QTY}`,
-      "OP": `${_OP}`
+      "OP": `${_OP}`,
+      "VAL": `${_VAL}`,
+      "LOT": `${_LOT}`
     },
     "Master_GUID": 0,
     "TableName":``,
@@ -313,19 +315,21 @@ async function sub_content_add_single(_Master_GUID, _END_QTY, _OP)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  var _url = `${inventory_url}/sub_content_add_single`;
+  var _url = `${inspection_url}/sub_content_add_single`;
   console.log("post_data",post_data)
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
-async function sub_content_add(_Master_GUID, _END_QTY, _OP)
+async function sub_content_add(_Master_GUID, _END_QTY, _OP, _VAL,_LOT)
 {
   const post_data = 
   {
     "Data": {
       "Master_GUID": `${_Master_GUID}`,
       "END_QTY": `${_END_QTY}`,
-      "OP": `${_OP}`
+      "OP": `${_OP}`,
+      "VAL": `${_VAL}`,
+      "LOT": `${_LOT}`
     },
     "Master_GUID": 0,
     "TableName":``,
@@ -336,7 +340,7 @@ async function sub_content_add(_Master_GUID, _END_QTY, _OP)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  var _url = `${inventory_url}/sub_content_add`;
+  var _url = `${inspection_url}/sub_content_add`;
   console.log("post_data",post_data);
   let response = await postDataToAPI(`${_url}`,post_data);
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
@@ -359,7 +363,7 @@ async function sub_contents_delete_by_GUID(_GUID, Master_GUID)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  var _url = `${inventory_url}/sub_contents_delete_by_GUID`;
+  var _url = `${inspection_url}/sub_contents_delete_by_GUID`;
   console.log("post_data",post_data)
   let response = await postDataToAPI(`${_url}`,post_data);
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
@@ -387,9 +391,9 @@ async function download_excel_by_IC_SN(IC_SN)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  var _url = `${inventory_url}/download_excel_by_IC_SN`;
+  var _url = `${inspection_url}/download_excel_by_IC_SN`;
   console.log("post_data",post_data)
-  await downloadExcel(_url,post_data, `${IC_SN}_盤點管理`);
+  await downloadExcel(_url,post_data, `${IC_SN}_驗收單`);
 }
 //#endregion
 //#region API Device
@@ -436,7 +440,7 @@ async function device_light(Color, device_basic)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  var _url = `${device_url}/light`;
+  var _url = `${device_url}/light_web`;
   console.log("post_data",post_data)
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;

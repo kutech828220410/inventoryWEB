@@ -93,7 +93,7 @@ function get_header()
 
   const header_title_text = document.createElement('div');
   My_Div.Init(header_title_text, 'header_title_text','header_title_text', '100%', '50%', '');
-  My_Div.Set_Text(header_title_text ,"驗收單號" , TextAlignEnum.LEFT , "24px", true,"微軟正黑體","");
+  My_Div.Set_Text(header_title_text ,"我不要這頁" , TextAlignEnum.LEFT , "24px", true,"微軟正黑體","");
   header_title_text.className = "h1";
   header_title_text.id = "header_title_text";
   header_title_text.style.marginLeft = "20px";
@@ -251,7 +251,7 @@ function getNoDataDiv()
 
 
   NoData_Text = document.createElement("div");
-  NoData_Text.innerText = "今日無驗收單,請搜尋或創建新單號!";
+  NoData_Text.innerText = "今日無盤點單,請搜尋或創建新單號!";
   NoData_Text.style.width = "100%"
   NoData_Text.style.textAlign = "center";
   NoData_Text.style.backgroundColor = "";

@@ -7,11 +7,13 @@ var ipadress2 = 'http://www.ketech.tw:4436';
 var api_ip = `${ipadress1}/`; 
 var Chat_url = `${api_ip}chatHub`;
 var MessageAPI_url = `${api_ip}api/Message`;
+var inspection_url = `${api_ip}api/inspection`;
 var inventory_url = `${api_ip}api/inventory`;
 var transactions_url = `${api_ip}api/transactions`;
 var consumption_url = `${api_ip}api/consumption`;
 var device_url = `${api_ip}api/device`;
 var session_url = `${api_ip}api/session`;
+var session_login_url = ``;
 
 async function LoadAPIServer()
 {
@@ -20,6 +22,10 @@ async function LoadAPIServer()
   const API_Session = serch_APIServer("Main","網頁" ,"API_Session");
   session_url = `${API_Session[0].server}/api/session`;
   console.log("session_url",session_url);
+
+  const API_Session_Login = serch_APIServer("Main","網頁" ,"API_Login");
+  session_login_url = `${API_Session_Login[0].server}`;
+  console.log("session_login_url",session_login_url);
   return APIServer;
 }
 function serch_APIServer(name ,type, content)
@@ -53,6 +59,7 @@ async function check_ip(ip0 , ip1)
         console.log("成功設定IP : " ,api_ip_temp);
 
         inventory_url = `${api_ip_temp}api/inventory`;
+        inspection_url = `${api_ip_temp}api/inspection`;
         transactions_url = `${api_ip_temp}api/transactions`;
         device_url = `${api_ip_temp}api/device`;
         consumption_url = `${api_ip_temp}api/consumption`;
@@ -155,10 +162,6 @@ else if(Target == Enum_Target.Phar)
     BalsicDeviceTableName = Enum_BasicDeviceTableName.Phar;
 }
 
-var inspection_get_url = 'http://103.1.221.188:4433/api/inspection';
-var inspection_update_post_url = 'http://103.1.221.188:4433/api/inspection/update';
-var inspection_get_od_Date = 'http://103.1.221.188:4433/api/inspection/get_od_Date';
-var inspection_download_excel = 'http://103.1.221.188:4433/api/inspection/download_excel';
 
 
 

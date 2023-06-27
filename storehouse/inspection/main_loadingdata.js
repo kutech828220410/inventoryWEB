@@ -1,4 +1,6 @@
 var device_buf =[];
+var NumOfRow = 0;
+var rowHeight = 145;
 window.onresize = function() 
 {
     const device = checkDeviceType();
@@ -14,6 +16,7 @@ window.onresize = function()
                 row_div[i].style.width = "100%";
             }
             device_buf = device;
+            NumOfRow = 1;
         }      
     
     }
@@ -27,8 +30,25 @@ window.onresize = function()
         {
             row_div[i].style.width = `${row_width}px`;
         }
+        NumOfRow = temp;
     }
-    
+    Set_rowTotalHeight();
+}
+function Set_rowTotalHeight()
+{
+    const row_div = document.querySelectorAll(".row_div");
+  
+    var temp = 0;
+    for(var i = 0 ; i < row_div.length ; i++)
+    {
+        if(row_div[i].style.visibility != "hidden")temp++;
+    }
+    var num =  temp / NumOfRow;
+    if((temp % NumOfRow) != 0) num++;
+    const main_div = document.querySelector('#main_div');
+    const height = `${(num * rowHeight) + 100}`;
+    main_div.style.height = `${height}px`;
+    if(height > screenHeight) main_div.style.height = "110%";    
 }
 function row_div_onclick(event)
 {
@@ -80,14 +100,16 @@ function creat_row_div(_index , Contents)
     if(device == DeviceType.MOBILE) 
     {
         row_div.style.width = "100%";
+        NumOfRow = 1;
     }
     if(device == DeviceType.COMPUTER)
     {
         const temp = Math.floor(screenWidth / 300);
         const row_width = screenWidth / temp - 20;
         row_div.style.width = `${row_width}px`;
+        NumOfRow = temp;
     } 
-    row_div.style.height= "145px";
+    row_div.style.height= `${rowHeight}px`;
     row_div.style.border = "1px solid gray";
     row_div.style.flexDirection = "column";
     row_div.style.margin = "1px";
@@ -179,6 +201,24 @@ function get_block1_div(_index, item)
     skdiacode_div.style.width = "100%";
     skdiacode_div.style.height= "20px";
 
+    //廠牌
+    const brand_div = document.createElement("div");
+    brand_div.className = "brand_div"; 
+    brand_div.id = `brand_div${_index}`;
+    if(item.PON == null || item.PON == "")
+    {
+        brand_div.innerText = `廠牌：無`;
+    }
+    else brand_div.innerText = `廠牌：${item.PON}`;
+    brand_div.style.color = "hotpink";
+    brand_div.style.fontWeight = "bolder";
+    brand_div.style.paddingLeft = "5px";
+    brand_div.style.display = "flex";
+    brand_div.style.justifyContent = "flex-start";
+    brand_div.style.alignItems = "center";
+    brand_div.style.width = "100%";
+    brand_div.style.height= "20px";
+
     //理論與實際值
     const Start_QTY_End_QTY_div = document.createElement("div");
     Start_QTY_End_QTY_div.className = "Start_QTY_End_QTY_div";
@@ -206,7 +246,7 @@ function get_block1_div(_index, item)
     const Start_QTY_text = document.createElement("div");
     Start_QTY_text.className = "Start_QTY_text"; 
     Start_QTY_text.id = `Start_QTY_text${_index}`;
-    Start_QTY_text.innerText = `理論值：`;
+    Start_QTY_text.innerText = `應收數量：`;
     Start_QTY_text.style.fontWeight = "bolder";
     // Start_QTY_text.style.display = "flex";
     // Start_QTY_text.style.justifyContent = "flex-start";
@@ -245,7 +285,7 @@ function get_block1_div(_index, item)
     const End_QTY_text = document.createElement("div");
     End_QTY_text.className = "End_QTY_text"; 
     End_QTY_text.id = `End_QTY_text${_index}`;
-    End_QTY_text.innerText = `驗收量：`;
+    End_QTY_text.innerText = `實收數量：`;
     End_QTY_text.style.fontWeight = "bolder";
     End_QTY_text.style.alignItems = "center";
     End_QTY_text.style.textAlign = "left";
@@ -279,7 +319,7 @@ function get_block1_div(_index, item)
     drugInfo_div.appendChild(IC_SN_div);
     drugInfo_div.appendChild(code_div);
     drugInfo_div.appendChild(skdiacode_div);
-
+    drugInfo_div.appendChild(brand_div);
 
     Block1_div.appendChild(drugInfo_div);
     Block1_div.appendChild(Start_QTY_End_QTY_div);

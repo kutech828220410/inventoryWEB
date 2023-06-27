@@ -80,7 +80,6 @@ function confirm_popup_serch()
     finally
     {
         hide_popup_serch();
-        Set_rowTotalHeight();
     }
 }
 function popup_serch_ByStartWith()

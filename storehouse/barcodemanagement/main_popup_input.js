@@ -23,17 +23,7 @@ function show_popup_input(Content , page_Initial)
     const END_QTY_input = document.querySelector('#END_QTY_input_popup_input');
     END_QTY_input.focus();
     if(popup_input_div_Content != undefined) light_device_by_Code(popup_input_div_Content.CODE, get_loggedColor());
-    serch_VAL_input_N_Click();
-    console.log("Content",Content);
-
-    var _START_QTY = parseInt(Content.START_QTY);
-    var _END_QTY = parseInt(Content.END_QTY);
-    const QTY  = _START_QTY - _END_QTY;
-    console.log("QTY",QTY);
-    if(QTY > 0)
-    {
-        END_QTY_input.value = QTY;
-    }
+ 
 }
 function hide_popup_input()
 {
@@ -57,30 +47,17 @@ function previous_page_popup_input()
 async function confirm_popup_input()
 {
     const END_QTY_input = document.querySelector('#END_QTY_input_popup_input');
-    const LOT_input_popup_input = document.querySelector('#LOT_input_popup_input');
-    const VAL_input_popup_input = document.querySelector('#VAL_input_popup_input');
     if(!END_QTY_input.value) return;
     if(isNaN(END_QTY_input.value))
     {
         alert("請輸入數量");
         return;
     }
-    if(!VAL_input_popup_input.value)
-    {
-        alert("請輸入效期");
-        return;
-    }
-
     const GUID = popup_input_div_Content.GUID;
     const END_QTY = END_QTY_input.value;
-    const VAL = VAL_input_popup_input.value;
-    const LOT = LOT_input_popup_input.value;
-    
     END_QTY_input.value = '';
-    LOT_input_popup_input.value = '';
-    VAL_input_popup_input.value = '';
     const OP = loging_name;
-    sub_content_add(GUID , END_QTY , OP, VAL, LOT);
+    sub_content_add(GUID , END_QTY , OP);
     hide_popup_input();
     
 }
@@ -127,23 +104,10 @@ function edit_title_popup_input(Content)
     {
         med_SKDIACODE_text.innerText = `料號 : ${Content.SKDIACODE}`;
     }
-    const med_BRAND_text = document.querySelector('#med_BRAND_text_popup_input');
-    if(Content.PON == "")
-    {
-        med_BRAND_text.innerText = `廠牌 : 無`;
-    }
-    else
-    {
-        med_BRAND_text.innerText = `廠牌 : ${Content.PON}`;
-    }
     const med_eng_name_text = document.querySelector('#med_eng_name_text_popup_input');
     if(Content.NAME != null)med_eng_name_text.innerText = `(英) : ${Content.NAME}`;
     const med_cht_name_text = document.querySelector('#med_cht_name_text_popup_input');
     if(Content.CHT_NAME != null) med_cht_name_text.innerText = `(中) : ${Content.CHT_NAME}`;
-    const med_start_QTY_text = document.querySelector('#med_start_QTY_text_popup_input');
-    med_start_QTY_text.innerText = `應收數量 : ${Content.START_QTY}`;
-    const med_end_QTY_text = document.querySelector('#med_end_QTY_text_popup_input');
-    med_end_QTY_text.innerText = `實收數量 : ${Content.END_QTY}`;
 }
 function edit_rows_popup_input(Content)
 {
@@ -193,7 +157,7 @@ function get_title_popup_input()
 
     const title_text = document.createElement('div');
     My_Div.Init(title_text, 'title_text_popup_input','title_text_popup_input', '100%', '40px', 'gray');
-    My_Div.Set_Text(title_text ,"驗收資訊" , TextAlignEnum.CENTER , "24px", true,"微軟正黑體","white");
+    My_Div.Set_Text(title_text ,"國際條碼資訊" , TextAlignEnum.CENTER , "24px", true,"微軟正黑體","white");
     title_text.style.borderRadius = "5px";
     title_div.appendChild(title_text);
 
@@ -235,13 +199,9 @@ function get_title_popup_input()
     const med_SKDIACODE_text = document.createElement('div');
     My_Div.Init(med_SKDIACODE_text,'med_SKDIACODE_text_popup_input','med_SKDIACODE_text_popup_input', '50%',"100%");
     My_Div.Set_Text(med_SKDIACODE_text ,"料號 : XXXXX" , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","black");
-    const med_BRAND_text = document.createElement('div');
-    My_Div.Init(med_BRAND_text,'med_BRAND_text_popup_input','med_BRAND_text_popup_input', '100%',"30%");
-    My_Div.Set_Text(med_BRAND_text ,"廠牌 : XXXXXXXXXXXXX" , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","blue");
-    med_BRAND_text.style.marginLeft = "5px";
+    med_SKDIACODE_text.style.marginLeft = "5px";
     med_CODE_SKDIACODE_block.appendChild(med_CODE_text);
     med_CODE_SKDIACODE_block.appendChild(med_SKDIACODE_text);
-
 
     const med_eng_name_text = document.createElement('div');
     My_Div.Init(med_eng_name_text,'med_eng_name_text_popup_input','med_eng_name_text_popup_input', '100%',"30%",'');
@@ -257,21 +217,7 @@ function get_title_popup_input()
     My_Div.Init(med_start_end_QTY_block, 'med_start_end_QTY_block_popup_input','med_start_end_QTY_block_popup_input', '100%',"20%",'');
     My_Div.Set_Block(med_start_end_QTY_block, DisplayEnum.FLEX, FlexDirectionEnum.ROW,JustifyContentEnum.LEFT)
 
-    const med_start_QTY_text = document.createElement('div');
-    My_Div.Init(med_start_QTY_text,'med_start_QTY_text_popup_input','med_start_QTY_text_popup_input', '50%',"100%" , '');
-    My_Div.Set_Text(med_start_QTY_text ,"應收數量 : 0" , TextAlignEnum.LEFT , "15px", true,"微軟正黑體","black");
-    med_start_QTY_text.style.marginLeft = "5px";
-    const med_end_QTY_text = document.createElement('div');
-    My_Div.Init(med_end_QTY_text,'med_end_QTY_text_popup_input','med_end_QTY_text_popup_input', '50%',"100%" , '');
-    My_Div.Set_Text(med_end_QTY_text ,"實收數量 : 0" , TextAlignEnum.LEFT , "15px", true,"微軟正黑體","black");
-    med_end_QTY_text.style.marginLeft = "5px";
-
-    med_start_end_QTY_block.appendChild(med_start_QTY_text);
-    med_start_end_QTY_block.appendChild(med_end_QTY_text);
-    med_start_end_QTY_block.style.marginBottom = "10px";
-
     med_info.appendChild(med_CODE_SKDIACODE_block);
-    med_info.appendChild(med_BRAND_text);
     med_info.appendChild(med_eng_name_text);
     med_info.appendChild(med_cht_name_text);
     med_info.appendChild(med_start_end_QTY_block);
@@ -324,7 +270,7 @@ function get_underline_popup_input()
     underline_div.style.alignItems = "center";
 
     const svg_confirm_SVG = Get_confirm_SVG("40px","100%" ,"60%","100%","green");
-    My_Div.Init(svg_confirm_SVG, 'svg_confirm_SVG_popup_input','svg_confirm_SVG_popup_input', '60px', '100%', '');
+    My_Div.Init(svg_confirm_SVG, 'svg_confirm_SVG_popup_input','svg_confirm_SVG_popup_input', '40px', '40px', '');
     svg_confirm_SVG.style.border = "1px solid gray";
     svg_confirm_SVG.style.borderRadius = "3px";
     svg_confirm_SVG.style.marginRight = "5px";
@@ -332,34 +278,26 @@ function get_underline_popup_input()
     {
         confirm_popup_input();
     });
-    const END_input_div = document.createElement('div');
-    My_Div.Init(END_input_div, 'END_input_div_popup_input','END_input_div_popup_input', '90%','100%','');
-    My_Div.Set_Block(END_input_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-
-    const DATE_LOT_div = document.createElement('div');
-    My_Div.Init(DATE_LOT_div, 'DATE_LOT_div_popup_input','DATE_LOT_div_popup_input', '70%','100%','');
-    My_Div.Set_Block(DATE_LOT_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
+    const END_QTY_input_div = document.createElement('div');
+    My_Div.Init(END_QTY_input_div, 'END_QTY_input_div_popup_input','END_QTY_input_div_popup_input', '90%','100%','');
+    My_Div.Set_Block(END_QTY_input_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   
   
     const END_QTY_input = document.createElement('input');
-    My_Div.Init(END_QTY_input, 'END_QTY_input_popup_input','END_QTY_input_popup_input', '30%','100%','');
-    My_Div.Set_Text(END_QTY_input, ``, TextAlignEnum.CENTER, "20px", true,"微軟正黑體","black");
+    My_Div.Init(END_QTY_input, 'END_QTY_input_popup_input','END_QTY_input_popup_input', '100%','80%','');
+    My_Div.Set_Text(END_QTY_input, ``, TextAlignEnum.CENTER, "22px", true,"微軟正黑體","black");
     END_QTY_input.readOnly = false;
     END_QTY_input.type = "number";
     END_QTY_input.inputMode = "numeric";
     END_QTY_input.style.backgroundColor = "";
-    END_QTY_input.style.borderRadius = "2px";
-    // END_QTY_input.style.marginLeft = "10px";
-    END_QTY_input.style.marginRight = "5px";
-    END_QTY_input.placeholder = '數量';
+    END_QTY_input.style.borderRadius = "5px";
+    END_QTY_input.style.marginLeft = "10px";
+    END_QTY_input.style.marginRight = "10px";
+    END_QTY_input.placeholder = "請掃國際條碼後打勾";
     END_QTY_input.onfocus = function()
     {
-       this.select();
+       //this.select();        
     };
-
-    END_QTY_input.addEventListener("click", function(event)
-    {
-    });
     END_QTY_input.addEventListener("keydown", function(event)
      {
         if (event.keyCode === 13 || event.key === "Enter") 
@@ -369,39 +307,11 @@ function get_underline_popup_input()
     });
     END_QTY_input.addEventListener("blur", function(event)
     {
-     
+           confirm_popup_input();
     });
+    END_QTY_input_div.appendChild(END_QTY_input);
 
-    const END_LOT_input = document.createElement('input');
-    My_Div.Init(END_LOT_input, 'LOT_input_popup_input','LOT_input_popup_input', '95%','90%','');
-    My_Div.Set_Text(END_LOT_input, ``, TextAlignEnum.CENTER, "16px", true,"微軟正黑體","black");
-    END_LOT_input.readOnly = false;
-    END_LOT_input.type = "email";
-    END_LOT_input.inputMode = "latin";
-    END_LOT_input.style.backgroundColor = "";
-    END_LOT_input.style.borderRadius = "5px";
-    // END_LOT_input.style.marginLeft = "10px";
-    END_LOT_input.style.marginRight = "5px";
-    END_LOT_input.placeholder = "輸入批號";
-
-    const VAL_input = document.createElement('input');
-    My_Div.Init(VAL_input, 'VAL_input_popup_input','VAL_input_popup_input', '95%','90%','');
-    My_Div.Set_Text(VAL_input, ``, TextAlignEnum.CENTER, "16px", true,"微軟正黑體","black");
-    VAL_input.readOnly = false;
-    VAL_input.type = "email";
-    VAL_input.inputMode = "latin";
-    VAL_input.style.backgroundColor = "";
-    VAL_input.style.borderRadius = "5px";
-    // VAL_input.style.marginLeft = "10px";
-    VAL_input.style.marginRight = "5px";
-    VAL_input.placeholder = "輸入效期";
-
-    DATE_LOT_div.appendChild(VAL_input);
-    DATE_LOT_div.appendChild(END_LOT_input);
-    END_input_div.appendChild(DATE_LOT_div);
-    END_input_div.appendChild(END_QTY_input);
-
-    underline_div.appendChild(END_input_div);
+    underline_div.appendChild(END_QTY_input_div);
     underline_div.appendChild(svg_confirm_SVG);
 
     return underline_div;
@@ -409,7 +319,7 @@ function get_underline_popup_input()
 function get_row_popup_input(Sub_content)
 {
     const row = document.createElement('div');
-    My_Div.Init(row, 'row_popup_input','row_popup_input', '95%','130px');
+    My_Div.Init(row, 'row_popup_input','row_popup_input', '95%','115px');
     My_Div.Set_Block(row, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.TOP);
     if(Sub_content != undefined)
     {
@@ -426,51 +336,63 @@ function get_row_popup_input(Sub_content)
     row.style.boxShadow = '1px 1px 2px 2px black';
     return row;
 }
-
 function get_block1_popup_input(Sub_content)
 {
-    
     const block1 = document.createElement('div');
     My_Div.Init(block1, 'block1_popup_input','block1_popup_input', '100%','60px');
-    My_Div.Set_Block(block1, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
+    My_Div.Set_Block(block1, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
     block1.style.marginTop = "5px";
 
+    const block1_barcodenum = document.createElement('div');
+    My_Div.Init(block1_barcodenum, 'block1_barcodenum_popup_input','block1_barcodenum_popup_input', '120px','20px');
+    My_Div.Set_Block(block1_barcodenum, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+    My_Div.Set_Text(block1_barcodenum, `1234567899990`, TextAlignEnum.CENTER, "12px", true,"微軟正黑體","black" );
+    block1_barcodenum.style.letterSpacing = "0.2em";
 
-    const block1_info_div = document.createElement('div');
-    My_Div.Init(block1_info_div, 'block1_info_div_popup_input','block1_info_div_popup_input', '100%',"100%");
-    My_Div.Set_Block(block1_info_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN,JustifyContentEnum.RIGHT);
-   
-    var trashBox_SVG = Get_trashBox_SVG("40px", "60%", "100%","100%","red","");
-    trashBox_SVG.style.borderRadius = '3px';
-    trashBox_SVG.style.border = '1px solid gray';
-    trashBox_SVG.style.marginTop = '-25px';
-    trashBox_SVG.style.marginRight = '3px';
-    trashBox_SVG.onclick = function()
+    var barcodeCanvas = document.createElement("img");
+    if(!isDesktop) 
     {
-        delete_row_popup_input(Sub_content.GUID,Sub_content.Master_GUID);
-    };
-    const block1_user_text = document.createElement('div');
-    My_Div.Init(block1_user_text, 'block1_user_text_popup_input','block1_user_text_popup_input', '100%',"100%" , '');
-    My_Div.Set_Text(block1_user_text, `驗收人 : ${Sub_content.OP}`, TextAlignEnum.LEFT, "14px", true,"微軟正黑體","black" );
-    block1_user_text.style.marginLeft = "5px";
+        barcodeCanvas = document.createElement("img");
+        barcodeCanvas.style.width = "120px";
+        barcodeCanvas.style.height= "50px";
+        barcodeCanvas.id = `barcodeCanvas`;
+        barcodeCanvas.className = `barcodeCanvas`;
+        var Barcode= "";
+        if(Barcode == "")Barcode = Sub_content.BARCODE1;
+        if(Barcode == "")Barcode = Sub_content.BARCODE2;
+        if(Barcode == "")Barcode = Sub_content.SKDIACODE;
+        if(Barcode == "")Barcode = Sub_content.CODE;
+        JsBarcode(barcodeCanvas, Barcode, {
+          format: "code128",
+          width: "1",
+          height: "1",
+          displayValue: false,
+          margin: 0,
+        });
+    }
+    if(isDesktop) 
+    {
+        barcodeCanvas = document.createElement("canvas");
+        barcodeCanvas.style.width = "120px";
+        barcodeCanvas.style.height= "50px";
+        barcodeCanvas.id = `barcodeCanvas`;
+        barcodeCanvas.className = `barcodeCanvas`;
+        var Barcode= "";
+        if(Barcode == "")Barcode = Sub_content.BARCODE1;
+        if(Barcode == "")Barcode = Sub_content.BARCODE2;
+        if(Barcode == "")Barcode = Sub_content.SKDIACODE;
+        if(Barcode == "")Barcode = Sub_content.CODE;
+        JsBarcode(barcodeCanvas, Barcode, {
+          format: "code128",
+          width: "1",
+          height: "1",
+          displayValue: false,
+          margin: 0,
+        });
+    }
 
-    const block1_LOT_text = document.createElement('div');
-    My_Div.Init(block1_LOT_text, 'block1_LOT_text_popup_input','block1_LOT_text_popup_input', '100%',"100%" , '');
-    My_Div.Set_Text(block1_LOT_text, `批號 : ${Sub_content.LOT}`, TextAlignEnum.LEFT, "18px", true,"微軟正黑體","black" );
-    block1_LOT_text.style.marginLeft = "5px";
-
-    const block1_DATE_text = document.createElement('div');
-    My_Div.Init(block1_DATE_text, 'block1_DATE_text_popup_input','block1_DATE_text_popup_input', '100%',"100%" , '');
-    My_Div.Set_Text(block1_DATE_text, `效期 : ${Sub_content.VAL}`, TextAlignEnum.LEFT, "18px", true,"微軟正黑體","black" );
-    block1_DATE_text.style.marginLeft = "5px";
-
-    block1_info_div.appendChild(block1_user_text);
-    block1_info_div.appendChild(block1_LOT_text);
-    block1_info_div.appendChild(block1_DATE_text);
-   
-
-    block1.appendChild(block1_info_div);
-    block1.appendChild(trashBox_SVG);
+    block1.appendChild(barcodeCanvas);
+    block1.appendChild(block1_barcodenum);
     return block1;
 }
 function get_block2_popup_input(Sub_content)
@@ -478,60 +400,31 @@ function get_block2_popup_input(Sub_content)
     const block2 = document.createElement('div');
     My_Div.Init(block2, 'block2_popup_input','block2_popup_input', '100%','40px' , '');
     My_Div.Set_Block(block2, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
-    block2.style.marginTop = "15px";
+    block2.style.marginTop = "5px";
     block2.style.alignItems = "center";
 
     const block2_Date = document.createElement('div');
     My_Div.Init(block2_Date, 'block2_Date_popup_input','block2_Date_popup_input', '85%',"100%");
-    My_Div.Set_Text(block2_Date, `驗收時間 : \n ${Sub_content.OP_TIME}`, TextAlignEnum.LEFT, "13px", true,"微軟正黑體","black" );
+    My_Div.Set_Text(block2_Date, `建立時間 : \n ${Sub_content.OP_TIME}`, TextAlignEnum.LEFT, "13px", true,"微軟正黑體","black" );
     block2_Date.style.marginLeft = "5px";
 
     const block2_Value = document.createElement('div');
-    My_Div.Init(block2_Value, 'block2_Value_popup_input','block2_Value_popup_input', '50%',"70%");
-    My_Div.Set_Block(block2_Value, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
+    My_Div.Init(block2_Value, 'block2_Value_popup_input','block2_Value_popup_input', '50%',"100%");
+    My_Div.Set_Block(block2_Value, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
     block2_Value.style.marginLeft = "5px";
-    block2_Value.style.marginRight = "10px";
 
-    const block2_Value_text = document.createElement('div');
-    My_Div.Init(block2_Value_text, 'block2_Value_text_popup_input','block2_Value_text_popup_input', '30px',"100%" ,'white');
-    My_Div.Set_Text(block2_Value_text, "數量", TextAlignEnum.LEFT, "13.5px", true,"微軟正黑體","black");
-    const block2_Value_input = document.createElement('input');
-    My_Div.Init(block2_Value_input, 'block2_Value_input_popup_input','block2_Value_input_popup_input', '80%',"100%" ,'');
-    My_Div.Set_Text(block2_Value_input, `${Sub_content.END_QTY}`, TextAlignEnum.RIGHT, "16px", true,"微軟正黑體","black");
-    block2_Value_input.readOnly = true;
-    block2_Value_input.value = Sub_content.END_QTY;
-    block2_Value_input.type = "number";
-    block2_Value_input.inputMode = "numeric";
-    block2_Value_input.style.backgroundColor = "lightgray";
-    block2_Value_input.style.borderRadius = "5px";
+    var trashBox_SVG = Get_trashBox_SVG("50px", "100%", "80%","100%","red","");
+    trashBox_SVG.style.borderRadius = '3px';
+    trashBox_SVG.style.border = '1px solid gray';
+    trashBox_SVG.style.marginRight = '3px';
+    trashBox_SVG.onclick = function()
+    {
+        delete_row_popup_input(Sub_content.GUID,Sub_content.Master_GUID);
+    };
 
-    block2_Value.appendChild(block2_Value_text);
-    block2_Value.appendChild(block2_Value_input);
+
+    block2_Value.appendChild(trashBox_SVG);
     block2.appendChild(block2_Date);
     block2.appendChild(block2_Value);
     return block2;
 }
-function serch_VAL_input_Y_Click()
-{
-    // const serch_VAL_input_Y_Click = document.querySelector("#serch_VAL_input_Y_Click");
-    // serch_VAL_input_Y_Click.value = "";
-}
-function serch_VAL_input_N_Click()
-{
-    const serch_VAL_input_Y_Click = document.querySelector("#VAL_input_popup_input");
-    serch_VAL_input_Y_Click.value = "";
-}
-$(function()
-{
-     $('.VAL_input_popup_input').focus(function(event) 
-     {
-       /* Act on the event */
-       $(this).date(
-       {
-         theme:'date',
-         beginyear : 2022,
-         curdate:false
-       },serch_VAL_input_Y_Click,serch_VAL_input_N_Click);
-     });
-
-}) ;

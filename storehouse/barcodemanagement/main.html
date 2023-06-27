@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>盤點操作頁面</title>
+  <title>條碼建置操作頁面</title>
   <link rel="stylesheet" href="main.css">
   <script src="../../ApiURL.js"></script>
   <script src="../../ChatHub.js"></script>
@@ -16,11 +16,10 @@
   <script src="../../session_check.js"></script>
   <script src="../../session.js"></script>
 
+  <script src="main.js"></script>
   <script src="main_loadingdata.js"></script>
   <script src="main_popup_input.js"></script>
   <script src="main_popup_serch.js"></script>
-  <script src="main.js"></script>
-
   <script src="jsonFunc.js"></script>
   
 </head>
@@ -72,7 +71,6 @@
     // 監聽頁面的keydown事件
   window.addEventListener('keydown', function(event) 
   {
-    if(document.body.style.overflow != "") return;1
     // 判斷按下的按鍵是否是Tab鍵或Enter鍵
     console.log(event.key);
 

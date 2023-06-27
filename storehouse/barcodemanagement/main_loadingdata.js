@@ -1,6 +1,4 @@
 var device_buf =[];
-var NumOfRow = 0;
-var rowHeight = 145;
 window.onresize = function() 
 {
     const device = checkDeviceType();
@@ -10,7 +8,6 @@ window.onresize = function()
     { 
         if(device != device_buf)
         {
-            NumOfRow = 1;
             const row_div = document.querySelectorAll(".row_div");
             for(var i = 0 ; i < row_div.length ; i++)
             {
@@ -26,14 +23,11 @@ window.onresize = function()
         const temp = Math.floor(screenWidth / 300);
         const row_width = screenWidth / temp - 20;
         const row_div = document.querySelectorAll(".row_div");
-        NumOfRow = temp;
         for(var i = 0 ; i < row_div.length ; i++)
         {
             row_div[i].style.width = `${row_width}px`;
         }
     }
-   
-    Set_rowTotalHeight();
     
 }
 function row_div_onclick(event)
@@ -69,22 +63,6 @@ function Replace_data_by_content(creat , content)
     }
     edit_herader_view_QTY();
 }
-function Set_rowTotalHeight()
-{
-    const row_div = document.querySelectorAll(".row_div");
-  
-    var temp = 0;
-    for(var i = 0 ; i < row_div.length ; i++)
-    {
-        if(row_div[i].style.visibility != "hidden")temp++;
-    }
-    var num =  temp / NumOfRow;
-    if((temp % NumOfRow) != 0) num++;
-    const main_div = document.querySelector('#main_div');
-    const height = `${(num * rowHeight) + 100}`;
-    main_div.style.height = `${height}px`;
-    if(height > screenHeight) main_div.style.height = "110%";    
-}
 function creat_row_div(_index , Contents) 
 {
     const row_div = document.createElement("div");
@@ -102,16 +80,14 @@ function creat_row_div(_index , Contents)
     if(device == DeviceType.MOBILE) 
     {
         row_div.style.width = "100%";
-        NumOfRow = 1;
     }
     if(device == DeviceType.COMPUTER)
     {
         const temp = Math.floor(screenWidth / 300);
         const row_width = screenWidth / temp - 20;
         row_div.style.width = `${row_width}px`;
-        NumOfRow = temp;
     } 
-    row_div.style.height= `${rowHeight}px`;
+    row_div.style.height= "145px";
     row_div.style.border = "1px solid gray";
     row_div.style.flexDirection = "column";
     row_div.style.margin = "1px";
@@ -203,102 +179,28 @@ function get_block1_div(_index, item)
     skdiacode_div.style.width = "100%";
     skdiacode_div.style.height= "20px";
 
-    //理論與實際值
-    const Start_QTY_End_QTY_div = document.createElement("div");
-    Start_QTY_End_QTY_div.className = "Start_QTY_End_QTY_div";
-    Start_QTY_End_QTY_div.id = `Start_QTY_End_QTY_div${_index}`;
-    Start_QTY_End_QTY_div.style.display = "flex";
-    Start_QTY_End_QTY_div.style.justifyContent = "top";
-    Start_QTY_End_QTY_div.style.flexDirection = "row";
-    Start_QTY_End_QTY_div.style.width = "50%";
-    Start_QTY_End_QTY_div.style.height= "100%";
-    Start_QTY_End_QTY_div.style.marginTop = "5px";
-    Start_QTY_End_QTY_div.style.marginRight = "10px";
-    //理論值
-    const Start_QTY_div = document.createElement("div");
-    Start_QTY_div.className = "Start_QTY_div"; 
-    Start_QTY_div.id = `Start_QTY_div${_index}`;
-    Start_QTY_div.style.display = "flex-direction";
-    Start_QTY_div.style.flexWrap = "wrap";
-    Start_QTY_div.style.justifyContent = "top";
-    Start_QTY_div.style.direction = "column";
-    Start_QTY_div.style.alignItems = "center";
-    Start_QTY_div.style.width = "100%";
-    Start_QTY_div.style.height= "100%";
-    Start_QTY_div.style.marginRight = "3px";
-
-    const Start_QTY_text = document.createElement("div");
-    Start_QTY_text.className = "Start_QTY_text"; 
-    Start_QTY_text.id = `Start_QTY_text${_index}`;
-    Start_QTY_text.innerText = `理論值：`;
-    Start_QTY_text.style.fontWeight = "bolder";
-    // Start_QTY_text.style.display = "flex";
-    // Start_QTY_text.style.justifyContent = "flex-start";
-    Start_QTY_text.style.alignItems = "center";
-    Start_QTY_text.style.width = "100%";
-    Start_QTY_text.style.height= "20px";
-    const Start_QTY_input = document.createElement("div");
-    Start_QTY_input.className = "Start_QTY_input"; 
-    Start_QTY_input.id = `Start_QTY_input${_index}`;
-    Start_QTY_input.innerText = `${item.START_QTY}`;
-    Start_QTY_input.style.textAlign = "right";
-    Start_QTY_input.style.fontWeight = "bolder";
-    Start_QTY_input.style.display = "flex";
-    Start_QTY_input.style.justifyContent = "right";
-    Start_QTY_input.style.alignItems = "center";
-    Start_QTY_input.style.paddingRight ="10px";
-    Start_QTY_input.style.width = "85%";
-    Start_QTY_input.style.height= "40px";
-    Start_QTY_input.style.borderRadius = "3px";
-    Start_QTY_input.style.backgroundColor = "lightgray";
-    Start_QTY_input.style.border = "1px solid";
-
-    Start_QTY_div.appendChild(Start_QTY_text);
-    Start_QTY_div.appendChild(Start_QTY_input);
-    //盤點量
-    const End_QTY_div = document.createElement("div");
-    End_QTY_div.className = "End_QTY_div"; 
-    End_QTY_div.id = `End_QTY_div${_index}`;
-    End_QTY_div.style.display = "flex-direction";
-    End_QTY_div.style.flexWrap = "wrap";
-    End_QTY_div.style.justifyContent = "top";
-    End_QTY_div.style.direction = "column";
-    End_QTY_div.style.alignItems = "center";
-    End_QTY_div.style.width = "100%";
-    End_QTY_div.style.height= "100%";
-    const End_QTY_text = document.createElement("div");
-    End_QTY_text.className = "End_QTY_text"; 
-    End_QTY_text.id = `End_QTY_text${_index}`;
-    End_QTY_text.innerText = `盤點量：`;
-    End_QTY_text.style.fontWeight = "bolder";
-    End_QTY_text.style.alignItems = "center";
-    End_QTY_text.style.textAlign = "left";
-    End_QTY_text.style.width = "100%";
-    End_QTY_text.style.height= "20px";
-
+    //國際條碼是否建置
     const End_QTY_input = document.createElement("div");
-    End_QTY_input.className = "End_QTY_input"; 
+    My_Div.Set_Block(End_QTY_input, DisplayEnum.FLEX, FlexDirectionEnum.ROW,JustifyContentEnum.CENTER)
+    My_Div.Set_Text(End_QTY_input ,`${item.END_QTY}` , TextAlignEnum.CENTER , "26px", true,"微軟正黑體","black");
     End_QTY_input.id = `End_QTY_input${_index}`;
-    End_QTY_input.innerText = `${item.END_QTY}`;
-    End_QTY_input.style.textAlign = "right";
     End_QTY_input.style.fontWeight = "bolder";
-    End_QTY_input.style.display = "flex";
-    End_QTY_input.style.justifyContent = "right";
     End_QTY_input.style.alignItems = "center";
-    End_QTY_input.style.paddingRight ="10px";
-    End_QTY_input.style.width = "85%";
-    End_QTY_input.style.height= "40px";
+    End_QTY_input.style.width = "100%";
+    End_QTY_input.style.height= "60px";
     End_QTY_input.style.borderRadius = "3px";
-    End_QTY_input.style.backgroundColor = "white";
+    End_QTY_input.style.backgroundColor = "lightgray";
     End_QTY_input.style.border = "1px solid";
 
+    //是否為建置
+    if (item.END_QTY == 0) {
+        End_QTY_input.innerText = '未建置';
+      } else if (item.END_QTY > 0) {
+        End_QTY_input.innerText = '已建置';
+        End_QTY_input.style.backgroundColor = "white";
+      }
 
-    End_QTY_div.appendChild(End_QTY_text);
-    End_QTY_div.appendChild(End_QTY_input);
-
-    Start_QTY_End_QTY_div.appendChild(Start_QTY_div);
-    Start_QTY_End_QTY_div.appendChild(End_QTY_div);
-
+    // End_QTY_div.appendChild(End_QTY_input);
 
     drugInfo_div.appendChild(IC_SN_div);
     drugInfo_div.appendChild(code_div);
@@ -306,7 +208,7 @@ function get_block1_div(_index, item)
 
 
     Block1_div.appendChild(drugInfo_div);
-    Block1_div.appendChild(Start_QTY_End_QTY_div);
+    Block1_div.appendChild(End_QTY_input);
     return Block1_div;
 }
 function get_block2_div(_index, item)

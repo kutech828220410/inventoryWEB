@@ -66,7 +66,7 @@ function page_Init(data)
   //   console.log(NoDataDiv);
   //   main_div.appendChild(NoDataDiv);
   // }
-
+  Set_rowTotalHeight();
   setUserText();
 }
 function Set_main_div_enable(value) 

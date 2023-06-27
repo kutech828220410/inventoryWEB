@@ -71,6 +71,7 @@
     // 監聽頁面的keydown事件
   window.addEventListener('keydown', function(event) 
   {
+    if(document.body.style.overflow != "") return;
     // 判斷按下的按鍵是否是Tab鍵或Enter鍵
     console.log(event.key);
 

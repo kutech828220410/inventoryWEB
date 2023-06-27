@@ -36,9 +36,10 @@ async function orderpicking_Click()
   console.log("orderpicking");
 }
 
-async function settingbarcode_Click()
+async function barcodemanagement_Click()
 {
   console.log("orderpicking");
+  location.href = "../../storehouse/barcodemanagement/frontpage.html";
 }
 
 
@@ -129,14 +130,14 @@ function get_main()
   const inspection_div = get_inspection();
   const inventory_div = get_inventory();
   const orderpicking_div = get_orderpicking();
-  const settingbarcode_div = get_settingbarcode();
+  const barcodemanagement_div = get_barcodemanagement();
 
   main_div.appendChild(row1_div);
   main_div.appendChild(row2_div);
   row1_div.appendChild(inspection_div);
   row1_div.appendChild(inventory_div);
   row2_div.appendChild(orderpicking_div);
-  row2_div.appendChild(settingbarcode_div);
+  row2_div.appendChild(barcodemanagement_div);
   return main_div;
 }
 function get_userinfo()
@@ -355,63 +356,62 @@ function get_orderpicking()
   return orderpicking_div;
 }
 
-function get_settingbarcode()
+function get_barcodemanagement()
 {
-  const settingbarcode_div = document.createElement("div");
-  My_Div.Init(settingbarcode_div, 'settingbarcode_div','settingbarcode_div', '180px', '120px', 'rgba(255, 255, 255, 0.85)');
-  My_Div.Set_Block(settingbarcode_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.CENTER);
-  settingbarcode_div.style.borderRadius = "5px";
-  settingbarcode_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
-  settingbarcode_div.style.margin = "5px";
-  settingbarcode_div.id = "settingbarcode_div";
- 
+  const barcodemanagement_div = document.createElement("div");
+  My_Div.Init(barcodemanagement_div, 'barcodemanagement_div','barcodemanagement_div', '180px', '120px', 'rgba(255, 255, 255, 0.85)');
+  My_Div.Set_Block(barcodemanagement_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.CENTER);
+  barcodemanagement_div.style.borderRadius = "5px";
+  barcodemanagement_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
+  barcodemanagement_div.style.margin = "5px";
+  barcodemanagement_div.id = "barcodemanagement_div";
 
   const svg_text_div = document.createElement("div");
   My_Div.Init(svg_text_div, 'svg_text_div','svg_text_div', '100%', '50%', '');
   My_Div.Set_Block(svg_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
 
-  const settingbarcode_svg = Get_ward_SVG("80%", "80%", "80%","80%","gray","");
-  My_Div.Init(settingbarcode_svg, 'settingbarcode_svg','settingbarcode_svg', '30%', '100%', '');
-  My_Div.Set_Block(settingbarcode_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
-  settingbarcode_svg.style.marginLeft = '10px';
-  const settingbarcode_text_div = document.createElement("div");
-  My_Div.Init(settingbarcode_text_div, 'settingbarcode_text_div','settingbarcode_text_div', '70%', '100%', '');
-  My_Div.Set_Block(settingbarcode_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text(settingbarcode_text_div ,'條碼建置' ,TextAlignEnum.CENTER , "22px", true,"微軟正黑體","");;
-  settingbarcode_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
-  settingbarcode_text_div.style.backgroundClip = 'text';
-  settingbarcode_text_div.style.webkitBackgroundClip = 'text';
-  settingbarcode_text_div.style.webkitTextFillColor = 'transparent';
-  settingbarcode_text_div.style.borderTopRightRadius = "10px";
-  settingbarcode_text_div.style.borderBottomRightRadius = "10px";
+  const barcodemanagement_svg = Get_ward_SVG("80%", "80%", "80%","80%","gray","");
+  My_Div.Init(barcodemanagement_svg, 'barcodemanagement_svg','barcodemanagement_svg', '30%', '100%', '');
+  My_Div.Set_Block(barcodemanagement_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
+  barcodemanagement_svg.style.marginLeft = '10px';
+  const barcodemanagement_text_div = document.createElement("div");
+  My_Div.Init(barcodemanagement_text_div, 'barcodemanagement_text_div','barcodemanagement_text_div', '70%', '100%', '');
+  My_Div.Set_Block(barcodemanagement_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  My_Div.Set_Text(barcodemanagement_text_div ,'條碼管理' ,TextAlignEnum.CENTER , "22px", true,"微軟正黑體","");;
+  barcodemanagement_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
+  barcodemanagement_text_div.style.backgroundClip = 'text';
+  barcodemanagement_text_div.style.webkitBackgroundClip = 'text';
+  barcodemanagement_text_div.style.webkitTextFillColor = 'transparent';
+  barcodemanagement_text_div.style.borderTopRightRadius = "10px";
+  barcodemanagement_text_div.style.borderBottomRightRadius = "10px";
 
-  const settingbarcode_text_eng_div = document.createElement("div");
-  My_Div.Init( settingbarcode_text_eng_div, ' settingbarcode_text_eng_div',' settingbarcode_text_eng_div', '100%', '30%', '');
-  My_Div.Set_Block( settingbarcode_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text( settingbarcode_text_eng_div ,"Setting Barcode" , TextAlignEnum.CENTER , "15px", true,"","");
-   settingbarcode_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
-   settingbarcode_text_eng_div.style.backgroundClip = 'text';
-   settingbarcode_text_eng_div.style.wordBreak = "break-word";
-   settingbarcode_text_eng_div.style.webkitBackgroundClip = 'text';
-   settingbarcode_text_eng_div.style.webkitTextFillColor = 'transparent';
-   settingbarcode_text_eng_div.style.borderTopRightRadius = "10px";
-   settingbarcode_text_eng_div.style.borderBottomRightRadius = "10px";
+  const barcodemanagement_text_eng_div = document.createElement("div");
+  My_Div.Init( barcodemanagement_text_eng_div, ' barcodemanagement_text_eng_div',' barcodemanagement_text_eng_div', '100%', '30%', '');
+  My_Div.Set_Block( barcodemanagement_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  My_Div.Set_Text( barcodemanagement_text_eng_div ,"Barcode Management" , TextAlignEnum.CENTER , "15px", true,"","");
+   barcodemanagement_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
+   barcodemanagement_text_eng_div.style.backgroundClip = 'text';
+   barcodemanagement_text_eng_div.style.wordBreak = "break-word";
+   barcodemanagement_text_eng_div.style.webkitBackgroundClip = 'text';
+   barcodemanagement_text_eng_div.style.webkitTextFillColor = 'transparent';
+   barcodemanagement_text_eng_div.style.borderTopRightRadius = "10px";
+   barcodemanagement_text_eng_div.style.borderBottomRightRadius = "10px";
 
-  settingbarcode_div.appendChild(svg_text_div);
-  svg_text_div.appendChild(settingbarcode_svg);
-  svg_text_div.appendChild(settingbarcode_text_div);
-  settingbarcode_div.appendChild(settingbarcode_text_eng_div);
+  barcodemanagement_div.appendChild(svg_text_div);
+  svg_text_div.appendChild(barcodemanagement_svg);
+  svg_text_div.appendChild(barcodemanagement_text_div);
+  barcodemanagement_div.appendChild(barcodemanagement_text_eng_div);
 
-  if(GetFunctionality("條碼建置"))
+  if(GetFunctionality("條碼管理"))
   {
-    settingbarcode_div.onclick = settingbarcode_Click;
+    barcodemanagement_div.onclick = barcodemanagement_Click;
   }
   else
   {
-    settingbarcode_div.appendChild(get_Lock());
+    barcodemanagement_div.appendChild(get_Lock());
   }
 
-  return settingbarcode_div;
+  return barcodemanagement_div;
 }
 
 

@@ -21,11 +21,9 @@ function handleResize()
 async function load()
 { 
     check_session_off();
-    var serverName = sessionStorage.getItem('ServerName');  
-    console.log("ServerName",serverName);
-    ServerName = serverName;
-    ServerType = "調劑台";
-    TableName = "medicine_page";
+    ServerName = "DS01";
+    ServerType = "藥庫";
+    TableName = "medicine_page_firstclass";
     APIServer = await LoadAPIServer();
     const API01 = serch_APIServer(ServerName,ServerType,"API01");
     const API02 = serch_APIServer(ServerName,ServerType,"API02");
@@ -56,16 +54,13 @@ function page_Init(data)
   const main_div = document.querySelector('#main_div');
   main_div.innerHTML = "";
 
-  
-
   for (var i = 0; i < data.Data[0].Contents.length; i++)
   {
     const all_div = creat_row_div(i, data.Data[0].Contents[i]);
     allrows.push(all_div);
     main_div.appendChild(all_div);
   }
-  Set_rowTotalHeight();
-  
+ 
   // if (data.Data.length == 0) {
   //   const NoDataDiv = getNoDataDiv();
   //   console.log(NoDataDiv);
@@ -148,7 +143,7 @@ function get_header()
 
   const header_title_text = document.createElement('div');
   My_Div.Init(header_title_text, 'header_title_text','header_title_text', '100%', '50%', '');
-  My_Div.Set_Text(header_title_text ,"盤點作業" , TextAlignEnum.LEFT , "24px", true,"微軟正黑體","");
+  My_Div.Set_Text(header_title_text ,"條碼建置" , TextAlignEnum.LEFT , "24px", true,"微軟正黑體","");
   header_title_text.className = "h1";
   header_title_text.id = "header_title_text";
   header_title_text.style.marginLeft = "20px";
@@ -210,7 +205,7 @@ function get_header()
 
   const herader_view_QTY_Tile_text = document.createElement('div');
   My_Div.Init(herader_view_QTY_Tile_text, 'herader_view_QTY_Tile_text','herader_view_QTY_Tile_text', '70px', '100%', '');
-  My_Div.Set_Text(herader_view_QTY_Tile_text ,"已盤/總數" , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","");
+  My_Div.Set_Text(herader_view_QTY_Tile_text ,"已建/總數" , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","");
   herader_view_QTY_Tile_text.style.marginLeft = "5px";
   herader_view_div.appendChild(herader_view_QTY_Tile_text);
 
@@ -237,11 +232,10 @@ function edit_herader_view_QTY()
     }
     My_Div.Set_Text(herader_view_QTY_text ,`${QTY}/${totle_QTY}` , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","");
 }
-function get_main() 
-{
+function get_main() {
 
   const main_div = document.createElement('div');
-  My_Div.Init(main_div, 'main_div','main_div', '100%', '100px', '');
+  My_Div.Init(main_div, 'main_div','main_div', '100%', '1000px', '');
   main_div.style.flexWrap = "wrap";
   if(!isDesktop) 
   {
@@ -257,7 +251,6 @@ function get_main()
 
   main_div.style.marginBottom = "30px";
   main_div.style.overflow = "scroll";
-  main_div.style.overflowX = "";
 
   return main_div;
 }
