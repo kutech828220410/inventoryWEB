@@ -436,7 +436,7 @@ async function device_light(Color, device_basic)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  var _url = `${device_url}/light`;
+  var _url = `${device_url}/light_web`;
   console.log("post_data",post_data)
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
