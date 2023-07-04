@@ -1,3 +1,93 @@
+function Get_barcode_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor, clickOn)
+{
+    const btn_div = document.createElement("div");
+    const div = document.createElement("div");
+    btn_div.style.width = btn_width;
+    btn_div.style.height= btn_height; 
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.innerHTML = `<?xml version="1.0" ?><svg height="100%" viewBox="0 0 24 24" width="100%" xmlns="http://www.w3.org/2000/svg"><path d="M5 7h2v10H5zm9 0h1v10h-1zm-4 0h3v10h-3zM8 7h1v10H8zm8 0h3v10h-3z"/><path d="M4 5h4V3H4c-1.103 0-2 .897-2 2v4h2V5zm0 16h4v-2H4v-4H2v4c0 1.103.897 2 2 2zM20 3h-4v2h4v4h2V5c0-1.103-.897-2-2-2zm0 16h-4v2h4c1.103 0 2-.897 2-2v-4h-2v4z"/></svg>`;
+    svg.setAttribute("stroke", strokeColor);
+    // svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke-width", "1.5");
+    svg.setAttribute("viewBox", `0 0 24 24`);
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    svg.setAttribute("class", "svg");
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", "100%");
+
+    div.style.width = svg_width;
+    div.style.height = svg_height;
+ 
+    div.style.justifyContent = "center";
+    div.style.alignItems = "center";
+    div.style.margin = "auto";   
+    btn_div.style.backgroundColor = backgroundColor;
+    if(clickOn == undefined) clickOn =true;
+    if(clickOn)
+    {
+      btn_div.addEventListener("mouseover", function() 
+      {
+          btn_div.style.backgroundColor = "";
+      });
+      
+      // 滑鼠移出時的事件處理器
+      btn_div.addEventListener("mouseout", function() 
+      {
+        btn_div.style.backgroundColor = backgroundColor;
+      });
+    }
+    div.appendChild(svg);
+    btn_div.appendChild(div);
+    return btn_div;
+}
+
+function Get_storagelocation_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor, clickOn)
+{
+    const btn_div = document.createElement("div");
+    const div = document.createElement("div");
+    btn_div.style.width = btn_width;
+    btn_div.style.height= btn_height; 
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.innerHTML = `<?xml version="1.0" ?><svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><rect fill="none" height="256" width="256"/><path d="M224,177.3V78.7a8.1,8.1,0,0,0-4.1-7l-88-49.5a7.8,7.8,0,0,0-7.8,0l-88,49.5a8.1,8.1,0,0,0-4.1,7v98.6a8.1,8.1,0,0,0,4.1,7l88,49.5a7.8,7.8,0,0,0,7.8,0l88-49.5A8.1,8.1,0,0,0,224,177.3Z" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><polyline fill="none" points="177 152.5 177 100.5 80 47" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><polyline fill="none" points="222.9 74.6 128.9 128 33.1 74.6" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" x1="128.9" x2="128" y1="128" y2="234.8"/></svg>`;
+    svg.setAttribute("stroke", strokeColor);
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke-width", "1.5");
+    svg.setAttribute("viewBox", `0 0 24 24`);
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    svg.setAttribute("class", "svg");
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", "100%");
+
+    div.style.width = svg_width;
+    div.style.height = svg_height;
+ 
+    div.style.justifyContent = "center";
+    div.style.alignItems = "center";
+    div.style.margin = "auto";   
+    btn_div.style.backgroundColor = backgroundColor;
+    if(clickOn == undefined) clickOn =true;
+    if(clickOn)
+    {
+      btn_div.addEventListener("mouseover", function() 
+      {
+          btn_div.style.backgroundColor = "";
+      });
+      
+      // 滑鼠移出時的事件處理器
+      btn_div.addEventListener("mouseout", function() 
+      {
+        btn_div.style.backgroundColor = backgroundColor;
+      });
+    }
+    div.appendChild(svg);
+    btn_div.appendChild(div);
+    return btn_div;
+}
+
 function Get_paper01_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor, clickOn)
 {
     const btn_div = document.createElement("div");

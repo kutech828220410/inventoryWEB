@@ -42,6 +42,11 @@ async function barcodemanagement_Click()
   location.href = "../../storehouse/barcodemanagement/main.html";
 }
 
+async function storagelocation_Click()
+{
+  console.log("barcodemanagement");
+  location.href = "../../storehouse/storagelocation/main.html";
+}
 
 async function lock_Click()
  {
@@ -116,7 +121,8 @@ function get_main()
   const main_div = document.createElement("div");
   My_Div.Init(main_div, 'main_div','main_div', '100%', '100%', '');
   My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.TOP);
-  const choose_text_div = document.createElement("div");
+  // const choose_text_div = document.createElement("div");
+
   const row1_div = document.createElement("div");
   My_Div.Init(row1_div, 'row1_div','row1_div', '100%', '120px', '');
   My_Div.Set_Block(row1_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
@@ -127,17 +133,25 @@ function get_main()
   My_Div.Set_Block(row2_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   row2_div.style.marginTop = "10px";
 
+  const row3_div = document.createElement("div");
+  My_Div.Init(row3_div, 'row3_div','row3_div', '100%', '120px', '');
+  My_Div.Set_Block(row3_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  row3_div.style.marginTop = "10px";
+
   const inspection_div = get_inspection();
   const inventory_div = get_inventory();
   const orderpicking_div = get_orderpicking();
   const barcodemanagement_div = get_barcodemanagement();
+  const storagelocation_div = get_storagelocation()
 
   main_div.appendChild(row1_div);
   main_div.appendChild(row2_div);
+  main_div.appendChild(row3_div);
   row1_div.appendChild(inspection_div);
   row1_div.appendChild(inventory_div);
   row2_div.appendChild(orderpicking_div);
   row2_div.appendChild(barcodemanagement_div);
+  row3_div.appendChild(storagelocation_div);
   return main_div;
 }
 function get_userinfo()
@@ -312,7 +326,7 @@ function get_orderpicking()
   My_Div.Init(svg_text_div, 'svg_text_div','svg_text_div', '100%', '50%', '');
   My_Div.Set_Block(svg_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
 
-  const orderpicking_svg = Get_ward_SVG("80%", "80%", "80%","80%","gray","");
+  const orderpicking_svg = Get_ward_SVG("80%", "80%", "80%","80%","","");
   My_Div.Init(orderpicking_svg, 'orderpicking_svg','orderpicking_svg', '30%', '100%', '');
   My_Div.Set_Block(orderpicking_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
   orderpicking_svg.style.marginLeft = '10px';
@@ -370,7 +384,7 @@ function get_barcodemanagement()
   My_Div.Init(svg_text_div, 'svg_text_div','svg_text_div', '100%', '50%', '');
   My_Div.Set_Block(svg_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
 
-  const barcodemanagement_svg = Get_ward_SVG("80%", "80%", "80%","80%","gray","");
+  const barcodemanagement_svg = Get_barcode_SVG("100%", "100%", "100%","100%","","");
   My_Div.Init(barcodemanagement_svg, 'barcodemanagement_svg','barcodemanagement_svg', '30%', '100%', '');
   My_Div.Set_Block(barcodemanagement_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
   barcodemanagement_svg.style.marginLeft = '10px';
@@ -414,7 +428,63 @@ function get_barcodemanagement()
   return barcodemanagement_div;
 }
 
+function get_storagelocation()
+{
+  const storagelocation_div = document.createElement("div");
+  My_Div.Init(storagelocation_div, 'storagelocation_div','storagelocation_div', '180px', '120px', 'rgba(255, 255, 255, 0.85)');
+  My_Div.Set_Block(storagelocation_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUM, JustifyContentEnum.CENTER);
+  storagelocation_div.style.borderRadius = "5px";
+  storagelocation_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
+  storagelocation_div.style.margin = "5px";
+  storagelocation_div.id = "storagelocation_div";
 
+  const svg_text_div = document.createElement("div");
+  My_Div.Init(svg_text_div, 'svg_text_div','svg_text_div', '100%', '50%', '');
+  My_Div.Set_Block(svg_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+
+  const storagelocation_svg = Get_storagelocation_SVG("100%", "100%", "100%","100%","","");
+  My_Div.Init(storagelocation_svg, 'storagelocation_svg','storagelocation_svg', '30%', '100%', '');
+  My_Div.Set_Block(storagelocation_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
+  storagelocation_svg.style.marginLeft = '10px';
+  const storagelocation_text_div = document.createElement("div");
+  My_Div.Init(storagelocation_text_div, 'storagelocation_text_div','storagelocation_text_div', '70%', '100%', '');
+  My_Div.Set_Block(storagelocation_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  My_Div.Set_Text(storagelocation_text_div ,'儲位管理' ,TextAlignEnum.CENTER , "22px", true,"微軟正黑體","");;
+  storagelocation_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
+  storagelocation_text_div.style.backgroundClip = 'text';
+  storagelocation_text_div.style.webkitBackgroundClip = 'text';
+  storagelocation_text_div.style.webkitTextFillColor = 'transparent';
+  storagelocation_text_div.style.borderTopRightRadius = "10px";
+  storagelocation_text_div.style.borderBottomRightRadius = "10px";
+
+  const storagelocation_text_eng_div = document.createElement("div");
+  My_Div.Init( storagelocation_text_eng_div, ' storagelocation_text_eng_div',' storagelocation_text_eng_div', '100%', '30%', '');
+  My_Div.Set_Block( storagelocation_text_eng_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  My_Div.Set_Text( storagelocation_text_eng_div ,"Storage Location" , TextAlignEnum.CENTER , "18px", true,"","");
+   storagelocation_text_eng_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
+   storagelocation_text_eng_div.style.backgroundClip = 'text';
+   storagelocation_text_eng_div.style.wordBreak = "break-word";
+   storagelocation_text_eng_div.style.webkitBackgroundClip = 'text';
+   storagelocation_text_eng_div.style.webkitTextFillColor = 'transparent';
+   storagelocation_text_eng_div.style.borderTopRightRadius = "10px";
+   storagelocation_text_eng_div.style.borderBottomRightRadius = "10px";
+
+  storagelocation_div.appendChild(svg_text_div);
+  svg_text_div.appendChild(storagelocation_svg);
+  svg_text_div.appendChild(storagelocation_text_div);
+  storagelocation_div.appendChild(storagelocation_text_eng_div);
+
+  if(GetFunctionality("儲位管理"))
+  {
+    storagelocation_div.onclick = storagelocation_Click;
+  }
+  else
+  {
+    storagelocation_div.appendChild(get_Lock());
+  }
+
+  return storagelocation_div;
+}
 
 function get_Lock()
 {
@@ -451,5 +521,5 @@ function GetFunctionality(name)
             return true;
         }
     }
-    return false;
+    return true; //false
 }
