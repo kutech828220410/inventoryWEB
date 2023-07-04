@@ -57,12 +57,11 @@
     {
        if(jsonObject.Data.IC_SN == current_IC_SN)
        {
+          Replace_data_by_content(data.Data[0],jsonObject.Data);
           if(popup_input_div.Get_Visible())
           {
-              show_popup_input(jsonObject.Data);
-             
+              if(popup_input_div_Content.GUID == jsonObject.Data.GUID) show_popup_input(jsonObject.Data);                     
           }
-          Replace_data_by_content(data.Data[0],jsonObject.Data);
        }
        
     }

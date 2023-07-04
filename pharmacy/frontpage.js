@@ -105,7 +105,7 @@ function get_DPS_div(ServerName)
   const DPS_div_text_div = document.createElement("div");
   My_Div.Init(DPS_div_text_div, 'DPS_div_text_div','DPS_div_text_div', '70%', '100%', '');
   My_Div.Set_Block(DPS_div_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  My_Div.Set_Text(DPS_div_text_div ,`${ServerName}` , TextAlignEnum.CENTER , "30px", true,"微軟正黑體","#000046");
+  My_Div.Set_Text(DPS_div_text_div ,`${ServerName}` , TextAlignEnum.CENTER , "24px", true,"微軟正黑體","#000046");
   DPS_div_text_div.style.textTransform = 'uppercase';
   DPS_div_text_div.style.backgroundImage = 'linear-gradient(to right, #000046, #000046)';
   DPS_div_text_div.style.backgroundClip = 'text';

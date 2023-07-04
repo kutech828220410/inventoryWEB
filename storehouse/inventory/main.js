@@ -119,6 +119,7 @@ function allsvg_Click()
       allrows[i].style.display = "inline-block";
       allrows[i].style.visibility = "visible";
   }
+  Set_rowTotalHeight();
 }
 
 

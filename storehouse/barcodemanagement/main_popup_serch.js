@@ -31,6 +31,7 @@ function show_popup_serch()
     popup_serch_div.Set_Visible(true);  
     updateDivHeight(popup_serch_div._popup_div , 10);
 }
+
 function hide_popup_serch()
 {
     popup_serch_div.Set_Visible(false);

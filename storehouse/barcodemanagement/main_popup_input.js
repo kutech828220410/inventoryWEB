@@ -1,71 +1,87 @@
 var popup_input_div;
-var popup_input_div_Content;
+var popup_input_div_Med;
 
 var popup_input_NumOfPageRows = 3;
 var popup_input_PageIndex = 0;
 var popup_input_MaxfPage = 0;
 
 
-function show_popup_input(Content , page_Initial)
+function show_popup_input(Med , page_Initial)
 {
-    if(Content == undefined) return;
+    if(Med == undefined) return;
     if(popup_input_div == undefined) page_Initial = false;
-    popup_input_div_Content = Content;
-    popup_input_MaxfPage = Math.floor(Content.Sub_content.length / popup_input_NumOfPageRows);
-    if(Content.Sub_content.length % popup_input_NumOfPageRows > 0) popup_input_MaxfPage ++;
+    popup_input_div_Med = Med;
+    popup_input_MaxfPage = Math.floor(Med.BARCODE.length / popup_input_NumOfPageRows);
+    if(Med.BARCODE.length % popup_input_NumOfPageRows > 0) popup_input_MaxfPage ++;
     if(page_Initial) popup_input_PageIndex = popup_input_MaxfPage - 1;
     if(popup_input_PageIndex >= popup_input_MaxfPage) popup_input_PageIndex = 0;
-    edit_title_popup_input(Content);
-    edit_rows_popup_input(Content);
+    edit_title_popup_input(Med);
+    edit_rows_popup_input(Med);
     edit_underline_popup_input();
     edit_rows_page_control_popup_input();
     popup_input_div.Set_Visible(true);
-    const END_QTY_input = document.querySelector('#END_QTY_input_popup_input');
-    END_QTY_input.focus();
-    if(popup_input_div_Content != undefined) light_device_by_Code(popup_input_div_Content.CODE, get_loggedColor());
+    const BarCode_input = document.querySelector('#BarCode_input_popup_input');
+    BarCode_input.focus();
  
 }
 function hide_popup_input()
 {
      popup_input_div.Set_Visible(false);
-     if(popup_input_div_Content != undefined) light_device_by_Code(popup_input_div_Content.CODE, "0,0,0");
 }
 
 function next_page_popup_input() 
 {
     if((popup_input_PageIndex + 1) < popup_input_MaxfPage) popup_input_PageIndex++;      
-    edit_rows_popup_input(popup_input_div_Content);
+    edit_rows_popup_input(popup_input_div_Med);
     edit_rows_page_control_popup_input();
 }
 function previous_page_popup_input() 
 {
     popup_input_PageIndex--;
     if(popup_input_PageIndex < 0) popup_input_PageIndex = 0;
-    edit_rows_popup_input(popup_input_div_Content);
+    edit_rows_popup_input(popup_input_div_Med);
     edit_rows_page_control_popup_input();
 }
 async function confirm_popup_input()
 {
-    const END_QTY_input = document.querySelector('#END_QTY_input_popup_input');
-    if(!END_QTY_input.value) return;
-    if(isNaN(END_QTY_input.value))
+    const BarCode_input = document.querySelector('#BarCode_input_popup_input');
+    if(!BarCode_input.value) return;
+    const response = await serch_by_BarCode(BarCode_input.value);
+    console.log("response",response);
+    if(response.Data.length > 0)
     {
-        alert("請輸入數量");
+        const CODE = response.Data[0].CODE;
+        const SKDIACODE = response.Data[0].SKDIACODE;
+        const NAME = response.Data[0].NAME;
+        
+        alert(`藥碼 : ${CODE}\n` + `料號 : ${SKDIACODE}\n` + `藥名 : ${NAME}\n` + `已建置相同BARCODE或者與藥碼、料號重覆`);
+        BarCode_input.value = "";
         return;
     }
-    const GUID = popup_input_div_Content.GUID;
-    const END_QTY = END_QTY_input.value;
-    END_QTY_input.value = '';
-    const OP = loging_name;
-    sub_content_add(GUID , END_QTY , OP);
+
+
+    const GUID = popup_input_div_Med.GUID;
+    const BarCode = BarCode_input.value;
+    BarCode_input.value = "";
+    if(BarCode!= "")
+    {
+        popup_input_div_Med.BARCODE.push(BarCode);
+        upadte_by_guid(popup_input_div_Med);
+    }
+  
+ 
     hide_popup_input();
     
 }
-async function delete_row_popup_input(GUID , Master_GUID)
+async function delete_row_popup_input(BarCode)
 {
     if (confirm("是否刪除?")) 
     {
-       await sub_contents_delete_by_GUID(GUID , Master_GUID);
+        popup_input_div_Med.BARCODE = popup_input_div_Med.BARCODE.filter(function(value) {
+            return value !== BarCode;
+        });
+        console.log("popup_input_div_Med",popup_input_div_Med);
+        await upadte_by_guid(popup_input_div_Med);
     }
 }
 function get_popup_input()
@@ -91,25 +107,25 @@ function get_popup_input()
    
     return popup_input_div;
 }
-function edit_title_popup_input(Content)
+function edit_title_popup_input(Med)
 {
     const med_CODE_text = document.querySelector('#med_CODE_text_popup_input');
-    med_CODE_text.innerText = `藥碼 : ${Content.CODE}`;
+    med_CODE_text.innerText = `藥碼 : ${Med.CODE}`;
     const med_SKDIACODE_text = document.querySelector('#med_SKDIACODE_text_popup_input');
-    if(Content.SKDIACODE == "")
+    if(Med.SKDIACODE == "")
     {
         med_SKDIACODE_text.innerText = `料號 : 無`;
     }
     else
     {
-        med_SKDIACODE_text.innerText = `料號 : ${Content.SKDIACODE}`;
+        med_SKDIACODE_text.innerText = `料號 : ${Med.SKDIACODE}`;
     }
     const med_eng_name_text = document.querySelector('#med_eng_name_text_popup_input');
-    if(Content.NAME != null)med_eng_name_text.innerText = `(英) : ${Content.NAME}`;
+    if(Med.NAME != null)med_eng_name_text.innerText = `(英) : ${Med.NAME}`;
     const med_cht_name_text = document.querySelector('#med_cht_name_text_popup_input');
-    if(Content.CHT_NAME != null) med_cht_name_text.innerText = `(中) : ${Content.CHT_NAME}`;
+    if(Med.CHT_NAME != null) med_cht_name_text.innerText = `(中) : ${Med.CHT_NAME}`;
 }
-function edit_rows_popup_input(Content)
+function edit_rows_popup_input(Med)
 {
     const rows_div = document.querySelector('#rows_div_popup_input');
     rows_div.innerHTML = "";
@@ -120,10 +136,10 @@ function edit_rows_popup_input(Content)
     var end_index = popup_input_PageIndex * popup_input_NumOfPageRows + popup_input_NumOfPageRows;
     while(true) 
     {
-        if(Content.Sub_content.length == 0)break;
-        if(index >= Content.Sub_content.length) break;
+        if(Med.BARCODE.length == 0)break;
+        if(index >= Med.BARCODE.length) break;
         if(index >= end_index) break;
-        const row = get_row_popup_input(Content.Sub_content[index]);
+        const row = get_row_popup_input(Med.BARCODE[index]);
         rows_div.appendChild(row);
         index++;
     }
@@ -173,13 +189,15 @@ function get_title_popup_input()
     My_Div.Set_Block(title_control_block, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.TOP);
 
     const undo_SVG = Get_undo_SVG("40px","100%" ,"60%","100%","black");
-    My_Div.Init(undo_SVG, 'svg','svg', '40px', '40px', '');
+    My_Div.Init(undo_SVG, 'undo_SVG','undo_SVG', '40px', '40px', '');
     undo_SVG.style.border = "1px solid gray";
     undo_SVG.style.borderRadius = "3px";
     undo_SVG.style.marginTop = "2px";
     undo_SVG.style.marginRight = "2px";
     undo_SVG.onclick = function()
     {
+        const BarCode_input = document.querySelector('#BarCode_input_popup_input');
+        BarCode_input.value = "";
         hide_popup_input();
     };
     title_control_block.appendChild(undo_SVG);
@@ -229,8 +247,8 @@ function get_title_popup_input()
 }
 function edit_underline_popup_input()
 {
-    const END_QTY_input = document.querySelector('#END_QTY_input_popup_input');
-    END_QTY_input.value = "";
+    const BarCode_input = document.querySelector('#BarCode_input_popup_input');
+    BarCode_input.value = "";
     
 }
 function get_row_popup_inputs_page_control_block()
@@ -278,55 +296,53 @@ function get_underline_popup_input()
     {
         confirm_popup_input();
     });
-    const END_QTY_input_div = document.createElement('div');
-    My_Div.Init(END_QTY_input_div, 'END_QTY_input_div_popup_input','END_QTY_input_div_popup_input', '90%','100%','');
-    My_Div.Set_Block(END_QTY_input_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+    const BarCode_input_div = document.createElement('div');
+    My_Div.Init(BarCode_input_div, 'BarCode_input_div_popup_input','BarCode_input_div_popup_input', '90%','100%','');
+    My_Div.Set_Block(BarCode_input_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   
   
-    const END_QTY_input = document.createElement('input');
-    My_Div.Init(END_QTY_input, 'END_QTY_input_popup_input','END_QTY_input_popup_input', '100%','80%','');
-    My_Div.Set_Text(END_QTY_input, ``, TextAlignEnum.CENTER, "22px", true,"微軟正黑體","black");
-    END_QTY_input.readOnly = false;
-    END_QTY_input.type = "number";
-    END_QTY_input.inputMode = "numeric";
-    END_QTY_input.style.backgroundColor = "";
-    END_QTY_input.style.borderRadius = "5px";
-    END_QTY_input.style.marginLeft = "10px";
-    END_QTY_input.style.marginRight = "10px";
-    END_QTY_input.placeholder = "請掃國際條碼後打勾";
-    END_QTY_input.onfocus = function()
+    const BarCode_input = document.createElement('input');
+    My_Div.Init(BarCode_input, 'BarCode_input_popup_input','BarCode_input_popup_input', '100%','80%','');
+    My_Div.Set_Text(BarCode_input, ``, TextAlignEnum.CENTER, "22px", true,"微軟正黑體","black");
+    BarCode_input.readOnly = false;
+    BarCode_input.type = "text";
+    BarCode_input.inputMode = "latin";
+    BarCode_input.style.backgroundColor = "";
+    BarCode_input.style.borderRadius = "5px";
+    BarCode_input.style.marginLeft = "10px";
+    BarCode_input.style.marginRight = "10px";
+    BarCode_input.placeholder = "請掃國際條碼後打勾";
+    BarCode_input.onfocus = function()
     {
        //this.select();        
     };
-    END_QTY_input.addEventListener("keydown", function(event)
+    BarCode_input.addEventListener("keydown", function(event)
      {
         if (event.keyCode === 13 || event.key === "Enter") 
         {
            confirm_popup_input();
         }
     });
-    END_QTY_input.addEventListener("blur", function(event)
+    BarCode_input.addEventListener("blur", function(event)
     {
            confirm_popup_input();
     });
-    END_QTY_input_div.appendChild(END_QTY_input);
+    BarCode_input_div.appendChild(BarCode_input);
 
-    underline_div.appendChild(END_QTY_input_div);
+    underline_div.appendChild(BarCode_input_div);
     underline_div.appendChild(svg_confirm_SVG);
 
     return underline_div;
 }
-function get_row_popup_input(Sub_content)
+function get_row_popup_input(BarCode)
 {
     const row = document.createElement('div');
-    My_Div.Init(row, 'row_popup_input','row_popup_input', '95%','115px');
+    My_Div.Init(row, 'row_popup_input','row_popup_input', '95%','80px');
     My_Div.Set_Block(row, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.TOP);
-    if(Sub_content != undefined)
+    if(BarCode != undefined)
     {
-        const block1 = get_block1_popup_input(Sub_content);
-        const block2 = get_block2_popup_input(Sub_content);
+        const block1 = get_block1_popup_input(BarCode);
         row.appendChild(block1);
-        row.appendChild(block2);
     }
   
 
@@ -336,95 +352,81 @@ function get_row_popup_input(Sub_content)
     row.style.boxShadow = '1px 1px 2px 2px black';
     return row;
 }
-function get_block1_popup_input(Sub_content)
+function get_block1_popup_input(Barcode)
 {
     const block1 = document.createElement('div');
     My_Div.Init(block1, 'block1_popup_input','block1_popup_input', '100%','60px');
-    My_Div.Set_Block(block1, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
-    block1.style.marginTop = "5px";
+    My_Div.Set_Block(block1, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
 
+
+    const block1_barcode_div = document.createElement('div');
+    My_Div.Init(block1_barcode_div, 'block1_barcode_div_popup_input','block1_barcode_div_popup_input', '100%','70px');
+    My_Div.Set_Block(block1_barcode_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
+    block1_barcode_div.style.marginTop = "20px";
     const block1_barcodenum = document.createElement('div');
     My_Div.Init(block1_barcodenum, 'block1_barcodenum_popup_input','block1_barcodenum_popup_input', '120px','20px');
     My_Div.Set_Block(block1_barcodenum, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-    My_Div.Set_Text(block1_barcodenum, `1234567899990`, TextAlignEnum.CENTER, "12px", true,"微軟正黑體","black" );
+    My_Div.Set_Text(block1_barcodenum, `${Barcode}`, TextAlignEnum.CENTER, "12px", true,"微軟正黑體","black" );
     block1_barcodenum.style.letterSpacing = "0.2em";
+    
 
     var barcodeCanvas = document.createElement("img");
-    if(!isDesktop) 
+    if(Barcode != "")
     {
-        barcodeCanvas = document.createElement("img");
-        barcodeCanvas.style.width = "120px";
-        barcodeCanvas.style.height= "50px";
-        barcodeCanvas.id = `barcodeCanvas`;
-        barcodeCanvas.className = `barcodeCanvas`;
-        var Barcode= "";
-        if(Barcode == "")Barcode = Sub_content.BARCODE1;
-        if(Barcode == "")Barcode = Sub_content.BARCODE2;
-        if(Barcode == "")Barcode = Sub_content.SKDIACODE;
-        if(Barcode == "")Barcode = Sub_content.CODE;
-        JsBarcode(barcodeCanvas, Barcode, {
-          format: "code128",
-          width: "1",
-          height: "1",
-          displayValue: false,
-          margin: 0,
-        });
+        if(!isDesktop) 
+        {
+            barcodeCanvas = document.createElement("img");
+            barcodeCanvas.style.width = "140px";
+            barcodeCanvas.style.height= "70px";
+            barcodeCanvas.id = `barcodeCanvas`;
+            barcodeCanvas.className = `barcodeCanvas`;
+            JsBarcode(barcodeCanvas, Barcode, {
+              format: "code128",
+              width: "1",
+              height: "1",
+              displayValue: false,
+              margin: 0,
+            });
+        }
+        if(isDesktop) 
+        {
+            barcodeCanvas = document.createElement("canvas");
+            barcodeCanvas.style.width = "140px";
+            barcodeCanvas.style.height= "70px";
+            barcodeCanvas.id = `barcodeCanvas`;
+            barcodeCanvas.className = `barcodeCanvas`;
+            JsBarcode(barcodeCanvas, Barcode, {
+              format: "code128",
+              width: "1",
+              height: "1",
+              displayValue: false,
+              margin: 0,
+            });
+        }
     }
-    if(isDesktop) 
-    {
-        barcodeCanvas = document.createElement("canvas");
-        barcodeCanvas.style.width = "120px";
-        barcodeCanvas.style.height= "50px";
-        barcodeCanvas.id = `barcodeCanvas`;
-        barcodeCanvas.className = `barcodeCanvas`;
-        var Barcode= "";
-        if(Barcode == "")Barcode = Sub_content.BARCODE1;
-        if(Barcode == "")Barcode = Sub_content.BARCODE2;
-        if(Barcode == "")Barcode = Sub_content.SKDIACODE;
-        if(Barcode == "")Barcode = Sub_content.CODE;
-        JsBarcode(barcodeCanvas, Barcode, {
-          format: "code128",
-          width: "1",
-          height: "1",
-          displayValue: false,
-          margin: 0,
-        });
-    }
+    
+    
 
-    block1.appendChild(barcodeCanvas);
-    block1.appendChild(block1_barcodenum);
-    return block1;
-}
-function get_block2_popup_input(Sub_content)
-{
-    const block2 = document.createElement('div');
-    My_Div.Init(block2, 'block2_popup_input','block2_popup_input', '100%','40px' , '');
-    My_Div.Set_Block(block2, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
-    block2.style.marginTop = "5px";
-    block2.style.alignItems = "center";
 
-    const block2_Date = document.createElement('div');
-    My_Div.Init(block2_Date, 'block2_Date_popup_input','block2_Date_popup_input', '85%',"100%");
-    My_Div.Set_Text(block2_Date, `建立時間 : \n ${Sub_content.OP_TIME}`, TextAlignEnum.LEFT, "13px", true,"微軟正黑體","black" );
-    block2_Date.style.marginLeft = "5px";
 
-    const block2_Value = document.createElement('div');
-    My_Div.Init(block2_Value, 'block2_Value_popup_input','block2_Value_popup_input', '50%',"100%");
-    My_Div.Set_Block(block2_Value, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
-    block2_Value.style.marginLeft = "5px";
-
-    var trashBox_SVG = Get_trashBox_SVG("50px", "100%", "80%","100%","red","");
+    block1_barcode_div.appendChild(barcodeCanvas);
+    block1_barcode_div.appendChild(block1_barcodenum);
+    var trashBox_SVG = Get_trashBox_SVG("50px", "50px", "80%","100%","red","");
     trashBox_SVG.style.borderRadius = '3px';
     trashBox_SVG.style.border = '1px solid gray';
-    trashBox_SVG.style.marginRight = '3px';
+    trashBox_SVG.style.marginTop = "10px";
+    trashBox_SVG.style.marginRight = '5px';
+    trashBox_SVG.setAttribute("Barcode" , Barcode);
     trashBox_SVG.onclick = function()
     {
-        delete_row_popup_input(Sub_content.GUID,Sub_content.Master_GUID);
+        const BarCode = this.getAttribute("BarCode");
+        console.log("BarCode",BarCode);
+        delete_row_popup_input(BarCode)
     };
 
-
-    block2_Value.appendChild(trashBox_SVG);
-    block2.appendChild(block2_Date);
-    block2.appendChild(block2_Value);
-    return block2;
+    block1.appendChild(block1_barcode_div);
+    block1.appendChild(trashBox_SVG);
+    // block1.appendChild(trashBox_SVG);
+    return block1;
 }
+

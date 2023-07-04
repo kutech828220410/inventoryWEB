@@ -18,10 +18,8 @@ function show_popup_serch()
 {
     popup_serch_div.Set_Visible(true);  
     updateDivHeight(popup_serch_div._popup_div , 10);
-    const serch_start_date_input = document.querySelector('#serch_start_date_input_popup_serch');
-    const serch_end_date_input = document.querySelector('#serch_end_date_input_popup_serch');
-    serch_start_date_input.value = '';
-    serch_end_date_input.value = '';
+    const serch_code_input = document.querySelector("#serch_code_input");
+    serch_start_date_input.value = "";
 }
 function hide_popup_serch()
 {
@@ -38,12 +36,14 @@ async function confirm_popup_serch()
 {
     try
     {
-        const serch_start_date_input = document.querySelector('#serch_start_date_input_popup_serch');
-        const serch_end_date_input = document.querySelector('#serch_end_date_input_popup_serch');
-        var date_start = serch_start_date_input.value;
-        var date_end = serch_end_date_input.value;
-
+        const serch_start_date_input = document.querySelector("#serch_start_date_input");
+        const serch_end_date_input = document.querySelector("#serch_end_date_input");
         
+        var date_start = serch_start_date_input.value;
+        var date_start = getStartDateStr(date_start);
+        var date_end = serch_end_date_input.value;
+        var date_end = getEndDateStr(date_end);
+
         if (date_start && date_end)
         {
             data = await serch_by_ST_END(date_start,date_end);
@@ -61,7 +61,6 @@ async function confirm_popup_serch()
             hide_popup_serch();
             return;
         }
-   
     }
     catch (e) 
     {}
@@ -76,7 +75,7 @@ async function confirm_popup_serch()
 function get_title_popup_serch()
 {
     const title_text = document.createElement('div');
-    My_Div.Init(title_text, 'title_text_serch_div','title_text_serch_div', '100%', '40px', 'gray');
+    My_Div.Init(title_text, 'title_text','title_text', '100%', '40px', 'gray');
     My_Div.Set_Text(title_text ,"搜尋功能" , TextAlignEnum.CENTER , "24px", true,"微軟正黑體","white");
     title_text.style.borderRadius = "5px";
     title_text.style.marginBottom = "10px";
@@ -85,13 +84,13 @@ function get_title_popup_serch()
 function get_serch_box_popup_serch()
 {
     const serch_box_div = document.createElement('div');
-    My_Div.Init(serch_box_div,'serch_box_div_popup_serch','serch_box_div_popup_serch', '100%','','');
+    My_Div.Init(serch_box_div,'serch_box_div','serch_box_div', '100%','','');
     My_Div.Set_Block(serch_box_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
     serch_box_div.style.alignItems = "center";
     serch_box_div.style.flexWrap  = "wrap";
 
     const serch_start_date_input = document.createElement('input');
-    My_Div.Init(serch_start_date_input,'serch_start_date_input_popup_serch','serch_start_date_input_popup_serch', '90%','40px','');
+    My_Div.Init(serch_start_date_input,'serch_start_date_input','serch_start_date_input', '90%','40px','');
     My_Div.Set_Text(serch_start_date_input ,"" , TextAlignEnum.CENTER , "18px", false ,"微軟正黑體","black");
     serch_start_date_input.placeholder = '請選擇起始日期';
     serch_start_date_input.style.borderRadius = "3px";
@@ -102,7 +101,7 @@ function get_serch_box_popup_serch()
     serch_start_date_input.style.marginTop = "10px";
 
     const serch_end_date_input = document.createElement('input');
-    My_Div.Init(serch_end_date_input,'serch_end_date_input_popup_serch','serch_end_date_input_popup_serch', '90%','40px','');
+    My_Div.Init(serch_end_date_input,'serch_end_date_input','serch_end_date_input', '90%','40px','');
     My_Div.Set_Text(serch_end_date_input ,"" , TextAlignEnum.CENTER , "18px", false ,"微軟正黑體","black");
     serch_end_date_input.placeholder = '請選擇結束日期';
     serch_end_date_input.style.borderRadius = "3px";
@@ -174,8 +173,8 @@ async function button_currentDate_Click(event)
    const start_datetime = `${currentDate}`;
    const end_datetime = `${currentDate}`;
 
-   const serch_start_date_input = document.querySelector("#serch_start_date_input_popup_serch");
-   const serch_end_date_input = document.querySelector("#serch_end_date_input_popup_serch");
+   const serch_start_date_input = document.querySelector("#serch_start_date_input");
+   const serch_end_date_input = document.querySelector("#serch_end_date_input");
    serch_start_date_input.value = start_datetime;
    serch_end_date_input.value = end_datetime;
    
@@ -188,15 +187,15 @@ async function button_lastDate_Click(event)
     const start_datetime = `${currentDate}`;
     const end_datetime = `${currentDate}`;
  
-    const serch_start_date_input = document.querySelector("#serch_start_date_input_popup_serch");
-    const serch_end_date_input = document.querySelector("#serch_end_date_input_popup_serch");
+    const serch_start_date_input = document.querySelector("#serch_start_date_input");
+    const serch_end_date_input = document.querySelector("#serch_end_date_input");
     serch_start_date_input.value = start_datetime;
     serch_end_date_input.value = end_datetime;
 }
 function serch_start_date_input_Y_Click()
 {
-    const serch_start_date_input = document.querySelector("#serch_start_date_input_popup_serch");
-    const serch_end_date_input = document.querySelector("#serch_end_date_input_popup_serch");
+    const serch_start_date_input = document.querySelector("#serch_start_date_input");
+    const serch_end_date_input = document.querySelector("#serch_end_date_input");
     if(serch_end_date_input.value == "")return;
     const start_date = StringToDateime(serch_start_date_input.value);
     const end_date = StringToDateime(serch_end_date_input.value);
@@ -208,13 +207,12 @@ function serch_start_date_input_Y_Click()
 }
 function serch_start_date_input_N_Click()
 {
-    const serch_start_date_input = document.querySelector("#serch_start_date_input_popup_serch");
     serch_start_date_input.value = "";
 }
 function serch_end_date_input_Y_Click()
 {
-    const serch_start_date_input = document.querySelector("#serch_start_date_input_popup_serch");
-    const serch_end_date_input = document.querySelector("#serch_end_date_input_popup_serch");
+    const serch_start_date_input = document.querySelector("#serch_start_date_input");
+    const serch_end_date_input = document.querySelector("#serch_end_date_input");
     if(serch_start_date_input.value == "")return;
     const start_date = StringToDateime(serch_start_date_input.value);
     const end_date = StringToDateime(serch_end_date_input.value);
@@ -226,12 +224,11 @@ function serch_end_date_input_Y_Click()
 }
 function serch_end_date_input_N_Click()
 {
-    const serch_end_date_input = document.querySelector("#serch_end_date_input_popup_serch");
     serch_end_date_input.value = "";
 }
 $(function()
 {
-     $('.serch_start_date_input_popup_serch').focus(function(event) 
+     $('.serch_start_date_input').focus(function(event) 
      {
        /* Act on the event */
        $(this).date(
@@ -241,7 +238,7 @@ $(function()
          curdate:false
        },serch_start_date_input_Y_Click,serch_start_date_input_N_Click);
      });
-     $('.serch_end_date_input_popup_serch').focus(function(event) 
+     $('.serch_end_date_input').focus(function(event) 
      {
         /* Act on the event */
         $(this).date(

@@ -38,8 +38,8 @@ async function orderpicking_Click()
 
 async function barcodemanagement_Click()
 {
-  console.log("orderpicking");
-  location.href = "../../storehouse/barcodemanagement/frontpage.html";
+  console.log("barcodemanagement");
+  location.href = "../../storehouse/barcodemanagement/main.html";
 }
 
 

@@ -69,12 +69,13 @@ async function page_Init()
     return;
   }
 
-  const find_start_date_input = document.querySelector("#serch_start_date_input_popup_serch");
-  const find_end_date_input = document.querySelector("#serch_end_date_input_popup_serch");
+  const find_start_date_input = document.querySelector("#serch_start_date_input");
+  const find_end_date_input = document.querySelector("#serch_end_date_input");
   const startdate_div = document.querySelector("#startdate_div");
   const enddate_div = document.querySelector("#enddate_div");
-  startdate_div.innerText = `始 : ${find_start_date_input.value}`;
-  enddate_div.innerText = `末 : ${find_end_date_input.value}`;
+  
+  startdate_div.innerText = `始 : ${getStartDateStr(find_start_date_input.value)}`;
+  enddate_div.innerText = `末 : ${getEndDateStr(find_end_date_input.value)}`;
 
   setUserText();
 
@@ -98,8 +99,8 @@ function Set_main_div_enable(value)
   }
 async function download_btn() 
 {
-  const find_start_date_input = document.querySelector("#serch_start_date_input_popup_serch");
-  const find_end_date_input = document.querySelector("#serch_end_date_input_popup_serch");
+  const find_start_date_input = document.querySelector("#serch_start_date_input");
+  const find_end_date_input = document.querySelector("#serch_end_date_input");
   const start_time = find_start_date_input.value;
   const end_time = find_end_date_input.value;
   Set_main_div_enable(true);

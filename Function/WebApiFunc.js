@@ -1,7 +1,7 @@
 
 async function getDataFromAPI(url)
 {
-    console.log("getDataFromAPI",url);
+    // console.log("getDataFromAPI",url);
 
     return fetch(url, {
         method: 'GET',
@@ -22,7 +22,7 @@ async function getDataFromAPI(url)
 async function postDataToAPI_NoneReturn(url, data) 
 {
     try {
-      console.log("postDataToAPI_NoneReturn",url);
+      // console.log("postDataToAPI_NoneReturn",url);
       const response = await fetch(url, {
         method: 'POST',
         headers: {

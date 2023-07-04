@@ -53,28 +53,47 @@
   {
     var jsonObject = JSON.parse(message); 
     console.log('ReceivedEvent',jsonObject);
-    if(jsonObject.Method == 'sub_content_add' || jsonObject.Method == 'sub_contents_delete_by_GUID')
+    if(jsonObject.Method == 'upadte_by_guid')
     {
-       if(jsonObject.Data.IC_SN == current_IC_SN)
-       {
-          if(popup_input_div.Get_Visible())
+      Replace_data_by_Med(data.Data,jsonObject.Data);
+      if(popup_input_div.Get_Visible())
+      {
+          
+          if(popup_input_div_Med.GUID == jsonObject.Data.GUID)
           {
-              show_popup_input(jsonObject.Data);
-             
-          }
-          Replace_data_by_content(data.Data[0],jsonObject.Data);
-       }
+            show_popup_input(jsonObject.Data);
+          }        
+      }
+      
        
     }
   };
   var barcode_value = '';
+  var barcode_keydown_datetime;
     // 監聽頁面的keydown事件
   window.addEventListener('keydown', function(event) 
   {
-    // 判斷按下的按鍵是否是Tab鍵或Enter鍵
-    console.log(event.key);
+    barcode_keydown(event);
+  });
 
-    if (event.key === 'Tab' || event.key === 'Enter') {
+  async function barcode_keydown(event)
+  {
+    if(popup_input_div.Get_Visible())
+    {
+      barcode_value = '';
+      return;
+    }
+    if(popup_serch_div.Get_Visible())
+    {
+      barcode_value = '';
+      return;
+    }
+    
+    // 判斷按下的按鍵是否是Tab鍵或Enter鍵
+    
+
+    if (event.key === 'Tab' || event.key === 'Enter') 
+    {
     // 防止頁面重新載入
         event.preventDefault();
         const parsedCode = parseBarcode(barcode_value);
@@ -84,10 +103,14 @@
         // 解析藍牙掃描器返回的數據
         if(parsedCode != '')
         {
+
+          const response = await serch_by_BarCode(parsedCode);
+          console.log("serch_by_BarCode",response)
+          if(response.Data.length == 0) return;
            for(var i = 0; i < allrows.length; i++)
            {
                const CODE = allrows[i].getAttribute("CODE")
-               if(CODE.toUpperCase() == parsedCode.toUpperCase())
+               if(CODE.toUpperCase() == response.Data[0].CODE.toUpperCase())
                {
                   sub_row_div_onclick(allrows[i]);
                   return;
@@ -101,13 +124,27 @@
         const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
         const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);
         
-
-        if (isValid && (!isControlKey||isNumPadlKey)) {
+        
+        if (isValid && (!isControlKey||isNumPadlKey)) 
+        {
+          
+             if(barcode_keydown_datetime == null)
+             {
+                barcode_value = "";
+             }
+             const totalMs = getTotalMilliseconds(barcode_keydown_datetime);
+             if(totalMs > 2000)
+             {
+                barcode_value = "";
+             }
+             barcode_keydown_datetime = Date.now();
             // 將解析後的條碼值設定為輸入框的值
             barcode_value += event.key;
+            console.log("barcode_value",barcode_value);
+            
         } 
     }
-});
+  }
 
 // 解析帶有分隔符的字符串
 function parseBarcode(scannedCode) 

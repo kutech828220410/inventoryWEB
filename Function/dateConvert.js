@@ -43,6 +43,40 @@ function StringToDateime(dateStr)
     }
    
 }
+function getStartDateStr(dateStr)
+{
+    const parts = dateStr.split(" "); // 分割日期和時間部分
+    const dateParts = parts[0].split("-"); // 分割日期部分
+   
+
+    const year = parseInt(dateParts[0]);
+    const month = parseInt(dateParts[1]) - 1; // 月份從 0 開始計數，所以減去 1
+    const day = parseInt(dateParts[2]);
+
+    const hour = 0;
+    const minute = 0;
+    const second = 0;
+    const date =  new Date(year, month, day, hour, minute, second);
+    return getDateTimeStr(date);
+}
+function getEndDateStr(dateStr)
+{
+    const parts = dateStr.split(" "); // 分割日期和時間部分
+    const dateParts = parts[0].split("-"); // 分割日期部分
+   
+
+    const year = parseInt(dateParts[0]);
+    const month = parseInt(dateParts[1]) - 1; // 月份從 0 開始計數，所以減去 1
+    const day = parseInt(dateParts[2]);
+
+    const hour = 23;
+    const minute = 59;
+    const second = 59;
+    const date =  new Date(year, month, day, hour, minute, second);
+    return getDateTimeStr(date);
+}
+
+
 function getDateTimeStr(date)
 {
     if(!isDatetime(date)) return date;
@@ -151,4 +185,18 @@ function DateTimeAddDays(date, value)
 function getLastDayOfMonth(year, month)
 {
     return new Date(year, month + 1, 0).getDate();
+}
+
+
+function getTotalMilliseconds(date)
+{
+    // 创建一个表示特定时间的 Date 对象
+    const specificDate = date;
+    // 获取当前时间的毫秒数
+    const currentTime = Date.now();
+
+    // 计算自特定时间以来的总毫秒数
+    const totalMilliseconds = currentTime - specificDate;
+
+    return totalMilliseconds;
 }

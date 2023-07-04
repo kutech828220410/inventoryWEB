@@ -14,18 +14,18 @@ var consumption_url = `${api_ip}api/consumption`;
 var device_url = `${api_ip}api/device`;
 var session_url = `${api_ip}api/session`;
 var session_login_url = ``;
-
-async function LoadAPIServer()
+var MED_page_url = ``;
+async function LoadAPIServer(log)
 {
   const json = await Loadtxt("../../config.txt");
   APIServer =  await getDataFromAPI(`${json.API_Server}/api/ServerSetting`);
   const API_Session = serch_APIServer("Main","網頁" ,"API_Session");
   session_url = `${API_Session[0].server}/api/session`;
-  console.log("session_url",session_url);
+  if(!log)console.log("session_url",session_url);
 
   const API_Session_Login = serch_APIServer("Main","網頁" ,"API_Login");
   session_login_url = `${API_Session_Login[0].server}`;
-  console.log("session_login_url",session_login_url);
+  if(!log)console.log("session_login_url",session_login_url);
   return APIServer;
 }
 function serch_APIServer(name ,type, content)
@@ -63,6 +63,7 @@ async function check_ip(ip0 , ip1)
         transactions_url = `${api_ip_temp}api/transactions`;
         device_url = `${api_ip_temp}api/device`;
         consumption_url = `${api_ip_temp}api/consumption`;
+        MED_page_url = `${api_ip_temp}api/MED_page`
         return;
     }
     check_ip(ip0 ,ip1);
@@ -76,7 +77,7 @@ async function set_ip(flag_api_server)
 async function Set_ChatHub_url()
 {
     console.log("Set_ChatHub_url");
-    await LoadAPIServer();
+    await LoadAPIServer(true);
     var flag_OK = false;
     const json = await Loadtxt("../../config.txt");
     const json_return =  await getDataFromAPI(`${json.API_Server}/api/ServerSetting`);
@@ -104,7 +105,7 @@ async function Set_ChatHub_url()
 async function pingIP(ipAddress, timeout = 1000) 
 {
     const url = `${ipAddress}/api/test`;
-    console.log("getDataFromAPI", url);
+    console.log("pingIP", url);
   
     const controller = new AbortController();
     const signal = controller.signal;
@@ -125,7 +126,7 @@ async function pingIP(ipAddress, timeout = 1000)
       clearTimeout(timeoutId);
   
       if (response.ok) {
-        console.log(response);
+        // console.log(response);
         return true;
       } else {
         throw new Error('Network response was not ok.');

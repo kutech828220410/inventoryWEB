@@ -23,27 +23,30 @@ async function load()
     check_session_off();
     ServerName = "DS01";
     ServerType = "藥庫";
-    TableName = "medicine_page_firstclass";
+    TableName = "medicine_page_cloud";
+    DbName = "dbvm";
     APIServer = await LoadAPIServer();
     const API01 = serch_APIServer(ServerName,ServerType,"API01");
     const API02 = serch_APIServer(ServerName,ServerType,"API02");
     console.log("API01",API01);
     console.log("API02",API02);
     await check_ip(API01[0].server,API02[0].server);
-    console.log("inventory_url",inventory_url);
+    console.log("MED_page_url",MED_page_url);
 
     const Loadingpopup = GetLoadingpopup();
     document.body.appendChild(Loadingpopup);
-    var IC_SN = sessionStorage.getItem('IC_SN');  
-    current_IC_SN = IC_SN;
-
     Set_main_div_enable(true);
-    data = await creat_get_by_IC_SN(IC_SN);
-    const device_basic_result = await device_all();
-    device_basic = device_basic_result.Data;
-    console.log("device_basic" , device_basic);
+ 
+
+    data = await get_by_apiserver()
     page_Init(data);
-    edit_herader_view_QTY();
+   
+    // data = await creat_get_by_IC_SN(IC_SN);
+    // const device_basic_result = await device_all();
+    // device_basic = device_basic_result.Data;
+    // console.log("device_basic" , device_basic);
+    // page_Init(data);
+    // edit_herader_view_QTY();
     Set_main_div_enable(false);
 
 
@@ -54,19 +57,20 @@ function page_Init(data)
   const main_div = document.querySelector('#main_div');
   main_div.innerHTML = "";
 
-  for (var i = 0; i < data.Data[0].Contents.length; i++)
+  for (var i = 0; i < data.Data.length; i++)
   {
-    const all_div = creat_row_div(i, data.Data[0].Contents[i]);
+    const all_div = creat_row_div(i, data.Data[i]);
     allrows.push(all_div);
     main_div.appendChild(all_div);
   }
- 
+
+  
   // if (data.Data.length == 0) {
   //   const NoDataDiv = getNoDataDiv();
   //   console.log(NoDataDiv);
   //   main_div.appendChild(NoDataDiv);
   // }
-
+  Set_rowTotalHeight();
   setUserText();
 }
 function Set_main_div_enable(value) 
@@ -224,18 +228,18 @@ function get_header()
 function edit_herader_view_QTY()
 {
     const herader_view_QTY_text = document.querySelector("#herader_view_QTY_text");
-    const totle_QTY = data.Data[0].Contents.length;
+    const totle_QTY = data.Data.length;
     var QTY = 0;
-    for(var i = 0 ; i < data.Data[0].Contents.length ; i++)
+    for(var i = 0 ; i < data.Data.length ; i++)
     {
-       if(data.Data[0].Contents[i].Sub_content.length != 0) QTY++;
+       if(data.Data[i].BARCODE.length != 0) QTY++;
     }
     My_Div.Set_Text(herader_view_QTY_text ,`${QTY}/${totle_QTY}` , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","");
 }
 function get_main() {
 
   const main_div = document.createElement('div');
-  My_Div.Init(main_div, 'main_div','main_div', '100%', '1000px', '');
+  My_Div.Init(main_div, 'main_div','main_div', '100%', '', '');
   main_div.style.flexWrap = "wrap";
   if(!isDesktop) 
   {
@@ -250,6 +254,7 @@ function get_main() {
   My_Div.Set_position(main_div ,PositionEnum.FIXED ,0 ,112);
 
   main_div.style.marginBottom = "30px";
+  // main_div.style.overflowX = "";
   main_div.style.overflow = "scroll";
 
   return main_div;
@@ -261,5 +266,4 @@ function setUserText()
 {
    const userText = document.querySelector("#header_user_text");
    userText.innerText = `使用者:${get_logedName()} ID:${get_loggedID()}`;
-   console.log(userText);0
 }
