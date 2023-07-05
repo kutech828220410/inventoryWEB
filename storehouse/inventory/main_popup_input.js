@@ -23,7 +23,6 @@ function show_popup_input(Content , page_Initial)
     const END_QTY_input = document.querySelector('#END_QTY_input_popup_input');
     END_QTY_input.focus();
     if(popup_input_div_Content != undefined) light_device_by_Code(popup_input_div_Content.CODE, get_loggedColor());
- 
 }
 function hide_popup_input()
 {
@@ -134,6 +133,7 @@ function edit_rows_popup_input(Content)
 
     updateDivHeight(rows_div , 0);
 }
+//換頁箭頭
 function edit_rows_page_control_popup_input()
 {
     if(popup_input_MaxfPage == 0)

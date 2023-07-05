@@ -43,7 +43,7 @@ async function postDataToAPI_NoneReturn(url, data)
 async function postDataToAPI(url, data) 
 {
     try {
-      console.log("postDataToAPI",url);
+      // console.log("postDataToAPI",url);
       const response = await fetch(url, {
         method: 'POST',
         headers: {

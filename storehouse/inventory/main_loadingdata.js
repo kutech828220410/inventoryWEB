@@ -1,6 +1,7 @@
 var device_buf =[];
 var NumOfRow = 0;
 var rowHeight = 145;
+
 window.onresize = function() 
 {
     const device = checkDeviceType();
@@ -138,6 +139,124 @@ function creat_row_div(_index , Contents)
 
     return row_div;
 }
+
+
+//更換popup_input
+//顯示彈出視窗並初始化頁面資訊。
+function show_popup_input(Content , page_Initial)
+{
+    if(Content == undefined) return;
+    if(popup_input_div == undefined) page_Initial = false;
+    popup_input_div_Content = Content;
+    popup_input_MaxfPage = Math.floor(Content.Sub_content.length / popup_input_NumOfPageRows);
+    if(Content.Sub_content.length % popup_input_NumOfPageRows > 0) popup_input_MaxfPage ++;
+    if(page_Initial) popup_input_PageIndex = popup_input_MaxfPage - 1;
+    if(popup_input_PageIndex >= popup_input_MaxfPage) popup_input_PageIndex = 0;
+    edit_title_popup_input(Content);
+    edit_rows_popup_input(Content);
+    edit_underline_popup_input();
+    edit_rows_page_control_popup_input();
+    popup_input_div.Set_Visible(true);
+    const END_QTY_input = document.querySelector('#END_QTY_input_popup_input');
+    END_QTY_input.focus();
+    if(popup_input_div_Content != undefined) light_device_by_Code(popup_input_div_Content.CODE, get_loggedColor());
+}
+//隱藏資料列
+function hide_popup_input()
+{
+     popup_input_div.Set_Visible(false);
+     if(popup_input_div_Content != undefined) light_device_by_Code(popup_input_div_Content.CODE, "0,0,0");
+}
+//更新資料列
+function edit_rows_popup_input(Content)
+{
+    const rows_div = document.querySelector('#rows_div_popup_input');
+    rows_div.innerHTML = "";
+    My_Div.Init(rows_div, 'rows_div_popup_input','rows_div_popup_input', '100%', '100%', '');
+    My_Div.Set_Block(rows_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.TOP);
+
+    var index = popup_input_PageIndex * popup_input_NumOfPageRows;
+    var end_index = popup_input_PageIndex * popup_input_NumOfPageRows + popup_input_NumOfPageRows;
+    while(true) 
+    {
+        if(Content.Sub_content.length == 0)break;
+        if(index >= Content.Sub_content.length) break;
+        if(index >= end_index) break;
+        const row = get_row_popup_input(Content.Sub_content[index]);
+        rows_div.appendChild(row);
+        index++;
+    }
+
+    updateDivHeight(rows_div , 0);
+}
+//換頁箭頭功能
+function next_page_popup_input() 
+{
+    if((popup_input_PageIndex + 1) < popup_input_MaxfPage) popup_input_PageIndex++;      
+    edit_rows_popup_input(popup_input_div_Content);
+    edit_rows_page_control_popup_input();
+}
+function previous_page_popup_input() 
+{
+    popup_input_PageIndex--;
+    if(popup_input_PageIndex < 0) popup_input_PageIndex = 0;
+    edit_rows_popup_input(popup_input_div_Content);
+    edit_rows_page_control_popup_input();
+}
+//換頁箭頭可見部分
+function edit_rows_page_control_popup_input()
+{
+    if(popup_input_MaxfPage == 0)
+    {
+        const rows_page_control_block = document.querySelector('#rows_page_control_block_popup_input');
+        rows_page_control_block.style.visibility = "hidden";
+    }
+    else
+    {
+        const rows_page_control_block = document.querySelector('#rows_page_control_block_popup_input');
+        const svg_next = document.querySelector('#svg_next');
+        const svg_previous = document.querySelector('#svg_previous_popup_input');
+        rows_page_control_block.visibility  = "visible";
+        if(popup_input_PageIndex + 1 < popup_input_MaxfPage) svg_next.style.visibility = "visible";
+        else svg_next.style.visibility = "hidden";
+        if(popup_input_PageIndex - 1 >= 0) svg_previous.style.visibility = "visible";
+        else svg_previous.style.visibility = "hidden";
+    }
+}
+
+//換頁箭頭
+function get_row_popup_inputs_page_control_block()
+{
+    const rows_page_control_block = document.createElement('div');
+    My_Div.Init(rows_page_control_block, 'rows_page_control_block_popup_input','rows_page_control_block_popup_input', '100%','30px','');
+    My_Div.Set_Block(rows_page_control_block, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+    rows_page_control_block.style.alignItems = "center";
+    rows_page_control_block.style.marginTop = "5px";
+    const svg_next = Get_next_SVG("30px","100%" ,"60%","100%","green");
+    My_Div.Init(svg_next, 'svg_next','svg_next', '30px', '30px', '');
+    // svg_next.style.border = "1px solid gray";
+    svg_next.style.borderRadius = "3px";
+    svg_next.style.marginRight = "5px";
+    svg_next.addEventListener('click', function()
+    {
+        next_page_popup_input();
+    });
+    const svg_previous = Get_previous_SVG("30px","100%" ,"60%","100%","green");
+    My_Div.Init(svg_previous, 'svg_previous_popup_input','svg_previous_popup_input', '30px', '30px', '');
+    // svg_next.style.border = "1px solid gray";
+    svg_previous.style.borderRadius = "3px";
+    svg_previous.style.marginRight = "5px";
+    svg_previous.addEventListener('click', function()
+    {
+        previous_page_popup_input();
+    });
+    rows_page_control_block.appendChild(svg_previous);
+    rows_page_control_block.appendChild(svg_next);
+    return rows_page_control_block;
+}
+
+
+
 
 
 function get_block1_div(_index, item)

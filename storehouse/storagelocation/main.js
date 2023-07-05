@@ -1,6 +1,7 @@
 let response = [];
 let data = [];
 let device_basic = [];
+let device_current = null;
 var loging_name = get_logedName();
 var current_IC_SN = "";
 let allrows = [];
@@ -36,8 +37,9 @@ async function load()
     Set_main_div_enable(true);
  
 
-    data = await get_by_apiserver()
-    page_Init(data);
+    data = await device_all_storage();
+    device_basic = data.Data;
+    page_Init(device_basic);
    
     // data = await creat_get_by_IC_SN(IC_SN);
     // const device_basic_result = await device_all();
@@ -49,26 +51,51 @@ async function load()
 
 
 }
-function page_Init(data) 
+function page_Init(device_basic) 
 {
-  console.log(data);
+  console.log("device_basic",device_basic);
   const main_div = document.querySelector('#main_div');
   main_div.innerHTML = "";
-
-  for (var i = 0; i < data.Data.length; i++)
-  {
-    const all_div = creat_row_div(i, data.Data[i]);
-    allrows.push(all_div);
-    main_div.appendChild(all_div);
-  }
-
   
-  // if (data.Data.length == 0) {
-  //   const NoDataDiv = getNoDataDiv();
-  //   console.log(NoDataDiv);
-  //   main_div.appendChild(NoDataDiv);
-  // }
-  Set_rowTotalHeight();
+  const ip_input_div = document.createElement('div');
+  My_Div.Init(ip_input_div, 'ip_input_div','ip_input_div', '100%', '100px', '');
+  My_Div.Set_Block(ip_input_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  ip_input_div.style.top = "50%";
+  ip_input_div.style.left = "50%";
+  main_div.appendChild(ip_input_div);
+
+  const ip_input_text = document.createElement('input');
+  My_Div.Init(ip_input_text, 'ip_input_text','ip_input_text', '70%','100px','');
+  My_Div.Set_Text(ip_input_text, ``, TextAlignEnum.CENTER, "26px", true,"微軟正黑體","black");
+  ip_input_text.readOnly = false;
+  ip_input_text.type = "text";
+  ip_input_text.inputMode = "latin";
+  ip_input_text.style.backgroundColor = "";
+  ip_input_text.style.borderRadius = "5px";
+  ip_input_text.style.marginLeft = "10px";
+  ip_input_text.style.marginRight = "10px";
+  ip_input_text.placeholder = "XXX.XXX";
+  ip_input_div.appendChild(ip_input_text);
+
+  const ip_input_donesvg = Get_find_check_SVG("100%", "100%", "70%","100%","black","");
+  My_Div.Init(ip_input_donesvg, 'ip_input_donesvg','ip_input_donesvg', '100px', '100px', '');
+  My_Div.Set_Block(ip_input_donesvg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
+  ip_input_donesvg.style.border = "1px solid black";
+  ip_input_donesvg.style.marginRight = "10px";
+  ip_input_donesvg.style.borderRadius = "3px";
+  ip_input_donesvg.onclick = donesvg_Click;
+  ip_input_div.appendChild(ip_input_donesvg);  
+
+
+  const label_ip_input_text = document.createElement('div');
+  My_Div.Init(label_ip_input_text, 'label_ip_input_text','label_ip_input_text', '100%', '80px', '');
+  My_Div.Set_Text(label_ip_input_text ,"(請輸入IP 或 掃描面板條碼)" , TextAlignEnum.CENTER , "20px", true,"微軟正黑體","RED");
+  label_ip_input_text.className = "label_ip_input_text";
+  label_ip_input_text.id = "label_ip_input_text";
+  label_ip_input_text.style.wordSpacing = "2px";;
+  label_ip_input_text.style.letterSpacing = "2px";
+  main_div.appendChild(label_ip_input_text);
+
   setUserText();
 }
 function Set_main_div_enable(value) 
@@ -107,8 +134,18 @@ async function light_device_by_Code(Code ,Color)
 
 async function donesvg_Click() 
 {
-
-    location.href = "frontpage.html";
+    const ip_input_text = document.querySelector(`#ip_input_text`);
+    if(!ip_input_text.value)
+    {
+      alert("未輸入資料!");
+      return;
+    }
+    device_current = await device_sort_by_ip(ip_input_text.value);
+    if(device.Data.length == 0)
+    {
+      alert("找無儲位資訊!");
+      return;
+    }
 }
 function findsvg_Click()
 {
@@ -154,7 +191,7 @@ function get_header()
 
   const header_user_text = document.createElement('div');
   My_Div.Init(header_user_text, 'header_user_text','header_user_text', '100%', '50%', '');
-  My_Div.Set_Text(header_user_text ,"使用者:" , TextAlignEnum.LEFT , "14px", false,"微軟正黑體","");
+  My_Div.Set_Text(header_user_text ,"使用者:" , TextAlignEnum.LEFT , "12x", false,"微軟正黑體","");
   header_user_text.className = "header_user_text";
   header_user_text.id = "header_user_text";
   header_user_text.style.marginLeft = "50px";
@@ -186,14 +223,7 @@ function get_header()
   header_contorls_findsvg.style.borderRadius = "3px";
   header_contorls_div.appendChild(header_contorls_findsvg);
 
-  const header_contorls_donesvg = Get_find_check_SVG("100%", "100%", "70%","100%","black","");
-  My_Div.Init(header_contorls_donesvg, 'header_contorls_donesvg','header_contorls_donesvg', '60px', '80%', '');
-  My_Div.Set_Block(header_contorls_donesvg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
-  header_contorls_donesvg.style.border = "1px solid black";
-  header_contorls_donesvg.style.marginRight = "3px";
-  header_contorls_donesvg.style.borderRadius = "3px";
-  header_contorls_donesvg.onclick = donesvg_Click;
-  header_contorls_div.appendChild(header_contorls_donesvg);  
+ 
 
   const herader_view_div = document.createElement('div');
   My_Div.Init(herader_view_div, 'herader_view_div','herader_view_div', '100%', '40px', '');
@@ -237,23 +267,22 @@ function edit_herader_view_QTY()
 function get_main() {
 
   const main_div = document.createElement('div');
-  My_Div.Init(main_div, 'main_div','main_div', '100%', '', '');
-  main_div.style.flexWrap = "wrap";
+  My_Div.Init(main_div, 'main_div','main_div', '100%', '100%', '');
+  main_div.style.flexWrap = "";
   if(!isDesktop) 
   {
     console.log("!isDesktop");
-    My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+    My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
   }
   else
   {
     console.log("isDesktop");
-    My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+    My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
   }
-  My_Div.Set_position(main_div ,PositionEnum.FIXED ,0 ,112);
+  My_Div.Set_position(main_div ,PositionEnum.FIXED ,0 ,0);
 
-  main_div.style.marginBottom = "30px";
   // main_div.style.overflowX = "";
-  main_div.style.overflow = "scroll";
+  main_div.style.overflowY = "None";
 
   return main_div;
 }

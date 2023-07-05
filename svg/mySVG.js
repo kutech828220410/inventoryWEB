@@ -1,3 +1,107 @@
+function Get_back_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor, clickOn)
+{
+    const btn_div = document.createElement("div");
+    const div = document.createElement("div");
+    btn_div.style.width = btn_width;
+    btn_div.style.height= btn_height; 
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.innerHTML = `<?xml version="1.0" encoding="iso-8859-1"?>
+    <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+    <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+       width="100%" height="100%" viewBox="0 0 45.58 45.58" xml:space="preserve"
+      >
+    <g>
+      <path d="M45.506,33.532c-1.741-7.42-7.161-17.758-23.554-19.942V7.047c0-1.364-0.826-2.593-2.087-3.113
+        c-1.261-0.521-2.712-0.229-3.675,0.737L1.305,19.63c-1.739,1.748-1.74,4.572-0.001,6.32L16.19,40.909
+        c0.961,0.966,2.415,1.258,3.676,0.737c1.261-0.521,2.087-1.75,2.087-3.113v-6.331c5.593,0.007,13.656,0.743,19.392,4.313
+        c0.953,0.594,2.168,0.555,3.08-0.101C45.335,35.762,45.763,34.624,45.506,33.532z"/>
+    </g>
+    </svg>`;
+    svg.setAttribute("stroke", strokeColor);
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke-width", "1.5");
+    svg.setAttribute("viewBox", `0 0 24 24`);
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    svg.setAttribute("class", "svg");
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", "100%");
+
+    div.style.width = svg_width;
+    div.style.height = svg_height;
+ 
+    div.style.display = "flex";
+    div.style.justifyContent = "center";
+    div.style.alignItems = "center";
+    div.style.margin = "auto";   
+    btn_div.style.backgroundColor = backgroundColor;
+    // if(clickOn == undefined) clickOn =true;
+    // if(clickOn)
+    // {
+    //   btn_div.addEventListener("mouseover", function() 
+    //   {
+    //       btn_div.style.backgroundColor = "";
+    //   });
+      
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() 
+    //   {
+    //     btn_div.style.backgroundColor = backgroundColor;
+    //   });
+    // }
+    div.appendChild(svg);
+    btn_div.appendChild(div);
+    return btn_div;
+}
+
+
+function Get_home_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor, clickOn)
+{
+    const btn_div = document.createElement("div");
+    const div = document.createElement("div");
+    btn_div.style.width = btn_width;
+    btn_div.style.height= btn_height; 
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.innerHTML = `<?xml version="1.0" ?><svg baseProfile="tiny" height="24px" id="Layer_1" version="1.2" viewBox="0 0 24 24" width="24px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M12,3c0,0-6.186,5.34-9.643,8.232C2.154,11.416,2,11.684,2,12c0,0.553,0.447,1,1,1h2v7c0,0.553,0.447,1,1,1h3  c0.553,0,1-0.448,1-1v-4h4v4c0,0.552,0.447,1,1,1h3c0.553,0,1-0.447,1-1v-7h2c0.553,0,1-0.447,1-1c0-0.316-0.154-0.584-0.383-0.768  C18.184,8.34,12,3,12,3z"/></svg>`;
+    svg.setAttribute("stroke", strokeColor);
+    svg.setAttribute("fill", "black");
+    svg.setAttribute("stroke-width", "1.5");
+    svg.setAttribute("viewBox", `0 0 24 24`);
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    svg.setAttribute("class", "svg");
+    // svg.setAttribute("width", "100%");
+    // svg.setAttribute("height", "100%");
+
+    div.style.width = svg_width;
+    div.style.height = svg_height;
+ 
+    div.style.justifyContent = "center";
+    div.style.alignItems = "center";
+    div.style.margin = "auto";   
+    // btn_div.style.backgroundColor = backgroundColor;
+    // if(clickOn == undefined) clickOn =true;
+    // if(clickOn)
+    // {
+    //   btn_div.addEventListener("mouseover", function() 
+    //   {
+    //       btn_div.style.backgroundColor = "";
+    //   });
+      
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() 
+    //   {
+    //     btn_div.style.backgroundColor = backgroundColor;
+    //   });
+    // }
+    div.appendChild(svg);
+    btn_div.appendChild(div);
+    return div;
+}
+
 function Get_barcode_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor, clickOn)
 {
     const btn_div = document.createElement("div");

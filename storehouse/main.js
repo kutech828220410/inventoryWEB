@@ -19,6 +19,16 @@ async function logout_Click()
   location.href = "../../login.html";
 }
 
+async function back_Click()
+{
+  location.href = "../../frontpage/main.html";
+}
+
+async function home_Click()
+{
+  location.href = "../../storehouse/main.html";
+}
+
 async function inspection_Click()
 {
   console.log("inspection");
@@ -103,7 +113,7 @@ function Set_main_div_enable(value)
 function get_header() 
 {
   const header_div = document.createElement('div');
-  My_Div.Init(header_div, 'header_div','header_div', '100%', '55px', '');
+  My_Div.Init(header_div, 'header_div','header_div', '100%', '70px', '');
   My_Div.Set_Block(header_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   header_div.style.overflowX = "hidden";
   const header_title_text = document.createElement('div');
@@ -156,6 +166,10 @@ function get_main()
 }
 function get_userinfo()
 {
+  const row1_div = document.createElement("div");
+  My_Div.Init(row1_div, 'row1_div','row1_div', '370px', '70px', '');
+  My_Div.Set_Block(row1_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+
   const userinfo_div = document.createElement("div");
   My_Div.Init(userinfo_div, 'userinfo_div','userinfo_div', '250px', '60px', 'rgba(255, 255, 255, 0.85)');
   My_Div.Set_Block(userinfo_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
@@ -177,10 +191,32 @@ function get_userinfo()
   My_Div.Set_Block(logout_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   logout_svg.onclick = logout_Click;
 
+  const back_svg = Get_back_SVG("70%", "70%", "70%","70%","black","");
+  My_Div.Init(back_svg, 'back_svg','back_svg', '60px', '60px', 'rgba(255, 255, 255, 0.85)');
+  My_Div.Set_Block(back_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  back_svg.style.borderRadius = "5px";
+  back_svg.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
+  back_svg.style.marginRight = "10px";
+  back_svg.style.marginTop = "10px";
+  back_svg.onclick = back_Click;
+
+  const home_svg = Get_home_SVG("100%", "100%", "100%","100%","","");
+  My_Div.Init(home_svg, 'home_svg','home_svg', '60px', '60px', 'rgba(255, 255, 255, 0.85)');
+  My_Div.Set_Block(home_svg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  home_svg.style.borderRadius = "5px";
+  home_svg.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
+  home_svg.style.marginLeft = "10px";
+  home_svg.style.marginTop = "10px";
+  home_svg.onclick = home_Click;
+
    userinfo_div.appendChild(userinfo_svg);
    userinfo_div.appendChild(userinfo_text_div);
    userinfo_div.appendChild(logout_svg);
-  return userinfo_div;
+   row1_div.appendChild(back_svg);
+   row1_div.appendChild(userinfo_div);
+   row1_div.appendChild(home_svg);
+
+  return row1_div;
 }
 
 function get_choose_text_div()
