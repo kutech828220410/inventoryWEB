@@ -46,9 +46,12 @@ function Set_rowTotalHeight()
     var num =  temp / NumOfRow;
     if((temp % NumOfRow) != 0) num++;
     const main_div = document.querySelector('#main_div');
-    const height = `${(num * rowHeight) + 100}`;
+    const height = `${((num + 1) * rowHeight) + 100}`;
     main_div.style.height = `${height}px`;
-    if(height > screenHeight) main_div.style.height = "110%";    
+    if(height > screenHeight) 
+    {
+        main_div.style.height = "110%";   
+    } 
 }
 function row_div_onclick(event)
 {
@@ -164,7 +167,7 @@ function get_block1_div(_index, item)
     const IC_SN_div = document.createElement("div");
     IC_SN_div.className = "IC_SN_div"; 
     IC_SN_div.id = `IC_SN_div${_index}`;
-    IC_SN_div.innerText = `${_index + 1}`;
+    IC_SN_div.innerText = `${item.PON}`;
     IC_SN_div.style.fontWeight = "bolder";
     IC_SN_div.style.paddingLeft = "5px";
     IC_SN_div.style.display = "flex";
@@ -205,11 +208,11 @@ function get_block1_div(_index, item)
     const brand_div = document.createElement("div");
     brand_div.className = "brand_div"; 
     brand_div.id = `brand_div${_index}`;
-    if(item.PON == null || item.PON == "")
+    if(item.BRD == null || item.BRD == "")
     {
         brand_div.innerText = `廠牌：無`;
     }
-    else brand_div.innerText = `廠牌：${item.PON}`;
+    else brand_div.innerText = `廠牌：${item.BRD}`;
     brand_div.style.color = "hotpink";
     brand_div.style.fontWeight = "bolder";
     brand_div.style.paddingLeft = "5px";

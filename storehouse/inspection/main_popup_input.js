@@ -128,14 +128,25 @@ function edit_title_popup_input(Content)
         med_SKDIACODE_text.innerText = `料號 : ${Content.SKDIACODE}`;
     }
     const med_BRAND_text = document.querySelector('#med_BRAND_text_popup_input');
-    if(Content.PON == "")
+    if(Content.BRD == "")
     {
         med_BRAND_text.innerText = `廠牌 : 無`;
     }
     else
     {
-        med_BRAND_text.innerText = `廠牌 : ${Content.PON}`;
+        med_BRAND_text.innerText = `廠牌 : ${Content.BRD}`;
     }
+    const med_PON_text = document.querySelector('#med_PON_text_popup_input');
+    if(Content.PON == "")
+    {
+        med_PON_text.innerText = `請購單號 : 無`;
+    }
+    else
+    {
+        med_PON_text.innerText = `請購單號 : ${Content.PON}`;
+    }
+
+    
     const med_eng_name_text = document.querySelector('#med_eng_name_text_popup_input');
     if(Content.NAME != null)med_eng_name_text.innerText = `(英) : ${Content.NAME}`;
     const med_cht_name_text = document.querySelector('#med_cht_name_text_popup_input');
@@ -224,8 +235,9 @@ function get_title_popup_input()
     My_Div.Init(med_info, 'med_info_popup_input','med_info_popup_input', '85%',"100%" ,'');
     My_Div.Set_Block(med_info, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.TOP);
     med_info.style.marginTop = "10px";
+    
     const med_CODE_SKDIACODE_block = document.createElement('div');
-    My_Div.Init(med_CODE_SKDIACODE_block, 'med_CODE_SKDIACODE_block_popup_input','med_CODE_SKDIACODE_block_popup_input', '100%',"20%",'');
+    My_Div.Init(med_CODE_SKDIACODE_block, 'med_CODE_SKDIACODE_block_popup_input','med_CODE_SKDIACODE_block_popup_input', '100%',"30px",'');
     My_Div.Set_Block(med_CODE_SKDIACODE_block, DisplayEnum.FLEX, FlexDirectionEnum.ROW,JustifyContentEnum.LEFT)
 
     const med_CODE_text = document.createElement('div');
@@ -235,26 +247,32 @@ function get_title_popup_input()
     const med_SKDIACODE_text = document.createElement('div');
     My_Div.Init(med_SKDIACODE_text,'med_SKDIACODE_text_popup_input','med_SKDIACODE_text_popup_input', '50%',"100%");
     My_Div.Set_Text(med_SKDIACODE_text ,"料號 : XXXXX" , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","black");
+
+    const med_PON_text = document.createElement('div');
+    My_Div.Init(med_PON_text,'med_PON_text_popup_input','med_PON_text_popup_input', '100%',"30px");
+    My_Div.Set_Text(med_PON_text ,"請購單號 : XXXXXXXXXXXXX" , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","gray");
+    med_PON_text.style.marginLeft = "5px";
+
     const med_BRAND_text = document.createElement('div');
-    My_Div.Init(med_BRAND_text,'med_BRAND_text_popup_input','med_BRAND_text_popup_input', '100%',"30%");
-    My_Div.Set_Text(med_BRAND_text ,"廠牌 : XXXXXXXXXXXXX" , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","blue");
+    My_Div.Init(med_BRAND_text,'med_BRAND_text_popup_input','med_BRAND_text_popup_input', '100%',"30px");
+    My_Div.Set_Text(med_BRAND_text ,"廠牌 : XXXXXXXXXXXXX" , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","blue");
     med_BRAND_text.style.marginLeft = "5px";
     med_CODE_SKDIACODE_block.appendChild(med_CODE_text);
     med_CODE_SKDIACODE_block.appendChild(med_SKDIACODE_text);
 
 
     const med_eng_name_text = document.createElement('div');
-    My_Div.Init(med_eng_name_text,'med_eng_name_text_popup_input','med_eng_name_text_popup_input', '100%',"30%",'');
+    My_Div.Init(med_eng_name_text,'med_eng_name_text_popup_input','med_eng_name_text_popup_input', '100%',"30px",'');
     My_Div.Set_Text(med_eng_name_text ,"(英) : XXXXXXXXXXXXXXXXX" , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","orange");
     med_eng_name_text.style.marginLeft = "5px";
    
     const med_cht_name_text = document.createElement('div');
-    My_Div.Init(med_cht_name_text,'med_cht_name_text_popup_input','med_cht_name_text_popup_input', '100%',"30%");
+    My_Div.Init(med_cht_name_text,'med_cht_name_text_popup_input','med_cht_name_text_popup_input', '100%',"30px");
     My_Div.Set_Text(med_cht_name_text ,"(中) : XXXXXXXXXXXXXXXXX" , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","orange");
     med_cht_name_text.style.marginLeft = "5px";
 
     const med_start_end_QTY_block = document.createElement('div');
-    My_Div.Init(med_start_end_QTY_block, 'med_start_end_QTY_block_popup_input','med_start_end_QTY_block_popup_input', '100%',"20%",'');
+    My_Div.Init(med_start_end_QTY_block, 'med_start_end_QTY_block_popup_input','med_start_end_QTY_block_popup_input', '100%',"30px",'');
     My_Div.Set_Block(med_start_end_QTY_block, DisplayEnum.FLEX, FlexDirectionEnum.ROW,JustifyContentEnum.LEFT)
 
     const med_start_QTY_text = document.createElement('div');
@@ -271,6 +289,7 @@ function get_title_popup_input()
     med_start_end_QTY_block.style.marginBottom = "10px";
 
     med_info.appendChild(med_CODE_SKDIACODE_block);
+    med_info.appendChild(med_PON_text);
     med_info.appendChild(med_BRAND_text);
     med_info.appendChild(med_eng_name_text);
     med_info.appendChild(med_cht_name_text);

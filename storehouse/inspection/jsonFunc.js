@@ -26,7 +26,10 @@ async function creat_get_by_CT_TIME(date)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  let response = await postDataToAPI(`${inspection_url}/creat_get_by_CT_TIME`,post_data);
+  var _url = `${inspection_url}/creat_get_by_CT_TIME`;
+  console.log("creat_get_by_CT_TIME" , _url);
+  console.log("post_data [creat_get_by_CT_TIME]",post_data);
+  let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
 async function creat_get_by_CT_TIME_S(date)
@@ -51,7 +54,10 @@ async function creat_get_by_CT_TIME_S(date)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  let response = await postDataToAPI(`${inspection_url}/creat_get_by_CT_TIME`,post_data);
+  var _url = `${inspection_url}/creat_get_by_CT_TIME_S`;
+  console.log("creat_get_by_CT_TIME_S" , _url);
+  console.log("post_data [creat_get_by_CT_TIME_S]",post_data);
+  let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
 
@@ -78,8 +84,10 @@ async function creat_update_startime_by_IC_SN(ICSN)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  console.log("post_data",post_data);
-  let response = await postDataToAPI(`${inspection_url}/creat_update_startime_by_IC_SN`,post_data);
+  var _url = `${inspection_url}/creat_update_startime_by_IC_SN`;
+  console.log("creat_update_startime_by_IC_SN" , _url);
+  console.log("post_data [creat_update_startime_by_IC_SN]",post_data);
+  let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
 async function creat_get_by_CT_TIME_ST_END(date_ST,date_END)
@@ -104,8 +112,10 @@ async function creat_get_by_CT_TIME_ST_END(date_ST,date_END)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  console.log("post_data",post_data);
-  let response = await postDataToAPI(`${inspection_url}/creat_get_by_CT_TIME_ST_END`,post_data);
+  var _url = `${inspection_url}/creat_get_by_CT_TIME_ST_END`;
+  console.log("creat_get_by_CT_TIME_ST_END" , _url);
+  console.log("post_data [creat_get_by_CT_TIME_ST_END]",post_data);
+  let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
 
@@ -133,7 +143,7 @@ async function creat_get_by_IC_SN(IC_SN)
   };
   var _url = `${inspection_url}/creat_get_by_IC_SN`;
   console.log("creat_get_by_IC_SN" , _url);
-  console.log("post_data",post_data);
+  console.log("post_data [creat_get_by_IC_SN]",post_data);
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
@@ -160,6 +170,8 @@ async function creat_delete_by_IC_SN(IC_SN)
     "TimeTaken": ""
   };
   var _url = `${inspection_url}/creat_delete_by_IC_SN`;
+  console.log("creat_delete_by_IC_SN" , _url);
+  console.log("post_data [creat_delete_by_IC_SN]",post_data);
   let response = await postDataToAPI(`${_url}`,post_data);
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
   return response;
@@ -187,6 +199,8 @@ async function creat_lock_by_IC_SN(IC_SN)
     "TimeTaken": ""
   };
   var _url = `${inspection_url}/creat_lock_by_IC_SN`;
+  console.log("creat_lock_by_IC_SN" , _url);
+  console.log("post_data [creat_lock_by_IC_SN]",post_data);
   let response = await postDataToAPI(`${_url}`,post_data);
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
   return response;
@@ -214,6 +228,8 @@ async function creat_unlock_by_IC_SN(IC_SN)
     "TimeTaken": ""
   };
   var _url = `${inspection_url}/creat_unlock_by_IC_SN`;
+  console.log("creat_unlock_by_IC_SN" , _url);
+  console.log("post_data [creat_unlock_by_IC_SN]",post_data);
   let response = await postDataToAPI(`${_url}`,post_data);
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
   return response;
@@ -243,6 +259,8 @@ async function creat_auto_add(IC_NAME , CT)
     "TimeTaken": ""
   };
   var _url = `${inspection_url}/creat_auto_add`;
+  console.log("creat_auto_add" , _url);
+  console.log("post_data [creat_auto_add]",post_data);
   console.log("post_data",post_data)
   let response = await postDataToAPI(`${_url}`,post_data);
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
@@ -266,7 +284,8 @@ async function content_get_by_content_GUID(_GUID)
     "TimeTaken": ""
   };
   var _url = `${inspection_url}/content_get_by_content_GUID`;
-  console.log("post_data",post_data)
+  console.log("content_get_by_content_GUID" , _url);
+  console.log("post_data [content_get_by_content_GUID]",post_data);
   let response = await postDataToAPI(`${_url}`,post_data);
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
   return response;
@@ -290,6 +309,8 @@ async function sub_content_get_by_content_GUID(_GUID)
     "TimeTaken": ""
   };
   var _url = `${inspection_url}/sub_content_get_by_content_GUID`;
+  console.log("sub_content_get_by_content_GUID" , _url);
+  console.log("post_data [sub_content_get_by_content_GUID]",post_data);
   console.log(post_data)
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
@@ -316,6 +337,8 @@ async function sub_content_add_single(_Master_GUID, _END_QTY, _OP , _VAL,_LOT)
     "TimeTaken": ""
   };
   var _url = `${inspection_url}/sub_content_add_single`;
+  console.log("sub_content_add_single" , _url);
+  console.log("post_data [sub_content_add_single]",post_data);
   console.log("post_data",post_data)
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
@@ -341,7 +364,8 @@ async function sub_content_add(_Master_GUID, _END_QTY, _OP, _VAL,_LOT)
     "TimeTaken": ""
   };
   var _url = `${inspection_url}/sub_content_add`;
-  console.log("post_data",post_data);
+  console.log("sub_content_add" , _url);
+  console.log("post_data [sub_content_add]",post_data);
   let response = await postDataToAPI(`${_url}`,post_data);
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
   return response;
@@ -364,7 +388,8 @@ async function sub_contents_delete_by_GUID(_GUID, Master_GUID)
     "TimeTaken": ""
   };
   var _url = `${inspection_url}/sub_contents_delete_by_GUID`;
-  console.log("post_data",post_data)
+  console.log("sub_contents_delete_by_GUID" , _url);
+  console.log("post_data [sub_contents_delete_by_GUID]",post_data);
   let response = await postDataToAPI(`${_url}`,post_data);
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
   return response;
@@ -392,7 +417,8 @@ async function download_excel_by_IC_SN(IC_SN)
     "TimeTaken": ""
   };
   var _url = `${inspection_url}/download_excel_by_IC_SN`;
-  console.log("post_data",post_data)
+  console.log("download_excel_by_IC_SN" , _url);
+  console.log("post_data [download_excel_by_IC_SN]",post_data);
   await downloadExcel(_url,post_data, `${IC_SN}_驗收單`);
 }
 //#endregion
@@ -422,7 +448,8 @@ async function device_all()
   };
 
   var _url = `${device_url}/all`;
-  console.log("post_data",post_data)
+  console.log("device_all" , _url);
+  console.log("post_data [device_all]",post_data);
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
@@ -441,8 +468,37 @@ async function device_light(Color, device_basic)
     "TimeTaken": ""
   };
   var _url = `${device_url}/light_web`;
-  console.log("post_data",post_data)
+  console.log("light_web" , _url);
+  console.log("post_data [light_web]",post_data);
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
+var inspection_excel_url = "";
+async function excel_upload(file, IC_NAME, PON, CT ) 
+{
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('IC_NAME', IC_NAME);
+  formData.append('PON', PON);
+  formData.append('CT', CT);
+  console.log("excel_upload" , inspection_excel_url);
+  console.log("post_data [excel_upload]",formData);
+  try {
+    const response = await fetch(inspection_excel_url, {
+      method: 'POST',
+      body: formData
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      console.log(result); // 处理返回的结果
+    } else {
+      console.error('请求失败');
+    }
+  } catch (error) {
+    console.error('请求出错', error);
+  }
+}
+
 //#endregion

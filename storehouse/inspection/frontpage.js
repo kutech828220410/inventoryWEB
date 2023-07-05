@@ -1,4 +1,5 @@
 let data;
+
 window.onload = load;
 
 async function load() 
@@ -10,8 +11,14 @@ async function load()
   APIServer = await LoadAPIServer();
   const API01 = serch_APIServer(ServerName,ServerType,"API01");
   const API02 = serch_APIServer(ServerName,ServerType,"API02");
+  const API_inspection_excel = serch_APIServer(ServerName,ServerType,"API_inspection_excel");
+  
+
   console.log("API01",API01);
   console.log("API02",API02);
+  console.log("API_inspection_excel",API_inspection_excel);
+  if(API_inspection_excel.length > 0) inspection_excel_url = API_inspection_excel[0].server;
+  else inspection_excel_url = `${server,API01[0].server}/api/inspection/excel_upload`;
   check_ip(API01[0].server,API02[0].server);
   permissions = await GetApipermissions();
   console.log(permissions);
@@ -135,7 +142,14 @@ function get_header()
   header_contorls_addsvg.onclick = header_addsvg_Click;
   header_contorls_div.appendChild(header_contorls_addsvg);  
 
-  
+  const header_contorls_uploadsvg = Get_upload_SVG("100%", "100%", "90%","100%","black","");
+  My_Div.Init(header_contorls_uploadsvg, 'header_contorls_uploadsvg','header_contorls_uploadsvg', '60px', '80%', '');
+  My_Div.Set_Block(header_contorls_uploadsvg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
+  header_contorls_uploadsvg.style.border = "1px solid black";
+  header_contorls_uploadsvg.style.marginRight = "3px";
+  header_contorls_uploadsvg.style.borderRadius = "3px";
+  header_contorls_uploadsvg.onclick = header_uploadsvg_Click;
+  header_contorls_div.appendChild(header_contorls_uploadsvg);  
 
   header_div.appendChild(header_title_user_div);
   header_div.appendChild(header_contorls_div);
@@ -166,7 +180,10 @@ function header_findsvg_Click(event)
 {
   show_popup_serch();
 }
-
+function header_uploadsvg_Click(event)
+{
+  show_popup_upload();
+}
 
 
 async function findcheckbtn_Click(event)

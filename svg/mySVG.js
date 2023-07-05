@@ -1112,7 +1112,50 @@ function Get_download_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeCo
     return btn_div;
     
 }
+function Get_upload_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
+{
+    const btn_div = document.createElement("button");
+    const div = document.createElement("div");
+    btn_div.style.width = btn_width;
+    btn_div.style.height= btn_height; 
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.innerHTML = `<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+    <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M13.5 3H12H8C6.34315 3 5 4.34315 5 6V18C5 19.6569 6.34315 21 8 21H12M13.5 3L19 8.625M13.5 3V7.625C13.5 8.17728 13.9477 8.625 14.5 8.625H19M19 8.625V11.8125" stroke=${strokeColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M17.5 21L17.5 15M17.5 15L20 17.5M17.5 15L15 17.5" stroke=${strokeColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`;
+    svg.setAttribute("stroke", strokeColor);
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke-width", "1.5");
+    svg.setAttribute("viewBox", `0 0 24 24`);
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    svg.setAttribute("class", "svg");
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", "100%");
 
+    div.style.width = svg_width;
+    div.style.height = svg_height;
+ 
+    div.style.justifyContent = "center";
+    div.style.alignItems = "center";
+    div.style.margin = "auto";   
+    btn_div.style.backgroundColor = backgroundColor;
+    btn_div.addEventListener("mouseover", function() {
+        btn_div.style.backgroundColor = "";
+      });
+    
+      // 滑鼠移出時的事件處理器
+      btn_div.addEventListener("mouseout", function() {
+        btn_div.style.backgroundColor = backgroundColor;
+      });
+    
+    div.appendChild(svg);
+    btn_div.appendChild(div);
+    
+    return btn_div;
+    
+}
 function Get_trashBox_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor)
 {
     const btn_div = document.createElement("button");

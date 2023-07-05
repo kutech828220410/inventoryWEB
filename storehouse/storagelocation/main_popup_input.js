@@ -6,6 +6,8 @@ var popup_input_PageIndex = 0;
 var popup_input_MaxfPage = 0;
 
 
+
+
 function show_popup_input(Med , page_Initial)
 {
     if(Med == undefined) return;
@@ -46,18 +48,18 @@ async function confirm_popup_input()
 {
     const BarCode_input = document.querySelector('#BarCode_input_popup_input');
     if(!BarCode_input.value) return;
-    const response = await serch_by_BarCode(BarCode_input.value);
-    console.log("response",response);
-    if(response.Data.length > 0)
-    {
-        const CODE = response.Data[0].CODE;
-        const IP = response.Data[0].IP;
-        const NAME = response.Data[0].NAME;
+    // const response = await serch_by_BarCode(BarCode_input.value);
+    // console.log("response",response);
+    // if(response.Data.length > 0)
+    // {
+    //     const CODE = response.Data[0].CODE;
+    //     const IP = response.Data[0].IP;
+    //     const NAME = response.Data[0].NAME;
         
-        alert(`藥碼 : ${CODE}\n` + `料號 : ${IP}\n` + `藥名 : ${NAME}\n` + `已建置相同BARCODE或者與藥碼、料號重覆`);
-        BarCode_input.value = "";
-        return;
-    }
+    //     alert(`藥碼 : ${CODE}\n` + `料號 : ${IP}\n` + `藥名 : ${NAME}\n` + `已建置相同BARCODE或者與藥碼、料號重覆`);
+    //     BarCode_input.value = "";
+    //     return;
+    // }
 
 
     const GUID = popup_input_div_Med.GUID;
@@ -260,7 +262,6 @@ function edit_underline_popup_input()
 {
     const BarCode_input = document.querySelector('#BarCode_input_popup_input');
     BarCode_input.value = "";
-    
 }
 function get_row_popup_inputs_page_control_block()
 {
@@ -320,7 +321,7 @@ function get_underline_popup_input()
     BarCode_input.style.borderRadius = "5px";
     BarCode_input.style.marginLeft = "10px";
     BarCode_input.style.marginRight = "10px";
-    BarCode_input.placeholder = "請掃國際條碼後打勾";
+    BarCode_input.placeholder = "請輸入藥碼";
     BarCode_input.onfocus = function()
     {
        //this.select();        

@@ -1,5 +1,3 @@
-
-
 let response = [];
 let data = [];
 let device_basic = [];
