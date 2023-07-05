@@ -60,6 +60,9 @@ function page_Init(data)
     allrows.push(all_div);
     main_div.appendChild(all_div);
   }
+  const space_div = document.createElement('div');
+  My_Div.Init(space_div, 'space_div','space_div', '100%', '300px', '');
+  main_div.appendChild(space_div);
   Set_rowTotalHeight();
   // if (data.Data.length == 0) {
   //   const NoDataDiv = getNoDataDiv();
@@ -262,5 +265,4 @@ function setUserText()
 {
    const userText = document.querySelector("#header_user_text");
    userText.innerText = `使用者:${get_logedName()} ID:${get_loggedID()}`;
-   console.log(userText);0
 }
