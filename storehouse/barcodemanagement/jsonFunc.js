@@ -56,8 +56,8 @@ async function serch_by_BarCode(barcode)
     "Value": barcode,
     "ServerName" : ServerName,
     "ServerType" : ServerType,
-    "TableName" : TableName,
-    "DbName" : DbName,
+    "TableName" : "medicine_page_cloud",
+    "DbName" : "dbvm",
     "TimeTaken": ""
   };
   console.log("post_data",post_data);

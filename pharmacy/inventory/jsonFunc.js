@@ -2,6 +2,7 @@ var ServerName = "";
 var ServerType = "";
 var TableName = "";
 var DeviceTableName = "";
+var DbName = "";
 
 //#region  API inventory
 async function creat_get_by_CT_TIME(date)
@@ -463,6 +464,26 @@ async function device_light(Color, device_basic)
   console.log(`Url [${arguments.callee.name}]` , _url);
   console.log(`Post_data [${arguments.callee.name}]`,post_data);
   let response = await postDataToAPI(`${_url}`,post_data);
+  return response;
+}
+async function serch_by_BarCode(barcode)
+{
+  const post_data = 
+  {
+    "Data": {
+
+    },
+    "Code": 0,
+    "Result": "",
+    "Value": barcode,
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
+    "TableName" : "medicine_page_cloud",
+    "DbName" : "dbvm",
+    "TimeTaken": ""
+  };
+  console.log("post_data",post_data);
+  let response = await postDataToAPI(`${MED_page_url}/serch_by_BarCode`,post_data);
   return response;
 }
 //#endregion

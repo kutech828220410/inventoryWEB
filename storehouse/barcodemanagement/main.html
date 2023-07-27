@@ -73,7 +73,7 @@
     // 監聽頁面的keydown事件
   window.addEventListener('keydown', function(event) 
   {
-    barcode_keydown(event);
+     barcode_keydown(event);
   });
 
   async function barcode_keydown(event)
@@ -120,29 +120,22 @@
     }
     else
     {
-        const isValid = /^[a-zA-Z0-9]+$/.test(event.key);
-        const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
-        const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);
-        
-        
-        if (isValid && (!isControlKey||isNumPadlKey)) 
-        {
-          
-             if(barcode_keydown_datetime == null)
-             {
-                barcode_value = "";
-             }
-             const totalMs = getTotalMilliseconds(barcode_keydown_datetime);
-             if(totalMs > 2000)
-             {
-                barcode_value = "";
-             }
-             barcode_keydown_datetime = Date.now();
-            // 將解析後的條碼值設定為輸入框的值
-            barcode_value += event.key;
-            console.log("barcode_value",barcode_value);
-            
-        } 
+      const isValid = /^[a-zA-Z0-9<>+\-_,.*?]+$/.test(event.key);
+      const isControlKey = event.ctrlKey || event.altKey || event.shiftKey;
+      if (isValid && !isControlKey) 
+      {
+        if (barcode_keydown_datetime == null) {
+          barcode_value = "";
+        }
+        const totalMs = getTotalMilliseconds(barcode_keydown_datetime);
+        if (totalMs > 2000) {
+          barcode_value = "";
+        }
+        barcode_keydown_datetime = Date.now();
+        // 将解析后的条码值设置为输入框的值
+        barcode_value += event.key;
+        console.log("barcode_value", barcode_value);
+      } 
     }
   }
 

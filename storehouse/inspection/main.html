@@ -87,7 +87,13 @@
            for(var i = 0; i < allrows.length; i++)
            {
                const CODE = allrows[i].getAttribute("CODE")
+               const SKDIACODE = allrows[i].getAttribute("SKDIACODE");
                if(CODE.toUpperCase() == parsedCode.toUpperCase())
+               {
+                  sub_row_div_onclick(allrows[i]);
+                  return;
+               }
+               if(SKDIACODE.toUpperCase() == parsedCode.toUpperCase())
                {
                   sub_row_div_onclick(allrows[i]);
                   return;

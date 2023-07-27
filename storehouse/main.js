@@ -394,7 +394,7 @@ function get_orderpicking()
   svg_text_div.appendChild(orderpicking_text_div);
   orderpicking_div.appendChild(orderpicking_text_eng_div);
 
-  if(GetFunctionality("揀貨"))
+  if(GetFunctionality("鎖"))
   {
     orderpicking_div.onclick =  orderpicking_Click;
   }
@@ -510,7 +510,7 @@ function get_storagelocation()
   svg_text_div.appendChild(storagelocation_text_div);
   storagelocation_div.appendChild(storagelocation_text_eng_div);
 
-  if(GetFunctionality("儲位管理"))
+  if(GetFunctionality("鎖"))
   {
     storagelocation_div.onclick = storagelocation_Click;
   }
@@ -540,12 +540,12 @@ function get_Lock()
 
   return lock_div;
 
-  document.getElementById("orderpicking_div").addEventListener("scroll", function() {
-    // 取得 orderpicking_div 的位置
-    const orderpickingDivRect = document.getElementById("orderpicking_div").getBoundingClientRect();
-    lock_div.style.top = orderpickingDivRect.top + "px";
-    lock_div.style.left = orderpickingDivRect.left + "px";
-  });
+  // document.getElementById("orderpicking_div").addEventListener("scroll", function() {
+  //   // 取得 orderpicking_div 的位置
+  //   const orderpickingDivRect = document.getElementById("orderpicking_div").getBoundingClientRect();
+  //   lock_div.style.top = orderpickingDivRect.top + "px";
+  //   lock_div.style.left = orderpickingDivRect.left + "px";
+  // });
 }
 
 function GetFunctionality(name)
@@ -557,5 +557,5 @@ function GetFunctionality(name)
             return true;
         }
     }
-    return true; //false
+    return false; //true or false
 }

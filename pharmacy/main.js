@@ -434,6 +434,11 @@ function get_supply_quantity()
   svg_text_div.appendChild(supply_quantity_svg);
   svg_text_div.appendChild(supply_quantity_text_div);
   supply_quantity_div.appendChild(supply_quantity_text_eng_div);
+  
+
+  const lock_div = get_Lock(); // 呼叫 get_Lock 函式獲取 lock_div
+  supply_quantity_div.appendChild(lock_div); // 添加 lock_div 到 appropriation_div 中
+  
   return supply_quantity_div;
 }
 //上鎖功能
@@ -455,12 +460,12 @@ function get_Lock()
 
   return lock_div;
 
-  document.getElementById(" appropriation_div").addEventListener("scroll", function() {
-    // 取得 consumptionreport_div 的位置
-    const appropriationDivRect = document.getElementById(" appropriation_div").getBoundingClientRect();
-    lock_div.style.top = appropriationDivRect.top + "px";
-    lock_div.style.left = appropriationDivRect.left + "px";
-  });
+  // document.getElementById(" appropriation_div").addEventListener("scroll", function() {
+  //   // 取得 consumptionreport_div 的位置
+  //   const appropriationDivRect = document.getElementById(" appropriation_div").getBoundingClientRect();
+  //   lock_div.style.top = appropriationDivRect.top + "px";
+  //   lock_div.style.left = appropriationDivRect.left + "px";
+  // });
 }
 async function lock_Click()
 {
