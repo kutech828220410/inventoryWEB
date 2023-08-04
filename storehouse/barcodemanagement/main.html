@@ -78,20 +78,19 @@
 
   async function barcode_keydown(event)
   {
-    if(popup_input_div.Get_Visible())
-    {
-      barcode_value = '';
-      return;
-    }
-    if(popup_serch_div.Get_Visible())
-    {
-      barcode_value = '';
-      return;
-    }
+    // if(popup_input_div.Get_Visible())
+    // {
+    //   barcode_value = '';
+    //   return;
+    // }
+    // if(popup_serch_div.Get_Visible())
+    // {
+    //   barcode_value = '';
+    //   return;
+    // }
     
     // 判斷按下的按鍵是否是Tab鍵或Enter鍵
     
-
     if (event.key === 'Tab' || event.key === 'Enter') 
     {
     // 防止頁面重新載入
@@ -120,11 +119,14 @@
     }
     else
     {
+
       const isValid = /^[a-zA-Z0-9<>+\-_,.*?]+$/.test(event.key);
-      const isControlKey = event.ctrlKey || event.altKey || event.shiftKey;
-      if (isValid && !isControlKey) 
+      const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
+      const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);      
+      if (isValid && (!isControlKey||isNumPadlKey)) 
       {
-        if (barcode_keydown_datetime == null) {
+        if (barcode_keydown_datetime == null) 
+        {
           barcode_value = "";
         }
         const totalMs = getTotalMilliseconds(barcode_keydown_datetime);

@@ -108,10 +108,12 @@
     else
     {
       const isValid = /^[a-zA-Z0-9<>+\-_,.*?]+$/.test(event.key);
-      const isControlKey = event.ctrlKey || event.altKey || event.shiftKey;
-      if (isValid && !isControlKey) 
+      const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
+      const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);      
+      if (isValid && (!isControlKey||isNumPadlKey)) 
       {
-        if (barcode_keydown_datetime == null) {
+        if (barcode_keydown_datetime == null) 
+        {
           barcode_value = "";
         }
         const totalMs = getTotalMilliseconds(barcode_keydown_datetime);
