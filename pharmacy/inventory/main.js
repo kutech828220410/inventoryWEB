@@ -61,6 +61,11 @@ function page_Init(data)
   for (var i = 0; i < data.Data[0].Contents.length; i++)
   {
     const all_div = creat_row_div(i, data.Data[0].Contents[i]);
+    if(data.Data[0].Contents[i].Sub_content.length == 0)
+    {
+      all_div.style.display = "none";
+      all_div.style.visibility = "hidden";
+    }
     allrows.push(all_div);
     main_div.appendChild(all_div);
   }

@@ -85,7 +85,7 @@ function get_header()
   My_Div.Init(header_title_text, 'header_title_text','header_title_text', '100%', '50%', '');
   My_Div.Set_Text(header_title_text ,"智慧藥局系統" , TextAlignEnum.CENTER , "32px", true,"微軟正黑體","#FFF");
   header_title_text.id = "header_title_text";
-  header_title_text.style.marginTop = "5px";
+  // header_title_text.style.marginTop = "5px";
   header_div.appendChild(header_title_text);
   return header_div;
 }

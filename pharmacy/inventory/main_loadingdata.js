@@ -65,6 +65,17 @@ function Replace_data_by_content(creat , content)
 
          const row_div = document.querySelector(`#row_div${i}`);
          row_div.style.backgroundColor = (creat.Contents[i].Sub_content.length == 0)? "white" : "#baf157";
+         if(creat.Contents[i].Sub_content.length == 0)
+         {
+            row_div.style.display = "none";
+            row_div.style.visibility = "hidden";
+
+         }
+         else
+         {
+            row_div.style.display = "";
+            row_div.style.visibility = "visible";
+         }
       }
     }
     edit_herader_view_QTY();
@@ -138,6 +149,7 @@ function creat_row_div(_index , Contents)
         row_div.style.borderRadius = "2px";
 
     });
+
 
     return row_div;
 }

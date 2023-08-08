@@ -148,6 +148,34 @@ async function creat_get_by_IC_SN(IC_SN)
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
+async function creat_quick_add()
+{
+  const post_data = 
+  {
+    "Data": {
+      "GUID": null,
+      "IC_SN": ``,
+      "CT": null,
+      "CT_TIME": null,
+      "START_TIME": null,
+      "END_TIME": null,
+      "STATE": null,
+      "Contents": []
+    },
+    "Code": 0,
+    "Result": "",
+    "Value": "",
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
+    "TableName" : TableName,
+    "TimeTaken": ""
+  };
+  var _url = `${inventory_url}/creat_quick_add`;
+  console.log(`Url [${arguments.callee.name}]` , _url);
+  console.log(`Post_data [${arguments.callee.name}]`,post_data);
+  let response = await postDataToAPI(`${_url}`,post_data);
+  return response;
+}
 async function creat_delete_by_IC_SN(IC_SN)
 {
   const post_data = 
