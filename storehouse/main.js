@@ -38,7 +38,10 @@ async function inspection_Click()
 async function inventory_Click()
 {
   console.log("inventory");
-  location.href = "../../storehouse/inventory/frontpage.html";
+  sessionStorage.setItem('ServerName', "DS01");
+  sessionStorage.setItem('ServerType', "藥庫");
+  sessionStorage.setItem('TableName', "medicine_page_firstclass");
+  location.href = "../../inventory/frontpage.html";
 }
 
 async function orderpicking_Click()

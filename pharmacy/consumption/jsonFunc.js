@@ -16,7 +16,10 @@ async function serch_by_ST_END(start_time, end_time)
     "Value": `${start_time},${end_time}`,
     "TimeTaken": ""
   };
-  let response = await postDataToAPI(`${consumption_url}/serch_by_ST_END`,post_data);
+  var _url = `${consumption_url}/serch_by_ST_END`;
+  let response = await postDataToAPI(_url,post_data);
+  console.log(`Url [${arguments.callee.name}]` , _url);
+  console.log(`Post_data [${arguments.callee.name}]`,post_data);
   return response;
 }
 
@@ -36,6 +39,7 @@ async function download_excel_by_serch( start_time, end_time)
     "TimeTaken": ""
   };
   var _url = `${consumption_url}/download_excel_by_serch`;
-  console.log("post_data",post_data)
   await downloadExcel(_url,post_data, `${getDateStr()}_交易量`);
+  console.log(`Url [${arguments.callee.name}]` , _url);
+  console.log(`Post_data [${arguments.callee.name}]`,post_data);
 }

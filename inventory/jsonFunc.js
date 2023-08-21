@@ -2,6 +2,7 @@ var ServerName = "";
 var ServerType = "";
 var TableName = "";
 var DeviceTableName = "";
+var DbName = "";
 
 //#region  API inventory
 async function creat_get_by_CT_TIME(date)
@@ -142,6 +143,34 @@ async function creat_get_by_IC_SN(IC_SN)
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/creat_get_by_IC_SN`;
+  console.log(`Url [${arguments.callee.name}]` , _url);
+  console.log(`Post_data [${arguments.callee.name}]`,post_data);
+  let response = await postDataToAPI(`${_url}`,post_data);
+  return response;
+}
+async function creat_quick_add()
+{
+  const post_data = 
+  {
+    "Data": {
+      "GUID": null,
+      "IC_SN": ``,
+      "CT": null,
+      "CT_TIME": null,
+      "START_TIME": null,
+      "END_TIME": null,
+      "STATE": null,
+      "Contents": []
+    },
+    "Code": 0,
+    "Result": "",
+    "Value": "",
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
+    "TableName" : TableName,
+    "TimeTaken": ""
+  };
+  var _url = `${inventory_url}/creat_quick_add`;
   console.log(`Url [${arguments.callee.name}]` , _url);
   console.log(`Post_data [${arguments.callee.name}]`,post_data);
   let response = await postDataToAPI(`${_url}`,post_data);
@@ -463,6 +492,51 @@ async function device_light(Color, device_basic)
   console.log(`Url [${arguments.callee.name}]` , _url);
   console.log(`Post_data [${arguments.callee.name}]`,post_data);
   let response = await postDataToAPI(`${_url}`,post_data);
+  return response;
+}
+async function serch_by_BarCode(barcode , _medicine_page)
+{
+  var post_data = 
+  {
+    "Data": {
+
+    },
+    "Code": 0,
+    "Result": "",
+    "Value": barcode,
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
+    "TableName" : "medicine_page_cloud",
+    "DbName" : "dbvm",
+    "TimeTaken": ""
+  };
+  post_data.Data = _medicine_page;
+  const _url = `${MED_page_url}/serch_by_BarCode`;
+  console.log(`Url [${arguments.callee.name}]` , _url);
+  console.log(`Post_data [${arguments.callee.name}]`,post_data);
+  let response = await postDataToAPI(_url,post_data);
+  return response;
+}
+async function get_medicine_cloud()
+{
+  const post_data = 
+  {
+    "Data": {
+
+    },
+    "Code": 0,
+    "Result": "",
+    "Value": "",
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
+    "TableName" : "medicine_page_cloud",
+    "DbName" : "dbvm",
+    "TimeTaken": ""
+  };
+  const _url = `${MED_page_url}/get_by_apiserver`;
+  console.log(`Url [${arguments.callee.name}]` , _url);
+  console.log(`Post_data [${arguments.callee.name}]`,post_data);
+  let response = await postDataToAPI(_url,post_data);
   return response;
 }
 //#endregion

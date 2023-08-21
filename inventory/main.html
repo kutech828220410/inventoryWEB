@@ -91,7 +91,7 @@
         if(parsedCode != '')
         {
 
-          const response = await serch_by_BarCode(parsedCode);
+          const response = await serch_by_BarCode(parsedCode, medicine_page.Data);
           console.log("serch_by_BarCode",response)
           if(response.Data.length == 0) return;
            for(var i = 0; i < allrows.length; i++)
@@ -107,10 +107,12 @@
     }
     else
     {
-      const isValid = /^[a-zA-Z0-9<>+\-_,.*?]+$/.test(event.key);
-      const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
-      const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);      
-      if (isValid && (!isControlKey||isNumPadlKey)) 
+      const isValid = /^[a-zA-Z0-9<>+_,.*?-]+$/.test(event.key);
+      const isValid2 = /^[<>+\\\-_,.*?]+$/.test(event.key);
+      const controlKeys = [16, 17, 18, 20, 27, 91, 93]; // 例如: Shift, Ctrl, Alt, CapsLock, Escape, Left Command/Windows, Right Command/Menu
+      const isControlKey = controlKeys.includes(event.keyCode);
+      const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);    
+      if ((isValid || isValid2) && (!isControlKey||isNumPadlKey)) 
       {
         if (barcode_keydown_datetime == null) 
         {

@@ -101,8 +101,8 @@ async function download_btn()
 {
   const find_start_date_input = document.querySelector("#serch_start_date_input");
   const find_end_date_input = document.querySelector("#serch_end_date_input");
-  const start_time = find_start_date_input.value;
-  const end_time = find_end_date_input.value;
+  const start_time = getStartDateStr(find_start_date_input.value);
+  const end_time = getEndDateStr(find_end_date_input.value);
   Set_main_div_enable(true);
   download_excel_by_serch(start_time,end_time);
   Set_main_div_enable(false);

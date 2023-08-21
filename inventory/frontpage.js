@@ -4,12 +4,18 @@ window.onload = load;
 async function load() 
 {
   check_session_off();
-  ServerName = "DS01";
-  ServerType = "藥庫";
-  TableName = "medicine_page_firstclass";
+  var serverName = sessionStorage.getItem('ServerName');  
+  var serverType = sessionStorage.getItem('ServerType');  
+  var tableName = sessionStorage.getItem('TableName');  
+  console.log("ServerName",serverName);
+  console.log("ServerType",serverType);
+  console.log("TableName",tableName);
+  ServerName = serverName;
+  ServerType = serverType;
+  TableName = tableName;
   APIServer = await LoadAPIServer();
-  const API01 = serch_APIServer(ServerName,ServerType,"API01");
-  const API02 = serch_APIServer(ServerName,ServerType,"API02");
+  const API01 = serch_APIServer(serverName,serverType,"API01");
+  const API02 = serch_APIServer(serverName,serverType,"API02");
   console.log("API01",API01);
   console.log("API02",API02);
   check_ip(API01[0].server,API02[0].server);

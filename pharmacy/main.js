@@ -33,18 +33,21 @@ async function drugsreport_Click()
     alert("未選擇調劑台號,將返回主頁面");
     logout_Click();
   }
+
   location.href = "../../pharmacy/controlleddrug/main.html";
 }
 
 async function inventory_Click()
 {
-  
   if(ServerName == null)
   {
     alert("未選擇調劑台號,將返回主頁面");
     logout_Click();
   }
-  location.href = "../../pharmacy/inventory/frontpage.html";
+  sessionStorage.setItem('ServerName', ServerName);
+  sessionStorage.setItem('ServerType', "調劑台");
+  sessionStorage.setItem('TableName', "medicine_page");
+  location.href = "../../inventory/frontpage.html";
 }
 
 async function consumptionreport_Click()
@@ -71,8 +74,8 @@ async function speedinventory_Click()
   }
   const data = await creat_quick_add();
   console.log("data" ,data);
-  sessionStorage.setItem('IC_SN', data.Data[0].IC_SN);
-  await creat_update_startime_by_IC_SN(data.Data[0].IC_SN);
+  sessionStorage.setItem('IC_SN', data.Value);
+  await creat_update_startime_by_IC_SN(data.Value);
   
    location.href = "../../pharmacy/inventory/main.html";
 }
