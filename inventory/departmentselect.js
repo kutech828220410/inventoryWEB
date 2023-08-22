@@ -13,12 +13,12 @@ async function logout_Click()
 async function storehouse_Click()
 {
   console.log("Stroehouse");
-  location.href = "../../storehouse/main.html";
+  location.href = "main.html";
 }
 async function pharmacy_Click()
 {
   console.log("pharmacy");
-  location.href = "../../pharmacy/frontpage.html";
+  location.href = "main.html";
 }
 async function ward_Click()
 {
@@ -83,9 +83,10 @@ function get_header()
   header_div.style.overflowX = "hidden";
   const header_title_text = document.createElement('div');
   My_Div.Init(header_title_text, 'header_title_text','header_title_text', '100%', '50%', '');
-  My_Div.Set_Text(header_title_text ,"智慧藥局系統" , TextAlignEnum.CENTER , "32px", true,"微軟正黑體","#FFF");
+  My_Div.Set_Text(header_title_text ,"盤點作業" , TextAlignEnum.CENTER , "32px", true,"微軟正黑體","#FFF");
   header_title_text.id = "header_title_text";
-  // header_title_text.style.marginTop = "5px";
+  header_title_text.style.webkitTextStrokeColor = "black";
+  header_title_text.style.webkitTextStrokeWidth = "0.5px" ;
   header_div.appendChild(header_title_text);
   return header_div;
 }
@@ -97,7 +98,6 @@ function get_main()
 
   main_div.appendChild(get_storehouse());
   main_div.appendChild(get_pharmacy());
-  main_div.appendChild(get_ward());
 
   return main_div;
 }

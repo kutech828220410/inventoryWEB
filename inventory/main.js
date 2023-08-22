@@ -225,13 +225,25 @@ function get_header()
   My_Div.Init(herader_view_QTY_Tile_text, 'herader_view_QTY_Tile_text','herader_view_QTY_Tile_text', '70px', '100%', '');
   My_Div.Set_Text(herader_view_QTY_Tile_text ,"已盤/總數" , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","");
   herader_view_QTY_Tile_text.style.marginLeft = "5px";
+  const serch_CODE_input = document.createElement('input');
+  My_Div.Init(serch_CODE_input,'serch_CODE_input_popup_serch','serch_CODE_input_popup_serch', '55%','90%','');
+  My_Div.Set_Text(serch_CODE_input ,"" , TextAlignEnum.CENTER , "18px", false ,"微軟正黑體","black");
+  serch_CODE_input.placeholder = '藥碼搜尋';
+  serch_CODE_input.style.paddingLeft = "10px";
+  serch_CODE_input.style.borderRadius = "90px";
+  serch_CODE_input.style.border = "2px solid gray";
+  serch_CODE_input.type = "email";
+  serch_CODE_input.inputMode = "latin";
+
   herader_view_div.appendChild(herader_view_QTY_Tile_text);
+
 
   const herader_view_QTY_text = document.createElement('div');
   My_Div.Init(herader_view_QTY_text, 'herader_view_QTY_text','herader_view_QTY_text', '100px', '100%', '');
   My_Div.Set_Text(herader_view_QTY_text ,"0/0" , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","");
   herader_view_QTY_text.style.marginLeft = "5px";
   herader_view_div.appendChild(herader_view_QTY_text);
+  herader_view_div.appendChild(serch_CODE_input);
 
   header_div.appendChild(header_title_user_div);
   header_div.appendChild(header_contorls_div);

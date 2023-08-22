@@ -16,10 +16,10 @@
   <script src="../../session_check.js"></script>
   <script src="../../session.js"></script>
 
-  <script src="main.js"></script>
   <script src="main_loadingdata.js"></script>
   <script src="main_popup_input.js"></script>
   <script src="main_popup_serch.js"></script>
+  <script src="main.js"></script>
   <script src="jsonFunc.js"></script>
   
 </head>
@@ -29,11 +29,11 @@
         const header_div = get_header();
         document.body.appendChild(header_div);
         const main_div = get_main();
-        document.body.appendChild(main_div);
         get_popup_input();
         document.body.appendChild(popup_input_div.div);
         get_popup_serch();
         document.body.appendChild(popup_serch_div.div);
+        document.body.appendChild(main_div);
 
         popup_input_div.Set_Visible(false);
         popup_serch_div.Set_Visible(false);

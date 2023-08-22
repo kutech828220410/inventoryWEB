@@ -241,7 +241,7 @@ function get_title_popup_serch()
 {
     const title_text = document.createElement('div');
     My_Div.Init(title_text, 'title_text_serch_div','title_text_serch_div', '100%', '40px', 'gray');
-    My_Div.Set_Text(title_text ,"搜尋功能" , TextAlignEnum.CENTER , "24px", true,"微軟正黑體","white");
+    My_Div.Set_Text(title_text ,"盤點搜尋" , TextAlignEnum.CENTER , "24px", true,"微軟正黑體","white");
     title_text.style.borderRadius = "5px";
     title_text.style.marginBottom = "10px";
     return title_text;

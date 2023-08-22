@@ -6,6 +6,7 @@ body {
   justify-content: center;
   height: 100vh;
   margin: 0;
+  background-color: #83d2ff;
   /* background-image: url('frontpage.jpg'); */
   background-position: center center;
   background-repeat: no-repeat;
