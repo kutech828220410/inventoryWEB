@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-store" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>盤點操作頁面</title>
   <link rel="stylesheet" href="main.css">
   <script src="../../ApiURL.js"></script>
@@ -67,6 +70,12 @@
        
     }
   };
+  ChathubErrorEvent = ChathubError;
+  function ChathubError()
+  {
+    alert("連線斷開,重新整理");
+    location.reload()
+  }
   var barcode_value = '';
   var barcode_keydown_datetime;
     // 監聽頁面的keydown事件
@@ -92,7 +101,6 @@
         {
 
           const response = await serch_by_BarCode(parsedCode, medicine_page.Data);
-          console.log("serch_by_BarCode",response)
           if(response.Data.length == 0) return;
            for(var i = 0; i < allrows.length; i++)
            {
