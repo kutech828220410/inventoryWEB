@@ -7,7 +7,7 @@
 //  document.write('../ApiURL.js'); //注意,此處須為相對於index.html的絕對路徑
 
 loadScript("../../signalr/dist/browser/signalr.js");
-
+var ChathubErrorEvent;
 var connection ;
 async function signalR_init()
 {
@@ -30,6 +30,10 @@ async function signalR_init()
         connection.onclose(function (error) 
         {
             console.log("SignalR connection closed:", error);
+            if(typeof ChathubErrorEvent == "function") 
+            {
+                ChathubErrorEvent();
+            }
             startConnection();
         });
     })

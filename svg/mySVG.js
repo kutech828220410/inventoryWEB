@@ -1,3 +1,97 @@
+function Get_others_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor, clickOn)
+{
+    const btn_div = document.createElement("div");
+    const div = document.createElement("div");
+    btn_div.style.width = btn_width;
+    btn_div.style.height= btn_height; 
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.innerHTML = `<?xml version="1.0" ?><svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M14.754 10C15.7205 10 16.504 10.7835 16.504 11.75V16.499C16.504 18.9848 14.4888 21 12.003 21C9.51712 21 7.50193 18.9848 7.50193 16.499V11.75C7.50193 10.7835 8.28543 10 9.25193 10H14.754ZM7.13128 9.99906C6.78183 10.4218 6.55636 10.9508 6.51057 11.5304L6.50193 11.75V16.499C6.50193 17.3456 6.69319 18.1476 7.03487 18.864C6.70577 18.953 6.35899 19 6.00124 19C3.79142 19 2 17.2086 2 14.9988V11.75C2 10.8318 2.70711 10.0788 3.60647 10.0058L3.75 10L7.13128 9.99906ZM16.8747 9.99906L20.25 10C21.2165 10 22 10.7835 22 11.75V15C22 17.2091 20.2091 19 18 19C17.6436 19 17.298 18.9534 16.9691 18.8659C17.2697 18.238 17.4538 17.5452 17.4951 16.8144L17.504 16.499V11.75C17.504 11.0847 17.2678 10.4747 16.8747 9.99906ZM12 3C13.6569 3 15 4.34315 15 6C15 7.65685 13.6569 9 12 9C10.3431 9 9 7.65685 9 6C9 4.34315 10.3431 3 12 3ZM18.5 4C19.8807 4 21 5.11929 21 6.5C21 7.88071 19.8807 9 18.5 9C17.1193 9 16 7.88071 16 6.5C16 5.11929 17.1193 4 18.5 4ZM5.5 4C6.88071 4 8 5.11929 8 6.5C8 7.88071 6.88071 9 5.5 9C4.11929 9 3 7.88071 3 6.5C3 5.11929 4.11929 4 5.5 4Z" fill="#212121"/></svg>`;
+    svg.setAttribute("stroke", strokeColor);
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke-width", "1.5");
+    svg.setAttribute("viewBox", `0 0 24 24`);
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    svg.setAttribute("class", "svg");
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", "100%");
+
+    div.style.width = svg_width;
+    div.style.height = svg_height;
+ 
+    div.style.display = "flex";
+    div.style.justifyContent = "center";
+    div.style.alignItems = "center";
+    div.style.margin = "auto";   
+    btn_div.style.backgroundColor = backgroundColor;
+    // if(clickOn == undefined) clickOn =true;
+    // if(clickOn)
+    // {
+    //   btn_div.addEventListener("mouseover", function() 
+    //   {
+    //       btn_div.style.backgroundColor = "";
+    //   });
+      
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() 
+    //   {
+    //     btn_div.style.backgroundColor = backgroundColor;
+    //   });
+    // }
+    div.appendChild(svg);
+    btn_div.appendChild(div);
+    return btn_div;
+}
+
+
+function Get_me_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor, clickOn)
+{
+    const btn_div = document.createElement("div");
+    const div = document.createElement("div");
+    btn_div.style.width = btn_width;
+    btn_div.style.height= btn_height; 
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.innerHTML = `<?xml version="1.0" ?><svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M17.7543 13.9997C18.9963 13.9997 20.0032 15.0065 20.0032 16.2486V17.167C20.0032 17.7404 19.8239 18.2994 19.4906 18.7659C17.9447 20.9292 15.4204 22.0008 12.0001 22.0008C8.57915 22.0008 6.05619 20.9287 4.51403 18.7643C4.18207 18.2984 4.00366 17.7406 4.00366 17.1685V16.2486C4.00366 15.0065 5.01052 13.9997 6.25254 13.9997H17.7543ZM12.0001 2.00439C14.7615 2.00439 17.0001 4.24297 17.0001 7.00439C17.0001 9.76582 14.7615 12.0044 12.0001 12.0044C9.2387 12.0044 7.00012 9.76582 7.00012 7.00439C7.00012 4.24297 9.2387 2.00439 12.0001 2.00439Z" fill="#212121"/></svg>`;
+    svg.setAttribute("stroke", strokeColor);
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke-width", "1.5");
+    svg.setAttribute("viewBox", `0 0 24 24`);
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    svg.setAttribute("class", "svg");
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", "100%");
+
+    div.style.width = svg_width;
+    div.style.height = svg_height;
+ 
+    div.style.display = "flex";
+    div.style.justifyContent = "center";
+    div.style.alignItems = "center";
+    div.style.margin = "auto";   
+    btn_div.style.backgroundColor = backgroundColor;
+    // if(clickOn == undefined) clickOn =true;
+    // if(clickOn)
+    // {
+    //   btn_div.addEventListener("mouseover", function() 
+    //   {
+    //       btn_div.style.backgroundColor = "";
+    //   });
+      
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() 
+    //   {
+    //     btn_div.style.backgroundColor = backgroundColor;
+    //   });
+    // }
+    div.appendChild(svg);
+    btn_div.appendChild(div);
+    return btn_div;
+}
+
+
 function Get_back_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor, clickOn)
 {
     const btn_div = document.createElement("div");

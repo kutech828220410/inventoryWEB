@@ -59,17 +59,17 @@ function Replace_data_by_content(creat , content)
     {
       if(creat.Contents[i].GUID == content.GUID)
       {
+         const PAKAGE = creat.Contents[i].PAKAGE;
          creat.Contents[i] = content;
+         creat.Contents[i].PAKAGE = PAKAGE;
          const End_QTY_input = document.querySelector(`#End_QTY_input${i}`);
          End_QTY_input.innerText = content.END_QTY;
 
          const row_div = document.querySelector(`#row_div${i}`);
-         row_div.style.backgroundColor = (creat.Contents[i].Sub_content.length == 0)? "white" : "#baf157";
          if(creat.Contents[i].Sub_content.length == 0)
          {
             row_div.style.display = "none";
             row_div.style.visibility = "hidden";
-
          }
          else
          {

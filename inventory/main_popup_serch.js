@@ -83,8 +83,7 @@ function confirm_popup_serch()
         Set_rowTotalHeight();
     }
 }
-function popup_serch_ByStartWith()
-{
+function popup_serch_ByStartWith() {
     const serch_CODE_input = document.querySelector('#serch_CODE_input_popup_serch');
     const serch_SKDIACODE_input = document.querySelector('#serch_SKDIACODE_input_popup_serch');
     const serch_NAME_input = document.querySelector('#serch_NAME_input_popup_serch');
@@ -92,6 +91,7 @@ function popup_serch_ByStartWith()
 
     var serch_value0 = '';
     var serch_value1 = '';
+
     if(serch_CODE_input.value)
     {
         serch_value0 = serch_CODE_input.value;
@@ -102,43 +102,37 @@ function popup_serch_ByStartWith()
         serch_value0 = serch_SKDIACODE_input.value;
         serch_value0.toUpperCase();
     }
-    if(serch_NAME_input.value)
-    {
-        serch_value0 = serch_NAME_input.value;
-        serch_value0.toUpperCase();
+    if (serch_NAME_input.value) {
+        serch_value0 = serch_NAME_input.value.toUpperCase();
     }
-    if(serch_CHT_NAME_input.value)
-    {
-        serch_value0 = serch_CHT_NAME_input.value;
-        serch_value0.toUpperCase();
+    if (serch_CHT_NAME_input.value) {
+        serch_value0 = serch_CHT_NAME_input.value.toUpperCase();
     }
 
-    if(serch_value0 == '') return;
+    if (serch_value0 === '') return;
 
-    for(var i = 0; i < allrows.length ; i++)
-    {
-        if(serch_CODE_input.value) serch_value1 = allrows[i].getAttribute("CODE").toUpperCase();  
-        if(serch_SKDIACODE_input.value) serch_value1 = allrows[i].getAttribute("SKDIACODE").toUpperCase();  
-        if(serch_NAME_input.value) serch_value1 = allrows[i].getAttribute("NAME").toUpperCase();  
-        if(serch_CHT_NAME_input.value) serch_value1 = allrows[i].getAttribute("CHT_NAME").toUpperCase();  
-       
-        var serch_value1 = serch_value1.substring(0, serch_value0.length);
+    for (var i = 0; i < allrows.length; i++) {
+        serch_value1 = '';
 
-        if (serch_value0 == serch_value1)
-        {
+        if (serch_CODE_input.value) serch_value1 = allrows[i].getAttribute("CODE").toUpperCase();
+        if (serch_SKDIACODE_input.value) serch_value1 = allrows[i].getAttribute("SKDIACODE").toUpperCase();
+        if (serch_NAME_input.value) serch_value1 = allrows[i].getAttribute("NAME").toUpperCase();
+        if (serch_CHT_NAME_input.value) serch_value1 = allrows[i].getAttribute("CHT_NAME").toUpperCase();
+
+        serch_value1 = serch_value1.substring(0, serch_value0.length);
+
+        if (serch_value0 === serch_value1) {
             allrows[i].style.display = "inline-block";
             allrows[i].style.visibility = "visible";
-        }
-        else 
-        {
+        } else {
             allrows[i].style.display = "none";
             allrows[i].style.visibility = "hidden";
         }
-        
     }
 }
-function popup_serch_ByLike()
-{
+
+
+function popup_serch_ByLike() {
     const serch_CODE_input = document.querySelector('#serch_CODE_input_popup_serch');
     const serch_SKDIACODE_input = document.querySelector('#serch_SKDIACODE_input_popup_serch');
     const serch_NAME_input = document.querySelector('#serch_NAME_input_popup_serch');
@@ -146,6 +140,7 @@ function popup_serch_ByLike()
 
     var serch_value0 = '';
     var serch_value1 = '';
+
     if(serch_CODE_input.value)
     {
         serch_value0 = serch_CODE_input.value;
@@ -156,39 +151,34 @@ function popup_serch_ByLike()
         serch_value0 = serch_SKDIACODE_input.value;
         serch_value0.toUpperCase();
     }
-    if(serch_NAME_input.value)
-    {
-        serch_value0 = serch_NAME_input.value;
-        serch_value0.toUpperCase();
+    if (serch_NAME_input.value) {
+        serch_value0 = serch_NAME_input.value.toUpperCase();
     }
-    if(serch_CHT_NAME_input.value)
-    {
-        serch_value0 = serch_CHT_NAME_input.value;
-        serch_value0.toUpperCase();
+    if (serch_CHT_NAME_input.value) {
+        serch_value0 = serch_CHT_NAME_input.value.toUpperCase();
     }
-    if(serch_value0 == '') return;
-   
-    for(var i = 0; i < allrows.length ; i++)
-    {
-        if(serch_CODE_input.value) serch_value1 = allrows[i].getAttribute("CODE").toUpperCase();  
-        if(serch_SKDIACODE_input.value) serch_value1 = allrows[i].getAttribute("SKDIACODE").toUpperCase();  
-        if(serch_NAME_input.value) serch_value1 = allrows[i].getAttribute("NAME").toUpperCase();  
-        if(serch_CHT_NAME_input.value) serch_value1 = allrows[i].getAttribute("CHT_NAME").toUpperCase();  
-        if (serch_value1.indexOf(serch_value0) !== -1)
-        {
+
+    if (serch_value0 === '') return;
+
+    for (var i = 0; i < allrows.length; i++) {
+        serch_value1 = ''; // 重置搜索值
+
+        if (serch_CODE_input.value) serch_value1 = allrows[i].getAttribute("CODE").toUpperCase();
+        if (serch_SKDIACODE_input.value) serch_value1 = allrows[i].getAttribute("SKDIACODE").toUpperCase();
+        if (serch_NAME_input.value) serch_value1 = allrows[i].getAttribute("NAME").toUpperCase();
+        if (serch_CHT_NAME_input.value) serch_value1 = allrows[i].getAttribute("CHT_NAME").toUpperCase();
+
+        if (serch_value1.indexOf(serch_value0) !== -1) {
             allrows[i].style.display = "inline-block";
             allrows[i].style.visibility = "visible";
-        }
-        else 
-        {
+        } else {
             allrows[i].style.display = "none";
             allrows[i].style.visibility = "hidden";
         }
-        
     }
 }
-function popup_serch_ByNormal()
-{
+
+function popup_serch_ByNormal() {
     const serch_CODE_input = document.querySelector('#serch_CODE_input_popup_serch');
     const serch_SKDIACODE_input = document.querySelector('#serch_SKDIACODE_input_popup_serch');
     const serch_NAME_input = document.querySelector('#serch_NAME_input_popup_serch');
@@ -196,6 +186,7 @@ function popup_serch_ByNormal()
 
     var serch_value0 = '';
     var serch_value1 = '';
+
     if(serch_CODE_input.value)
     {
         serch_value0 = serch_CODE_input.value;
@@ -206,36 +197,33 @@ function popup_serch_ByNormal()
         serch_value0 = serch_SKDIACODE_input.value;
         serch_value0.toUpperCase();
     }
-    if(serch_NAME_input.value)
-    {
-        serch_value0 = serch_NAME_input.value;
-        serch_value0.toUpperCase();
+    if (serch_NAME_input.value) {
+        serch_value0 = serch_NAME_input.value.toUpperCase();
     }
-    if(serch_CHT_NAME_input.value)
-    {
-        serch_value0 = serch_CHT_NAME_input.value;
-        serch_value0.toUpperCase();
+    if (serch_CHT_NAME_input.value) {
+        serch_value0 = serch_CHT_NAME_input.value.toUpperCase();
     }
-    if(serch_value0 == '') return;
 
-    for(var i = 0; i < allrows.length ; i++)
-    {
-        if(serch_CODE_input.value) serch_value1 = allrows[i].getAttribute("CODE").toUpperCase();  
-        if(serch_SKDIACODE_input.value) serch_value1 = allrows[i].getAttribute("SKDIACODE").toUpperCase();  
-        if(serch_NAME_input.value) serch_value1 = allrows[i].getAttribute("NAME").toUpperCase();  
-        if(serch_CHT_NAME_input.value) serch_value1 = allrows[i].getAttribute("CHT_NAME").toUpperCase();  
-        if(serch_value1 == serch_value0) 
-        {
+    if (serch_value0 === '') return;
+
+    for (var i = 0; i < allrows.length; i++) {
+        serch_value1 = '';
+
+        if (serch_CODE_input.value) serch_value1 = allrows[i].getAttribute("CODE").toUpperCase();
+        if (serch_SKDIACODE_input.value) serch_value1 = allrows[i].getAttribute("SKDIACODE").toUpperCase();
+        if (serch_NAME_input.value) serch_value1 = allrows[i].getAttribute("NAME").toUpperCase();
+        if (serch_CHT_NAME_input.value) serch_value1 = allrows[i].getAttribute("CHT_NAME").toUpperCase();
+
+        if (serch_value1 === serch_value0) {
             allrows[i].style.display = "inline-block";
             allrows[i].style.visibility = "visible";
-        }
-        else 
-        {
+        } else {
             allrows[i].style.display = "none";
             allrows[i].style.visibility = "hidden";
         }
     }
 }
+
 
 function get_title_popup_serch()
 {

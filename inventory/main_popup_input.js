@@ -23,7 +23,8 @@ function show_popup_input(Content , page_Initial)
     const END_QTY_input = document.querySelector('#END_QTY_input_popup_input');
     END_QTY_input.focus();
     if(popup_input_div_Content != undefined) light_device_by_Code(popup_input_div_Content.CODE, get_loggedColor());
- 
+    isDark = true;
+    minus_btn_click();
 }
 function hide_popup_input()
 {
@@ -54,7 +55,11 @@ async function confirm_popup_input()
         return;
     }
     const GUID = popup_input_div_Content.GUID;
-    const END_QTY = END_QTY_input.value;
+    var END_QTY = END_QTY_input.value;
+    const minus_btn = document.querySelector("#minus_btn");
+    const ON_OFF = minus_btn.getAttribute("ON_OFF");
+    console.log("ON_OFF",ON_OFF);
+    if(ON_OFF == "true") END_QTY = "-" + END_QTY;
     END_QTY_input.value = '';
     const OP = loging_name;
     sub_content_add(GUID , END_QTY , OP);
@@ -67,6 +72,32 @@ async function delete_row_popup_input(GUID , Master_GUID)
     {
        await sub_contents_delete_by_GUID(GUID , Master_GUID);
     }
+}
+let isDark =false;
+function minus_btn_click()
+{
+    if (isDark) 
+    {
+        const svg_minus = document.querySelector("#svg_minus");
+        const minus_btn = document.querySelector("#minus_btn");
+        My_Div.Set_Text(svg_minus ,"+" , TextAlignEnum.CENTER , "40px", true,"微軟正黑體","black");
+        minus_btn.style.border = "1px solid gray";
+        minus_btn.style.backgroundColor = "#FFF";
+        minus_btn.style.boxShadow = ""; // 移除阴影
+        minus_btn.setAttribute("ON_OFF","false");
+  
+    }
+     else
+    {
+        const svg_minus = document.querySelector("#svg_minus");
+        const minus_btn = document.querySelector("#minus_btn");
+        My_Div.Set_Text(svg_minus ,"-" , TextAlignEnum.CENTER , "50px", true,"微軟正黑體","black");
+        minus_btn.style.backgroundColor = "darkgray";
+        minus_btn.style.boxShadow = "inset 0 0 5px rgba(0, 0, 0, 0.5)";
+        minus_btn.setAttribute("ON_OFF","true");
+
+    }
+    isDark = !isDark; // 切换样式标记
 }
 function get_popup_input()
 {
@@ -112,6 +143,9 @@ function edit_title_popup_input(Content)
     med_start_QTY_text.innerText = `理論值 : ${Content.START_QTY}`;
     const med_end_QTY_text = document.querySelector('#med_end_QTY_text_popup_input');
     med_end_QTY_text.innerText = `盤點量 : ${Content.END_QTY}`;
+    const med_end_PKG_text = document.querySelector('#med_end_PKG_text_popup_input');
+    med_end_PKG_text.innerText = `${Content.PAKAGE}`;
+    
 }
 function edit_rows_popup_input(Content)
 {
@@ -186,7 +220,39 @@ function get_title_popup_input()
     {
         hide_popup_input();
     };
+
+    const minus_btn = document.createElement('div');
+    My_Div.Init(minus_btn, 'minus_btn','minus_btn', '40px', '40px', '');
+    My_Div.Set_Block(minus_btn, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
+    minus_btn.style.border = "1px solid gray";
+    minus_btn.style.backgroundColor = "#FFF";
+    minus_btn.style.borderRadius = "3px";
+    minus_btn.style.marginTop = "auto";
+    minus_btn.style.transform = "translateY(-10px)";
+    minus_btn.textContent = "扣帳";
+    minus_btn.style.fontWeight = "bold";
+    minus_btn.style.color = "red";
+    minus_btn.style.userSelect = "none";
+    minus_btn.setAttribute("ON_OFF","false");
+
+    
+    const svg_positive = document.createElement('div');
+    My_Div.Set_Block(svg_positive, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
+    My_Div.Init(svg_positive, 'svg_positive','svg_positive', '60px', '60px', '');
+    svg_positive.textContent = "+";
+    svg_positive.style.fontSize = "36px";
+    svg_positive.style.color = "green";
+    svg_positive.style.userSelect = "none";
+
+
+    
+    minus_btn.addEventListener('click', function() 
+    {        
+        minus_btn_click();     
+    });
+    
     title_control_block.appendChild(undo_SVG);
+    title_control_block.appendChild(minus_btn);
 
     const med_info = document.createElement('div');
     My_Div.Init(med_info, 'med_info_popup_input','med_info_popup_input', '85%',"100%" ,'');
@@ -222,16 +288,22 @@ function get_title_popup_input()
     My_Div.Set_Block(med_start_end_QTY_block, DisplayEnum.FLEX, FlexDirectionEnum.ROW,JustifyContentEnum.LEFT)
 
     const med_start_QTY_text = document.createElement('div');
-    My_Div.Init(med_start_QTY_text,'med_start_QTY_text_popup_input','med_start_QTY_text_popup_input', '50%',"100%" , '');
+    My_Div.Init(med_start_QTY_text,'med_start_QTY_text_popup_input','med_start_QTY_text_popup_input', '40%',"100%" , '');
     My_Div.Set_Text(med_start_QTY_text ,"理論值 : 0" , TextAlignEnum.LEFT , "15px", true,"微軟正黑體","black");
     med_start_QTY_text.style.marginLeft = "5px";
     const med_end_QTY_text = document.createElement('div');
-    My_Div.Init(med_end_QTY_text,'med_end_QTY_text_popup_input','med_end_QTY_text_popup_input', '50%',"100%" , '');
+    My_Div.Init(med_end_QTY_text,'med_end_QTY_text_popup_input','med_end_QTY_text_popup_input', '40%',"100%" , '');
     My_Div.Set_Text(med_end_QTY_text ,"盤點量 : 0" , TextAlignEnum.LEFT , "15px", true,"微軟正黑體","black");
     med_end_QTY_text.style.marginLeft = "5px";
 
+    const med_end_PKG_text = document.createElement('div');
+    My_Div.Init(med_end_PKG_text,'med_end_PKG_text_popup_input','med_end_PKG_text_popup_input', '40%',"100%" , '');
+    My_Div.Set_Text(med_end_PKG_text ,"PKG" , TextAlignEnum.RIGHT , "15px", true,"微軟正黑體","black");
+    med_end_PKG_text.style.marginLeft = "5px";
+    med_end_PKG_text.style.marginRight = "10px";
     med_start_end_QTY_block.appendChild(med_start_QTY_text);
     med_start_end_QTY_block.appendChild(med_end_QTY_text);
+    med_start_end_QTY_block.appendChild(med_end_PKG_text);
     med_start_end_QTY_block.style.marginBottom = "10px";
 
     med_info.appendChild(med_CODE_SKDIACODE_block);
@@ -282,7 +354,7 @@ function get_row_popup_inputs_page_control_block()
 function get_underline_popup_input()
 {
     const underline_div = document.createElement('div');
-    My_Div.Init(underline_div, 'underline_div_popup_input','underline_div_popup_input', '100%','60px','');
+    My_Div.Init(underline_div,'underline_div','underline_div', '100%','60px','');
     My_Div.Set_Block(underline_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
     underline_div.style.alignItems = "center";
 
@@ -295,8 +367,15 @@ function get_underline_popup_input()
     {
         confirm_popup_input();
     });
+
+    const svg_minus = document.createElement('div');
+    My_Div.Init(svg_minus, 'svg_minus','svg_minus', '40px', '40px', '');
+    My_Div.Set_Block(svg_minus, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
+    My_Div.Set_Text(svg_minus ,"+" , TextAlignEnum.CENTER , "40px", true,"微軟正黑體","black");
+    svg_minus.style.marginBottom = "10px";
+
     const END_QTY_input_div = document.createElement('div');
-    My_Div.Init(END_QTY_input_div, 'END_QTY_input_div_popup_input','END_QTY_input_div_popup_input', '90%','100%','');
+    My_Div.Init(END_QTY_input_div, 'END_QTY_input_div','END_QTY_input_div', '90%','100%','');
     My_Div.Set_Block(END_QTY_input_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   
   
@@ -326,8 +405,9 @@ function get_underline_popup_input()
     {
            confirm_popup_input();
     });
-    END_QTY_input_div.appendChild(END_QTY_input);
+    END_QTY_input_div.appendChild(svg_minus);
 
+    END_QTY_input_div.appendChild(END_QTY_input);
     underline_div.appendChild(END_QTY_input_div);
     underline_div.appendChild(svg_confirm_SVG);
 

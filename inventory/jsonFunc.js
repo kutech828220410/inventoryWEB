@@ -148,7 +148,7 @@ async function creat_get_by_IC_SN(IC_SN)
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
-async function creat_quick_add()
+async function creat_quick_add(name)
 {
   const post_data = 
   {
@@ -164,7 +164,7 @@ async function creat_quick_add()
     },
     "Code": 0,
     "Result": "",
-    "Value": "",
+    "Value": name,
     "ServerName" : ServerName,
     "ServerType" : ServerType,
     "TableName" : TableName,
@@ -365,6 +365,10 @@ async function sub_content_add_single(_Master_GUID, _END_QTY, _OP)
   console.log(`Url [${arguments.callee.name}]` , _url);
   console.log(`Post_data [${arguments.callee.name}]`,post_data);
   let response = await postDataToAPI(`${_url}`,post_data);
+  if(response.Code != 200)
+  {
+    alert("輸入資料失敗,請重新整理");
+  }
   return response;
 }
 async function sub_content_add(_Master_GUID, _END_QTY, _OP)
@@ -390,6 +394,10 @@ async function sub_content_add(_Master_GUID, _END_QTY, _OP)
   console.log(`Post_data [${arguments.callee.name}]`,post_data);
   let response = await postDataToAPI(`${_url}`,post_data);
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
+  if(response.Code != 200)
+  {
+    alert("輸入資料失敗,請重新整理");
+  }
   return response;
 }
 async function sub_contents_delete_by_GUID(_GUID, Master_GUID)
@@ -510,13 +518,62 @@ async function serch_by_BarCode(barcode , _medicine_page)
     "DbName" : "dbvm",
     "TimeTaken": ""
   };
-  post_data.Data = _medicine_page;
-  const _url = `${MED_page_url}/serch_by_BarCode`;
-  console.log(`Url [${arguments.callee.name}]` , _url);
+  console.log("_medicine_page",_medicine_page);
+  var foundObject =[];
+  for(var i = 0; i < _medicine_page.length; i++)
+  {
+     const item = _medicine_page[i];
+     if(item.CODE == barcode)
+     {
+       foundObject.push(item);
+       continue;
+     }
+     if(item.SKDIACODE == barcode)
+     {
+       foundObject.push(item);
+       continue;
+     }
+     for(var k = 0; k < item.BARCODE.length; k++)
+     {
+       if(item.BARCODE[k] == barcode)
+       {
+          foundObject.push(item);
+          continue;
+       }
+     }
+  }
+  // var foundObject = _medicine_page.find(item => item.CODE === barcode);
+  // var resultArray = [foundObject];
+  post_data.Data = foundObject;
+  // const _url = `${MED_page_url}/serch_by_BarCode`;
+  // console.log(`Url [${arguments.callee.name}]` , _url);
   console.log(`Post_data [${arguments.callee.name}]`,post_data);
-  let response = await postDataToAPI(_url,post_data);
-  return response;
+  // let response = await postDataToAPI(_url,post_data);
+  return post_data;
 }
+// async function serch_by_BarCode(barcode , _medicine_page)
+// {
+//   var post_data = 
+//   {
+//     "Data": {
+
+//     },
+//     "Code": 0,
+//     "Result": "",
+//     "Value": barcode,
+//     "ServerName" : ServerName,
+//     "ServerType" : ServerType,
+//     "TableName" : "medicine_page_cloud",
+//     "DbName" : "dbvm",
+//     "TimeTaken": ""
+//   };
+//   post_data.Data = _medicine_page;
+//   const _url = `${MED_page_url}/serch_by_BarCode`;
+//   console.log(`Url [${arguments.callee.name}]` , _url);
+//   console.log(`Post_data [${arguments.callee.name}]`,post_data);
+//   let response = await postDataToAPI(_url,post_data);
+//   return response;
+// }
 async function get_medicine_cloud()
 {
   const post_data = 

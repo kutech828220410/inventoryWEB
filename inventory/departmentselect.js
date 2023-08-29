@@ -2,8 +2,14 @@
 window.onload = load;
 async function load()
 { 
-   // await set_ip();
-
+  ServerName ="";
+  ServerType = "網頁";
+  APIServer = await LoadAPIServer();
+  const API01 = serch_APIServer(ServerName,ServerType,"API01");
+  const API02 = serch_APIServer(ServerName,ServerType,"API02");
+  console.log("API01",API01);
+  console.log("API02",API02);
+  check_ip(API01[0].server,API02[0].server);
 }
 async function logout_Click()
 {
@@ -13,11 +19,31 @@ async function logout_Click()
 async function storehouse_Click()
 {
   console.log("Stroehouse");
+  ServerName = "DS01";
+  ServerType = "藥庫";
+  TableName = "medicine_page_firstclass";
+  sessionStorage.setItem("ServerName", ServerName);
+  sessionStorage.setItem("ServerType", ServerType);
+  sessionStorage.setItem("TableName", TableName);
+  const data = await creat_quick_add("藥庫");
+  console.log("data" ,data);
+  sessionStorage.setItem('IC_SN', data.Value);
+  await creat_update_startime_by_IC_SN(data.Value);
   location.href = "main.html";
 }
 async function pharmacy_Click()
 {
   console.log("pharmacy");
+  ServerName = "DS01";
+  ServerType = "藥庫";
+  TableName = "medicine_page_phar";
+  sessionStorage.setItem("ServerName", ServerName);
+  sessionStorage.setItem("ServerType", ServerType);
+  sessionStorage.setItem("TableName", TableName);
+  const data = await creat_quick_add("藥局");
+  console.log("data" ,data);
+  sessionStorage.setItem('IC_SN', data.Value);
+  await creat_update_startime_by_IC_SN(data.Value);
   location.href = "main.html";
 }
 async function ward_Click()
@@ -154,6 +180,7 @@ function get_pharmacy()
   pharmacy_div.style.borderRadius = "5px";
   pharmacy_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
   pharmacy_div.style.marginTop = "10px";
+  pharmacy_div.style.userSelect = "none";
   pharmacy_div.onclick =  pharmacy_Click;
 
   const pharmacy_svg = Get_pill_SVG("80%", "80%", "80%","80%","black","");
@@ -203,6 +230,7 @@ function get_storehouse()
   storehouse_div.style.borderRadius = "5px";
   storehouse_div.style.boxShadow = "4px 4px 15px rgba(0, 0, 0, 0.9)";
   storehouse_div.style.marginTop = "10px";
+  storehouse_div.style.userSelect = "none";
   storehouse_div.onclick =  storehouse_Click;
 
   const storehouse_svg = Get_storehouse_SVG("80%", "80%", "80%","80%","black","");

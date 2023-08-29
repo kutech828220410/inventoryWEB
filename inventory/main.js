@@ -123,7 +123,7 @@ async function light_device_by_Code(Code ,Color)
 async function donesvg_Click() 
 {
 
-    location.href = "frontpage.html";
+    location.href = "departmentselect.html";
 }
 function findsvg_Click()
 {
@@ -138,7 +138,43 @@ function allsvg_Click()
   }
   Set_rowTotalHeight();
 }
+async function serch_CODE_input_enter(barcode)
+{
+  const response = await serch_by_BarCode(barcode, medicine_page.Data);
+  console.log("serch_by_BarCode",response)
+  if(response.Data.length == 0) 
+  {
+    alert("查無此藥品");
+    return;
+  }
+   for(var i = 0; i < allrows.length; i++)
+   {
+       const CODE = allrows[i].getAttribute("CODE")
+       if(CODE.toUpperCase() == response.Data[0].CODE.toUpperCase())
+       {
+          sub_row_div_onclick(allrows[i]);
+          return;
+       }
+   }
+}
 
+let isMultiUser =false;
+function header_contorls_viewswitching_click()
+{
+    if (isMultiUser) 
+    {
+      const header_contorls_viewswitching = document.querySelector("#header_contorls_viewswitching");
+      header_contorls_viewswitching.removeChild(header_contorls_viewswitching.firstChild);
+      header_contorls_viewswitching.appendChild(Get_me_SVG("100%", "100%", "70%", "100%", "", ""));
+    }
+     else
+    {
+      const header_contorls_viewswitching = document.querySelector("#header_contorls_viewswitching");
+      header_contorls_viewswitching.removeChild(header_contorls_viewswitching.firstChild);
+      header_contorls_viewswitching.appendChild(Get_others_SVG("100%", "100%", "70%", "100%", "", ""));
+    }
+    isMultiUser = !isMultiUser; // 切换样式标记
+}
 
 function get_header()
 {
@@ -151,7 +187,7 @@ function get_header()
   My_Div.Init(header_div, 'header_div','header_div', '100%', '70px', '');
   My_Div.Set_Block(header_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
   My_Div.Set_position(header_div ,PositionEnum.FIXED ,0,0);
-  header_div.style.background = "linear-gradient(90deg, rgba(186, 185, 208, 1) 0%, rgba(235, 235, 235, 1) 100%)";
+  header_div.style.background = "linear-gradient(90deg, #83d2ff 0%, rgba(235, 235, 235, 1) 85%, #ffffff 100%)";
   header_div.style.overflowX = "hidden";
  
 
@@ -173,7 +209,7 @@ function get_header()
   My_Div.Set_Text(header_user_text ,"使用者:" , TextAlignEnum.LEFT , "14px", false,"微軟正黑體","");
   header_user_text.className = "header_user_text";
   header_user_text.id = "header_user_text";
-  header_user_text.style.marginLeft = "50px";
+  header_user_text.style.marginLeft = "25px";
   header_user_text.style.marginBottom = "5px";
   header_user_text.style.wordSpacing = "2px";;
   header_user_text.style.letterSpacing = "2px";
@@ -191,10 +227,24 @@ function get_header()
   header_contorls_allsvg.style.marginRight = "3px";
   header_contorls_allsvg.style.borderRadius = "3px";
   header_contorls_allsvg.onclick = allsvg_Click;
-  header_contorls_div.appendChild(header_contorls_allsvg);  
+  // header_contorls_div.appendChild(header_contorls_allsvg);  
+
+  const header_contorls_viewswitching = Get_me_SVG("100%", "100%", "70%", "100%", "", "");
+  My_Div.Init(header_contorls_viewswitching, 'header_contorls_viewswitching','header_contorls_viewswitching', '50px', '80%', '');
+  My_Div.Set_Block(header_contorls_viewswitching, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
+  header_contorls_viewswitching.style.border = "1px solid black";
+  header_contorls_viewswitching.style.marginRight = "3px";
+  header_contorls_viewswitching.style.borderRadius = "3px";
+  // header_contorls_viewswitching.onclick = mesvg_Click;
+  header_contorls_div.appendChild(header_contorls_viewswitching);
+
+  header_contorls_viewswitching.addEventListener('click', function() 
+    {        
+      header_contorls_viewswitching_click();     
+    });
 
   const header_contorls_findsvg = Get_find_in_page_SVG("100%", "100%", "70%","100%","black","");
-  My_Div.Init(header_contorls_findsvg, 'header_contorls_findsvg','header_contorls_findsvg', '60px', '80%', '');
+  My_Div.Init(header_contorls_findsvg, 'header_contorls_findsvg','header_contorls_findsvg', '50px', '80%', '');
   My_Div.Set_Block(header_contorls_findsvg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
   header_contorls_findsvg.style.border = "1px solid black";
   header_contorls_findsvg.onclick = findsvg_Click;
@@ -202,8 +252,8 @@ function get_header()
   header_contorls_findsvg.style.borderRadius = "3px";
   header_contorls_div.appendChild(header_contorls_findsvg);
 
-  const header_contorls_donesvg = Get_find_check_SVG("100%", "100%", "70%","100%","black","");
-  My_Div.Init(header_contorls_donesvg, 'header_contorls_donesvg','header_contorls_donesvg', '60px', '80%', '');
+  const header_contorls_donesvg = Get_undo_SVG("100%", "100%", "70%","100%","black","");
+  My_Div.Init(header_contorls_donesvg, 'header_contorls_donesvg','header_contorls_donesvg', '50px', '80%', '');
   My_Div.Set_Block(header_contorls_donesvg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
   header_contorls_donesvg.style.border = "1px solid black";
   header_contorls_donesvg.style.marginRight = "3px";
@@ -215,7 +265,7 @@ function get_header()
   My_Div.Init(herader_view_div, 'herader_view_div','herader_view_div', '100%', '40px', '');
   My_Div.Set_Block(herader_view_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
   My_Div.Set_position(herader_view_div ,PositionEnum.FIXED ,0,70);
-  herader_view_div.style.background = "linear-gradient(90deg, rgba(186, 185, 208, 1) 0%, rgba(235, 235, 235, 1) 100%)";
+  herader_view_div.style.background = "#fcffab";
   herader_view_div.style.overflowX = "hidden";
   herader_view_div.style.overflowY = "hidden";
   herader_view_div.style.borderTop = "1px solid black";
@@ -225,6 +275,7 @@ function get_header()
   My_Div.Init(herader_view_QTY_Tile_text, 'herader_view_QTY_Tile_text','herader_view_QTY_Tile_text', '70px', '100%', '');
   My_Div.Set_Text(herader_view_QTY_Tile_text ,"已盤/總數" , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","");
   herader_view_QTY_Tile_text.style.marginLeft = "5px";
+
   const serch_CODE_input = document.createElement('input');
   My_Div.Init(serch_CODE_input,'serch_CODE_input_popup_serch','serch_CODE_input_popup_serch', '55%','90%','');
   My_Div.Set_Text(serch_CODE_input ,"" , TextAlignEnum.CENTER , "18px", false ,"微軟正黑體","black");
@@ -232,9 +283,20 @@ function get_header()
   serch_CODE_input.style.paddingLeft = "10px";
   serch_CODE_input.style.borderRadius = "90px";
   serch_CODE_input.style.border = "2px solid gray";
-  serch_CODE_input.type = "email";
-  serch_CODE_input.inputMode = "latin";
-
+  serch_CODE_input.type = "text";
+  serch_CODE_input.inputMode = "numeric";
+  serch_CODE_input.addEventListener('keyup', function(event) 
+  {
+      if (event.keyCode === 13) 
+      {  
+        serch_CODE_input_enter(serch_CODE_input.value);
+      }
+  });
+  serch_CODE_input.addEventListener("blur", function(event)
+  {
+    serch_CODE_input_enter(serch_CODE_input.value);
+    serch_CODE_input.value = "";
+  });
   herader_view_div.appendChild(herader_view_QTY_Tile_text);
 
 
