@@ -72,12 +72,15 @@ async function speedinventory_Click()
     alert("未選擇調劑台號,將返回主頁面");
     logout_Click();
   }
-  const data = await creat_quick_add();
+  sessionStorage.setItem("ServerName", ServerName);
+  sessionStorage.setItem("ServerType", ServerType);
+  sessionStorage.setItem("TableName", TableName);
+  const data = await creat_quick_add(ServerName);
   console.log("data" ,data);
   sessionStorage.setItem('IC_SN', data.Value);
   await creat_update_startime_by_IC_SN(data.Value);
   
-   location.href = "../../pharmacy/inventory/main.html";
+   location.href = "../../inventory/main.html";
 }
 
 function page_Init(data) 
