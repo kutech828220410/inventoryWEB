@@ -542,13 +542,8 @@ async function serch_by_BarCode(barcode , _medicine_page)
        }
      }
   }
-  // var foundObject = _medicine_page.find(item => item.CODE === barcode);
-  // var resultArray = [foundObject];
   post_data.Data = foundObject;
-  // const _url = `${MED_page_url}/serch_by_BarCode`;
-  // console.log(`Url [${arguments.callee.name}]` , _url);
   console.log(`Post_data [${arguments.callee.name}]`,post_data);
-  // let response = await postDataToAPI(_url,post_data);
   return post_data;
 }
 // async function serch_by_BarCode(barcode , _medicine_page)
