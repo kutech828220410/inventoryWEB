@@ -93,6 +93,7 @@ function creat_row_div(_index , item)
         info_div.style.background ="rgb(255,255,255)";
         info_div.style.background ="linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(23,236,23,0.3) 50%, rgba(23,236,23,0.7) 100%)"
         in_text_div.style.background ="rgba(23,236,23,0.7)"
+        My_Div.Set_Text(in_text_div ,`請完成定盤\n確認無誤後` , TextAlignEnum.CENTER , "30px", true ,"","black");
     }
 
 
@@ -189,12 +190,12 @@ function creat_row_div(_index , item)
     if(item.STATE == '鎖定')  
     {
       My_Div.Init(selectbtn,`selectbtn${_index}`,'selectbtn', '100%','33%','');
-      My_Div.Set_Text(selectbtn,`交至\n覆盤` , TextAlignEnum.CENTER , "20px", true ,"","steelblue");
+      My_Div.Set_Text(selectbtn,`完成\n定盤` , TextAlignEnum.CENTER , "20px", true ,"","red");
       selectbtn.style.backgroundColor = "#f5f5f5";
     }
     else
     {
-      My_Div.Set_Text(selectbtn,`等待\n盤點` , TextAlignEnum.CENTER , "20px", true ,"","gray");
+      My_Div.Set_Text(selectbtn,`等待\n覆盤` , TextAlignEnum.CENTER , "20px", true ,"","gray");
       My_Div.Init(selectbtn,`selectbtn${_index}`,'selectbtn', '100%','33%','');
       selectbtn.style.backgroundColor = "lightgray";
     }

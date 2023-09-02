@@ -1,3 +1,97 @@
+function Get_hamburger2_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor, clickOn)
+{
+    const btn_div = document.createElement("div");
+    const div = document.createElement("div");
+    btn_div.style.width = btn_width;
+    btn_div.style.height= btn_height; 
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.innerHTML = `<?xml version="1.0" ?><svg height="100%" viewBox="0 0 48 48" width="100%" xmlns="http://www.w3.org/2000/svg"><path d="M28 34H8v4h20v-4zm12-16H8v4h32v-4zM8 30h32v-4H8v4zm0-20v4h32v-4H8z"/><path d="M0 0h48v48H0z" fill="none"/></svg>`;
+    svg.setAttribute("stroke", strokeColor);
+    svg.setAttribute("fill", "black");
+    svg.setAttribute("stroke-width", "1.5");
+    svg.setAttribute("viewBox", `0 0 24 24`);
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    svg.setAttribute("class", "svg");
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", "100%");
+
+    div.style.width = svg_width;
+    div.style.height = svg_height;
+ 
+    div.style.display = "flex";
+    div.style.justifyContent = "center";
+    div.style.alignItems = "center";
+    div.style.margin = "auto";   
+    btn_div.style.backgroundColor = backgroundColor;
+    // if(clickOn == undefined) clickOn =true;
+    // if(clickOn)
+    // {
+    //   btn_div.addEventListener("mouseover", function() 
+    //   {
+    //       btn_div.style.backgroundColor = "";
+    //   });
+      
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() 
+    //   {
+    //     btn_div.style.backgroundColor = backgroundColor;
+    //   });
+    // }
+    div.appendChild(svg);
+    btn_div.appendChild(div);
+    return btn_div;
+}
+
+
+function Get_hamburger1_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor, clickOn)
+{
+    const btn_div = document.createElement("div");
+    const div = document.createElement("div");
+    btn_div.style.width = btn_width;
+    btn_div.style.height= btn_height; 
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.innerHTML = `<?xml version="1.0" ?><svg height="100%" viewBox="0 0 48 48" width="100%" xmlns="http://www.w3.org/2000/svg"><path d="M8 30h34v-4H8v4zm0 8h34v-4H8v4zm0-16h34v-4H8v4zm0-12v4h34v-4H8z"/><path d="M0 0h48v48H0z" fill="none"/></svg>`;
+    svg.setAttribute("stroke", strokeColor);
+    svg.setAttribute("fill", "black");
+    svg.setAttribute("stroke-width", "1.5");
+    svg.setAttribute("viewBox", `0 0 24 24`);
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    svg.setAttribute("class", "svg");
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", "100%");
+
+    div.style.width = svg_width;
+    div.style.height = svg_height;
+ 
+    div.style.display = "flex";
+    div.style.justifyContent = "center";
+    div.style.alignItems = "center";
+    div.style.margin = "auto";   
+    btn_div.style.backgroundColor = backgroundColor;
+    // if(clickOn == undefined) clickOn =true;
+    // if(clickOn)
+    // {
+    //   btn_div.addEventListener("mouseover", function() 
+    //   {
+    //       btn_div.style.backgroundColor = "";
+    //   });
+      
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() 
+    //   {
+    //     btn_div.style.backgroundColor = backgroundColor;
+    //   });
+    // }
+    div.appendChild(svg);
+    btn_div.appendChild(div);
+    return btn_div;
+}
+
+
 function Get_others_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, backgroundColor, clickOn)
 {
     const btn_div = document.createElement("div");
