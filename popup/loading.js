@@ -55,18 +55,24 @@ function GetLoadingpopup()
   popup.appendChild(popupContent);
   
   // 創建讀取器元素
-  var loader = document.createElement("div");
-  loader.style.border = "8px solid #f3f3f3";
-  loader.style.borderTop = "8px solid #3498db";
-  loader.style.borderRadius = "50%";
-  loader.style.width = "60px";
-  loader.style.height = "60px";
-  loader.style.animation = "spin 2s linear infinite";
-  loader.style.marginBottom = "10px";
+  // var loader = document.createElement("div");
+  // loader.style.border = "8px solid #f3f3f3";
+  // loader.style.borderTop = "8px solid #3498db";
+  // loader.style.borderRadius = "50%";
+  // loader.style.width = "60px";
+  // loader.style.height = "60px";
+  // loader.style.animation = "spin 2s linear infinite";
+  // loader.style.marginBottom = "10px";
   // loader.style.backgroundImage = "url('../image/GGWalk.gif')";
   // loader.style.width = "186px";
   // loader.style.height = "186px";
   // loader.style.animation = "walkingAnimation 1s steps(4) infinite";
+
+
+  var loader = document.createElement("img");
+  loader.src = "HSgif.gif"; // 替换为你的LOGO GIF文件的路径
+  loader.style.width = "80px"; // 设置LOGO的宽度
+  loader.style.height = "80px"; // 设置LOGO的高度
   popupContent.appendChild(loader);
   
   // 創建讀取中的消息元素
