@@ -2,6 +2,7 @@ loadScript("../../Function/WebApiFunc.js");
 loadScript("../../Function/dateConvert.js");
 loadScript("../../Function/FileStream.js");
 loadScript("../../Function/JsonFunction.js");
+loadScript("../../Function/barcode_Input.js");
 var isDesktop = /Windows|Linux|Macintosh/i.test(navigator.userAgent);
 
 const DeviceType = 
@@ -70,7 +71,16 @@ function waitForElementToDisplay(element, callback)
 
   checkVisibility();
 }
-
+function GetDivHeight(div) 
+{
+  var elements = div.children;
+  var totalHeight = 0;
+  for (var i = 0; i < elements.length; i++) {
+    totalHeight += elements[i].height;
+  }
+  console.log('totalHeight', totalHeight);
+  return totalHeight;
+}
 function updateDivHeight(div , offsetHeight) 
 {
   var elements = div.children;

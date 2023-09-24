@@ -68,11 +68,14 @@ function page_Init(data)
   for (var i = 0; i < data.Data[0].Contents.length; i++)
   {
     const all_div = creat_row_div(i, data.Data[0].Contents[i]);
-    if(data.Data[0].Contents[i].Sub_content.length == 0)
-    {
-      all_div.style.display = "none";
-      all_div.style.visibility = "hidden";
-    }
+    //顯示已盤點loadingdata
+    all_div.style.display = "none";
+    // all_div.style.visibility = "hidden";
+    // if(data.Data[0].Contents[i].Sub_content.length == 0)
+    // {
+    //   all_div.style.display = "none";
+    //   all_div.style.visibility = "hidden";
+    // }
     allrows.push(all_div);
     main_div.appendChild(all_div);
   }
@@ -279,12 +282,12 @@ function get_header()
   const serch_CODE_input = document.createElement('input');
   My_Div.Init(serch_CODE_input,'serch_CODE_input_popup_serch','serch_CODE_input_popup_serch', '55%','90%','');
   My_Div.Set_Text(serch_CODE_input ,"" , TextAlignEnum.CENTER , "18px", false ,"微軟正黑體","black");
-  serch_CODE_input.placeholder = '藥碼搜尋';
+  serch_CODE_input.placeholder = '藥碼/藥名/條碼 輸入搜尋';
   serch_CODE_input.style.paddingLeft = "10px";
   serch_CODE_input.style.borderRadius = "90px";
   serch_CODE_input.style.border = "2px solid gray";
   serch_CODE_input.type = "text";
-  serch_CODE_input.inputMode = "numeric";
+  serch_CODE_input.inputMode = "latin";
   serch_CODE_input.addEventListener('keyup', function(event) 
   {
       if (event.keyCode === 13) 
@@ -307,10 +310,34 @@ function get_header()
   herader_view_div.appendChild(herader_view_QTY_text);
   herader_view_div.appendChild(serch_CODE_input);
 
+  const user_inventory_info_div = document.createElement('div');
+  My_Div.Init(user_inventory_info_div, 'user_inventory_info_div','user_inventory_info_div', '100%', '60px', '');
+  My_Div.Set_Block(user_inventory_info_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
+  My_Div.Set_position(user_inventory_info_div ,PositionEnum.FIXED ,0,110);
+  user_inventory_info_div.style.background = "#FFF";
+  user_inventory_info_div.style.overflowX = "hidden";
+  user_inventory_info_div.style.overflowY = "hidden";
+  user_inventory_info_div.style.borderTop = "1px solid black";
+  user_inventory_info_div.style.borderBottom = "1px solid black";
+  user_inventory_info_div.innerHTML = `已完成盤點藥名： 盤點量  解不出來幫幫忙`;
+
+  // if (get_logedName() === Sub_content.OP) {
+  //   console.log("OK")
+  //   // 使用 main_popup_input 中的 Sub_content.CODE 和 Sub_content.END_QTY
+  //   user_inventory_info_div.innerHTML = `已完成盤點藥名： ${Sub_content.CODE} 盤點量 ${Sub_content.END_QTY} `;
+  // } else {
+  // console.log("FALSE")
+  //   // 根据其他条件设置 user_inventory_info_div.innerHTML
+  //   // 这里可以设置默认的内容或者其他逻辑
+  //   user_inventory_info_div.innerHTML = '其他信息';
+  // }
+
+
   header_div.appendChild(header_title_user_div);
   header_div.appendChild(header_contorls_div);
   coverage_div.appendChild(header_div);
   coverage_div.appendChild(herader_view_div);
+  coverage_div.appendChild(user_inventory_info_div);
   return coverage_div;
 }
 function edit_herader_view_QTY()
@@ -357,3 +384,4 @@ function setUserText()
    userText.innerText = `使用者:${get_logedName()} ID:${get_loggedID()}`;
    console.log(userText);0
 }
+

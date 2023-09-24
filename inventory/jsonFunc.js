@@ -342,7 +342,29 @@ async function sub_content_get_by_content_GUID(_GUID)
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
+async function get_all_unlock_creat()
+{
+  const post_data = 
+  {
+    "Data": {
+      
 
+    },
+    "Master_GUID": 0,
+    "TableName":``,
+    "Result": "",
+    "Value": "",
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
+    "TableName" : TableName,
+    "TimeTaken": ""
+  };
+  var _url = `${inventory_url}/get_all_unlock_creat`;
+  console.log(`Url [${arguments.callee.name}]` , _url);
+  console.log(`Post_data [${arguments.callee.name}]`,post_data);
+  let response = await postDataToAPI(`${_url}`,post_data);
+  return response;
+}
 async function sub_content_add_single(_Master_GUID, _END_QTY, _OP)
 {
   const post_data = 
@@ -520,28 +542,32 @@ async function serch_by_BarCode(barcode , _medicine_page)
   };
   console.log("_medicine_page",_medicine_page);
   var foundObject =[];
-  for(var i = 0; i < _medicine_page.length; i++)
+  if(barcode != "")
   {
-     const item = _medicine_page[i];
-     if(item.CODE == barcode)
-     {
-       foundObject.push(item);
-       continue;
-     }
-     if(item.SKDIACODE == barcode)
-     {
-       foundObject.push(item);
-       continue;
-     }
-     for(var k = 0; k < item.BARCODE.length; k++)
-     {
-       if(item.BARCODE[k] == barcode)
+    for(var i = 0; i < _medicine_page.length; i++)
+    {
+       const item = _medicine_page[i];
+       if(item.CODE == barcode)
        {
-          foundObject.push(item);
-          continue;
+         foundObject.push(item);
+         continue;
        }
-     }
+       if(item.SKDIACODE == barcode)
+       {
+         foundObject.push(item);
+         continue;
+       }
+       for(var k = 0; k < item.BARCODE.length; k++)
+       {
+         if(item.BARCODE[k] == barcode)
+         {
+            foundObject.push(item);
+            continue;
+         }
+       }
+    }
   }
+  
   post_data.Data = foundObject;
   console.log(`Post_data [${arguments.callee.name}]`,post_data);
   return post_data;
@@ -579,8 +605,8 @@ async function get_medicine_cloud()
     "Code": 0,
     "Result": "",
     "Value": "",
-    "ServerName" : ServerName,
-    "ServerType" : ServerType,
+    "ServerName" : "Main",
+    "ServerType" : "網頁",
     "TableName" : "medicine_page_cloud",
     "DbName" : "dbvm",
     "TimeTaken": ""

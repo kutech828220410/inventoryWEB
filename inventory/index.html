@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-store" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>盤點操作頁面</title>
+  <link rel="stylesheet" href="index.css">
+  <script src="../../ApiURL.js"></script>
+  <script src="../../ChatHub.js"></script>
+  <script src="../../Function/WebApiFunc.js"></script>
+  <script src="../../svg/mySVG.js"></script>
+  <script src="../../Function/Basic.js"></script>
+  <script src="../../popup/map.js"></script>
+  <script src="../../dist/JsBarcode.all.js"></script>
+  <script src="../../UI/map.js"></script>
+  <script src="../../session_check.js"></script>
+  <script src="../../session.js"></script>
+
+
+  
+  <script src="main_loadingdata.js"></script>
+  <script src="main_popup_input.js"></script>
+  <script src="main_popup_serch.js"></script>
+  <script src="popup_login.js"></script>
+  <script src="popup_creatSelect.js"></script>
+  
+  <script src="index.js"></script>
+  <script src="jsonFunc.js"></script>
+  
+</head>
+<body>
+      <script>
+        (async function() 
+        {
+          // document.body.style.position = 'absolute';
+          document.body.style.overflowY = "scroll";
+
+          get_popup_input();
+          document.body.appendChild(popup_input_div.div);
+          popup_input_div.LoadEvent = popup_content_input_Load;
+          popup_input_div.ClosedEvent = popup_content_input_Closed;
+          get_popup_serch();
+          document.body.appendChild(popup_serch_div.div);
+
+          await popup_login_init();
+          popup_login_finishedEvent = popup_login_finished;
+
+          await popup_creatSelect_init();
+          popup_creatSelect_finishedEvent = popup_creatSelect_finished;
+
+          const Loadingpopup = GetLoadingpopup();
+          document.body.appendChild(Loadingpopup);
+
+          const header_div = get_header();
+          document.body.appendChild(header_div);
+          const main_div = get_main();
+          document.body.appendChild(main_div);
+
+          popup_input_div.Set_Visible(false);
+          popup_serch_div.Set_Visible(false);
+
+          popup_login_div.Close();
+          popup_creatSelect_div.Show();
+
+          document.body.style.marginTop = header_div.offsetHeight + "px";
+          document.body.style.marginBottom= "30" + "px";
+        })();
+
+      </script>
+   
+
+  <div class="under-line">
+    <B> Copyright ©2023 鴻森整合機電有限公司 </B>
+  </div>
+  
+  <script>
+ 
+  signalR_init(`${api_ip}chatHub`);
+  ChathubReceivedEvent = ChathubReceived;
+  function ChathubReceived(user, message)
+  {
+    var jsonObject = JSON.parse(message); 
+    console.log('ReceivedEvent',jsonObject);
+    if(jsonObject.Method == 'sub_content_add' || jsonObject.Method == 'sub_contents_delete_by_GUID')
+    {
+       if(jsonObject.Data.IC_SN == current_IC_SN)
+       {
+          Replace_data_by_content(data.Data[0],jsonObject.Data);
+          if(popup_input_div.Get_Visible())
+          {
+              if(popup_input_div_Content.GUID == jsonObject.Data.GUID) show_popup_input(jsonObject.Data);                     
+          }
+     
+       }
+       
+    }
+  };
+  ChathubErrorEvent = ChathubError;
+  function ChathubError()
+  {
+    // alert("連線斷開,重新整理");
+    // location.reload()
+  }
+
+  BarcodeKeyinEvent = BarcodeKeyin;
+  async function BarcodeKeyin(parsedCode)
+  {
+     const header_serch_text = document.querySelector("#header_serch_text");
+     console.log(`[${arguments.callee.name}]`,State);
+     if (header_serch_text.contains(document.activeElement) == false && Header_state.textContent == StateType.等待條碼刷入)
+     {
+        console.log("BarcodeKeyin" , "顯示藥品資料")
+        serch_CODE_input_enter(parsedCode);
+     }
+     
+  }
+
+</script>
+  
+</body>
+</html>

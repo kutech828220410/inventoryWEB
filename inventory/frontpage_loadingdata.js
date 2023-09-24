@@ -57,6 +57,7 @@ function creat_row_div(_index , item)
     info_btn_div.style.marginRight = "0px"
     info_btn_div.style.border= "2px solid";
     info_btn_div.style.borderRadius = "5px" ;
+    info_btn_div.setAttribute("IC_SN",item.IC_SN);
     time_info_btn_div.appendChild(info_btn_div);
 
     // 盤點資訊
@@ -72,6 +73,7 @@ function creat_row_div(_index , item)
     // 將文字垂直排列
     in_text_div.style.writingMode = "vertical-rl"; // 垂直書寫方式
     in_text_div.style.textOrientation = "upright"; // 文字方向垂直
+    in_text_div.setAttribute("IC_SN",item.IC_SN);
     info_btn_div.appendChild(in_text_div);
 
     if(item.STATE == '等待盤點')

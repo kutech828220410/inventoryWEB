@@ -22,14 +22,12 @@ function show_popup_input(Content , page_Initial)
     popup_input_div.Set_Visible(true);
     const END_QTY_input = document.querySelector('#END_QTY_input_popup_input');
     END_QTY_input.focus();
-    if(popup_input_div_Content != undefined) light_device_by_Code(popup_input_div_Content.CODE, get_loggedColor());
     isDark = true;
     minus_btn_click();
 }
 function hide_popup_input()
 {
-     popup_input_div.Set_Visible(false);
-     if(popup_input_div_Content != undefined) light_device_by_Code(popup_input_div_Content.CODE, "0,0,0");
+     popup_input_div.Close();
 }
 
 function next_page_popup_input() 
@@ -55,6 +53,7 @@ async function confirm_popup_input()
         return;
     }
     const GUID = popup_input_div_Content.GUID;
+    const CODE = popup_input_div_Content.CODE;
     var END_QTY = END_QTY_input.value;
     const minus_btn = document.querySelector("#minus_btn");
     const ON_OFF = minus_btn.getAttribute("ON_OFF");
@@ -62,9 +61,9 @@ async function confirm_popup_input()
     if(ON_OFF == "true") END_QTY = "-" + END_QTY;
     END_QTY_input.value = '';
     const OP = loging_name;
-    sub_content_add(GUID , END_QTY , OP);
+    //輸入盤點量後創造SUB內容
+    sub_content_add(GUID , END_QTY , OP, CODE);
     hide_popup_input();
-    
 }
 async function delete_row_popup_input(GUID , Master_GUID)
 {

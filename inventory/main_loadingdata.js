@@ -69,12 +69,10 @@ function Replace_data_by_content(creat , content)
          if(creat.Contents[i].Sub_content.length == 0)
          {
             row_div.style.display = "none";
-            row_div.style.visibility = "hidden";
          }
          else
          {
-            row_div.style.display = "";
-            row_div.style.visibility = "visible";
+            row_div.style.display = "none";
          }
       }
     }
@@ -380,50 +378,6 @@ function get_block2_div(_index, item)
     barcode_div.style.height= "100%";
     barcode_div.style.marginRight = "10px";
     barcode_div.style.marginLeft = "10px";
-
-    // if(!isDesktop) 
-    // {
-    //     const barcodeCanvas = document.createElement("img");
-    //     barcodeCanvas.style.width = "120px";
-    //     barcodeCanvas.style.height= "50px";
-    //     barcodeCanvas.id = `barcodeCanvas${_index}`;
-    //     barcodeCanvas.className = `barcodeCanvas`;
-    //     var Barcode= "";
-    //     if(Barcode == "")Barcode = item.BARCODE1;
-    //     if(Barcode == "")Barcode = item.BARCODE2;
-    //     if(Barcode == "")Barcode = item.SKDIACODE;
-    //     if(Barcode == "")Barcode = item.CODE;
-    //     JsBarcode(barcodeCanvas, Barcode, {
-    //       format: "code128",
-    //       width: "1",
-    //       height: "1",
-    //       displayValue: false,
-    //       margin: 0,
-    //     });
-    //     barcode_div.appendChild(barcodeCanvas);
-    // }
-    // if(isDesktop) 
-    // {
-    //     barcodeCanvas = document.createElement("canvas");
-    //     barcodeCanvas.style.width = "120px";
-    //     barcodeCanvas.style.height= "50px";
-    //     barcodeCanvas.id = `barcodeCanvas${_index}`;
-    //     barcodeCanvas.className = `barcodeCanvas`;
-    //     var Barcode= "";
-    //     if(Barcode == "")Barcode = item.BARCODE1;
-    //     if(Barcode == "")Barcode = item.BARCODE2;
-    //     if(Barcode == "")Barcode = item.SKDIACODE;
-    //     if(Barcode == "")Barcode = item.CODE;
-    //     JsBarcode(barcodeCanvas, Barcode, {
-    //       format: "code128",
-    //       width: "1",
-    //       height: "1",
-    //       displayValue: false,
-    //       margin: 0,
-    //     });
-    //     barcode_div.appendChild(barcodeCanvas);
-    // }
-
 
     drugInfo_div.appendChild(name_div);
     drugInfo_div.appendChild(cht_name_div);

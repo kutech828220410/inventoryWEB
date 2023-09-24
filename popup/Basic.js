@@ -2,10 +2,12 @@
 // 创建一个继承自 <div> 元素的自定义类
 class Basic_popup_Div
 {
+    
     constructor(className ,id, width, height) 
     {     
     //   super();
-
+      this.LoadEvent = null;
+      this.LoadEvent = null;
       const overlay = document.createElement('div');
       overlay.style.position = 'fixed';
       overlay.style.top = 0;
@@ -43,6 +45,7 @@ class Basic_popup_Div
       popup_div.style.opacity = '1';
       this._popup_div = popup_div;
       this.div = overlay;
+
       overlay.appendChild(popup_div);
     }
     Get_Div()
@@ -52,6 +55,10 @@ class Basic_popup_Div
     AddControl(control)
     {
         this._popup_div.appendChild(control);
+    }
+    Clear()
+    {
+        this._popup_div.innerHTML = ``;
     }
     Set_Size(width, height)
     {
@@ -66,7 +73,7 @@ class Basic_popup_Div
     {
         this._popup_div.style.height = height;
     }
-    Set_Visible(visible)
+    async Set_Visible(visible)
     {
         if(visible)
         {
@@ -75,6 +82,10 @@ class Basic_popup_Div
             this.div.style.opacity = "1" ;
             this.div.style.visibility  = "visible";
             document.body.style.overflow = "hidden";
+            if(typeof this.LoadEvent == "function") 
+            {
+                await this.LoadEvent();
+            }
    
         }
         else
@@ -84,7 +95,10 @@ class Basic_popup_Div
             this.div.style.opacity = "0" ;
             this.div.style.visibility = "hidden";
             document.body.style.overflow = "";
-
+            if(typeof this.ClosedEvent == "function") 
+            {
+                await this.ClosedEvent();
+            }
             // var overlay = document.querySelector('.overlay');
             // document.body.removeChild(overlay);
         }
@@ -92,6 +106,16 @@ class Basic_popup_Div
     Get_Visible()
     {
         return this.div.style.visibility == "visible";
+    }
+    async Show()
+    {
+        
+        this.Set_Visible(true);
+    }
+    async Close()
+    {    
+        
+        this.Set_Visible(false);
     }
     onVisible;
     onDisvisble;
