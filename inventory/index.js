@@ -3,13 +3,21 @@ class StateType
 {
   static 等待條碼刷入 = '等待條碼刷入...';
   static 輸入盤點資訊中 = '輸入盤點資訊中...'; 
+  static 搜尋藥品中 = '搜尋藥品中...'; 
 };
+var current_IC_SN;
+var IsLogged = (function() 
+{
+  return (sessionData.Name != null && sessionData.Name != "");
+})();
+var IsCreatSelected = (function() 
+{
+  current_IC_SN = sessionStorage.getItem('IC_SN');
+  return (current_IC_SN != null && current_IC_SN != "");
+})();
+
 var State = "-----------";
-let response = [];
 let data = [];
-let device_basic = [];
-var loging_name = get_logedName();
-var current_IC_SN = "";
 let allrows = [];
 let medicine_page = [];
 Window.load = load;
@@ -21,33 +29,81 @@ setInterval(function()
      My_Div.Set_Text(Header_state ,`${State}` , TextAlignEnum.CENTER , "20px", false,"微軟正黑體","white");
   }
   
-}, 100);
-
+}, 200);
+setInterval(async function() 
+{
+  if(current_IC_SN != "" && current_IC_SN != null)
+  {
+    const temp =  await get_creat_Islocked_by_IC_SN(current_IC_SN);
+    if(temp.Data == "鎖定")
+    {
+        console.log("盤點單已鎖定");
+        alert("此盤點單被管理者鎖定,即將登出此盤點!");
+        sessionStorage.removeItem("login_json");
+        sessionStorage.removeItem("IC_SN");
+        location.reload();
+    }
+  }
+  
+}, 5000);
 
 async function load()
 {
  
+  
 }
 
 function handleResize() 
 {
    Set_popup_find_position();
 }
+
+
 async function popup_login_finished()
 {
+   console.log(`[${arguments.callee.name}]`);
    popup_creatSelect_div.Show();
 }
+async function popup_med_serch_finished(CODE)
+{
+   console.log(`[${arguments.callee.name}]` , CODE);
+   const Content = data.Data[0].Contents.filter(function(content)
+   {
+     return content.CODE == CODE;
+   });
+   if(Content.length > 0)
+   {
+      show_popup_input(Content[0]);
+   }
+
+}
+
 async function popup_creatSelect_finished()
 {
+   console.log(`[${arguments.callee.name}]`);
    await init();
 }
 async function popup_content_input_Load()
-{
-  
+{ 
   console.log(`[${arguments.callee.name}]`);
+  const main_div = document.querySelector("#main_div");
   State = StateType.輸入盤點資訊中;
 }
+
 async function popup_content_input_Closed()
+{
+  console.log(`[${arguments.callee.name}]`);
+
+  const main_div = document.querySelector("#main_div");
+
+  State = StateType.等待條碼刷入;
+}
+async function popup_med_serch_Load()
+{ 
+  console.log(`[${arguments.callee.name}]`);
+  State = StateType.搜尋藥品中;
+}
+async function popup_med_serch_Closed()
 {
   console.log(`[${arguments.callee.name}]`);
   State = StateType.等待條碼刷入;
@@ -55,7 +111,7 @@ async function popup_content_input_Closed()
 async function init()
 { 
     showLoadingPopup();
-    sessionStorage.setItem('loggedName', "DELL");        
+    // sessionStorage.setItem('loggedName', "DELL");        
 
     const serverName ="";
     const serverType = "網頁";
@@ -67,57 +123,135 @@ async function init()
     await check_ip(API01[0].server,API02[0].server);
     console.log("inventory_url",inventory_url);
 
-   
+    current_IC_SN = sessionStorage.getItem('IC_SN');
+    
     var IC_SN = sessionStorage.getItem('IC_SN');  
     current_IC_SN = IC_SN;
     medicine_page = await get_medicine_cloud();
     console.log(medicine_page);
-
+    popup_med_serch_medclass = medicine_page.Data;
     data = await creat_get_by_IC_SN(IC_SN);
-
+    console.log("盤點單資料" , data);
     State = StateType.等待條碼刷入;
 
-    page_Init(data);
+    await page_Init(data);
 
-    setUserText();
+    
 
     hideLoadingPopup();
 }
-function page_Init(data) 
+async function page_Init(data) 
 {
+  const userText = document.querySelector("#header_userName");
+  userText.innerText = `姓名 : ${sessionData.Name}`;
+  const header_creat_name = document.querySelector("#header_creat_name");
+  header_creat_name.innerText = `區域 : ${data.Data[0].IC_NAME}`;
   const main_div = document.querySelector('#main_div');
   main_div.innerHTML = "";
-  console.log("盤點單資料" , data);
+  My_Div.Init(main_div, 'main_div','main_div', '100%', '', '');
+  My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN_REVERSE, JustifyContentEnum.CENTER);
 
-  var subContentArray = data.Data[0].Contents.map(function(content) 
-  {
-    return content.Sub_content.filter(function(subContent) 
-    {
-        return subContent.OP === get_logedName();
-    });
-  }).flat();
+  main_div.style.flexWrap = "wrap";
+  main_div.style.overflowX = "hidden";
+  main_div.style.overflowY = "hidden";
+  allrows = [];
+  await Refresh_rows();
+
+}
+async function Refresh_rows()
+{
+  const main_div = document.querySelector('#main_div');
+  My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN_REVERSE, JustifyContentEnum.CENTER);
+  var subContentArray = get_subContentByOP(data);
   subContentArray.sort(function(a, b) 
   {
     var timeA = new Date(a.OP_TIME).getTime();
     var timeB = new Date(b.OP_TIME).getTime();
-    return timeB - timeA;
+    return timeA - timeB;
   });
-  console.log("subContentArray",subContentArray);
-
   for (var i = 0; i < subContentArray.length; i++)
   {
-    const row = get_row(subContentArray[i]);
-    main_div.appendChild(row);
+    var row;
+    row = allrows.filter(function(row)
+    {
+       const GUID = row.getAttribute("GUID");
+       return subContentArray[i].GUID == GUID;
+    });
+    
+    if(row.length != 0)
+    {
+        const _QTY = subContentArray[i].END_QTY;
+        const _TOL_QTY = subContentArray[i].TOLTAL_QTY;
+        const row_content_QTY = row[0].querySelector(`.row_content_QTY`);
+        // console.log(row_content_QTY);
+        My_Div.Set_Text(row_content_QTY ,`${_QTY}/${_TOL_QTY}` , TextAlignEnum.RIGHT , "18px", true,"微軟正黑體","green");
+    }
+    else
+    {
+      // console.log("subContentArray[i]",subContentArray[i]);
+      row = get_row(subContentArray[i]);
+      allrows.push(row);
+      main_div.appendChild(row);
+    }
   }
+  for (var i = 0; i < allrows.length; i++)
+  {
+      var sub_Constent;
+      const GUID = allrows[i].getAttribute("GUID");
+      sub_Constent = subContentArray.filter(function(sub_constent_temp)
+      {
+         return GUID == sub_constent_temp.GUID;
+      });
+      if(sub_Constent == 0)
+      {
+         main_div.removeChild(allrows[i]);
+         allrows[i].setAttribute("remove" , "true");
 
+      }
+  }
+  allrows = allrows.filter(function(row)
+  {
+    return row.getAttribute("remove") != "true";
+  });
+
+  const data_temp = data.Data[0].Contents.filter(function(constent){return constent.Sub_content.length > 0;});
+  const inventory_num = data_temp.length;
+  const inventory_toltal = data.Data[0].Contents.length;
+  const header_inventory_num = document.querySelector("#header_inventory_num");
+  header_inventory_num.innerText = `已盤 : ${inventory_num}/${inventory_toltal}`;
 }
-
-
+function get_subContentByOP(data)
+{
+  var subContentArray = data.Data[0].Contents.map(function(content) 
+  {
+    return content.Sub_content.filter(function(subContent) 
+    {
+        return subContent.OP === sessionData.Name;
+    });
+  }).flat();
+  return subContentArray;
+}
+function Replace_data_by_content(_data)
+{
+    const content = _data.Data;
+    // console.log(`[${arguments.callee.name}]`,content);
+    for(var i = 0 ; i < data.Data[0].Contents.length ; i++)
+    {
+      if(data.Data[0].Contents[i].GUID == content.GUID)
+      {
+         console.log("Replace");
+         data.Data[0].Contents[i] = JSON.parse(JSON.stringify(content));
+      }
+    }
+    Refresh_rows();
+}
 async function serch_CODE_input_enter(barcode)
 {
     if(barcode == "") return;
+    if(medicine_page == undefined) return;
     const response = await serch_by_BarCode(barcode, medicine_page.Data);
     console.log("serch_by_BarCode",response)
+    if(response == undefined) return;
     if(response.Data.length == 0) 
     {
       alert("查無此藥品");
@@ -178,15 +312,17 @@ function get_header()
   header_creat_div.style.marginTop = "5px";
   const header_userName = document.createElement('div');
   My_Div.Init(header_userName, 'header_userName','header_userName', '100%', '', '');
-  My_Div.Set_Text(header_userName ,"姓名 : XXX" , TextAlignEnum.LEFT , "18px", true,"微軟正黑體","");
+  My_Div.Set_Text(header_userName ,"姓名 : 無" , TextAlignEnum.LEFT , "18px", true,"微軟正黑體","");
   header_userName.style.marginLeft = "10px";
   header_creat_div.appendChild(header_userName);
 
   const header_creat_name = document.createElement('div');
-  My_Div.Init(header_creat_name, 'header_creat_text','header_creat_text', '100%', '', '');
-  My_Div.Set_Text(header_creat_name ,"區域 : A5" , TextAlignEnum.LEFT , "18px", true,"微軟正黑體","");
+  My_Div.Init(header_creat_name, 'header_creat_name','header_creat_name', '100%', '', '');
+  My_Div.Set_Text(header_creat_name ,"區域 : 無" , TextAlignEnum.LEFT , "18px", true,"微軟正黑體","");
   header_creat_name.style.marginLeft = "10px";
   header_creat_div.appendChild(header_creat_name);
+
+
 
   header_div.appendChild(header_creat_div);
 
@@ -200,19 +336,45 @@ function get_header()
   header_creatselect_btn.className = "control_btn";
   My_Div.Init(header_creatselect_btn, 'control_btn','header_creatselect_btn', '', '40px', '');
   My_Div.Set_Text(header_creatselect_btn ,"換區" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","white");
+  header_creatselect_btn.addEventListener("click", function()
+  {
+    popup_creatSelect_div.Show();
+  });
 
   const header_serch_btn = document.createElement('button');
   header_serch_btn.className = "control_btn";
   My_Div.Init(header_serch_btn, 'control_btn','header_serch_btn', '', '40px', '');
   My_Div.Set_Text(header_serch_btn ,"搜尋" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","white");
-
+  header_serch_btn.addEventListener("click", function()
+  {
+     popup_med_serch_div.Show();
+  });
+  
   const header_refresh_btn = document.createElement('button');
   header_refresh_btn.className = "link_btn";
   My_Div.Init(header_refresh_btn, 'link_btn','header_refresh_btn', '', '40px', '');
   My_Div.Set_Text(header_refresh_btn ,"重新整理" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","white");
+  header_refresh_btn.addEventListener("click", function()
+  {
+      location.reload();
+  });
+  const header_logout = document.createElement('button');
+  header_logout.className = "link_btn";
+  My_Div.Init(header_logout, 'link_btn','header_logout', '', '40px', '');
+  My_Div.Set_Text(header_logout ,"登出" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","white");
+  header_logout.addEventListener("click", function()
+  {
+     const confirmResult = confirm(`是否登出系統?`);
+     if(confirmResult)
+     {
+        sessionStorage.removeItem("login_json");
+        sessionStorage.removeItem("IC_SN");
 
-
-
+        location.reload();
+    }
+  });
+ 
+  header_controls.appendChild(header_logout);
   header_controls.appendChild(header_refresh_btn);
   header_controls.appendChild(header_serch_btn);
   header_controls.appendChild(header_creatselect_btn);
@@ -222,7 +384,7 @@ function get_header()
 
   //搜尋列
   const header_serch_text = document.createElement('input');
-  My_Div.Init(header_serch_text, 'header_serch_text','header_serch_text', '300px', '30px', '');
+  My_Div.Init(header_serch_text, 'header_serch_text','header_serch_text', '250px', '30px', '');
   My_Div.Set_Text(header_serch_text ,"" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","black");
 
   My_Div.Set_Block(header_serch_text, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
@@ -234,7 +396,6 @@ function get_header()
   header_serch_text.inputMode = "latin";
   header_serch_text.addEventListener('keyup', function(event) 
   {
-    
       if (event.keyCode === 13) 
       {  
         serch_CODE_input_enter(header_serch_text.value);
@@ -248,6 +409,9 @@ function get_header()
   });
   header_div.appendChild(header_serch_text);
 
+
+ 
+
   //狀態列
   const header_state = document.createElement('div');
   Header_state = header_state;
@@ -257,6 +421,10 @@ function get_header()
   header_state.style.marginTop = "5px";
   header_div.appendChild(header_state);
 
+  const header_inventory_num = document.createElement('div');
+  My_Div.Init(header_inventory_num, 'header_inventory_num','header_inventory_num', '40%', '', '');
+  My_Div.Set_Text(header_inventory_num ,"已盤 : 0/0" , TextAlignEnum.CENTER , "20px", true,"微軟正黑體","");
+  header_div.appendChild(header_inventory_num);
 
   return header_div;
 }
@@ -276,8 +444,12 @@ function get_main()
 
   const main_div = document.createElement('div');
   My_Div.Init(main_div, 'main_div','main_div', '100%', '', '');
+  My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN_REVERSE, JustifyContentEnum.CENTER);
+
   main_div.style.flexWrap = "wrap";
-  My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
+  main_div.style.overflowX = "hidden";
+  main_div.style.overflowY = "hidden";
+
   const header_div = document.querySelector('#header_div');
   console.log("header_div",header_div.offsetHeight);
   return main_div;
@@ -294,17 +466,16 @@ function get_row(Sub_Content)
   var _CHT_NAME = Sub_Content.CHT_NAME;
 
   const row_div = document.createElement('div');
-  My_Div.Init(row_div, 'row_div',`row_div_${_GUID}`, '100%', '', '');
+  My_Div.Init(row_div, 'row_div',`row_div_${_GUID}`, '97%', '', '');
   My_Div.Set_Block(row_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUNM, JustifyContentEnum.TOP);
   row_div.setAttribute("GUID", _GUID);
   row_div.setAttribute("Master_GUID", _Master_GUID);
 
-
   row_div.style.borderRadius = '10px';
   row_div.style.border = "2px solid black";
   row_div.style.marginTop = '2px';
-  row_div.style.marginLeft = '2px';
-  row_div.style.marginRight = '2px';
+  // row_div.style.marginLeft = '2px';
+  // row_div.style.marginRight = '2px';
   row_div.style.paddingTop = '5px';
   row_div.style.paddingBottom = '5px';
 
@@ -332,6 +503,7 @@ function get_row(Sub_Content)
   row_content_sub02_div01.style.marginRight = '10px';
 
   const row_content_QTY = document.createElement('div');
+  My_Div.Init(row_content_QTY, 'row_content_QTY',`row_content_QTY${_GUID}`, '30%', '', '');
   My_Div.Set_Text(row_content_QTY ,`${_QTY}/${_TOL_QTY}` , TextAlignEnum.RIGHT , "18px", true,"微軟正黑體","green");
   row_content_sub02_div01.appendChild(row_content_QTY);
 
@@ -369,18 +541,26 @@ function get_row(Sub_Content)
   row_div.addEventListener("mouseout", function()
   {
       row_div.style.border = "2px solid black";
-      row_div.style.padding = "4px";
+      row_div.style.paddingTop = '5px';
+      row_div.style.paddingBottom = '5px';
       row_div.style.borderRadius = "10px";
 
   });
+  row_div.addEventListener("click", function()
+  {
+      const Master_GUID = this.getAttribute("Master_GUID");
+      const Content = data.Data[0].Contents.filter(function(content)
+      {
+        return content.GUID == Master_GUID;
+      });
+      if(Content.length > 0)
+      {
+         show_popup_input(Content[0]);
+      }
+      
 
+  });
+  
   return row_div;
-}
-
-
-function setUserText()
-{
-   const userText = document.querySelector("#header_userName");
-   userText.innerText = `姓名 : ${get_logedName()}`;
 }
 

@@ -1,3 +1,55 @@
+var sessionData = 
+{
+    get Name() 
+    {
+      const login_json =JSON.parse(sessionStorage.getItem('login_json'));
+      if(login_json == undefined) return "";
+      return login_json.Name;
+    },
+    get GUuser() 
+    {
+      const login_json =JSON.parse(sessionStorage.getItem('login_json'));
+      if(login_json == undefined) return "";
+      return login_json.GUuser;
+    },
+    get user() 
+    {
+      const login_json =JSON.parse(sessionStorage.getItem('login_json'));
+      if(login_json == undefined) return "";
+      return login_json.user;
+    },
+    get Password() 
+    {
+      const login_json =JSON.parse(sessionStorage.getItem('login_json'));
+      if(login_json == undefined) return "";
+      return login_json.Password;
+    },
+    get Employer() 
+    {
+      const login_json =JSON.parse(sessionStorage.getItem('login_json'));
+      if(login_json == undefined) return "";
+      return login_json.Employer;
+    },
+    get level() 
+    {
+      const login_json =JSON.parse(sessionStorage.getItem('login_json'));
+      if(login_json == undefined) return "";
+      return login_json.level;
+    },
+    get loginTime() 
+    {
+      const login_json =JSON.parse(sessionStorage.getItem('login_json'));
+      if(login_json == undefined) return "";
+      return login_json.loginTime;
+    },
+    get color() 
+    {
+      const login_json =JSON.parse(sessionStorage.getItem('login_json'));
+      if(login_json == undefined) return "";
+      return login_json.color;
+    }
+  };
+  
 function get_logedName()
 {
     var loggedName = sessionStorage.getItem('loggedName');

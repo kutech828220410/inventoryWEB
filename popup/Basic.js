@@ -6,9 +6,11 @@ class Basic_popup_Div
     constructor(className ,id, width, height) 
     {     
     //   super();
-      this.LoadEvent = null;
-      this.LoadEvent = null;
+      this.LoadEvent = [];
+      this.ClosedEvent = [];
+      this._id = id;
       const overlay = document.createElement('div');
+      overlay.style.id = `overlay${this.id}`;
       overlay.style.position = 'fixed';
       overlay.style.top = 0;
       overlay.style.left = 0;
@@ -18,6 +20,7 @@ class Basic_popup_Div
       overlay.style.opacity = '0.5';
       overlay.style.zIndex = '1000';
       overlay.style.display = 'block';
+
       document.body.appendChild(overlay);
 
       const popup_div = document.createElement('div');
@@ -73,19 +76,28 @@ class Basic_popup_Div
     {
         this._popup_div.style.height = height;
     }
+    Set_BackgroundOpacity(opacity)
+    {
+        this.div.style.backgroundColor = `rgba(0, 0, 0, ${opacity})`;
+    }
     async Set_Visible(visible)
     {
         if(visible)
         {
+            for(var i = 0 ; i < this.LoadEvent.length ; i++)
+            {
+                if(typeof this.LoadEvent[i] == "function") 
+                {
+                    await this.LoadEvent[i]();
+                }
+            }
+            
             if(typeof this.onVisible != "undefined") this.onVisible();
             this.div.style.display = "block";
             this.div.style.opacity = "1" ;
             this.div.style.visibility  = "visible";
             document.body.style.overflow = "hidden";
-            if(typeof this.LoadEvent == "function") 
-            {
-                await this.LoadEvent();
-            }
+        
    
         }
         else
@@ -94,13 +106,15 @@ class Basic_popup_Div
             this.div.style.display = "none";
             this.div.style.opacity = "0" ;
             this.div.style.visibility = "hidden";
-            document.body.style.overflow = "";
-            if(typeof this.ClosedEvent == "function") 
+            document.body.style.overflowY = "auto";
+            for(var i = 0 ; i < this.ClosedEvent.length ; i++)
             {
-                await this.ClosedEvent();
+                if(typeof this.ClosedEvent[i] == "function") 
+                {
+                    await this.ClosedEvent[i]();
+                }
             }
-            // var overlay = document.querySelector('.overlay');
-            // document.body.removeChild(overlay);
+
         }
     }
     Get_Visible()

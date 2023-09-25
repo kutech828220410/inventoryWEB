@@ -1,6 +1,6 @@
 var popup_creatSelect_div;
 var popup_creatSelect_creat = [];
-var popup_creatSelect_finishedEvent = null;
+var popup_creatSelect_finishedEvent = [];
 
 async function popup_creatSelect_load()
 { 
@@ -14,9 +14,13 @@ async function popup_creatSelect_load()
     await check_ip(API01[0].server,API02[0].server);
  
     popup_creatSelect_creat = await get_all_unlock_creat();
-
+    const creats = popup_creatSelect_creat.Data.filter(function(item) 
+    {
+       return item.IC_SN.charAt(0) != "Q";
+    })
+    popup_creatSelect_creat.Data = creats;
     console.log("盤點單",popup_creatSelect_creat);   
-
+    popup_creatSelect_div.Set_BackgroundOpacity(1);
     popup_creatSelect_div.Clear();
     const title = popup_creatSelect_title_init();
     const content = popup_creatSelect_content_init();
@@ -32,8 +36,8 @@ async function popup_creatSelect_init()
 {
     popup_creatSelect_div = new Basic_popup_Div('popup_creatSelect','popup_creatSelect','330px','');
     popup_creatSelect_div._popup_div.style.border = '10px solid white';
-    popup_creatSelect_div.LoadEvent = popup_creatSelect_load;
-    popup_creatSelect_div.ClosedEvent = popup_creatSelect_closed;
+    popup_creatSelect_div.LoadEvent.push(popup_creatSelect_load);
+    popup_creatSelect_div.ClosedEvent.push(popup_creatSelect_closed);
     popup_creatSelect_div.Close();
     document.body.appendChild(popup_creatSelect_div.div);
     
@@ -81,9 +85,12 @@ function popup_creatSelect_content_init()
             const IC_SN = this.getAttribute("IC_SN");
             console.log("IC_SN",IC_SN);
             sessionStorage.setItem('IC_SN', IC_SN);
-            if(typeof popup_creatSelect_finishedEvent == "function") 
+            for(var i = 0 ; i < popup_creatSelect_finishedEvent.length ; i++)
             {
-                await popup_creatSelect_finishedEvent();
+                if(typeof popup_creatSelect_finishedEvent[i] == "function") 
+                {
+                    await popup_creatSelect_finishedEvent[i]();
+                }
             }
             popup_creatSelect_div.Close();
         });
@@ -111,7 +118,7 @@ function popup_creatSelect_content_init()
 
     const high_priced_button = document.createElement('button');
     My_Div.Init(high_priced_button, `creatSelect_button_high_priced`,`creatSelect_button_high_priced`, '95%', '60px',);
-    My_Div.Set_Text(high_priced_button ,`高價藥品` , TextAlignEnum.CENTER , "16px", true,"微軟正黑體","black");
+    My_Div.Set_Text(high_priced_button ,`高價藥品` , TextAlignEnum.CENTER , "18px", true,"微軟正黑體","black");
     high_priced_button.addEventListener('mouseover', function () 
     {
         high_priced_button.style.backgroundColor = 'lightgray'; // 或者您可以设置其他反白样式
@@ -122,9 +129,24 @@ function popup_creatSelect_content_init()
     });
     high_priced_button.addEventListener('click', async function () 
     {       
-        if(typeof popup_creatSelect_finishedEvent == "function") 
+        const creat_response = await creat_quick_add("高價藥品");
+        const IC_SN = creat_response.Data.IC_SN;
+
+        const temp =  await get_creat_Islocked_by_IC_SN(IC_SN);
+        if(temp.Data == "鎖定")
         {
-            await popup_creatSelect_finishedEvent();
+            alert("此盤點單被管理者鎖定,無法進入盤點!");
+            return;
+        }
+        console.log("IC_SN",IC_SN);
+        sessionStorage.setItem('IC_SN', IC_SN);
+        console.log("creat_response",creat_response);
+        for(var i = 0 ; i < popup_creatSelect_finishedEvent.length ; i++)
+        {
+            if(typeof popup_creatSelect_finishedEvent[i] == "function") 
+            {
+                await popup_creatSelect_finishedEvent[i]();
+            }
         }
         popup_creatSelect_div.Close();
     });
@@ -145,9 +167,25 @@ function popup_creatSelect_content_init()
     });
     controlled_button.addEventListener('click', async function () 
     {       
-        if(typeof popup_creatSelect_finishedEvent == "function") 
+        const creat_response = await creat_quick_add("管制藥品");
+        const IC_SN = creat_response.Data.IC_SN;
+
+        const temp =  await get_creat_Islocked_by_IC_SN(IC_SN);
+        if(temp.Data == "鎖定")
         {
-            await popup_creatSelect_finishedEvent();
+            alert("此盤點單被管理者鎖定,無法進入盤點!");
+            return;
+        }
+
+        console.log("IC_SN",IC_SN);
+        sessionStorage.setItem('IC_SN', IC_SN);
+        console.log("creat_response",creat_response);
+        for(var i = 0 ; i < popup_creatSelect_finishedEvent.length ; i++)
+        {
+            if(typeof popup_creatSelect_finishedEvent[i] == "function") 
+            {
+                await popup_creatSelect_finishedEvent[i]();
+            }
         }
         popup_creatSelect_div.Close();
     });
@@ -168,9 +206,25 @@ function popup_creatSelect_content_init()
     });
     med_back_button.addEventListener('click', async function () 
     {       
-        if(typeof popup_creatSelect_finishedEvent == "function") 
+        const creat_response = await creat_quick_add("退藥");
+        const IC_SN = creat_response.Data.IC_SN;
+
+        const temp =  await get_creat_Islocked_by_IC_SN(IC_SN);
+        if(temp.Data == "鎖定")
         {
-            await popup_creatSelect_finishedEvent();
+            alert("此盤點單被管理者鎖定,無法進入盤點!");
+            return;
+        }
+
+        console.log("IC_SN",IC_SN);
+        sessionStorage.setItem('IC_SN', IC_SN);
+        console.log("creat_response",creat_response);
+        for(var i = 0 ; i < popup_creatSelect_finishedEvent.length ; i++)
+        {
+            if(typeof popup_creatSelect_finishedEvent[i] == "function") 
+            {
+                await popup_creatSelect_finishedEvent[i]();
+            }
         }
         popup_creatSelect_div.Close();
     });

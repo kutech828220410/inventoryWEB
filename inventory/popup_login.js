@@ -1,9 +1,8 @@
 var popup_login_div;
-var popup_login_finishedEvent = null;
+var popup_login_finishedEvent = [];
+var popup_login_session_login;
 async function popup_login_load()
 { 
-  
-
     const serverName ="";
     const serverType = "網頁";
     APIServer = await LoadAPIServer();
@@ -16,7 +15,7 @@ async function popup_login_load()
     const title = popup_login_title_init();
     const content = popup_login_content_init();
     const underline = popup_login_underline_init();
-
+    popup_login_div.Set_BackgroundOpacity(1);
     popup_login_div.AddControl(title);
     popup_login_div.AddControl(content);
     popup_login_div.AddControl(underline);
@@ -24,14 +23,14 @@ async function popup_login_load()
 }
 async function popup_login_closed()
 {
-    
+
 }
 async function popup_login_init()
 {
     popup_login_div = new Basic_popup_Div('popup_login_div_popup_login','popup_login_div_popup_login','330px','');
     popup_login_div._popup_div.style.border = '10px solid white';
-    popup_login_div.LoadEvent = popup_login_load;
-    popup_login_div.ClosedEvent = popup_login_closed;
+    popup_login_div.LoadEvent.push(popup_login_load);
+    popup_login_div.ClosedEvent.push(popup_login_closed);
     popup_login_div.Close();
     
     document.body.appendChild(popup_login_div.div);
@@ -97,19 +96,22 @@ function popup_login_underline_init()
     My_Div.Init(popup_login_content_submit_button, 'link_btn','popup_login_content_submit_button', '95%', '60px','gray');
     My_Div.Set_Text(popup_login_content_submit_button ,"確認" , TextAlignEnum.CENTER , "24px", true,"微軟正黑體","white");
 
-    popup_login_content_submit_button.type = "submit";
+    // popup_login_content_submit_button.type = "submit";
     popup_login_content_submit_button.borderRadius = "10px";
-    popup_login_content_submit_button.onclick = async function()
+    popup_login_content_submit_button.onclick = async function(event)
     {
-        var flag_login = await popup_login_content_submit_button_click(); 
-        console.log("flag_login",flag_login);      
+        var flag_login = await popup_login_content_submit_button_click(event); 
         if(flag_login)
         {
-            if(typeof popup_login_finishedEvent == "function") 
+            for(var i = 0 ; i < popup_login_finishedEvent.length ; i++)
             {
-                await popup_login_finishedEvent();
+                if(typeof popup_login_finishedEvent[i] == "function") 
+                {
+                    await popup_login_finishedEvent[i]();
+                }
             }
-            popup_login_div.Close();
+      
+            await popup_login_div.Close();
         }
     };
     underline.appendChild(popup_login_content_submit_button);
@@ -118,9 +120,9 @@ function popup_login_underline_init()
 }
 
 
-async function popup_login_content_submit_button_click() 
+async function popup_login_content_submit_button_click(event) 
 {
-    // event.preventDefault(); // 阻止表单的自动提交
+    event.preventDefault(); // 阻止表单的自动提交
 
     // 取得使用者輸入的帳號和密碼
     const user = document.querySelector("#popup_login_content_user_input").value;
@@ -147,15 +149,17 @@ async function popup_login_content_submit_button_click()
         return false;
     }
     // 恢復按鈕為可用狀態
-    const greeting = `${session_login.Data.Name} 登入成功!`;
-    alert(greeting);
+    sessionStorage.setItem("login_json",JSON.stringify(session_login.Data));
     sessionStorage.setItem('GUuser', session_login.Data.GUuser);
     sessionStorage.setItem('loggeduser', session_login.Data.user);
     sessionStorage.setItem('loggedPassword', session_login.Data.Password);
-    sessionStorage.setItem('loggedName', session_login.Data.Name);        
+    sessionStorage.setItem('loggedName', session_login.Data.Name); 
     sessionStorage.setItem('loggedEmployer', session_login.Data.Employer);
     sessionStorage.setItem('loggedlevel', session_login.Data.level);
     sessionStorage.setItem('loggedTime', session_login.Data.loginTime);
     sessionStorage.setItem('color', session_login.Data.color);
+    const greeting = `${session_login.Data.Name} 登入成功!`;
+    alert(greeting);
+    
     return true; // 防止表單提交
 }

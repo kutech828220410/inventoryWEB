@@ -205,6 +205,28 @@ async function creat_delete_by_IC_SN(IC_SN)
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
   return response;
 }
+async function get_creat_Islocked_by_IC_SN(IC_SN)
+{
+  const post_data = 
+  {
+    "Data": {
+   
+    },
+    "Code": 0,
+    "Result": "",
+    "Value": IC_SN,
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
+    "TableName" : TableName,
+    "TimeTaken": ""
+  };
+  var _url = `${inventory_url}/get_creat_Islocked_by_IC_SN`;
+  console.log(`Url [${arguments.callee.name}]` , _url);
+  console.log(`Post_data [${arguments.callee.name}]`,post_data);
+  let response = await postDataToAPI(`${_url}`,post_data);
+  return response;
+}
+
 async function creat_lock_by_IC_SN(IC_SN)
 {
   const post_data = 
@@ -419,6 +441,7 @@ async function sub_content_add(_Master_GUID, _END_QTY, _OP)
   if(response.Code != 200)
   {
     alert("輸入資料失敗,請重新整理");
+    location.reload();
   }
   return response;
 }
@@ -526,6 +549,7 @@ async function device_light(Color, device_basic)
 }
 async function serch_by_BarCode(barcode , _medicine_page)
 {
+  if(_medicine_page == undefined) return; 
   var post_data = 
   {
     "Data": {
@@ -544,22 +568,23 @@ async function serch_by_BarCode(barcode , _medicine_page)
   var foundObject =[];
   if(barcode != "")
   {
+    barcode = barcode.toUpperCase();
     for(var i = 0; i < _medicine_page.length; i++)
     {
        const item = _medicine_page[i];
-       if(item.CODE == barcode)
+       if(item.CODE.toUpperCase() == barcode)
        {
          foundObject.push(item);
          continue;
        }
-       if(item.SKDIACODE == barcode)
+       if(item.SKDIACODE.toUpperCase() == barcode)
        {
          foundObject.push(item);
          continue;
        }
        for(var k = 0; k < item.BARCODE.length; k++)
        {
-         if(item.BARCODE[k] == barcode)
+         if(item.BARCODE[k].toUpperCase() == barcode)
          {
             foundObject.push(item);
             continue;
@@ -572,29 +597,7 @@ async function serch_by_BarCode(barcode , _medicine_page)
   console.log(`Post_data [${arguments.callee.name}]`,post_data);
   return post_data;
 }
-// async function serch_by_BarCode(barcode , _medicine_page)
-// {
-//   var post_data = 
-//   {
-//     "Data": {
 
-//     },
-//     "Code": 0,
-//     "Result": "",
-//     "Value": barcode,
-//     "ServerName" : ServerName,
-//     "ServerType" : ServerType,
-//     "TableName" : "medicine_page_cloud",
-//     "DbName" : "dbvm",
-//     "TimeTaken": ""
-//   };
-//   post_data.Data = _medicine_page;
-//   const _url = `${MED_page_url}/serch_by_BarCode`;
-//   console.log(`Url [${arguments.callee.name}]` , _url);
-//   console.log(`Post_data [${arguments.callee.name}]`,post_data);
-//   let response = await postDataToAPI(_url,post_data);
-//   return response;
-// }
 async function get_medicine_cloud()
 {
   const post_data = 
