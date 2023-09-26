@@ -5,8 +5,7 @@
     margin-bottom: 40px;
 }
 .list_style {
-    width: 45%;
-    background-color: aquamarine;
+    width: 46%;
 }
 .list_title {
     text-align: center;
@@ -24,6 +23,8 @@
     box-sizing: border-box;
     width: 260px;
     margin: 16px;
+    padding: 16px;
+    border-radius: 5px;
     background-color: burlywood;
 }
 .under-line {
@@ -38,4 +39,9 @@
     height: 30px;
     line-height: 30px;
     display: block;
+}
+@media screen and (min-width: 1024px) {
+    .list_style {
+        width: 90%;
+    }
 }

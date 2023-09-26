@@ -110,7 +110,7 @@ function isScriptLoaded(scriptSrc)
 }
 async function loadScript(scriptSrc)
 {
-    if (!isScriptLoaded(scriptSrc)) 
+    if (!isScriptLoaded(`${scriptSrc}?v=${JS_version}`)) 
     {
         document.write(`<script src='${scriptSrc}?v=${JS_version}'></script>`);
     }
