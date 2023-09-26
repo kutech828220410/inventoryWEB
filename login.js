@@ -56,6 +56,7 @@ async function verifyUser(event)
     {
         const greeting = `歡迎登入 ${session_login.Data.Name} 即將進入後台首頁。`;
         alert(greeting);
+        sessionStorage.setItem("login_json",JSON.stringify(session_login.Data));
         sessionStorage.setItem('GUID', session_login.Data.GUID);
         sessionStorage.setItem('loggedID', session_login.Data.ID);
         sessionStorage.setItem('loggedPassword', session_login.Data.Password);
@@ -72,6 +73,7 @@ async function showConfirm()
 {
     await logout(ID);
     session_login = await login(ID, password);
+    sessionStorage.setItem("login_json",JSON.stringify(session_login.Data));
     sessionStorage.setItem('GUID', session_login.Data.GUID);
     sessionStorage.setItem('GUID', session_login.Data.CO);
     sessionStorage.setItem('loggedID', session_login.Data.ID);

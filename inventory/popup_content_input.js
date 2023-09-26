@@ -111,9 +111,9 @@ function edit_title_popup_input(Content)
     if(Content.CHT_NAME != null) med_cht_name_text.innerText = `(中) : ${Content.CHT_NAME}`;
 
     const med_end_QTY_text = document.querySelector('#med_end_QTY_text_popup_input');
-    med_end_QTY_text.innerText = `盤點量 : ${Content.END_QTY}`;
+    med_end_QTY_text.innerText = `盤點量 : \n${Content.END_QTY}`;
     const med_end_PKG_text = document.querySelector('#med_end_PKG_text_popup_input');
-    med_end_PKG_text.innerText = `單位 : ${Content.PAKAGE}`;
+    med_end_PKG_text.innerText = `單位 : \n${Content.PAKAGE}`;
     
 }
 function edit_rows_popup_input(Content)
@@ -239,13 +239,13 @@ function get_title_popup_input()
 
     const med_eng_name_text = document.createElement('div');
     My_Div.Init(med_eng_name_text,'med_eng_name_text_popup_input','med_eng_name_text_popup_input', '100%',"",'');
-    My_Div.Set_Text(med_eng_name_text ,"(英) : XXXXXXXXXXXXXXXXX" , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","orange");
+    My_Div.Set_Text(med_eng_name_text ,"(英) : XXXXXXXXXXXXXXXXX" , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","#c88114");
     med_eng_name_text.style.marginLeft = "5px";
     med_eng_name_text.style.marginBottom = "5px";
 
     const med_cht_name_text = document.createElement('div');
     My_Div.Init(med_cht_name_text,'med_cht_name_text_popup_input','med_cht_name_text_popup_input', '100%',"");
-    My_Div.Set_Text(med_cht_name_text ,"(中) : XXXXXXXXXXXXXXXXX" , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","orange");
+    My_Div.Set_Text(med_cht_name_text ,"(中) : XXXXXXXXXXXXXXXXX" , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","#c88114");
     med_cht_name_text.style.marginLeft = "5px";
     med_cht_name_text.style.marginBottom = "5px";
 

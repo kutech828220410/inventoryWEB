@@ -1,0 +1,54 @@
+{
+    "block_list":[
+        {
+            "CT":"",
+            "CT_TIME":"2023/09/26 08:25:27",
+            "Contents":[],
+            "END_TIME":"9999/12/13 23:59:59",
+            "GUID":"afasdfasfd",
+            "IC_NAME":"退要（快）",
+            "IC_SN":"A22020-不知道",
+            "NOTE":"",
+            "START_TIME":"9999/12/31 23:59:59",
+            "STATE":"等待盤點"
+        },
+        {
+            "CT":"",
+            "CT_TIME":"2023/09/26 08:25:27",
+            "Contents":[],
+            "END_TIME":"9999/12/13 23:59:59",
+            "GUID":"afweweqerqqwr",
+            "IC_NAME":"退（快）",
+            "IC_SN":"Aadsf11531-不知道",
+            "NOTE":"",
+            "START_TIME":"9999/12/31 23:59:59",
+            "STATE":"等待盤點"
+        }
+    ],
+    "self_list":[
+        {
+            "CT":"",
+            "CT_TIME":"2023/09/26 08:25:27",
+            "Contents":[],
+            "END_TIME":"9999/12/13 23:59:59",
+            "GUID":"afasdfasfd",
+            "IC_NAME":"退要（快）",
+            "IC_SN":"A22020-不知道",
+            "NOTE":"",
+            "START_TIME":"9999/12/31 23:59:59",
+            "STATE":"等待盤點"
+        },
+        {
+            "CT":"",
+            "CT_TIME":"2023/09/26 08:25:27",
+            "Contents":[],
+            "END_TIME":"9999/12/13 23:59:59",
+            "GUID":"afweweqerqqwr",
+            "IC_NAME":"退（快）",
+            "IC_SN":"Aadsf11531-不知道",
+            "NOTE":"",
+            "START_TIME":"9999/12/31 23:59:59",
+            "STATE":"等待盤點"
+        }
+    ]   
+}

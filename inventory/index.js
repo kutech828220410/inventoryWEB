@@ -183,13 +183,14 @@ async function Refresh_rows()
         const _QTY = subContentArray[i].END_QTY;
         const _TOL_QTY = subContentArray[i].TOLTAL_QTY;
         const row_content_QTY = row[0].querySelector(`.row_content_QTY`);
-        // console.log(row_content_QTY);
+        row[0].style.backgroundColor = "white";
         My_Div.Set_Text(row_content_QTY ,`${_QTY}/${_TOL_QTY}` , TextAlignEnum.RIGHT , "18px", true,"微軟正黑體","green");
     }
     else
     {
       // console.log("subContentArray[i]",subContentArray[i]);
       row = get_row(subContentArray[i]);
+      row.style.backgroundColor = "white";
       allrows.push(row);
       main_div.appendChild(row);
     }
@@ -213,7 +214,10 @@ async function Refresh_rows()
   {
     return row.getAttribute("remove") != "true";
   });
-
+  if(allrows.length > 0)
+  {
+    allrows[allrows.length - 1].style.backgroundColor = "#a6eb78";
+  }
   const data_temp = data.Data[0].Contents.filter(function(constent){return constent.Sub_content.length > 0;});
   const inventory_num = data_temp.length;
   const inventory_toltal = data.Data[0].Contents.length;
@@ -251,7 +255,7 @@ async function serch_CODE_input_enter(barcode)
     if(medicine_page == undefined) return;
     const response = await serch_by_BarCode(barcode, medicine_page.Data);
     console.log("serch_by_BarCode",response)
-    if(response == undefined) return;
+    if(medicine_page == undefined) return;
     if(response.Data.length == 0) 
     {
       alert("查無此藥品");
@@ -270,25 +274,6 @@ async function serch_CODE_input_enter(barcode)
     }
    
 }
-
-let isMultiUser =false;
-function header_contorls_viewswitching_click()
-{
-    if (isMultiUser) 
-    {
-      const header_contorls_viewswitching = document.querySelector("#header_contorls_viewswitching");
-      header_contorls_viewswitching.removeChild(header_contorls_viewswitching.firstChild);
-      header_contorls_viewswitching.appendChild(Get_me_SVG("100%", "100%", "70%", "100%", "", ""));
-    }
-     else
-    {
-      const header_contorls_viewswitching = document.querySelector("#header_contorls_viewswitching");
-      header_contorls_viewswitching.removeChild(header_contorls_viewswitching.firstChild);
-      header_contorls_viewswitching.appendChild(Get_others_SVG("100%", "100%", "70%", "100%", "", ""));
-    }
-    isMultiUser = !isMultiUser; // 切换样式标记
-}
-
 function get_header()
 {
 

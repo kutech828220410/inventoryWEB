@@ -1,0 +1,41 @@
+.select_menu_container {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 20px 2.5%;
+    margin-bottom: 40px;
+}
+.list_style {
+    width: 45%;
+    background-color: aquamarine;
+}
+.list_title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.list_title span {
+    font-size: 1.5rem;
+}
+.flex_composing {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.list_card {
+    box-sizing: border-box;
+    width: 260px;
+    margin: 16px;
+    background-color: burlywood;
+}
+.under-line {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    color: #000000;
+    background-color: #ffffff;
+    height: 30px;
+    line-height: 30px;
+    display: block;
+}

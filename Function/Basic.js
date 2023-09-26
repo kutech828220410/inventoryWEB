@@ -3,8 +3,8 @@ loadScript("../../Function/dateConvert.js");
 loadScript("../../Function/FileStream.js");
 loadScript("../../Function/JsonFunction.js");
 loadScript("../../Function/barcode_Input.js");
+var JS_version = (new Date()).getTime();
 var isDesktop = /Windows|Linux|Macintosh/i.test(navigator.userAgent);
-
 const DeviceType = 
 {
   MOBILE: "Mobile Phone",
@@ -108,10 +108,10 @@ function isScriptLoaded(scriptSrc)
     }
     return false;
 }
-function loadScript(scriptSrc)
+async function loadScript(scriptSrc)
 {
     if (!isScriptLoaded(scriptSrc)) 
     {
-        document.write(`<script src='${scriptSrc}'></script>`);
+        document.write(`<script src='${scriptSrc}?v=${JS_version}'></script>`);
     }
 }

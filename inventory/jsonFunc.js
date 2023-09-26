@@ -221,8 +221,8 @@ async function get_creat_Islocked_by_IC_SN(IC_SN)
     "TimeTaken": ""
   };
   var _url = `${inventory_url}/get_creat_Islocked_by_IC_SN`;
-  console.log(`Url [${arguments.callee.name}]` , _url);
-  console.log(`Post_data [${arguments.callee.name}]`,post_data);
+  // console.log(`Url [${arguments.callee.name}]` , _url);
+  // console.log(`Post_data [${arguments.callee.name}]`,post_data);
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }

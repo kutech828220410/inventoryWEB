@@ -3,34 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no/>">
-  <meta http-equiv="Cache-Control" content="no-store" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
+  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="expires" content="0">
   <title>盤點操作頁面</title>
   <link rel="stylesheet" href="index.css">
-  <script src="../../ApiURL.js"></script>
-  <script src="../../ChatHub.js"></script>
-  <script src="../../Function/WebApiFunc.js"></script>
-  <script src="../../svg/mySVG.js"></script>
-  <script src="../../Function/Basic.js"></script>
-  <script src="../../popup/map.js"></script>
-  <script src="../../dist/JsBarcode.all.js"></script>
-  <script src="../../UI/map.js"></script>
-  <script src="../../session_check.js"></script>
-  <script src="../../session.js"></script>
+  <script src="../../Function/Basic.js?v=1.0"></script>
+  <script>
+    (async function() 
+        {
+          loadScript("../../ApiURL.js");
+          loadScript("../../ChatHub.js");
+          loadScript("../../svg/mySVG.js");
+          loadScript("../../UI/map.js");
+          loadScript("../../popup/map.js");
+          loadScript("../../dist/JsBarcode.all.js");
+          loadScript("../../session_check.js");
+          loadScript("../../session.js");
+          loadScript("main_loadingdata.js");
+          loadScript("main_popup_serch.js");
+          loadScript("popup_content_input.js");
+          loadScript("popup_login.js");
+          loadScript("popup_creatSelect.js");
+          loadScript("popup_med_serch.js");
+          loadScript("index.js");
+          loadScript("jsonFunc.js");
+        })();
 
-
-  
-  <script src="main_loadingdata.js"></script>
-  <script src="main_popup_serch.js"></script>
-  <script src="popup_content_input.js"></script>
-  <script src="popup_login.js"></script>
-  <script src="popup_creatSelect.js"></script>
-  <script src="popup_med_serch.js"></script>
-  
-  <script src="index.js"></script>
-  <script src="jsonFunc.js"></script>
-  
+  </script>
 </head>
 <body>
       <script>
@@ -39,7 +39,7 @@
           // document.body.style.position = 'absolute';
           document.body.style.overflowY = "scroll";
           document.body.style.overflowX = "hidden";
-
+        
           get_popup_input();
           document.body.appendChild(popup_input_div.div);
           popup_input_div.LoadEvent.push(popup_content_input_Load);

@@ -88,23 +88,7 @@ function Set_main_div_enable(value)
     document.body.style.pointerEvents = "auto";
   }
 }
-function Sort_device_basic_byCode(Code)
-{
-  let ary = [];
-  for(var i = 0; i < device_basic.length; i++)
-  {
-     if(device_basic[i].Code == Code)
-     {
-       ary.push(device_basic[i]);
-     }
-  }
-  return ary;
-}
-async function light_device_by_Code(Code ,Color)
-{
-  const temp = Sort_device_basic_byCode(Code)
-  device_light(Color , temp);
-}
+
 
 async function donesvg_Click() 
 {

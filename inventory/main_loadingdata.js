@@ -55,6 +55,7 @@ function sub_row_div_onclick(row_div)
 }
 function Replace_data_by_content(creat , content)
 {
+ 
     for(var i = 0 ; i < creat.Contents.length ; i++)
     {
       if(creat.Contents[i].GUID == content.GUID)
@@ -72,7 +73,7 @@ function Replace_data_by_content(creat , content)
          }
          else
          {
-            row_div.style.display = "none";
+            row_div.style.display = "";
          }
       }
     }
