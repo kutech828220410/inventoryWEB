@@ -14,11 +14,11 @@ async function popup_creatSelect_load()
     await check_ip(API01[0].server,API02[0].server);
  
     popup_creatSelect_creat = await get_all_unlock_creat();
-    const creats = popup_creatSelect_creat.Data.filter(function(item) 
-    {
-       return item.IC_SN.charAt(0) != "Q";
-    })
-    popup_creatSelect_creat.Data = creats;
+    // const creats = popup_creatSelect_creat.Data.filter(function(item) 
+    // {
+    //    return item.IC_SN.charAt(0) != "Q";
+    // })
+    // popup_creatSelect_creat.Data = creats;
     console.log("盤點單",popup_creatSelect_creat);   
     popup_creatSelect_div.Set_BackgroundOpacity(1);
     popup_creatSelect_div.Clear();
