@@ -1,31 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>智慧藥局系統</title>
-    <link rel="stylesheet" href="selectPage.css">
-    
-</head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智慧藥局系統</title>
+  <link rel="stylesheet" href="selectPage.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="icon" href="../favicon.ico" >
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="192x192">
+  <link rel="icon" type="image/png" sizes="192x192" href="android-touch-icon.png">
+  <script src="../Function/Basic.js?v=1.0"></script>
 </head>
 <body>
   <div class="select_menu_container">
-    <div class=" list_style">
-      <div class="list_title"><span>固定</span>盤點單範本</div>
-      <div class="block_list flex_composing">
+    <div class=" group_style">
+      <div class="group_title"><span>快速</span>群組</div>
+      <div class="block_group flex_composing">
       </div>
     </div>
-    <div class=" list_style">
-      <div class="list_title"><span>自建</span>盤點單範本</div>
-      <div class="self_list flex_composing">
+    <div class=" group_style">
+      <div class="group_title"><span>自建</span>群組</div>
+      <div class="self_group flex_composing">
       </div>
     </div>
   </div>
-
+  <div class="check_item_container" id="show_item">
+    <div class="not_select">
+      <div>請選擇上方群組進行發布</div>
+      <div>或 <button id="upload_doc">匯入表單並發布</button></div>
+    </div>
+  </div>
+  <div class="create_group"></div>
   <div class="under-line">
     <B> Copyright ©2023 鴻森整合機電有限公司 </B>
   </div>
 </body>
+<script src="../popup/Basic.js"></script>
 <script src="item_card.js"></script>
 <script src="selectPage.js"></script>
+<script src="create_new_group.js"></script>
+<script src="../api/med_page.js"></script>
 </html>

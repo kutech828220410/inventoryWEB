@@ -2,25 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no/>">
+  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="expires" content="0">
   <title>藥品交易量查詢</title>
   <link rel="stylesheet" href="main.css">
-  <script src="../../ApiURL.js"></script>
-  <script src="../../ChatHub.js"></script>
-  <script src="../../Function/WebApiFunc.js"></script>
-  <script src="../../svg/mySVG.js"></script>
-  <script src="../../Function/Basic.js"></script>
-  <script src="../../popup/map.js"></script>
-  <script src="../../dist/JsBarcode.all.js"></script>
-  <script src="../../UI/map.js"></script>
-  <script src="../../session_check.js"></script>
-  <script src="../../session.js"></script>
+  <script src="../../Function/Basic.js?v=1.14"></script>
 
-  <script src="jsonFunc.js"></script>
-  <script src="main.js"></script>
-  <script src="main_loadingdata.js"></script>
-  <script src="main_popup_find.js"></script>
+ 
+  <script>
+    (async function() 
+        {
+          loadScript("../../ApiURL.js");
+          loadScript("../../ChatHub.js");
+          loadScript("../../svg/mySVG.js");
+          loadScript("../../UI/map.js");
+          loadScript("../../popup/map.js");    
+          loadScript("../../dist/JsBarcode.all.js");
+          loadScript("../../session_check.js");
+          loadScript("../../session.js");
+          loadScript("../../Function/WebApiFunc.js");
+          loadScript("main_popup_find.js");
+          loadScript("main_loadingdata.js");
+          loadScript("main.js");
+          loadScript("jsonFunc.js");
+        })();
 
+  </script>
 </head>
 <body>
   

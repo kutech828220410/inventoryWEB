@@ -34,39 +34,34 @@ async function undo_popup_serch()
 }
 async function confirm_popup_serch()
 {
-    try
-    {
-        const serch_start_date_input = document.querySelector("#serch_start_date_input");
-        const serch_end_date_input = document.querySelector("#serch_end_date_input");
-        
-        var date_start = serch_start_date_input.value;
-        var date_start = getStartDateStr(date_start);
-        var date_end = serch_end_date_input.value;
-        var date_end = getEndDateStr(date_end);
+    const serch_start_date_input = document.querySelector("#serch_start_date_input");
+    const serch_end_date_input = document.querySelector("#serch_end_date_input");
+    
+    var _date_start = serch_start_date_input.value;
+    console.log("_date_start",_date_start);
+    var date_start = getStartDateStr(_date_start);
+    console.log("date_start",date_start);
+    var _date_end = serch_end_date_input.value;
+    console.log("_date_end",_date_end);
+    var date_end = getEndDateStr(_date_end);
+    console.log("date_end",date_end);
 
-        if (date_start && date_end)
+    if (date_start && date_end)
+    {
+        data = await serch_by_ST_END(date_start,date_end);
+        if(data == null)
         {
-            data = await serch_by_ST_END(date_start,date_end);
-            if(data == null)
-            {
-                alert("查無資料!");
-                return;
-            }
-            if(data.Data.length == 0)
-            {
-                alert("查無資料!");
-                return;
-            }
-            page_Init(data);
-            hide_popup_serch();
+            alert("查無資料!");
             return;
         }
-    }
-    catch (e) 
-    {}
-    finally
-    {
-      
+        if(data.Data.length == 0)
+        {
+            alert("查無資料!");
+            return;
+        }
+        page_Init(data);
+        hide_popup_serch();
+        return;
     }
 }
 //#endregion
