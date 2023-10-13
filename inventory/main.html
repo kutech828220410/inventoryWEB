@@ -8,22 +8,27 @@
   <meta http-equiv="Expires" content="0" />
   <title>盤點操作頁面</title>
   <link rel="stylesheet" href="main.css">
-  <script src="../../ApiURL.js"></script>
-  <script src="../../ChatHub.js"></script>
-  <script src="../../Function/WebApiFunc.js"></script>
-  <script src="../../svg/mySVG.js"></script>
-  <script src="../../Function/Basic.js"></script>
-  <script src="../../popup/map.js"></script>
-  <script src="../../dist/JsBarcode.all.js"></script>
-  <script src="../../UI/map.js"></script>
-  <script src="../../session_check.js"></script>
-  <script src="../../session.js"></script>
+  <script src="../../Function/Basic.js?v=1.0"></script>
+  <script>
+    (async function() 
+        {
+          loadScript("../../api/map.js");
+          loadScript("../../ApiURL.js");
+          loadScript("../../ChatHub.js");
+          loadScript("../../svg/mySVG.js");
+          loadScript("../../UI/map.js");
+          loadScript("../../popup/map.js");    
+          loadScript("../../dist/JsBarcode.all.js");
+          loadScript("../../session_check.js");
+          loadScript("../../session.js");
+          loadScript("main_loadingdata.js");
+          loadScript("popup_content_input.js");
+          loadScript("main_popup_serch.js");
+          loadScript("main.js");
+        })();
 
-  <script src="main_loadingdata.js"></script>
-  <script src="popup_content_input.js"></script>
-  <script src="main_popup_serch.js"></script>
-  <script src="main.js"></script>
-  <script src="jsonFunc.js"></script>
+  </script>
+
   
 </head>
 <body>

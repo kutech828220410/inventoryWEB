@@ -10,34 +10,44 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="192x192">
   <link rel="icon" type="image/png" sizes="192x192" href="android-touch-icon.png">
   <script src="../Function/Basic.js?v=1.0"></script>
+  <script>
+    (async function(){
+    loadScript("../api/map.js");
+    loadScript("../ApiURL.js");
+    loadScript("../ChatHub.js");
+    loadScript("../svg/mySVG.js");
+    loadScript("../UI/map.js");
+    loadScript("../popup/map.js");    
+    loadScript("../dist/JsBarcode.all.js");
+    loadScript("../session_check.js");
+    loadScript("../session.js");
+    })();
+  </script>
 </head>
 <body>
-  <div class="select_menu_container">
-    <div class=" group_style">
-      <div class="group_title"><span>快速</span>群組</div>
-      <div class="block_group flex_composing">
-      </div>
+  <div class="med_group_container">
+    <div class="h2_header">
+      <h2>群組總覽</h2>
     </div>
-    <div class=" group_style">
-      <div class="group_title"><span>自建</span>群組</div>
-      <div class="self_group flex_composing">
+    <div class="display_groups_card_container">
+    </div>
+    <div class="display_group_detail_container">
+      <div class="display_group_title_container">請選擇上方群組</div>
+      
+      <!--
+      <div class="med_group_close_button">
+        <img src="./close.png" alt="">
       </div>
+      -->
+    </div>
+
+    <div class="add_group_button">
+      新增群組
     </div>
   </div>
-  <div class="check_item_container" id="show_item">
-    <div class="not_select">
-      <div>請選擇上方群組進行發布</div>
-      <div>或 <button id="upload_doc">匯入表單並發布</button></div>
-    </div>
-  </div>
-  <div class="create_group"></div>
   <div class="under-line">
     <B> Copyright ©2023 鴻森整合機電有限公司 </B>
   </div>
 </body>
-<script src="../popup/Basic.js"></script>
-<script src="item_card.js"></script>
 <script src="selectPage.js"></script>
-<script src="create_new_group.js"></script>
-<script src="../api/med_page.js"></script>
 </html>

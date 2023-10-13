@@ -4,26 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>智慧藥局系統</title>
-    <link rel="stylesheet" href="selectPage.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 </head>
 <body>
-    <div id="popup_create_group_popup">
-        <div class="self_create_container">
-        <!-- <div class="self_create">自建群組</div>
-        <div>or</div>
-        <div class="upload_doc">匯入資料建立群組</div> -->
-
-            <h2>自建群組</h2>
-            <div class="self_create_ic_name_input_container">
-                <label for="group_name_ic_name">群組名稱 : </label>
-                <input type="text" id="group_name_ic_name" >
-            </div>
-        </div>
-        <div class="close_create_group_button">
-            <img src="./close.png" alt="">
-        </div>
+    <div class="test">
+        <div class="trigger_button">點我</div>
+        <div class="nav_bar"></div>
     </div>
 </body>
+<style>
+    .test {
+        height: 600px;
+        width: 600px;
+        background-color: aqua;
+        overflow: hidden;
+        position: relative;
+    }
+    .trigger_button {
+        position: absolute;
+        width: 60px;
+        height: 30px;
+        top: 20px;
+        right: 40px;
+        background-color: beige;
+    }
+    .nav_bar {
+        width: 200px;
+        height: 600px;
+        position: absolute;
+        left: -200px;
+        transition: 0.5s ease-in;
+        background-color: blue;
+    }
+</style>
+<script>
+    let trigger_button = document.querySelector('.trigger_button');
+    let nav_bar = document.querySelector('.nav_bar');
+    let trigger01 = false
+    trigger_button.addEventListener('click', () => {
+        console.log(trigger01);
+        if (!trigger01){
+            nav_bar.style.left = '0px';
+            trigger01 = true
+            console.log('object');
+        } else if (trigger01) {
+            nav_bar.style.left = '-200px';
+            trigger01 = false
+            console.log('asdfa');
+        }
+    })    
+</script>
 </html>

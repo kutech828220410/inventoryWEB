@@ -48,7 +48,8 @@ function show_detail(data, click_div) {
                     <p>名稱: ${e.IC_NAME}</p>
                     <p>建表人: ${""}</p>
                     <div class="item_btn_container">
-                        <button id="release_item">發佈盤點單</button>
+                        <button class="item_btn_style" id="release_item">發佈盤點單</button>
+                        <button class="item_btn_style" id="revise_item">修改盤點單</button>
                     </div>
                     `
                     
@@ -60,6 +61,9 @@ function show_detail(data, click_div) {
                                 <div>或 <button id="upload_doc">匯入表單並發布</button></div>
                             </div>
                         `
+                        group_card.forEach(i => {
+                            i.classList.remove('select_check');
+                        });
                     })
                 }
             })
