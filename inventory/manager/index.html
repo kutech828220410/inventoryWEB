@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>盤點單管理</title>
-    <link rel="stylesheet" href="frontpage.css">
+    <link rel="stylesheet" href="../../inventory/manager/list.css">
+    <link rel="stylesheet" href="../../inventory/manager/merge.css">
     <script src="../../Function/Basic.js?v=1.0"></script>
     <script>
       (async function() 
@@ -18,11 +19,12 @@
             loadScript("../../dist/JsBarcode.all.js");
             loadScript("../../session_check.js");
             loadScript("../../session.js");
-            loadScript("frontpage.js");
-            loadScript("frontpage_loadingdata.js");
-            loadScript("forntpage_popup_serch.js");
-            loadScript("frontpage_popup_add.js");
-            loadScript("jsonFunc.js");
+            loadScript("../../inventory/manager/list.js");
+            loadScript("../../inventory/manager/list_loadingdata.js");
+            loadScript("../../inventory/manager/list_popup_add.js");
+            loadScript("../../inventory/manager/list_popup_serch.js");
+            loadScript("../../UI/navBar.js");
+            loadScript("../../inventory/manager/merge.js");
           })();
   
     </script>
@@ -44,7 +46,13 @@
      popup_serch_div.Set_Visible(false);
      popup_add_div.Set_Visible(false);
 
-    </script>  
+    </script>
+<div class="bottom_gm_nav_container">
+  <div class="bottom_gm_nav_card_container">
+    <div class="bottom_gm_nav_card">管理</div>
+    <div class="bottom_gm_nav_card">合併</div>
+  </div>
+</div>
 <div class="under-line">
   <B> Copyright ©2023 鴻森整合機電有限公司 </B>
 </div>

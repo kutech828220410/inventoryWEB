@@ -70,7 +70,7 @@ function GetLoadingpopup()
 
 
   var loader = document.createElement("img");
-  loader.src = "../popup/HSgif.gif"; // 替换为你的LOGO GIF文件的路径
+  loader.src = "../../image/HSgif.gif"; // 替换为你的LOGO GIF文件的路径
   loader.style.width = "80px"; // 设置LOGO的宽度
   loader.style.height = "80px"; // 设置LOGO的高度
   popupContent.appendChild(loader);

@@ -48,7 +48,7 @@ function sub_row_div_onclick(row_div)
     {
         if(data.Data[0].Contents[i].GUID == GUID)
         {
-            show_popup_input(data.Data[0].Contents[i] , true);
+            show_popup_input(data.Data[0].Contents[i] , true , true);
             return;
         }
     }

@@ -1,22 +1,35 @@
 var popup_input_div;
 var popup_input_div_Content;
-
+var popup_input_div_SubContent;
 var popup_input_NumOfPageRows = 3;
 var popup_input_PageIndex = 0;
 var popup_input_MaxfPage = 0;
 
 var popup_input_END_QTY_input = null;
-async function show_popup_input(Content , page_Initial)
+async function show_popup_input(Content , page_Initial , show_all_user)
 {
     if(Content == undefined) return;
     if(popup_input_div == undefined) page_Initial = false;
+    const OP = sessionData.Name;
+    if(show_all_user == undefined)
+    {
+        popup_input_div_SubContent = Content.Sub_content.filter(function(subItem) 
+        {
+            return subItem.OP === OP;
+        });
+    }
+    else
+    {
+        popup_input_div_SubContent = Content.Sub_content;
+    }
     popup_input_div_Content = Content;
-    popup_input_MaxfPage = Math.floor(Content.Sub_content.length / popup_input_NumOfPageRows);
-    if(Content.Sub_content.length % popup_input_NumOfPageRows > 0) popup_input_MaxfPage ++;
+    // popup_input_div_Content.Sub_content = Items;
+    popup_input_MaxfPage = Math.floor(popup_input_div_SubContent.length / popup_input_NumOfPageRows);
+    if(popup_input_div_SubContent.length % popup_input_NumOfPageRows > 0) popup_input_MaxfPage ++;
     if(page_Initial) popup_input_PageIndex = popup_input_MaxfPage - 1;
     if(popup_input_PageIndex >= popup_input_MaxfPage) popup_input_PageIndex = 0;
-    edit_title_popup_input(Content);
-    edit_rows_popup_input(Content);
+    edit_title_popup_input(popup_input_div_Content);
+    edit_rows_popup_input(popup_input_div_Content);
     edit_underline_popup_input();
     edit_rows_page_control_popup_input();
     await popup_input_div.Show();
@@ -127,10 +140,10 @@ function edit_rows_popup_input(Content)
     var end_index = popup_input_PageIndex * popup_input_NumOfPageRows + popup_input_NumOfPageRows;
     while(true) 
     {
-        if(Content.Sub_content.length == 0)break;
-        if(index >= Content.Sub_content.length) break;
+        if(popup_input_div_SubContent.length == 0)break;
+        if(index >= popup_input_div_SubContent.length) break;
         if(index >= end_index) break;
-        const row = get_row_popup_input(Content.Sub_content[index]);
+        const row = get_row_popup_input(popup_input_div_SubContent[index]);
         rows_div.appendChild(row);
         index++;
     }

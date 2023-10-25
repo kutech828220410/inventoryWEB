@@ -5,22 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>條碼建置操作頁面</title>
   <link rel="stylesheet" href="main.css">
-  <script src="../../ApiURL.js"></script>
-  <script src="../../ChatHub.js"></script>
-  <script src="../../Function/WebApiFunc.js"></script>
-  <script src="../../svg/mySVG.js"></script>
-  <script src="../../Function/Basic.js"></script>
-  <script src="../../popup/map.js"></script>
-  <script src="../../dist/JsBarcode.all.js"></script>
-  <script src="../../UI/map.js"></script>
-  <script src="../../session_check.js"></script>
-  <script src="../../session.js"></script>
 
-  <script src="main.js"></script>
-  <script src="main_loadingdata.js"></script>
-  <script src="main_popup_input.js"></script>
-  <script src="main_popup_serch.js"></script>
-  <script src="jsonFunc.js"></script>
+  <script src="../../Function/Basic.js?v=1.0"></script>
+  <script>
+    (async function() 
+        {
+          loadScript("../../api/map.js");
+          loadScript("../../ApiURL.js");
+          loadScript("../../ChatHub.js");
+          loadScript("../../svg/mySVG.js");
+          loadScript("../../UI/map.js");
+          loadScript("../../popup/map.js");    
+          loadScript("../../dist/JsBarcode.all.js");
+          loadScript("../../session_check.js");
+          loadScript("../../session.js");
+          loadScript("../UI/navBar.js");
+          loadScript("../../barcodemanagement/main.js");
+          loadScript("../../barcodemanagement/main_loadingdata.js");
+          loadScript("../../barcodemanagement/main_popup_input.js");
+          loadScript("../../barcodemanagement/main_popup_serch.js");
+          loadScript("../../barcodemanagement/jsonFunc.js");
+          
+        })();
+
+  </script>
+
+
   
 </head>
 <body>
@@ -73,7 +83,7 @@
     // 監聽頁面的keydown事件
   window.addEventListener('keydown', function(event) 
   {
-     barcode_keydown(event);
+    //  barcode_keydown(event);
   });
 
   async function barcode_keydown(event)

@@ -49,6 +49,15 @@ async function load()
 
 function current_funtion_check() {
   let bottom_gm_nav_card = document.querySelectorAll(".bottom_gm_nav_card")
+  
+  // 預設頁面
+  if (bottom_gm_nav_card[0].classList[1] != "current_funtion") {
+    page_Init(data);
+    bottom_gm_nav_card[0].classList.add("current_funtion")
+  } else {
+    return
+  }
+
 
   bottom_gm_nav_card.forEach(e => {
       e.addEventListener("click", () => {
@@ -198,7 +207,7 @@ function get_header()
   header_title_text.style.marginLeft = "20px";
   header_title_text.style.marginTop = "5px";
   header_title_user_div.appendChild(header_title_text);
-  header_title_user_div.style.marginLeft = "60px"
+  header_title_user_div.style.marginLeft = "68px"
 
   // const header_user_text = document.createElement('div');
   // My_Div.Init(header_user_text, 'header_user_text','header_user_text', '100%', '50%', '');

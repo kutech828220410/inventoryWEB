@@ -4,33 +4,17 @@ function nav_bar_create(html_page, user_data) {
         {
             html_name: "groupManage",
             html_ctName: "藥品管理",
-            html_url: "./groupManage"
+            html_url: "http://www.ketech.tw:5500/groupManage/groupManage.html"
         },
         {
-            html_name: "frontpage",
-            html_ctName: "不知道測試用",
-            html_url: "./asdasd"
-        },
-        {
-            html_name: "frontpage",
-            html_ctName: "不知道測試用",
-            html_url: "./asdasd"
-        },
-        {
-            html_name: "frontpage",
-            html_ctName: "不知道測試用",
-            html_url: "./asdasd"
-        },
-        {
-            html_name: "frontpage",
-            html_ctName: "不知道測試用",
-            html_url: "./asdasd"
+            html_name: "inventory",
+            html_ctName: "盤點單管理",
+            html_url: "http://www.ketech.tw:5500/inventory/frontpage.html"
         }
     ]
 
     // 導覽列環境設定
     document.body.style.position = "relative";
-    document.body.style.overflow = "hidden";
 
     // 導覽列畫面
         // 導覽列開合按鈕
@@ -49,8 +33,8 @@ function nav_bar_create(html_page, user_data) {
     nav_bar_tigger_container.style.border = "1px solid #1f1f1f"
     nav_bar_tigger_container.style.borderRadius = "5px"
     nav_bar_tigger_container.style.position = "absolute"
-    nav_bar_tigger_container.style.top = "20px"
-    nav_bar_tigger_container.style.left = "20px"
+    nav_bar_tigger_container.style.top = "12px"
+    nav_bar_tigger_container.style.left = "12px"
     nav_bar_tigger_container.style.cursor = "pointer"
     nav_bar_tigger_container.style.transition = "0.2s ease-out"
     nav_bar_tigger_container.style.zIndex = '1'
@@ -79,20 +63,24 @@ function nav_bar_create(html_page, user_data) {
 
     const nav_bar_container = document.createElement('div');
     nav_bar_container.style.backgroundColor = "#c7c7c7"
-    nav_bar_container.style.position = 'absolute'
+    nav_bar_container.style.position = 'fixed'
     nav_bar_container.style.zIndex = "2"
     nav_bar_container.style.minHeight = '100vh'
     nav_bar_container.style.width = "300px"
+    nav_bar_container.style.top = "0px"
     nav_bar_container.style.left = "-300px"
     nav_bar_container.style.transition = "0.3s ease-in"
     nav_bar_container.style.display = "flex"
-
     
+
+    // 導覽列容器
     const nav_bar_content_container = document.createElement('div')
     nav_bar_content_container.style.flexGrow = 1;
     nav_bar_content_container.style.display = "flex"
     nav_bar_content_container.style.flexDirection = "column"
+    nav_bar_content_container.style.paddingBottom = "60px"
 
+    // 使用者容器
     const user_display_container = document.createElement('div');
     user_display_container.style.padding = "16px"
 
@@ -104,6 +92,43 @@ function nav_bar_create(html_page, user_data) {
 
     user_display_container.appendChild(user_name_div)
 
+    // 關閉導覽按鈕
+    const nav_bar_close_button = document.createElement('div');
+    nav_bar_close_button.innerHTML = `
+        <img 
+            style="display: block;box-sizing: border-box;height: 100%; padding: 8px;transform: rotate(180deg);" 
+            src="../../image/right-arrow.png" 
+            alt="">
+            <div>收合</div>
+    `
+    nav_bar_close_button.style.display = "flex"
+    nav_bar_close_button.style.height = "40px"
+    nav_bar_close_button.style.textAlign = "center"
+    nav_bar_close_button.style.fontSize = "1.2rem"
+    nav_bar_close_button.style.display = "flex"
+    nav_bar_close_button.style.justifyContent = "center"
+    nav_bar_close_button.style.alignItems = "center"
+    nav_bar_close_button.style.backgroundColor = "#afafaf"
+    nav_bar_close_button.style.cursor = "pointer"
+    hover_style_change_bgc(nav_bar_close_button, "#afafaf", "#bababa")
+
+    // 導覽列開合
+    nav_bar_close_button.addEventListener("click", () => {
+        nav_bar_container.style.left = "-300px"
+        nav_bar_tigger_container.style.opacity = 1
+    })
+    nav_bar_tigger_container.addEventListener("click", () => {
+        nav_bar_container.style.left = "0px"
+        nav_bar_tigger_container.style.opacity = 0
+    })
+
+    nav_bar_container.appendChild(nav_bar_content_container)
+    nav_bar_container.appendChild(nav_bar_close_button)
+
+    document.body.appendChild(nav_bar_tigger_container)
+    document.body.appendChild(nav_bar_container)
+
+    // 分頁展示
     const nav_bar_content = document.createElement('div');
     nav_bar_content.style.flexGrow = 1
     html_pages.forEach(element => {
@@ -161,47 +186,22 @@ function nav_bar_create(html_page, user_data) {
     logout_button.style.cursor = "pointer"
     logout_button.style.margin = "0px auto 46px auto"
 
-    logout_button.addEventListener("click", () => {
-        window.alert("登出摟")
+    logout_button.addEventListener("click", () => 
+    {
+        if(confirm("是否登出,返回首頁?"))
+        {
+            logout();
+            location.href = "../../login.html";
+        }
+    
+        // window.alert("登出摟")
     })
 
     nav_bar_content_container.appendChild(user_display_container)
+    nav_bar_content_container.appendChild(nav_bar_close_button)
     nav_bar_content_container.appendChild(nav_bar_content)
     nav_bar_content_container.appendChild(logout_button)
 
-    const nav_bar_close_button = document.createElement('div');
-    nav_bar_close_button.innerHTML = `
-        <img 
-            style="display: block;width: 100%; padding: 8px;transform: rotate(180deg);" 
-            src="right-arrow.png" 
-            alt="">
-    `
-    nav_bar_close_button.style.width = "40px";
-    nav_bar_close_button.style.textAlign = "center"
-    nav_bar_close_button.style.fontSize = "1.2rem"
-    nav_bar_close_button.style.display = "flex"
-    nav_bar_close_button.style.flexDirection = "column"
-    nav_bar_close_button.style.justifyContent = "center"
-    nav_bar_close_button.style.alignItems = "center"
-    nav_bar_close_button.style.backgroundColor = "#afafaf"
-    nav_bar_close_button.style.cursor = "pointer"
-    hover_style_change_bgc(nav_bar_close_button, "#afafaf", "#bababa")
-
-    // 導覽列開合
-    nav_bar_close_button.addEventListener("click", () => {
-        nav_bar_container.style.left = "-300px"
-        nav_bar_tigger_container.style.opacity = 1
-    })
-    nav_bar_tigger_container.addEventListener("click", () => {
-        nav_bar_container.style.left = "0px"
-        nav_bar_tigger_container.style.opacity = 0
-    })
-
-    nav_bar_container.appendChild(nav_bar_content_container)
-    nav_bar_container.appendChild(nav_bar_close_button)
-
-    document.body.appendChild(nav_bar_tigger_container)
-    document.body.appendChild(nav_bar_container)
 }
 
 // hover動畫改變背景顏色

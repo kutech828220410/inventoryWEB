@@ -36,17 +36,18 @@ async function load()
     const Loadingpopup = GetLoadingpopup();
     document.body.appendChild(Loadingpopup);
     Set_main_div_enable(true);
- 
+    
+    var loggedID = sessionStorage.getItem('loggedID');  
+    var loggedName = sessionStorage.getItem('loggedName');  
+    const test_user_data = {
+      id: loggedID,
+      name: loggedName,
+    }
+    nav_bar_create("barcodemanagement", test_user_data)
 
     data = await get_by_apiserver()
     page_Init(data);
-   
-    // data = await creat_get_by_IC_SN(IC_SN);
-    // const device_basic_result = await device_all();
-    // device_basic = device_basic_result.Data;
-    // console.log("device_basic" , device_basic);
-    // page_Init(data);
-    // edit_herader_view_QTY();
+ 
     Set_main_div_enable(false);
 
 
@@ -144,6 +145,7 @@ function get_header()
   const header_title_user_div = document.createElement('div');
   My_Div.Init(header_title_user_div, 'header_title_user_div','header_title_user_div', '800px', '100%', '');
   My_Div.Set_Block(header_title_user_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.TOP);
+  header_title_user_div.style.marginLeft = "68px"
 
   const header_title_text = document.createElement('div');
   My_Div.Init(header_title_text, 'header_title_text','header_title_text', '100%', '50%', '');

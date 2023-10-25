@@ -41,7 +41,7 @@ async function inventory_Click()
   sessionStorage.setItem('ServerName', "DS01");
   sessionStorage.setItem('ServerType', "藥庫");
   sessionStorage.setItem('TableName', "medicine_page_firstclass");
-  location.href = "../../inventory/frontpage.html";
+  location.href = "../../inventory/manager";
 }
 
 async function orderpicking_Click()
@@ -52,7 +52,7 @@ async function orderpicking_Click()
 async function barcodemanagement_Click()
 {
   console.log("barcodemanagement");
-  location.href = "../../storehouse/barcodemanagement/main.html";
+  location.href = "../../barcodemanagement/";
 }
 
 async function storagelocation_Click()
