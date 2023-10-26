@@ -4,17 +4,17 @@ function nav_bar_create(html_page, user_data) {
         {
             html_name: "medGroup",
             html_ctName: "藥品管理",
-            html_url: "http://www.ketech.tw:5500/medGroup"
+            html_url: "../../medGroup"
         },
         {
             html_name: "inventory",
             html_ctName: "盤點單管理",
-            html_url: "http://www.ketech.tw:5500/inventory/manager"
+            html_url: "../../inventory/manager"
         },
         {
             html_name: "barcodemanagement",
-            html_ctName: "條碼管理",
-            html_url: "http://www.ketech.tw:5500/barcodemanagement"
+            html_ctName: "條碼建置",
+            html_url: "../../barcodemanagement"
         }
     ]
 

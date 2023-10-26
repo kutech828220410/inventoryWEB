@@ -85,7 +85,8 @@ function current_function_trgger(div_array, target) {
 // 藥品群組功能
     // 藥品群組API
 async function groups_manage_get_data(guid) {
-    fetch('http://220.135.128.247:4433/api/medGroup/get_all_group', {
+    console.log("api_ip",api_ip);
+    fetch(`${api_ip}api/medGroup/get_all_group`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -948,7 +949,7 @@ function med_search_input_func(type, parent_div, append_type) {
 // 群組建立api
 async function create_group_submit_api(create_group_name_temp) {
     if (create_group_name_temp) {
-        fetch('http://220.135.128.247:4433/api/medGroup/add_group', {
+        fetch(`${api_ip}api/medGroup/add_group`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -987,7 +988,7 @@ async function create_group_submit_api(create_group_name_temp) {
 function group_delete_api(guid) {
     if (guid) {
         if(confirm('是否刪除群組')) {
-            fetch('http://220.135.128.247:4433/api/medGroup/delete_group_by_guid', {
+            fetch(`${api_ip}api/medGroup/delete_group_by_guid`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -1018,7 +1019,7 @@ function group_delete_api(guid) {
 
 // 群組改名api
 function group_name_change(guid, gName) {
-    fetch('http://220.135.128.247:4433/api/medGroup/group_rename_by_guid', {
+    fetch(`${api_ip}api/medGroup/group_rename_by_guid`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -1198,7 +1199,7 @@ function group_med_save_func(guid, gName, array) {
     array.forEach(element => {
         temp_arr_for_save.push({"CODE": element})
     });
-    fetch('http://220.135.128.247:4433/api/medGroup/add_group', {
+    fetch(`${api_ip}api/medGroup/add_group`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

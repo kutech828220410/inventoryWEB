@@ -57,7 +57,7 @@ async function check_ip(ip0 , ip1)
     if(flag_check_connection_OK)
     {
         console.log("成功設定IP : " ,api_ip_temp);
-
+        api_ip = api_ip_temp;
         inventory_url = `${api_ip_temp}api/inventory`;
         inspection_url = `${api_ip_temp}api/inspection`;
         transactions_url = `${api_ip_temp}api/transactions`;
@@ -67,6 +67,10 @@ async function check_ip(ip0 , ip1)
         return;
     }
     check_ip(ip0 ,ip1);
+}
+async function get_url(url)
+{
+    return api_ip;
 }
 async function set_ip(flag_api_server)
 {

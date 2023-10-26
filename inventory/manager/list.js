@@ -39,15 +39,15 @@ async function load()
     name: loggedName,
   }
 
-  nav_bar_create("inventory", test_user_data)
-  
+
+  // nav_bar_create("inventory", test_user_data)
   data = await creat_get_by_CT_TIME_ST_END(date_start,date_end);
   Set_main_div_enable(false);
   current_funtion_check()
-  // page_Init(data);
 }
 
-function current_funtion_check() {
+function current_funtion_check() 
+{
   let bottom_gm_nav_card = document.querySelectorAll(".bottom_gm_nav_card")
   
   // 預設頁面
@@ -66,9 +66,9 @@ function current_funtion_check() {
                 current_function_trgger(bottom_gm_nav_card, e)
                   break;
 
-              case "合併":
-                current_function_trgger(bottom_gm_nav_card, e)
-                  break;
+              // case "合併":
+              //   current_function_trgger(bottom_gm_nav_card, e)
+              //     break;
 
               default:
                   break;
