@@ -1,0 +1,57 @@
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+}
+html, body {
+  touch-action: manipulation;
+}
+.header_div
+{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff; /* 可以根据你的设计修改背景颜色 */
+  z-index: 100; /* 使Header显示在其他内容之上 */
+}
+.under-line {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  color: #000000;
+  background-color: #ffffff;
+  height: 30px;
+  line-height: 30px;
+  display: block;
+  z-index: 9;
+}
+.h1{
+  text-shadow: 2px 2px 2px #888888;
+  font-size: 30px;
+  left : 20px; 
+  margin-left: 10px;
+  text-align: left;
+  color: #000000;
+  font-weight: bold;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+
+.almcontrol_btn{border-radius: 5px; background-color:#eb3232; padding:0 20px; color:#fff; transition:.2s;}
+.almcontrol_btn:hover{ background-color:#e76d6d; transition:.2s;}
+
+.control_btn{border-radius: 5px; background-color:#005798; padding:0 20px; color:#fff; transition:.2s;}
+.control_btn:hover{ background-color:#0c6eb7; transition:.2s;}
+.link_btn{ border-radius: 5px;  background-color:#AAAAAA; padding:0 20px; color:#fff; transition:.2s;}
+.link_btn:hover{ background-color:#929292; transition:.2s;}
+
+.calculate_btn{ border-radius: 5px;  background-color:#c9c9bc; padding:0 20px; color:#fff; transition:.2s;}
+.calculate_btn:hover{ background-color:#c9c9bc; transition:.2s;}
+
+

@@ -629,197 +629,202 @@ function gm_content_med_display_func
     } else {
         if (page == temp_pages) {
             for (let i = (page - 1) * 10; i < array.length; i++) {
-                if(i % 2 == 0) {
-                    if(temp_set_array.has(array[i])) {
-                        gm_content_med_display_tbody.innerHTML += `
-                            <tr>
-                                <td>
-                                    <input 
-                                        type="checkbox" 
-                                        name="" 
-                                        id=""
-                                        class="check_box_code"
-                                        data-code="${array[i]}" 
-                                        checked
-                                    >
-                                </td>
-                                <td>${array[i]}</td>
-                                <td>${temp_med_data[array[i]].SKDIACODE}</td>
-                                <td>${temp_med_data[array[i]].DRUGKIND}</td>
-                                <td>
-                                    (中)${temp_med_data[array[i]].CHT_NAME}
-                                    <br>
-                                    (英)${temp_med_data[array[i]].NAME}
-                                </td>
-                            </tr>
-                        `
+                if(temp_med_data[array[i]]) {
+                    console.log(temp_med_data[array[i]]);
+                    if(i % 2 == 0) {
+                        if(temp_set_array.has(array[i])) {
+                            gm_content_med_display_tbody.innerHTML += `
+                                <tr>
+                                    <td>
+                                        <input 
+                                            type="checkbox" 
+                                            name="" 
+                                            id=""
+                                            class="check_box_code"
+                                            data-code="${array[i]}" 
+                                            checked
+                                        >
+                                    </td>
+                                    <td>${array[i]}</td>
+                                    <td>${temp_med_data[array[i]].SKDIACODE}</td>
+                                    <td>${temp_med_data[array[i]].DRUGKIND}</td>
+                                    <td>
+                                        (中)${temp_med_data[array[i]].CHT_NAME}
+                                        <br>
+                                        (英)${temp_med_data[array[i]].NAME}
+                                    </td>
+                                </tr>
+                            `
+                        } else {
+                            gm_content_med_display_tbody.innerHTML += `
+                                <tr>
+                                    <td>
+                                        <input 
+                                            type="checkbox" 
+                                            name="" 
+                                            id=""
+                                            class="check_box_code"
+                                            data-code="${array[i]}"
+                                        >
+                                    </td>
+                                    <td>${array[i]}</td>
+                                    <td>${temp_med_data[array[i]].SKDIACODE}</td>
+                                    <td>${temp_med_data[array[i]].DRUGKIND}</td>
+                                    <td>
+                                        (中)${temp_med_data[array[i]].CHT_NAME}
+                                        <br>
+                                        (英)${temp_med_data[array[i]].NAME}
+                                    </td>
+                                </tr>
+                            `
+                        }
                     } else {
-                        gm_content_med_display_tbody.innerHTML += `
-                            <tr>
-                                <td>
-                                    <input 
-                                        type="checkbox" 
-                                        name="" 
-                                        id=""
-                                        class="check_box_code"
-                                        data-code="${array[i]}"
-                                    >
-                                </td>
-                                <td>${array[i]}</td>
-                                <td>${temp_med_data[array[i]].SKDIACODE}</td>
-                                <td>${temp_med_data[array[i]].DRUGKIND}</td>
-                                <td>
-                                    (中)${temp_med_data[array[i]].CHT_NAME}
-                                    <br>
-                                    (英)${temp_med_data[array[i]].NAME}
-                                </td>
-                            </tr>
-                        `
-                    }
-                } else {
-                    if(temp_set_array.has(array[i])) {
-                        gm_content_med_display_tbody.innerHTML += `
-                            <tr class="cardinality_item">
-                                <td>
-                                    <input 
-                                        type="checkbox" 
-                                        name="" 
-                                        id=""
-                                        class="check_box_code"
-                                        data-code="${array[i]}" 
-                                        checked
-                                    >
-                                </td>
-                                <td>${array[i]}</td>
-                                <td>${temp_med_data[array[i]].SKDIACODE}</td>
-                                <td>${temp_med_data[array[i]].DRUGKIND}</td>
-                                <td>
-                                    (中)${temp_med_data[array[i]].CHT_NAME}
-                                    <br>
-                                    (英)${temp_med_data[array[i]].NAME}
-                                </td>
-                            </tr>
-                        `
-                    } else {
-                        gm_content_med_display_tbody.innerHTML += `
-                            <tr class="cardinality_item">
-                                <td>
-                                    <input 
-                                        type="checkbox" 
-                                        name="" 
-                                        id=""
-                                        class="check_box_code"
-                                        data-code="${array[i]}"
-                                    >
-                                </td>
-                                <td>${array[i]}</td>
-                                <td>${temp_med_data[array[i]].SKDIACODE}</td>
-                                <td>${temp_med_data[array[i]].DRUGKIND}</td>
-                                <td>
-                                    (中)${temp_med_data[array[i]].CHT_NAME}
-                                    <br>
-                                    (英)${temp_med_data[array[i]].NAME}
-                                </td>
-                            </tr>
-                        `
+                        if(temp_set_array.has(array[i])) {
+                            gm_content_med_display_tbody.innerHTML += `
+                                <tr class="cardinality_item">
+                                    <td>
+                                        <input 
+                                            type="checkbox" 
+                                            name="" 
+                                            id=""
+                                            class="check_box_code"
+                                            data-code="${array[i]}" 
+                                            checked
+                                        >
+                                    </td>
+                                    <td>${array[i]}</td>
+                                    <td>${temp_med_data[array[i]].SKDIACODE}</td>
+                                    <td>${temp_med_data[array[i]].DRUGKIND}</td>
+                                    <td>
+                                        (中)${temp_med_data[array[i]].CHT_NAME}
+                                        <br>
+                                        (英)${temp_med_data[array[i]].NAME}
+                                    </td>
+                                </tr>
+                            `
+                        } else {
+                            gm_content_med_display_tbody.innerHTML += `
+                                <tr class="cardinality_item">
+                                    <td>
+                                        <input 
+                                            type="checkbox" 
+                                            name="" 
+                                            id=""
+                                            class="check_box_code"
+                                            data-code="${array[i]}"
+                                        >
+                                    </td>
+                                    <td>${array[i]}</td>
+                                    <td>${temp_med_data[array[i]].SKDIACODE}</td>
+                                    <td>${temp_med_data[array[i]].DRUGKIND}</td>
+                                    <td>
+                                        (中)${temp_med_data[array[i]].CHT_NAME}
+                                        <br>
+                                        (英)${temp_med_data[array[i]].NAME}
+                                    </td>
+                                </tr>
+                            `
+                        }
                     }
                 }
             }
         } else {
             for (let i = (page - 1) * 10; i < ((page - 1) * 10) + 10; i++) {
-                if(i % 2 == 0) {
-                    if(temp_set_array.has(array[i])) {
-                        gm_content_med_display_tbody.innerHTML += `
-                            <tr>
-                                <td>
-                                    <input 
-                                        type="checkbox" 
-                                        name="" 
-                                        id=""
-                                        class="check_box_code"
-                                        data-code="${array[i]}" 
-                                        checked
-                                    >
-                                </td>
-                                <td>${array[i]}</td>
-                                <td>${temp_med_data[array[i]].SKDIACODE}</td>
-                                <td>${temp_med_data[array[i]].DRUGKIND}</td>
-                                <td>
-                                    (中)${temp_med_data[array[i]].CHT_NAME}
-                                    <br>
-                                    (英)${temp_med_data[array[i]].NAME}
-                                </td>
-                            </tr>
-                        `
+                if(temp_med_data[array[i]]) {
+                    if(i % 2 == 0) {
+                        if(temp_set_array.has(array[i])) {
+                            gm_content_med_display_tbody.innerHTML += `
+                                <tr>
+                                    <td>
+                                        <input 
+                                            type="checkbox" 
+                                            name="" 
+                                            id=""
+                                            class="check_box_code"
+                                            data-code="${array[i]}" 
+                                            checked
+                                        >
+                                    </td>
+                                    <td>${array[i]}</td>
+                                    <td>${temp_med_data[array[i]].SKDIACODE}</td>
+                                    <td>${temp_med_data[array[i]].DRUGKIND}</td>
+                                    <td>
+                                        (中)${temp_med_data[array[i]].CHT_NAME}
+                                        <br>
+                                        (英)${temp_med_data[array[i]].NAME}
+                                    </td>
+                                </tr>
+                            `
+                        } else {
+                            gm_content_med_display_tbody.innerHTML += `
+                                <tr>
+                                    <td>
+                                        <input 
+                                            type="checkbox" 
+                                            name="" 
+                                            id=""
+                                            class="check_box_code"
+                                            data-code="${array[i]}"
+                                        >
+                                    </td>
+                                    <td>${array[i]}</td>
+                                    <td>${temp_med_data[array[i]].SKDIACODE}</td>
+                                    <td>${temp_med_data[array[i]].DRUGKIND}</td>
+                                    <td>
+                                        (中)${temp_med_data[array[i]].CHT_NAME}
+                                        <br>
+                                        (英)${temp_med_data[array[i]].NAME}
+                                    </td>
+                                </tr>
+                            `
+                        }
                     } else {
-                        gm_content_med_display_tbody.innerHTML += `
-                            <tr>
-                                <td>
-                                    <input 
-                                        type="checkbox" 
-                                        name="" 
-                                        id=""
-                                        class="check_box_code"
-                                        data-code="${array[i]}"
-                                    >
-                                </td>
-                                <td>${array[i]}</td>
-                                <td>${temp_med_data[array[i]].SKDIACODE}</td>
-                                <td>${temp_med_data[array[i]].DRUGKIND}</td>
-                                <td>
-                                    (中)${temp_med_data[array[i]].CHT_NAME}
-                                    <br>
-                                    (英)${temp_med_data[array[i]].NAME}
-                                </td>
-                            </tr>
-                        `
-                    }
-                } else {
-                    if(temp_set_array.has(array[i])) {
-                        gm_content_med_display_tbody.innerHTML += `
-                            <tr class="cardinality_item">
-                                <td>
-                                    <input 
-                                        type="checkbox" 
-                                        name="" 
-                                        id=""
-                                        class="check_box_code"
-                                        data-code="${array[i]}" 
-                                        checked
-                                    >
-                                </td>
-                                <td>${array[i]}</td>
-                                <td>${temp_med_data[array[i]].SKDIACODE}</td>
-                                <td>${temp_med_data[array[i]].DRUGKIND}</td>
-                                <td>
-                                    (中)${temp_med_data[array[i]].CHT_NAME}
-                                    <br>
-                                    (英)${temp_med_data[array[i]].NAME}
-                                </td>
-                            </tr>
-                        `
-                    } else {
-                        gm_content_med_display_tbody.innerHTML += `
-                            <tr class="cardinality_item">
-                                <td>
-                                    <input 
-                                        type="checkbox" 
-                                        name="" 
-                                        id=""
-                                        class="check_box_code"
-                                        data-code="${array[i]}"
-                                    >
-                                </td>
-                                <td>${array[i]}</td>
-                                <td>${temp_med_data[array[i]].SKDIACODE}</td>
-                                <td>${temp_med_data[array[i]].DRUGKIND}</td>
-                                <td>
-                                    (中)${temp_med_data[array[i]].CHT_NAME}
-                                    <br>
-                                    (英)${temp_med_data[array[i]].NAME}
-                                </td>
-                            </tr>
-                        `
+                        if(temp_set_array.has(array[i])) {
+                            gm_content_med_display_tbody.innerHTML += `
+                                <tr class="cardinality_item">
+                                    <td>
+                                        <input 
+                                            type="checkbox" 
+                                            name="" 
+                                            id=""
+                                            class="check_box_code"
+                                            data-code="${array[i]}" 
+                                            checked
+                                        >
+                                    </td>
+                                    <td>${array[i]}</td>
+                                    <td>${temp_med_data[array[i]].SKDIACODE}</td>
+                                    <td>${temp_med_data[array[i]].DRUGKIND}</td>
+                                    <td>
+                                        (中)${temp_med_data[array[i]].CHT_NAME}
+                                        <br>
+                                        (英)${temp_med_data[array[i]].NAME}
+                                    </td>
+                                </tr>
+                            `
+                        } else {
+                            gm_content_med_display_tbody.innerHTML += `
+                                <tr class="cardinality_item">
+                                    <td>
+                                        <input 
+                                            type="checkbox" 
+                                            name="" 
+                                            id=""
+                                            class="check_box_code"
+                                            data-code="${array[i]}"
+                                        >
+                                    </td>
+                                    <td>${array[i]}</td>
+                                    <td>${temp_med_data[array[i]].SKDIACODE}</td>
+                                    <td>${temp_med_data[array[i]].DRUGKIND}</td>
+                                    <td>
+                                        (中)${temp_med_data[array[i]].CHT_NAME}
+                                        <br>
+                                        (英)${temp_med_data[array[i]].NAME}
+                                    </td>
+                                </tr>
+                            `
+                        }
                     }
                 }
             }

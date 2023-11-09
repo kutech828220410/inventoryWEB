@@ -2,9 +2,14 @@ function nav_bar_create(html_page, user_data) {
     // 頁面資料儲存區
     let html_pages = [
         {
-            html_name: "medGroup",
-            html_ctName: "藥品管理",
-            html_url: "../../medGroup"
+            html_name: "frontpage_new",
+            html_ctName: "首頁清單",
+            html_url: "../../frontpage_new"
+        },
+        {
+            html_name: "inspection",
+            html_ctName: "驗收單管理",
+            html_url: "../../storehouse/inspection"
         },
         {
             html_name: "inventory",
@@ -15,6 +20,11 @@ function nav_bar_create(html_page, user_data) {
             html_name: "barcodemanagement",
             html_ctName: "條碼建置",
             html_url: "../../barcodemanagement"
+        },
+        {
+            html_name: "medGroup",
+            html_ctName: "藥品管理",
+            html_url: "../../medGroup"
         }
     ]
 
@@ -127,6 +137,16 @@ function nav_bar_create(html_page, user_data) {
         nav_bar_container.style.left = "0px"
         nav_bar_tigger_container.style.opacity = 0
     })
+
+    if (html_page == "frontpage_new") {
+        nav_bar_tigger_container.style.border = "1px solid #ffffff"
+        nav_line_1.style.backgroundColor = "#ffffff"
+        nav_line_2.style.backgroundColor = "#ffffff"
+        nav_line_3.style.backgroundColor = "#ffffff"
+
+        nav_bar_container.style.left = "0px"
+        nav_bar_tigger_container.style.opacity = 0
+    }
 
     nav_bar_container.appendChild(nav_bar_content_container)
     nav_bar_container.appendChild(nav_bar_close_button)

@@ -293,7 +293,7 @@ function get_header()
   //盤點作業標題
   const header_title_text = document.createElement('div');
   My_Div.Init(header_title_text, 'header_title_text','header_title_text', '100%', '', '');
-  My_Div.Set_Text(header_title_text ,"盤點作業" , TextAlignEnum.CENTER , "30px", true,"微軟正黑體","");
+  My_Div.Set_Text(header_title_text ,"驗收作業" , TextAlignEnum.CENTER , "30px", true,"微軟正黑體","");
   header_title_text.className = "h1";
   header_div.appendChild(header_title_text);
 

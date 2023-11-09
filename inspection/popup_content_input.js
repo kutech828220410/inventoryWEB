@@ -185,7 +185,7 @@ function get_title_popup_input()
     const title_text = document.createElement('div');
     My_Div.Init(title_text, 'title_text_popup_input','title_text_popup_input', '250px', '40px', '');
     My_Div.Set_Block(title_text, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-    My_Div.Set_Text(title_text ,"盤點資訊" , TextAlignEnum.CENTER , "26px", true,"微軟正黑體","black");
+    My_Div.Set_Text(title_text ,"驗收資訊" , TextAlignEnum.CENTER , "26px", true,"微軟正黑體","black");
     title_text.style.borderRadius = "5px";
     title_text.style.marginLeft = "110px";
     title_text_div.appendChild(title_text);
@@ -204,6 +204,10 @@ function get_title_popup_input()
     undo_SVG.onclick = function()
     {
         hide_popup_input();
+        let deadline_input = document.querySelector(".deadline_input")
+        let batch_input = document.querySelector(".batch_input")
+        deadline_input.value = ""
+        batch_input.value = ""
     };
     undo_div.appendChild(undo_SVG);
     title_text_div.appendChild(undo_div);
@@ -318,6 +322,37 @@ function get_underline_popup_input()
     My_Div.Set_Block(underline_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
     underline_div.style.alignItems = "center";
 
+    // 新增批號、期效input欄位
+    const batch_deadline_div = document.createElement("div")
+    batch_deadline_div.classList.add("batch_deadline_div")
+    batch_deadline_div.style.width = "100%"
+    batch_deadline_div.style.alignItems = "center"
+    
+    const batch_input = document.createElement("input")
+    My_Div.Init(batch_input, 'batch_input','batch_input', '90%','80%','');
+    My_Div.Set_Text(batch_input, ``, TextAlignEnum.CENTER, "26px", true,"微軟正黑體","black");
+    batch_input.type = "text";
+    batch_input.style.backgroundColor = "";
+    batch_input.style.borderRadius = "5px";
+    batch_input.style.display = "block";
+    batch_input.style.margin = "0px auto 6px";
+    batch_input.placeholder = "請輸入批號";
+
+    const deadline_input = document.createElement("input")
+    My_Div.Init(deadline_input, 'deadline_input','deadline_input', '90%','80%','');
+    My_Div.Set_Text(deadline_input, ``, TextAlignEnum.CENTER, "26px", true,"微軟正黑體","black");
+    deadline_input.style.borderRadius = "5px";
+    deadline_input.style.display = "block";
+    deadline_input.style.margin = "0px auto 6px";
+    deadline_input.placeholder = "請輸入期效";
+    deadline_input.type = "email";
+    deadline_input.inputMode = "latin";
+
+    batch_deadline_div.appendChild(batch_input)
+    batch_deadline_div.appendChild(deadline_input)
+    underline_div.appendChild(batch_deadline_div)
+    focus_blur_event_with_keydown(batch_input)
+    focus_blur_event_with_keydown(deadline_input)
 
     const END_QTY_input_div = document.createElement('div');
     My_Div.Init(END_QTY_input_div, 'END_QTY_input_div','END_QTY_input_div', '100%','100%','');
@@ -511,6 +546,16 @@ function get_underline_popup_input()
     return underline_div;
 }
 
+function focus_blur_event_with_keydown(input_tag) {
+    input_tag.addEventListener("focus", () => {
+        window.removeEventListener("keydown", keydown_event_for_conculate)
+    })
+    input_tag.addEventListener("blur", () => {
+        window.addEventListener("keydown", keydown_event_for_conculate)
+        console.log(input_tag.value);
+    })
+} 
+
 function calculate_input(char)
 {
     var text = popup_input_END_QTY_input.value;
@@ -654,6 +699,29 @@ function calculateExpression(expression) {
     // 对数组中的所有数字求和
     return stack.reduce((total, num) => total + num, 0);
   }
+
+  function serch_start_date_input_Y_Click()
+  {
+      const serch_start_date_input = document.querySelector(".deadline_input");
+  }
+  function serch_start_date_input_N_Click()
+  {
+      const serch_start_date_input = document.querySelector(".deadline_input");
+      serch_start_date_input.value = "";
+  }
+  $(function()
+  {
+       $('.deadline_input').focus(function(event) 
+       {
+         /* Act on the event */
+         $(this).date(
+         {
+           theme:'date',
+           beginyear : 2022,
+           curdate:false
+         },serch_start_date_input_Y_Click,serch_start_date_input_N_Click);
+       });
+  }) 
   
 
 

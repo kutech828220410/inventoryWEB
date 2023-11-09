@@ -145,33 +145,61 @@
      }
      
   }
-  window.addEventListener('keydown', function(event) 
-  {
-      console.log("isDesktop",isDesktop);
-      if(isDesktop)
-      {
-        if(Header_state.textContent == StateType.輸入盤點資訊中)
-          {
-              console.log("keydown" , event.key);
-              if (event.key == 'Enter') 
-              {
-                console.log("Enter" , event.key);
-                 confirm_popup_input();
-              }
-              else if (event.key == 'Backspace') 
-              {
-                console.log("Backspace" , event.key);
-                popup_input_END_QTY_input.value = popup_input_END_QTY_input.value.slice(0, -1);
-              }        
-              else if(event.key == '1' || event.key == '2' || event.key == '3' || event.key == '4' || event.key == '5' || event.key == '6' || event.key == '7'
-              || event.key == '8' || event.key == '9' || event.key == '0'|| event.key == '-'|| event.key == '+'|| event.key == '*' )
-              {
-                calculate_input(event.key);
-              }
-          }
-      }
-     
-  });
+
+  function keydown_event_for_conculate(event) {
+    console.log("isDesktop",isDesktop);
+    if(isDesktop)
+    {
+      if(Header_state.textContent == StateType.輸入盤點資訊中)
+        {
+            console.log("keydown" , event.key);
+            if (event.key == 'Enter') 
+            {
+              console.log("Enter" , event.key);
+                confirm_popup_input();
+            }
+            else if (event.key == 'Backspace') 
+            {
+              console.log("Backspace" , event.key);
+              popup_input_END_QTY_input.value = popup_input_END_QTY_input.value.slice(0, -1);
+            }        
+            else if(event.key == '1' || event.key == '2' || event.key == '3' || event.key == '4' || event.key == '5' || event.key == '6' || event.key == '7'
+            || event.key == '8' || event.key == '9' || event.key == '0'|| event.key == '-'|| event.key == '+'|| event.key == '*' )
+            {
+              calculate_input(event.key);
+            }
+        }
+    }
+  }
+
+  window.addEventListener("keydown", keydown_event_for_conculate)
+
+  // window.addEventListener('keydown', function(event) 
+  // {
+  //     console.log("isDesktop",isDesktop);
+  //     if(isDesktop)
+  //     {
+  //       if(Header_state.textContent == StateType.輸入盤點資訊中)
+  //         {
+  //             console.log("keydown" , event.key);
+  //             if (event.key == 'Enter') 
+  //             {
+  //               console.log("Enter" , event.key);
+  //                confirm_popup_input();
+  //             }
+  //             else if (event.key == 'Backspace') 
+  //             {
+  //               console.log("Backspace" , event.key);
+  //               popup_input_END_QTY_input.value = popup_input_END_QTY_input.value.slice(0, -1);
+  //             }        
+  //             else if(event.key == '1' || event.key == '2' || event.key == '3' || event.key == '4' || event.key == '5' || event.key == '6' || event.key == '7'
+  //             || event.key == '8' || event.key == '9' || event.key == '0'|| event.key == '-'|| event.key == '+'|| event.key == '*' )
+  //             {
+  //               calculate_input(event.key);
+  //             }
+  //         }
+  //     }
+  // });
    // 阻止双击放大
    var lastTouchEnd = 0;
 

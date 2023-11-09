@@ -3,31 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>盤點單管理</title>
-    <link rel="stylesheet" href="../../inventory/manager/list.css">
-    <link rel="stylesheet" href="../../inventory/manager/merge.css">
-    <script src="../../Function/Basic.js?v=1.0"></script>
-    <script>
-      (async function() 
-          {
-            loadScript("../../api/map.js");
-            loadScript("../../ApiURL.js");
-            loadScript("../../ChatHub.js");
-            loadScript("../../svg/mySVG.js");
-            loadScript("../../UI/map.js");
-            loadScript("../../popup/map.js");    
-            loadScript("../../dist/JsBarcode.all.js");
-            loadScript("../../session_check.js");
-            loadScript("../../session.js");
-            loadScript("../../inventory/manager/list.js");
-            loadScript("../../inventory/manager/list_loadingdata.js");
-            loadScript("../../inventory/manager/list_popup_add.js");
-            loadScript("../../inventory/manager/list_popup_serch.js");
-            loadScript("../../UI/navBar.js");
-            loadScript("../../inventory/manager/merge.js");
-          })();
-  
-    </script>
+    <title>覆盤單管理</title>
+    <link rel="stylesheet" href="recount.css">
+    <script src="../../../../ApiURL.js"></script>
+    <script src="../../../../ChatHub.js"></script>
+    <script src="../../../../Function/WebApiFunc.js"></script>
+    <script src="../../../../svg/mySVG.js"></script>
+    <script src="../../../../Function/Basic.js"></script>
+    <script src="../../../../popup/map.js"></script>
+    <script src="../../../../dist/JsBarcode.all.js"></script>
+    <script src="../../../../UI/map.js"></script>
+    <script src="../../../../session_check.js"></script>
+    <script src="../../../../session.js"></script>
+
+    <script src="jsonFunc.js"></script>
+    <script src="recount.js"></script>
+    <script src="recount_loadingdata.js"></script>
+    <script src="recount_popup_serch.js"></script>
+    <script src="recount_popup_add.js"></script>
+    
     
 </head>
 <body>
@@ -46,14 +40,7 @@
      popup_serch_div.Set_Visible(false);
      popup_add_div.Set_Visible(false);
 
-     
-    </script>
-<div class="bottom_gm_nav_container">
-  <div class="bottom_gm_nav_card_container">
-    <div class="bottom_gm_nav_card">管理</div>
-    <div class="bottom_gm_nav_card">合併</div>
-  </div>
-</div>
+    </script>  
 <div class="under-line">
   <B> Copyright ©2023 鴻森整合機電有限公司 </B>
 </div>

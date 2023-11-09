@@ -191,7 +191,7 @@ function popup_merge_create() {
 // 加入合併單彈窗
 function popup_merge_add() {
     const popup_merge_add_div = new Basic_popup_Div('popup_merge_add_container','popup_merge_add_container','','')
-    let popup_merge_add_container = document.querySelector(".popup_merge_add_container")
+
     const merge_add_container = document.createElement("div")
     merge_add_container.classList.add("merge_add_container")
     popup_merge_add_container.appendChild(merge_add_container)

@@ -66,7 +66,7 @@ async function creat_update_startime_by_IC_SN(ICSN)
   {
     "Data": {
       "GUID": null,
-      "IC_SN": `${ICSN}`,
+      "IC_SN": null,
       "CT": null,
       "CT_TIME": null,
       "START_TIME": null,
@@ -76,7 +76,7 @@ async function creat_update_startime_by_IC_SN(ICSN)
     },
     "Code": 0,
     "Result": "",
-    "Value": ``,
+    "Value": `${ICSN}`,
     "ServerName" : ServerName,
     "ServerType" : ServerType,
     "TableName" : TableName,
@@ -127,7 +127,7 @@ async function creat_get_by_IC_SN(IC_SN)
   {
     "Data": {
       "GUID": null,
-      "IC_SN": `${IC_SN}`,
+      "IC_SN": null,
       "CT": null,
       "CT_TIME": null,
       "START_TIME": null,
@@ -137,7 +137,7 @@ async function creat_get_by_IC_SN(IC_SN)
     },
     "Code": 0,
     "Result": "",
-    "Value": "",
+    "Value": `${IC_SN}`,
     "ServerName" : ServerName,
     "ServerType" : ServerType,
     "TableName" : TableName,
@@ -186,18 +186,11 @@ async function creat_delete_by_IC_SN(IC_SN)
   const post_data = 
   {
     "Data": {
-      "GUID": null,
-      "IC_SN": `${IC_SN}`,
-      "CT": null,
-      "CT_TIME": null,
-      "START_TIME": null,
-      "END_TIME": null,
-      "STATE": null,
-      "Contents": []
+
     },
     "Code": 0,
     "Result": "",
-    "Value": "",
+    "Value": `${IC_SN}`,
     "ServerName" : ServerName,
     "ServerType" : ServerType,
     "TableName" : TableName,
@@ -240,18 +233,11 @@ async function creat_lock_by_IC_SN(IC_SN)
   const post_data = 
   {
     "Data": {
-      "GUID": null,
-      "IC_SN": `${IC_SN}`,
-      "CT": null,
-      "CT_TIME": null,
-      "START_TIME": null,
-      "END_TIME": null,
-      "STATE": null,
-      "Contents": []
+ 
     },
     "Code": 0,
     "Result": "",
-    "Value": "",
+    "Value": `${IC_SN}`,
     "ServerName" : ServerName,
     "ServerType" : ServerType,
     "TableName" : TableName,
@@ -271,18 +257,11 @@ async function creat_unlock_by_IC_SN(IC_SN)
   const post_data = 
   {
     "Data": {
-      "GUID": null,
-      "IC_SN": `${IC_SN}`,
-      "CT": null,
-      "CT_TIME": null,
-      "START_TIME": null,
-      "END_TIME": null,
-      "STATE": null,
-      "Contents": []
+
     },
     "Code": 0,
     "Result": "",
-    "Value": "",
+    "Value": `${IC_SN}`,
     "ServerName" : ServerName,
     "ServerType" : ServerType,
     "TableName" : TableName,
@@ -498,18 +477,11 @@ async function download_excel_by_IC_SN(IC_SN)
   const post_data = 
   {
     "Data": {
-      "GUID": null,
-      "IC_SN": `${IC_SN}`,
-      "CT": null,
-      "CT_TIME": null,
-      "START_TIME": null,
-      "END_TIME": null,
-      "STATE": null,
-      "Contents": []
+
     },
     "Code": 0,
     "Result": "",
-    "Value": "",
+    "Value": `${IC_SN}`,
     "ServerName" : ServerName,
     "ServerType" : ServerType,
     "TableName" : TableName,

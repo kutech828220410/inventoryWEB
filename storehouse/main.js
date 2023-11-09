@@ -32,7 +32,7 @@ async function home_Click()
 async function inspection_Click()
 {
   console.log("inspection");
-  location.href = "../../storehouse/inspection/frontpage.html";
+  location.href = "../../storehouse/inspection";
 }
 
 async function inventory_Click()
