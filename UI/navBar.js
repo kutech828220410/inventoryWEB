@@ -31,28 +31,28 @@ function nav_bar_create(html_page, user_data) {
                 ]
             }
         },
-        {
-            pharmary: {
-                name: "藥局",
-                pages: [
-                    {
-                        html_name: "drugs_report",
-                        html_ctName: "結存報表",
-                        html_url: "../../pharmacy/controlleddrug/main.html"
-                    },
-                    {
-                        html_name: "consumption_report",
-                        html_ctName: "藥品消耗量",
-                        html_url: "../../pharmacy/consumption/main.html"
-                    }
-                    // {
-                    //     html_name: "quick_inventory",
-                    //     html_ctName: "快速盤點",
-                    //     html_url: ""
-                    // }
-                ]
-            }
-        }
+        // {
+        //     pharmary: {
+        //         name: "藥局",
+        //         pages: [
+        //             {
+        //                 html_name: "drugs_report",
+        //                 html_ctName: "結存報表",
+        //                 html_url: "../../pharmacy/controlleddrug/main.html"
+        //             },
+        //             {
+        //                 html_name: "consumption_report",
+        //                 html_ctName: "藥品消耗量",
+        //                 html_url: "../../pharmacy/consumption/main.html"
+        //             }
+        //             // {
+        //             //     html_name: "quick_inventory",
+        //             //     html_ctName: "快速盤點",
+        //             //     html_url: ""
+        //             // }
+        //         ]
+        //     }
+        // }
     ]
     
 
@@ -171,7 +171,7 @@ function nav_bar_create(html_page, user_data) {
         if(confirm("是否登出,返回首頁?"))
         {
             logout();
-            location.href = "../../login.html";
+            location.href = "../../login/";
         }
         // window.alert("登出摟")
     })

@@ -139,10 +139,10 @@ async function init()
     popup_med_serch_medclass = medicine_page.Data;
     console.log(medicine_page.Data);
     temp_med_data = {}
-    // popup_med_serch_medclass.forEach(element => {
-    //   temp_med_data[element.CODE] = element
-    // });
-    console.log(temp_med_data);
+    popup_med_serch_medclass.forEach(element => {
+      temp_med_data[element.CODE] = element
+    });
+    // console.log(temp_med_data);
     data = await creat_get_by_IC_SN(IC_SN);
     console.log("驗收單資料" , data);
     State = StateType.等待條碼刷入;

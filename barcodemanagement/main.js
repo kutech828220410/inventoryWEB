@@ -197,7 +197,7 @@ function get_header()
   header_contorls_donesvg.style.marginRight = "3px";
   header_contorls_donesvg.style.borderRadius = "3px";
   header_contorls_donesvg.onclick = donesvg_Click;
-  header_contorls_div.appendChild(header_contorls_donesvg);  
+  // header_contorls_div.appendChild(header_contorls_donesvg);  
 
   const herader_view_div = document.createElement('div');
   My_Div.Init(herader_view_div, 'herader_view_div','herader_view_div', '100%', '40px', '');

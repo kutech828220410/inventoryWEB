@@ -141,7 +141,7 @@ function edit_title_popup_input(Content)
     if(Content.CHT_NAME != null) med_cht_name_text.innerText = `(中) : ${temp_med_data[`${Content.CODE}`].CHT_NAME}`;
 
     const med_end_QTY_text = document.querySelector('#med_end_QTY_text_popup_input');
-    med_end_QTY_text.innerText = `盤點量 : \n${Content.END_QTY}`;
+    med_end_QTY_text.innerText = `總驗收量 : \n${Content.END_QTY}`;
     const med_end_PKG_text = document.querySelector('#med_end_PKG_text_popup_input');
     med_end_PKG_text.innerText = `單位 : \n${temp_med_data[`${Content.CODE}`].PAKAGE}`;
     
@@ -259,7 +259,7 @@ function get_title_popup_input()
 
     const med_end_QTY_text = document.createElement('div');
     My_Div.Init(med_end_QTY_text,'med_end_QTY_text_popup_input','med_end_QTY_text_popup_input', '25%',"100%" , '');
-    My_Div.Set_Text(med_end_QTY_text ,"盤點量 : 0" , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","green");
+    My_Div.Set_Text(med_end_QTY_text ,"總驗收量 : 0" , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","green");
     med_end_QTY_text.style.marginLeft = "5px";
     
     const med_end_PKG_text = document.createElement('div');
@@ -746,13 +746,15 @@ function calculateExpression(expression) {
   }
   $(function()
   {
+    let currentDate = new Date();
        $('.deadline_input').focus(function(event) 
        {
          /* Act on the event */
          $(this).date(
          {
            theme:'date',
-           beginyear : 2022,
+           beginyear : currentDate.getFullYear() - 1,
+           endyear: currentDate.getFullYear() + 8,
            curdate:false
          },serch_start_date_input_Y_Click,serch_start_date_input_N_Click);
        });

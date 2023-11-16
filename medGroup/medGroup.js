@@ -1,6 +1,10 @@
 window.onload = load;
 async function load()
 {
+    const Loadingpopup = GetLoadingpopup();
+    document.body.appendChild(Loadingpopup);
+    Set_main_div_enable(true);
+
     const serverName ="";
     const serverType = "網頁";
     APIServer = await LoadAPIServer();
@@ -25,6 +29,8 @@ async function load()
     popup_group_create()
     nav_bar_create("medGroup", test_user_data)
     current_funtion_check()
+
+    Set_main_div_enable(false);
 }
 
 function current_funtion_check() {
@@ -1247,4 +1253,21 @@ function container_display_init(div_container) {
     while (div_container.firstChild) {
         div_container.removeChild(div_container.firstChild)
     }
+}
+
+function Set_main_div_enable(value) 
+{
+  const main_div = document.querySelector('#main_div');
+  if (value)
+  {
+    showLoadingPopup();
+    //  document.body.style.opacity = "0.5"; 
+    document.body.style.pointerEvents = "none";
+  }
+  else 
+  {
+    hideLoadingPopup();
+    document.body.style.opacity = "1";
+    document.body.style.pointerEvents = "auto";
+  }
 }

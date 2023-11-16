@@ -472,7 +472,6 @@ async function device_light(Color, device_basic)
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
-var inspection_excel_url = "";
 async function excel_upload(file, IC_NAME, PON, CT ) 
 {
 
@@ -481,10 +480,10 @@ async function excel_upload(file, IC_NAME, PON, CT )
   formData.append('IC_NAME', IC_NAME);
   formData.append('PON', PON);
   formData.append('CT', CT);
-  console.log("excel_upload" , inspection_excel_url);
+  console.log("excel_upload" , `${inspection_url}/excel_upload`);
   console.log("post_data [excel_upload]",formData);
   try {
-    const response = await fetch(inspection_excel_url, {
+    const response = await fetch(`${inspection_url}/excel_upload`, {
       method: 'POST',
       body: formData
     });

@@ -254,7 +254,8 @@ async function select_btn_Click(event)
   console.log(IC_SN);
   sessionStorage.setItem('IC_SN', IC_SN);
   await creat_update_startime_by_IC_SN(IC_SN);
-  location.href = "../inspection/main.html"
+  // location.href = "../inspection/main.html"
+  location.href = "../../inspection/"
 }
 
 async function delete_btn_Click(event) {
