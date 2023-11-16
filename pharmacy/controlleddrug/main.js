@@ -36,6 +36,14 @@ async function load()
   var date_start = DateTimeAddDays(currentDate, -30);
   date_start = getDateStr(date_start);
   date_end = getDateStr(date_end);
+  var loggedID = sessionStorage.getItem('loggedID');  
+  var loggedName = sessionStorage.getItem('loggedName');  
+  const test_user_data = {
+    id: loggedID,
+    name: loggedName,
+  }
+
+  nav_bar_create("drugs_report", test_user_data)
 
   Set_main_div_enable(false);
   page_Init();

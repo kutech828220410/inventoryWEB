@@ -4,6 +4,9 @@ window.onload = load;
 async function load() 
 {
   check_session_off();
+  sessionStorage.setItem('ServerName', "DS01");
+  sessionStorage.setItem('ServerType', "藥庫");
+  sessionStorage.setItem('TableName', "medicine_page_firstclass");
   var serverName = sessionStorage.getItem('ServerName');  
   var serverType = sessionStorage.getItem('ServerType');  
   var tableName = sessionStorage.getItem('TableName');  

@@ -457,6 +457,7 @@ function get_row(Sub_Content)
   var _NAME = Sub_Content.NAME;
   var _CHT_NAME = Sub_Content.CHT_NAME;
 
+  console.log(Sub_Content);
   const row_div = document.createElement('div');
   My_Div.Init(row_div, 'row_div',`row_div_${_GUID}`, '97%', '', '');
   My_Div.Set_Block(row_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUNM, JustifyContentEnum.TOP);

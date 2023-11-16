@@ -66,6 +66,7 @@ async function verifyUser(event)
         sessionStorage.setItem('loggedTime', session_login.Data.loginTime);
         sessionStorage.setItem('color', session_login.Data.color);
         window.location.href = "frontpage/main.html"; // 跳轉到 frontpage.html 頁面
+        // window.location.href = "frontpage_new/"; // 跳轉到 frontpage.html 頁面
     }
     return false; // 防止表單提交
 }

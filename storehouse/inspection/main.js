@@ -93,7 +93,7 @@ function Set_main_div_enable(value)
 async function donesvg_Click() 
 {
 
-    location.href = "frontpage.html";
+    location.href = "./";
 }
 function findsvg_Click()
 {

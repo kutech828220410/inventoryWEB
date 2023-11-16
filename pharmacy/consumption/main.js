@@ -18,6 +18,7 @@ async function load()
   ServerType = "調劑台";
   TableName = "medicine_page";
   APIServer = await LoadAPIServer();
+  console.log(ServerType, TableName, APIServer);
   const API01 = serch_APIServer(serverName,"調劑台","API01");
   const API02 = serch_APIServer(serverName,"調劑台","API02");
   console.log("API01",API01);
@@ -37,6 +38,14 @@ async function load()
   date_end = getDateStr(date_end);
   // data = await serch_by_ST_END(date_start,date_end);
 
+  var loggedID = sessionStorage.getItem('loggedID');  
+  var loggedName = sessionStorage.getItem('loggedName');  
+  const test_user_data = {
+    id: loggedID,
+    name: loggedName,
+  }
+
+  nav_bar_create("consumption_report", test_user_data)
   Set_main_div_enable(false);
   page_Init();
 }

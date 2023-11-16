@@ -37,22 +37,22 @@ function refresh_Header_state()
 }
 
 
-setInterval(async function() 
-{
-  if(current_IC_SN != "" && current_IC_SN != null)
-  {
-    const temp =  await get_creat_Islocked_by_IC_SN(current_IC_SN);
-    if(temp.Data == "鎖定")
-    {
-        console.log("盤點單已鎖定");
-        alert("此盤點單被管理者鎖定,即將登出此盤點!");
-        sessionStorage.removeItem("login_json");
-        sessionStorage.removeItem("IC_SN");
-        location.reload();
-    }
-  }
+// setInterval(async function() 
+// {
+//   if(current_IC_SN != "" && current_IC_SN != null)
+//   {
+//     const temp =  await get_creat_Islocked_by_IC_SN(current_IC_SN);
+//     if(temp.Data == "鎖定")
+//     {
+//         console.log("盤點單已鎖定");
+//         alert("此盤點單被管理者鎖定,即將登出此盤點!");
+//         sessionStorage.removeItem("login_json");
+//         sessionStorage.removeItem("IC_SN");
+//         location.reload();
+//     }
+//   }
   
-}, 5000);
+// }, 5000);
 
 async function load()
 {
@@ -129,22 +129,25 @@ async function init()
     console.log("API02",API02);
     await check_ip(API01[0].server,API02[0].server);
     console.log("inventory_url",inventory_url);
+    console.log("inspection_url",inspection_url);
 
     current_IC_SN = sessionStorage.getItem('IC_SN');
     
     var IC_SN = sessionStorage.getItem('IC_SN');  
     current_IC_SN = IC_SN;
     medicine_page = await get_medicine_cloud();
-    console.log(medicine_page);
     popup_med_serch_medclass = medicine_page.Data;
+    console.log(medicine_page.Data);
+    temp_med_data = {}
+    // popup_med_serch_medclass.forEach(element => {
+    //   temp_med_data[element.CODE] = element
+    // });
+    console.log(temp_med_data);
     data = await creat_get_by_IC_SN(IC_SN);
-    console.log("盤點單資料" , data);
+    console.log("驗收單資料" , data);
     State = StateType.等待條碼刷入;
 
     await page_Init(data);
-
-    
-
     hideLoadingPopup();
 }
 async function page_Init(data) 
@@ -327,7 +330,7 @@ function get_header()
   const header_creatselect_btn = document.createElement('button');
   header_creatselect_btn.className = "control_btn";
   My_Div.Init(header_creatselect_btn, 'control_btn','header_creatselect_btn', '', '40px', '');
-  My_Div.Set_Text(header_creatselect_btn ,"換區" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","white");
+  My_Div.Set_Text(header_creatselect_btn ,"換單" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","white");
   header_creatselect_btn.addEventListener("click", function()
   {
     popup_creatSelect_div.Show();
@@ -450,12 +453,12 @@ function get_row(Sub_Content)
 {
   var _GUID =  Sub_Content.GUID;
   var _Master_GUID =  Sub_Content.Master_GUID;
-  var _CODE = Sub_Content.CODE;
-  var _SKDIACODE = Sub_Content.SKDIACODE;
+  var _CODE = temp_med_data[`${Sub_Content.CODE}`].CODE;
+  var _SKDIACODE = temp_med_data[`${Sub_Content.CODE}`].SKDIACODE;
   var _QTY = Sub_Content.END_QTY;
   var _TOL_QTY = Sub_Content.TOLTAL_QTY;
-  var _NAME = Sub_Content.NAME;
-  var _CHT_NAME = Sub_Content.CHT_NAME;
+  var _NAME = temp_med_data[`${Sub_Content.CODE}`].NAME;
+  var _CHT_NAME = temp_med_data[`${Sub_Content.CODE}`].CHT_NAME;
 
   const row_div = document.createElement('div');
   My_Div.Init(row_div, 'row_div',`row_div_${_GUID}`, '97%', '', '');

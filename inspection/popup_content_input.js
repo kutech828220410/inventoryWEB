@@ -1,13 +1,14 @@
 var popup_input_div;
 var popup_input_div_Content;
 var popup_input_div_SubContent;
-var popup_input_NumOfPageRows = 3;
+var popup_input_NumOfPageRows = 1;
 var popup_input_PageIndex = 0;
 var popup_input_MaxfPage = 0;
 
 var popup_input_END_QTY_input = null;
 async function show_popup_input(Content , page_Initial , show_all_user)
 {
+    // console.log(temp_med_data[`${Content.CODE}`]);
     if(Content == undefined) return;
     if(popup_input_div == undefined) page_Initial = false;
     const OP = sessionData.Name;
@@ -49,6 +50,8 @@ function next_page_popup_input()
     if((popup_input_PageIndex + 1) < popup_input_MaxfPage) popup_input_PageIndex++;      
     edit_rows_popup_input(popup_input_div_Content);
     edit_rows_page_control_popup_input();
+    let content_cards_display = document.querySelector(".content_cards_display")
+    content_cards_display.innerHTML = `${popup_input_PageIndex + 1 + "/" + popup_input_MaxfPage}`
 }
 function previous_page_popup_input() 
 {
@@ -56,9 +59,13 @@ function previous_page_popup_input()
     if(popup_input_PageIndex < 0) popup_input_PageIndex = 0;
     edit_rows_popup_input(popup_input_div_Content);
     edit_rows_page_control_popup_input();
+    let content_cards_display = document.querySelector(".content_cards_display")
+    content_cards_display.innerHTML = `${popup_input_PageIndex + 1 + "/" + popup_input_MaxfPage}`
 }
 async function confirm_popup_input()
 {
+    const LOT_input_popup_input = document.querySelector('.batch_input');
+    const VAL_input_popup_input = document.querySelector('.deadline_input');
     const END_QTY_input = document.querySelector('#END_QTY_input_popup_input');
     if(!END_QTY_input.value) return;
     if(isNaN(END_QTY_input.value))
@@ -66,14 +73,22 @@ async function confirm_popup_input()
         alert("請輸入算式後按'=' 或 輸入數量");
         return;
     }
+    if(!VAL_input_popup_input.value)
+    {
+        alert("請輸入效期");
+        return;
+    }
     const GUID = popup_input_div_Content.GUID;
-    const CODE = popup_input_div_Content.CODE;
+    const VAL = VAL_input_popup_input.value;
+    const LOT = LOT_input_popup_input.value;
     var END_QTY = END_QTY_input.value;
 
     END_QTY_input.value = '';
     const OP = sessionData.Name;
     //輸入盤點量後創造SUB內容
-    sub_content_add(GUID , END_QTY , OP, CODE);
+    sub_content_add(GUID , END_QTY , OP, VAL, LOT);
+    VAL_input_popup_input.value = ""
+    LOT_input_popup_input.value = ""
     hide_popup_input();
 }
 async function delete_row_popup_input(GUID , Master_GUID)
@@ -118,17 +133,17 @@ function edit_title_popup_input(Content)
     }
     else
     {
-        med_SKDIACODE_text.innerText = `料號 : ${Content.SKDIACODE}`;
+        med_SKDIACODE_text.innerText = `料號 : ${temp_med_data[`${Content.CODE}`]}`;
     }
     const med_eng_name_text = document.querySelector('#med_eng_name_text_popup_input');
-    if(Content.NAME != null)med_eng_name_text.innerText = `(英) : ${Content.NAME}`;
+    if(Content.NAME != null)med_eng_name_text.innerText = `(英) : ${temp_med_data[`${Content.CODE}`].NAME}`;
     const med_cht_name_text = document.querySelector('#med_cht_name_text_popup_input');
-    if(Content.CHT_NAME != null) med_cht_name_text.innerText = `(中) : ${Content.CHT_NAME}`;
+    if(Content.CHT_NAME != null) med_cht_name_text.innerText = `(中) : ${temp_med_data[`${Content.CODE}`].CHT_NAME}`;
 
     const med_end_QTY_text = document.querySelector('#med_end_QTY_text_popup_input');
     med_end_QTY_text.innerText = `盤點量 : \n${Content.END_QTY}`;
     const med_end_PKG_text = document.querySelector('#med_end_PKG_text_popup_input');
-    med_end_PKG_text.innerText = `單位 : \n${Content.PAKAGE}`;
+    med_end_PKG_text.innerText = `單位 : \n${temp_med_data[`${Content.CODE}`].PAKAGE}`;
     
 }
 function edit_rows_popup_input(Content)
@@ -150,6 +165,8 @@ function edit_rows_popup_input(Content)
         index++;
     }
 
+    let content_cards_display = document.querySelector(".content_cards_display")
+    content_cards_display.innerHTML = `${popup_input_PageIndex + 1 + "/" + popup_input_MaxfPage}`
     updateDivHeight(rows_div , 0);
 }
 function edit_rows_page_control_popup_input()
@@ -310,6 +327,14 @@ function get_row_popup_inputs_page_control_block()
     {
         previous_page_popup_input();
     });
+
+    const content_cards_display = document.createElement("div")
+    My_Div.Init(content_cards_display,"content_cards_display","content_cards_display")
+    content_cards_display.style.marginRight = "160px"
+    content_cards_display.style.fontSize = "18px"
+    content_cards_display.style.fontWeight = "600"
+
+    rows_page_control_block.appendChild(content_cards_display);
     rows_page_control_block.appendChild(svg_previous);
     rows_page_control_block.appendChild(svg_next);
     return rows_page_control_block;
@@ -588,7 +613,7 @@ function calculate_input(char)
 function get_row_popup_input(Sub_content)
 {
     const row = document.createElement('div');
-    My_Div.Init(row, 'row_popup_input','row_popup_input', '100%','50px');
+    My_Div.Init(row, 'row_popup_input','row_popup_input', '100%','75px');
     My_Div.Set_Block(row, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.TOP);
     if(Sub_content != undefined)
     {
@@ -625,6 +650,16 @@ function get_block_popup_input(Sub_content)
     My_Div.Init(block1_user_text_popup_input, 'block1_user_text_popup_input','block1_user_text_popup_input', '100%',"" , '');
     My_Div.Set_Text(block1_user_text_popup_input, `操作人 : ${Sub_content.OP}`, TextAlignEnum.LEFT, "14px", true,"微軟正黑體","black" );
     block1.appendChild(block1_user_text_popup_input);
+
+    const block1_batch_text_input = document.createElement('div');
+    My_Div.Init(block1_batch_text_input, 'block1_batch_text_input','block1_batch_text_input', '100%',"" , '');
+    My_Div.Set_Text(block1_batch_text_input, `批號 : ${Sub_content.LOT}`, TextAlignEnum.LEFT, "14px", true,"微軟正黑體","black" );
+    block1.appendChild(block1_batch_text_input);
+    
+    const block1_deadline_text_input = document.createElement('div');
+    My_Div.Init(block1_deadline_text_input, 'block1_deadline_text_input','block1_deadline_text_input', '100%',"" , '');
+    My_Div.Set_Text(block1_deadline_text_input, `期效 : ${Sub_content.VAL.split(' ')[0]}`, TextAlignEnum.LEFT, "14px", true,"微軟正黑體","black" );
+    block1.appendChild(block1_deadline_text_input);
 
     M_block.appendChild(block1);
 

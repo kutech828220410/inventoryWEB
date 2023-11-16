@@ -2,16 +2,6 @@ function nav_bar_create(html_page, user_data) {
     // 頁面資料儲存區
     let html_pages = [
         {
-            html_name: "frontpage_new",
-            html_ctName: "首頁清單",
-            html_url: "../../frontpage_new"
-        },
-        {
-            html_name: "inspection",
-            html_ctName: "驗收單管理",
-            html_url: "../../storehouse/inspection"
-        },
-        {
             html_name: "inventory",
             html_ctName: "盤點單管理",
             html_url: "../../inventory/manager"
@@ -27,6 +17,44 @@ function nav_bar_create(html_page, user_data) {
             html_url: "../../medGroup"
         }
     ]
+
+    let block_select = [
+        {
+            storehouse: {
+                name: "藥庫",
+                pages: [
+                    {
+                        html_name: "inspection",
+                        html_ctName: "驗收單管理",
+                        html_url: "../../storehouse/inspection"
+                    }
+                ]
+            }
+        },
+        {
+            pharmary: {
+                name: "藥局",
+                pages: [
+                    {
+                        html_name: "drugs_report",
+                        html_ctName: "結存報表",
+                        html_url: "../../pharmacy/controlleddrug/main.html"
+                    },
+                    {
+                        html_name: "consumption_report",
+                        html_ctName: "藥品消耗量",
+                        html_url: "../../pharmacy/consumption/main.html"
+                    }
+                    // {
+                    //     html_name: "quick_inventory",
+                    //     html_ctName: "快速盤點",
+                    //     html_url: ""
+                    // }
+                ]
+            }
+        }
+    ]
+    
 
     // 導覽列環境設定
     document.body.style.position = "relative";
@@ -98,7 +126,28 @@ function nav_bar_create(html_page, user_data) {
 
     // 使用者容器
     const user_display_container = document.createElement('div');
+    user_display_container.classList.add("user_display_container")
     user_display_container.style.padding = "16px"
+    user_display_container.style.display = "flex"
+    user_display_container.style.justifyContent = "space-between"
+    user_display_container.style.alignItems = "center"
+
+    const homepage_btn = document.createElement('div');
+    homepage_btn.style.width = "36px"
+    homepage_btn.style.cursor = "pointer"
+
+    const homepage_btn_img = document.createElement("img")
+    homepage_btn_img.style.display = "block"
+    homepage_btn_img.style.width = "100%"
+    homepage_btn_img.src = "../../image/homepage.png"
+
+    homepage_btn.appendChild(homepage_btn_img)
+
+    homepage_btn.addEventListener("click", () => 
+    {
+            location.href = "../../frontpage_new/";
+        // window.alert("登出摟")
+    })
 
     const user_name_div = document.createElement('div')
     user_name_div.style.textAlign = "center"
@@ -106,7 +155,30 @@ function nav_bar_create(html_page, user_data) {
     user_name_div.style.fontWeight = "600"
     user_name_div.innerText = `${user_data.name}`
 
+    const logout_button = document.createElement('div');
+    logout_button.style.width = "36px"
+    logout_button.style.cursor = "pointer"
+
+    const logout_button_img = document.createElement("img")
+    logout_button_img.style.display = "block"
+    logout_button_img.style.width = "100%"
+    logout_button_img.src = "../../image/logout.png"
+
+    logout_button.appendChild(logout_button_img)
+
+    logout_button.addEventListener("click", () => 
+    {
+        if(confirm("是否登出,返回首頁?"))
+        {
+            logout();
+            location.href = "../../login.html";
+        }
+        // window.alert("登出摟")
+    })
+
+    user_display_container.appendChild(homepage_btn)
     user_display_container.appendChild(user_name_div)
+    user_display_container.appendChild(logout_button)
 
     // 關閉導覽按鈕
     const nav_bar_close_button = document.createElement('div');
@@ -156,13 +228,13 @@ function nav_bar_create(html_page, user_data) {
 
     // 分頁展示
     const nav_bar_content = document.createElement('div');
-    nav_bar_content.style.flexGrow = 1
+    nav_bar_content.classList.add("nav_bar_content")
+    nav_bar_content.style.overflowY = "auto"
     html_pages.forEach(element => {
         if (element.html_name == html_page) {
             nav_bar_content.innerHTML += `
                 <div class="${element.html_name + "_class"}"                
-                    style="
-                    background-color: rgb(126, 179, 225);
+                    style="background-color: rgb(126, 179, 225);
                     border: 2px solid rgb(7, 50, 87);
                     border-radius: 5px;
                     font-size: 1.2rem;
@@ -177,8 +249,7 @@ function nav_bar_create(html_page, user_data) {
         } else {
             nav_bar_content.innerHTML += `
             <a class="${element.html_name + "_class"}"
-                    style="
-                    display: block;
+                    style="display: block;
                     background-color: rgb(5, 55, 99);
                     color: rgb(217, 223, 228);
                     border: 2px solid rgb(10, 100, 178);
@@ -197,37 +268,159 @@ function nav_bar_create(html_page, user_data) {
         }
     });
 
-    const logout_button = document.createElement('div');
-    logout_button.innerHTML = '登出'
-    logout_button.style.textAlign = "center"
-    logout_button.style.lineHeight = "55px"
-    logout_button.style.fontSize = "1.2rem"
-    logout_button.style.fontWeight = "600"
-    logout_button.style.height = "50px"
-    logout_button.style.width = "80px"
-    logout_button.style.backgroundColor = "#323232"
-    logout_button.style.color = "#ece5e5"
-    logout_button.style.margin = "0px auto 46px auto"
-    logout_button.style.borderRadius = "5px"
-    logout_button.style.cursor = "pointer"
-    logout_button.style.margin = "0px auto 46px auto"
+    const nav_bar_content_type_container = document.createElement("div")
+    nav_bar_content_type_container.classList.add("nav_bar_content_type_container")
+    nav_bar_content_type_container.style.display = "flex"
+    nav_bar_content_type_container.style.justifyContent = "space-evenly"
 
-    logout_button.addEventListener("click", () => 
-    {
-        if(confirm("是否登出,返回首頁?"))
-        {
-            logout();
-            location.href = "../../login.html";
-        }
+    const nav_bar_content_type_content_container = document.createElement("div")
+    nav_bar_content_type_content_container.classList.add("nav_bar_content_type_content_container")
+    nav_bar_content_type_content_container.style.width = "100%"
+    nav_bar_content_type_content_container.style.height = "0px"
+    nav_bar_content_type_content_container.style.display = "flex"
+    nav_bar_content_type_content_container.style.justifyContent = "space-evenly"
+    nav_bar_content_type_content_container.style.overflow = "hidden"
+    nav_bar_content_type_content_container.style.transition = "all 0.3s ease-in"
+
+    block_select.forEach(element => {
+        let type_btn = document.createElement("div")
+        type_btn.classList.add(`btn_${Object.keys(element)[0]}`)
+        type_btn.classList.add(`type_btn`)
+        type_btn.style.display = "flex"
+        type_btn.style.justifyContent = "space-between"
+        type_btn.style.alignItems = "center"
+        type_btn.style.width = "40%"
+        type_btn.style.padding = "4px 8px"
+        type_btn.style.cursor = "pointer"
+        type_btn.style.position = "relative"
+
+        let type_btn_name = document.createElement("div")
+        type_btn_name.classList.add("type_btn_name")
+        type_btn_name.style.fontSize = "1.2rem"
+        type_btn_name.style.fontWeight = "600"
+        type_btn_name.innerHTML = `${element[`${Object.keys(element)[0]}`].name}`
+
+        let type_btn_arrow = document.createElement("img")
+        type_btn_arrow.classList.add("type_btn_arrow")
+        type_btn_arrow.src = '../../image/left-arrow.png'
+        type_btn_arrow.style.display = "block"
+        type_btn_arrow.style.width = "14px"
+        type_btn_arrow.style.transition = "all 0.3s ease-in"
+
+        let bottom_line = document.createElement("div")
+        bottom_line.classList.add("bottom_line")
+        bottom_line.style.position = "absolute"
+        bottom_line.style.width = "90%"
+        bottom_line.style.height = "2px"
+        bottom_line.style.backgroundColor = "black"
+        bottom_line.style.bottom = "0"
+        bottom_line.style.left = "6px"
+
+        type_btn.appendChild(type_btn_name)
+        type_btn.appendChild(type_btn_arrow)
+        type_btn.appendChild(bottom_line)
+        nav_bar_content_type_container.appendChild(type_btn)
+
+        let type_content = document.createElement("div")
+        type_content.classList.add(`type_content`)
+        type_content.classList.add(`type_content_${Object.keys(element)[0]}`)
+        type_content.style.width = "40%"
+        type_content.style.padding = "4px 8px"
+        type_content.style.opacity = "0"
+        type_content.style.display = "none"
+        type_content.style.transition = "all 0.3s ease-in"
+        element[`${Object.keys(element)[0]}`]["pages"].forEach(e => {
+            if (e.html_name == html_page) {
+                type_content.innerHTML += `
+                    <div class="${e.html_name + "_class"}"                
+                        style="background-color: rgb(126, 179, 225);
+                        border: 2px solid rgb(7, 50, 87);
+                        border-radius: 5px;
+                        text-align: center;
+                        padding: 0px 0px 0px 6px;
+                        margin: 8px 0px;
+                    ">
+                    ${e.html_ctName}
+                    </div>
+                `
+            } else {
+                type_content.innerHTML += `
+                <a class="${e.html_name + "_class"}"
+                        style="display: block;
+                        background-color: rgb(5, 55, 99);
+                        color: rgb(217, 223, 228);
+                        border: 2px solid rgb(10, 100, 178);
+                        border-radius: 5px;
+                        text-align: center;
+                        cursor: pointer;
+                        padding: 0px 0px 0px 6px;
+                        margin: 8px 0px;
+                        text-decoration: none;"
+                    href="${e.html_url}">
+                ${e.html_ctName}
+                </a>
+            `
+            }
+        })
+
+        nav_bar_content_type_content_container.appendChild(type_content)
+    });
     
-        // window.alert("登出摟")
-    })
-
+    nav_bar_content.appendChild(nav_bar_content_type_container)
+    nav_bar_content.appendChild(nav_bar_content_type_content_container)
+    
+    // user_display_container.appendChild(logout_button)
     nav_bar_content_container.appendChild(user_display_container)
     nav_bar_content_container.appendChild(nav_bar_close_button)
     nav_bar_content_container.appendChild(nav_bar_content)
-    nav_bar_content_container.appendChild(logout_button)
 
+    let type_btn = document.querySelectorAll('.type_btn')
+    type_btn.forEach(e => {
+        e.addEventListener("click", (e) => {
+            let target_img = e.target.getElementsByTagName('img');
+            let type_content = document.querySelectorAll('.type_content')
+            let type_of_select = e.target.classList[0].split("_")[1]
+
+            if (e.target.classList[2]) {
+                type_btn.forEach(element => {
+                    element.classList.remove("btn_active")
+                })
+                target_img[0].style.transform = "rotate(0deg)"
+                nav_bar_content_type_content_container.style.height = "0px"
+                type_content.forEach(element => {
+                    element.style.opacity = "0"
+                    element.style.pointerEvents = "none"
+                })
+
+            } else {
+                type_btn.forEach(element => {
+                    if(element.classList[2]) {
+                        element.classList.remove("btn_active")
+                    }
+                })
+                e.target.classList.add("btn_active")
+                let type_btn_arrow = document.querySelectorAll(".type_btn_arrow")
+                type_btn_arrow.forEach((e) => {
+                    e.style.transform = "rotate(0deg)";
+                })
+                target_img = e.target.getElementsByTagName('img');
+                type_content.forEach(element => {
+                    if (type_of_select == element.classList[1].split("_")[2]) {
+                        let active_div = document.querySelector(`.${element.classList[1]}`)
+                        active_div.style.display = "block"
+                        active_div.style.opacity = "1"
+                        active_div.style.pointerEvents = ""
+                    } else {
+                        element.style.display = "block"
+                        element.style.opacity = "0"
+                        element.style.pointerEvents = "none"
+                    }
+                })
+                target_img[0].style.transform = "rotate(-90deg)"
+                nav_bar_content_type_content_container.style.height = "120px"
+            }
+        })
+    })
 }
 
 // hover動畫改變背景顏色
@@ -238,6 +431,7 @@ function hover_style_change_bgc
         target.style.transition = "0.2s ease-out"
     })
     target.addEventListener('mouseleave', () => {
+        target.style.transition = "0.2s ease-out"
         target.style.backgroundColor = before_bgc
     })
 }

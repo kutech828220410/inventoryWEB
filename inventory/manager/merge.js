@@ -29,11 +29,11 @@ function merge_page_init(data) {
     const header_merge_select_select = document.createElement("select")
     header_merge_select_select.classList.add("header_merge_select_select")
     header_merge_select_select.innerHTML = `
-        <option value="1">不知道-1</option>
-        <option value="2">不知道-2</option>
-        <option value="3">不知道-3</option>
-        <option value="4">不知道-4</option>
-        <option value="5">不知道-5</option>
+        <option value="1">20231116-1</option>
+        <option value="2">20231114</option>
+        <option value="3">20231112-2</option>
+        <option value="4">20231110</option>
+        <option value="5">20231108</option>
     `
     header_merge_select_div.appendChild(header_merge_select_select)
 
