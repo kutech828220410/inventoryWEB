@@ -70,38 +70,40 @@ function popup_creatSelect_content_init()
     normal_CN.style.padding = '5px';
     for(var i = 0; i < popup_creatSelect_creat.Data.length; i++)
     {
-        const IC_SN = popup_creatSelect_creat.Data[i].IC_SN;
-        const IC_NAME = popup_creatSelect_creat.Data[i].IC_NAME;
-        const temp_button = document.createElement('button');
-        My_Div.Init(temp_button, `creatSelect_button_${IC_SN}`,`creatSelect_button_${IC_SN}`, '95%', '50px',);
-        My_Div.Set_Text(temp_button ,`${IC_NAME}` , TextAlignEnum.CENTER , "20px", true,"微軟正黑體","black");
-        temp_button.setAttribute("IC_SN",IC_SN);
-        temp_button.setAttribute("IC_NAME",IC_NAME);
-        
-        temp_button.style.marginTop = '2px';
-        temp_button.addEventListener('mouseover', function () 
-        {
-            temp_button.style.backgroundColor = 'lightgray'; // 或者您可以设置其他反白样式
-        });
-        temp_button.addEventListener('mouseout', function () 
-        {
-            temp_button.style.backgroundColor = ''; // 清除背景颜色以恢复默认样式
-        });
-        temp_button.addEventListener('click', async function () 
-        {
-            const IC_SN = this.getAttribute("IC_SN");
-            console.log("IC_SN",IC_SN);
-            sessionStorage.setItem('IC_SN', IC_SN);
-            for(var i = 0 ; i < popup_creatSelect_finishedEvent.length ; i++)
+        if(popup_creatSelect_creat["Data"][i].STATE != "鎖定"){
+            const IC_SN = popup_creatSelect_creat.Data[i].IC_SN;
+            const IC_NAME = popup_creatSelect_creat.Data[i].IC_NAME;
+            const temp_button = document.createElement('button');
+            My_Div.Init(temp_button, `creatSelect_button_${IC_SN}`,`creatSelect_button_${IC_SN}`, '95%', '50px',);
+            My_Div.Set_Text(temp_button ,`${IC_NAME}` , TextAlignEnum.CENTER , "20px", true,"微軟正黑體","black");
+            temp_button.setAttribute("IC_SN",IC_SN);
+            temp_button.setAttribute("IC_NAME",IC_NAME);
+            
+            temp_button.style.marginTop = '2px';
+            temp_button.addEventListener('mouseover', function () 
             {
-                if(typeof popup_creatSelect_finishedEvent[i] == "function") 
+                temp_button.style.backgroundColor = 'lightgray'; // 或者您可以设置其他反白样式
+            });
+            temp_button.addEventListener('mouseout', function () 
+            {
+                temp_button.style.backgroundColor = ''; // 清除背景颜色以恢复默认样式
+            });
+            temp_button.addEventListener('click', async function () 
+            {
+                const IC_SN = this.getAttribute("IC_SN");
+                console.log("IC_SN",IC_SN);
+                sessionStorage.setItem('IC_SN', IC_SN);
+                for(var i = 0 ; i < popup_creatSelect_finishedEvent.length ; i++)
                 {
-                    await popup_creatSelect_finishedEvent[i]();
+                    if(typeof popup_creatSelect_finishedEvent[i] == "function") 
+                    {
+                        await popup_creatSelect_finishedEvent[i]();
+                    }
                 }
-            }
-            popup_creatSelect_div.Close();
-        });
-        normal_CN.appendChild(temp_button);
+                popup_creatSelect_div.Close();
+            });
+            normal_CN.appendChild(temp_button);
+        }
     }
     // const quick_CN = document.createElement('div');
     // My_Div.Init(quick_CN, 'popup_creatSelect_quick_CN','popup_creatSelect_quick_CN', '100%', '', '');

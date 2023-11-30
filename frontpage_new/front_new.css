@@ -1,17 +1,18 @@
 .main_container {
     position: relative;
-    background-image: url(../frontpage/frontpage.png);
+    background-image: url(../frontpage/frontpage.jpg);
     width: 100vw;
     height: 100vh;
     background-size: auto;
-    background-position: right top;
+    background-size: cover;
+    background-position: right center;
     display: flex;
     justify-content: center;
 }
 .content {
     font-size: 3rem;
     line-height: 180px;
-    color: aliceblue;
+    color: rgb(0, 33, 62);
 }
 .under-line {
     position: fixed;

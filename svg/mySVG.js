@@ -319,16 +319,16 @@ function Get_barcode_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeCol
     if(clickOn == undefined) clickOn =true;
     if(clickOn)
     {
-      btn_div.addEventListener("mouseover", function() 
-      {
-          btn_div.style.backgroundColor = "";
-      });
+      // btn_div.addEventListener("mouseover", function() 
+      // {
+      //     btn_div.style.backgroundColor = "";
+      // });
       
-      // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() 
-      {
-        btn_div.style.backgroundColor = backgroundColor;
-      });
+      // // 滑鼠移出時的事件處理器
+      // btn_div.addEventListener("mouseout", function() 
+      // {
+      //   btn_div.style.backgroundColor = backgroundColor;
+      // });
     }
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -364,16 +364,16 @@ function Get_storagelocation_SVG(btn_width ,btn_height, svg_width, svg_height ,s
     if(clickOn == undefined) clickOn =true;
     if(clickOn)
     {
-      btn_div.addEventListener("mouseover", function() 
-      {
-          btn_div.style.backgroundColor = "";
-      });
+      // btn_div.addEventListener("mouseover", function() 
+      // {
+      //     btn_div.style.backgroundColor = "";
+      // });
       
-      // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() 
-      {
-        btn_div.style.backgroundColor = backgroundColor;
-      });
+      // // 滑鼠移出時的事件處理器
+      // btn_div.addEventListener("mouseout", function() 
+      // {
+      //   btn_div.style.backgroundColor = backgroundColor;
+      // });
     }
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -423,16 +423,16 @@ function Get_paper01_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeCol
     if(clickOn == undefined) clickOn =true;
     if(clickOn)
     {
-      btn_div.addEventListener("mouseover", function() 
-      {
-          btn_div.style.backgroundColor = "";
-      });
+      // btn_div.addEventListener("mouseover", function() 
+      // {
+      //     btn_div.style.backgroundColor = "";
+      // });
       
-      // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() 
-      {
-        btn_div.style.backgroundColor = backgroundColor;
-      });
+      // // 滑鼠移出時的事件處理器
+      // btn_div.addEventListener("mouseout", function() 
+      // {
+      //   btn_div.style.backgroundColor = backgroundColor;
+      // });
     }
   
     
@@ -465,16 +465,16 @@ function Get_logout_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColo
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() 
-    {
-      btn_div.style.backgroundColor = "";
-    });
+    // btn_div.addEventListener("mouseover", function() 
+    // {
+    //   btn_div.style.backgroundColor = "";
+    // });
   
-    // 滑鼠移出時的事件處理器
-    btn_div.addEventListener("mouseout", function() 
-    {
-      btn_div.style.backgroundColor = '';
-    });
+    // // 滑鼠移出時的事件處理器
+    // btn_div.addEventListener("mouseout", function() 
+    // {
+    //   btn_div.style.backgroundColor = '';
+    // });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -506,16 +506,16 @@ function Get_user_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor,
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() 
-    {
-      btn_div.style.backgroundColor = "";
-    });
+    // btn_div.addEventListener("mouseover", function() 
+    // {
+    //   btn_div.style.backgroundColor = "";
+    // });
   
-    // 滑鼠移出時的事件處理器
-    btn_div.addEventListener("mouseout", function() 
-    {
-      btn_div.style.backgroundColor = '';
-    });
+    // // 滑鼠移出時的事件處理器
+    // btn_div.addEventListener("mouseout", function() 
+    // {
+    //   btn_div.style.backgroundColor = '';
+    // });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -547,16 +547,16 @@ function Get_ward_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor,
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() 
-    {
-      btn_div.style.backgroundColor = "";
-    });
+    // btn_div.addEventListener("mouseover", function() 
+    // {
+    //   btn_div.style.backgroundColor = "";
+    // });
   
-    // 滑鼠移出時的事件處理器
-    btn_div.addEventListener("mouseout", function() 
-    {
-      btn_div.style.backgroundColor = '';
-    });
+    // // 滑鼠移出時的事件處理器
+    // btn_div.addEventListener("mouseout", function() 
+    // {
+    //   btn_div.style.backgroundColor = '';
+    // });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -588,16 +588,16 @@ function Get_storehouse_SVG(btn_width ,btn_height, svg_width, svg_height ,stroke
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() 
-    {
-      btn_div.style.backgroundColor = "";
-    });
+    // btn_div.addEventListener("mouseover", function() 
+    // {
+    //   btn_div.style.backgroundColor = "";
+    // });
   
-    // 滑鼠移出時的事件處理器
-    btn_div.addEventListener("mouseout", function() 
-    {
-      btn_div.style.backgroundColor = '';
-    });
+    // // 滑鼠移出時的事件處理器
+    // btn_div.addEventListener("mouseout", function() 
+    // {
+    //   btn_div.style.backgroundColor = '';
+    // });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -702,14 +702,14 @@ function Get_all_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, 
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() {
-        btn_div.style.backgroundColor = "";
-      });
+    // btn_div.addEventListener("mouseover", function() {
+    //     btn_div.style.backgroundColor = "";
+    //   });
     
-      // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() {
-        btn_div.style.backgroundColor = backgroundColor;
-      });
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() {
+    //     btn_div.style.backgroundColor = backgroundColor;
+    //   });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -742,16 +742,16 @@ function Get_next_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor,
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() 
-    {
-      btn_div.style.backgroundColor = "";
-    });
+    // btn_div.addEventListener("mouseover", function() 
+    // {
+    //   btn_div.style.backgroundColor = "";
+    // });
   
-    // 滑鼠移出時的事件處理器
-    btn_div.addEventListener("mouseout", function() 
-    {
-      btn_div.style.backgroundColor = '';
-    });
+    // // 滑鼠移出時的事件處理器
+    // btn_div.addEventListener("mouseout", function() 
+    // {
+    //   btn_div.style.backgroundColor = '';
+    // });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -784,16 +784,16 @@ function Get_previous_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeCo
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() 
-    {
-      btn_div.style.backgroundColor = "";
-    });
+    // btn_div.addEventListener("mouseover", function() 
+    // {
+    //   btn_div.style.backgroundColor = "";
+    // });
   
-    // 滑鼠移出時的事件處理器
-    btn_div.addEventListener("mouseout", function()
-    {
-       btn_div.style.backgroundColor = '';
-    });
+    // // 滑鼠移出時的事件處理器
+    // btn_div.addEventListener("mouseout", function()
+    // {
+    //    btn_div.style.backgroundColor = '';
+    // });
  
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -841,14 +841,14 @@ function Get_confirm_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeCol
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() {
-        btn_div.style.backgroundColor = "";
-      });
+    // btn_div.addEventListener("mouseover", function() {
+    //     btn_div.style.backgroundColor = "";
+    //   });
     
-      // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() {
-        btn_div.style.backgroundColor = '';
-      });
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() {
+    //     btn_div.style.backgroundColor = '';
+    //   });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -881,14 +881,14 @@ function Get_undo_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor,
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() {
-        btn_div.style.backgroundColor = "";
-      });
+    // btn_div.addEventListener("mouseover", function() {
+    //     btn_div.style.backgroundColor = "";
+    //   });
     
-      // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() {
-        btn_div.style.backgroundColor = '';
-      });
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() {
+    //     btn_div.style.backgroundColor = '';
+    //   });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -919,14 +919,14 @@ function Get_pill_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor,
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() {
-        btn_div.style.backgroundColor = "";
-      });
+    // btn_div.addEventListener("mouseover", function() {
+    //     btn_div.style.backgroundColor = "";
+    //   });
     
-      // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() {
-        btn_div.style.backgroundColor = backgroundColor;
-      });
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() {
+    //     btn_div.style.backgroundColor = backgroundColor;
+    //   });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -959,14 +959,14 @@ function Get_find_check_SVG(btn_width ,btn_height, svg_width, svg_height ,stroke
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() {
-        btn_div.style.backgroundColor = "";
-      });
+    // btn_div.addEventListener("mouseover", function() {
+    //     btn_div.style.backgroundColor = "";
+    //   });
     
-      // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() {
-        btn_div.style.backgroundColor = backgroundColor;
-      });
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() {
+    //     btn_div.style.backgroundColor = backgroundColor;
+    //   });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -999,14 +999,14 @@ function Get_date_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor,
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() {
-        btn_div.style.backgroundColor = "";
-      });
+    // btn_div.addEventListener("mouseover", function() {
+    //     btn_div.style.backgroundColor = "";
+    //   });
     
-      // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() {
-        btn_div.style.backgroundColor = backgroundColor;
-      });
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() {
+    //     btn_div.style.backgroundColor = backgroundColor;
+    //   });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -1053,14 +1053,14 @@ function Get_script_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColo
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() {
-        btn_div.style.backgroundColor = "";
-      });
+    // btn_div.addEventListener("mouseover", function() {
+    //     btn_div.style.backgroundColor = "";
+    //   });
     
-      // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() {
-        btn_div.style.backgroundColor = backgroundColor;
-      });
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() {
+    //     btn_div.style.backgroundColor = backgroundColor;
+    //   });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -1102,14 +1102,14 @@ function Get_find_in_page_SVG(btn_width ,btn_height, svg_width, svg_height ,stro
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() {
-        btn_div.style.backgroundColor = "";
-      });
+    // btn_div.addEventListener("mouseover", function() {
+    //     btn_div.style.backgroundColor = "";
+    //   });
     
-      // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() {
-        btn_div.style.backgroundColor = backgroundColor;
-      });
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() {
+    //     btn_div.style.backgroundColor = backgroundColor;
+    //   });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -1154,14 +1154,14 @@ function Get_add_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor, 
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() {
-        btn_div.style.backgroundColor = "";
-      });
+    // btn_div.addEventListener("mouseover", function() {
+    //     btn_div.style.backgroundColor = "";
+    //   });
     
-      // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() {
-        btn_div.style.backgroundColor = backgroundColor;
-      });
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() {
+    //     btn_div.style.backgroundColor = backgroundColor;
+    //   });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -1249,14 +1249,14 @@ function Get_lock_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColor,
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() {
-        btn_div.style.backgroundColor = "";
-      });
+    // btn_div.addEventListener("mouseover", function() {
+    //     btn_div.style.backgroundColor = "";
+    //   });
     
-      // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() {
-        btn_div.style.backgroundColor = backgroundColor;
-      });
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() {
+    //     btn_div.style.backgroundColor = backgroundColor;
+    //   });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -1296,14 +1296,14 @@ function Get_unlock_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColo
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() {
-        btn_div.style.backgroundColor = "";
-      });
+    // btn_div.addEventListener("mouseover", function() {
+    //     btn_div.style.backgroundColor = "";
+    //   });
     
-      // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() {
-        btn_div.style.backgroundColor = backgroundColor;
-      });
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() {
+    //     btn_div.style.backgroundColor = backgroundColor;
+    //   });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -1341,16 +1341,16 @@ function Get_right_direction_SVG(btn_width ,btn_height, svg_width, svg_height ,s
     if(clickOn == undefined) clickOn =true;
     if(clickOn)
     {
-      btn_div.addEventListener("mouseover", function() 
-      {
-          btn_div.style.backgroundColor = "";
-      });
+      // btn_div.addEventListener("mouseover", function() 
+      // {
+      //     btn_div.style.backgroundColor = "";
+      // });
       
-      // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() 
-      {
-        btn_div.style.backgroundColor = backgroundColor;
-      });
+      // // 滑鼠移出時的事件處理器
+      // btn_div.addEventListener("mouseout", function() 
+      // {
+      //   btn_div.style.backgroundColor = backgroundColor;
+      // });
     }
   
     
@@ -1389,14 +1389,14 @@ function Get_download_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeCo
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() {
-        btn_div.style.backgroundColor = "";
-      });
+    // btn_div.addEventListener("mouseover", function() {
+    //     btn_div.style.backgroundColor = "";
+    //   });
     
-      // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() {
-        btn_div.style.backgroundColor = backgroundColor;
-      });
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() {
+    //     btn_div.style.backgroundColor = backgroundColor;
+    //   });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -1433,14 +1433,14 @@ function Get_upload_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeColo
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() {
-        btn_div.style.backgroundColor = "";
-      });
+    // btn_div.addEventListener("mouseover", function() {
+    //     btn_div.style.backgroundColor = "";
+    //   });
     
-      // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() {
-        btn_div.style.backgroundColor = backgroundColor;
-      });
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() {
+    //     btn_div.style.backgroundColor = backgroundColor;
+    //   });
     
     div.appendChild(svg);
     btn_div.appendChild(div);
@@ -1510,14 +1510,14 @@ function Get_trashBox_SVG(btn_width ,btn_height, svg_width, svg_height ,strokeCo
     div.style.alignItems = "center";
     div.style.margin = "auto";   
     btn_div.style.backgroundColor = backgroundColor;
-    btn_div.addEventListener("mouseover", function() {
-        btn_div.style.backgroundColor = "";
-      });
+    // btn_div.addEventListener("mouseover", function() {
+    //     btn_div.style.backgroundColor = "";
+    //   });
     
-      // 滑鼠移出時的事件處理器
-      btn_div.addEventListener("mouseout", function() {
-        btn_div.style.backgroundColor = backgroundColor;
-      });
+    //   // 滑鼠移出時的事件處理器
+    //   btn_div.addEventListener("mouseout", function() {
+    //     btn_div.style.backgroundColor = backgroundColor;
+    //   });
     
     div.appendChild(svg);
     btn_div.appendChild(div);

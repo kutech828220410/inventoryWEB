@@ -106,6 +106,7 @@ function merge_page_init(data) {
             <th class="merge_display_table_thead_3">單號</th>
             <th class="merge_display_table_thead_4">名稱</th>
             <th class="merge_display_table_thead_5"></th>
+            <th class="merge_display_table_thead_6"></th>
         </tr>
     `
 
@@ -114,7 +115,7 @@ function merge_page_init(data) {
     merge_display_table_container.appendChild(merge_display_table_tbody)
     merge_display_table_tbody.innerHTML = `
         <tr>
-            <td class="" colspan="5">請先選擇合併單</td>
+            <td class="" colspan="6">請先選擇合併單</td>
         </tr>
     `
     merge_display_table_tbody.innerHTML = `
@@ -123,6 +124,33 @@ function merge_page_init(data) {
             <td class="">盤點單</td>
             <td class="">B886</td>
             <td class="">季盤點</td>
+            <td>
+                <div class="merge_display_button">匯出</div>
+            </td>
+            <td class="">
+                <div class="merge_delete_button">刪除</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="">2</td>
+            <td class="">盤點單</td>
+            <td class="">C9527</td>
+            <td class="">20231116-1</td>
+            <td>
+                <div class="merge_display_button">匯出</div>
+            </td>
+            <td class="">
+                <div class="merge_delete_button">刪除</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="">3</td>
+            <td class="">消耗單</td>
+            <td class="">A996</td>
+            <td class="">20231119</td>
+            <td>
+                <div class="merge_display_button">匯出</div>
+            </td>
             <td class="">
                 <div class="merge_delete_button">刪除</div>
             </td>
@@ -141,7 +169,7 @@ function merge_page_init(data) {
     foot_left_button.classList.add("foot_left_button")
     foot_left_button.classList.add("button_style")
     foot_left_button.innerHTML = "完成定盤"
-    merge_display_foot_left_div.appendChild(foot_left_button)
+    // merge_display_foot_left_div.appendChild(foot_left_button)
 
     const merge_display_foot_right_div = document.createElement("div")
     merge_display_foot_right_div.classList.add("merge_display_foot_right_div")
@@ -151,12 +179,12 @@ function merge_page_init(data) {
     foot_right_button_1.classList.add("foot_right_button_1")
     foot_right_button_1.classList.add("button_style")
     foot_right_button_1.innerHTML = "創建覆盤單"
-    merge_display_foot_right_div.appendChild(foot_right_button_1)
+    // merge_display_foot_right_div.appendChild(foot_right_button_1)
 
     const foot_right_button_2 = document.createElement("div")
     foot_right_button_2.classList.add("foot_right_button_2")
     foot_right_button_2.classList.add("button_style")
-    foot_right_button_2.innerHTML = "匯出"
+    foot_right_button_2.innerHTML = "合併單匯出"
     merge_display_foot_right_div.appendChild(foot_right_button_2)
 
 

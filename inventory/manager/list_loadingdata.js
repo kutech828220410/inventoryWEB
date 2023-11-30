@@ -29,7 +29,8 @@ function creat_row_div(_index , item)
     My_Div.Init(formnnum_div,`formnnum_div${_index}`,'formnnum_div', '100%','100%','');
     My_Div.Set_Text(formnnum_div ,`編號 : ${_index + 1}` , TextAlignEnum.LEFT , "16px", true ,"微軟正黑體","black");
     formnnum_div.setAttribute("_index",_index);
-    formnnum_div.style.background ="linear-gradient(90deg, rgba(136,136,136,1) 0%, rgba(255,255,255,0.6797093837535014) 34%, rgba(255,255,255,0.31556372549019607) 100%)";
+    formnnum_div.style.background ="rgb(107, 107, 99)";
+    formnnum_div.style.color ="rgb(246, 247, 247)";
     formnnum_div.style.borderRadius = "5px";
     formnnum_div.style.marginLeft = "5px";
     formnnum_div.style.paddingLeft = "5px";

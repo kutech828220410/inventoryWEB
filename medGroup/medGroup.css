@@ -26,9 +26,9 @@
 .new_group_creat_button {
     cursor: pointer;
     padding: 4px 24px;
-    color: rgb(217, 223, 228);
-    background-color: rgb(5, 55, 99);
-    border: 1px solid rgb(10, 100, 178);
+    color: #F6F7F7;
+    background-color: #6B6B63;
+    border: 1px solid black;
     border-radius: 5px;
     font-size: 1.2rem;
     font-weight: 600;
@@ -37,8 +37,8 @@
 }
 .new_group_creat_button:hover {
     color: rgb(35, 35, 35);
-    background-color: rgb(15, 184, 240);
-    border: 1px solid rgb(5, 55, 99);
+    background-color: black;
+    border: 1px solid #F6F7F7;
     transition: 0.2s ease-out;
 }
 .banned_to_use {
@@ -51,7 +51,7 @@
     padding: 12px 40px;
     max-width: 760px;
     margin: auto;
-    background-color: #f1deb0;
+    background-color:#F6F7F7;
     border: 2px solid #7f5e0a;
     border-radius: 5px;
     position: relative;
@@ -89,21 +89,21 @@
 .gm_content_med_search_button {
     text-align: center;
     border-radius: 5px;
-    border: 1px solid rgb(3, 33, 43);
-    background-color: rgb(1, 110, 146);
     font-size: 1.2rem;
-    color: #ffffff;
     font-weight: 600;
     padding: 2px 20px;
     cursor: pointer;
     transition: 0.2s ease-out;
+    color: #F6F7F7;
+    background-color: #6B6B63;
+    border: 1px solid black;
 }
 .gm_content_med_search_button {
     min-width: 80px;
 }
 .gm_content_med_select_show_button:hover,
 .gm_content_med_search_button:hover {
-    background-color: rgb(37, 190, 241);
+    background-color: lightgray;
     color: #000000;
     transition: 0.2s ease-out;
 }
@@ -164,7 +164,7 @@
     color: whitesmoke;
     font-size: 1.2rem;
     font-weight: 600;
-    background-color: #3f86c9;
+    background-color: #6B6B63;
     border: 1px solid #dedede;
 }
 .th_1 {
@@ -194,15 +194,15 @@
     width: 120px;
     text-align: center;
     cursor: pointer;
-    background-color: rgb(1, 110, 146);
-    color: #dedede;
+    background-color: lightgray;
+    color: black;
     margin: 6px 16px;
     padding: 4px 16px;
 }
 .gm_content_med_display_tbody > tr {
     padding: 4px 0px;
     font-weight: 600;
-    background-color: #aeb8d4;
+    background-color: #FFF;
 }
 .gm_content_med_display_tbody > tr > td {
     border: 1px solid #dedede;
@@ -219,7 +219,7 @@
     text-align: left;
 }
 .cardinality_item {
-    background-color: #b2d0ed !important;
+    background-color: lightgray !important;
 }
 .gm_content_med_quantity_save_container{
     width: 100%;
@@ -232,7 +232,7 @@
     font-weight: 600;
 }
 .gm_content_med_display_tfoot > tr {
-    background-color: #aeb8d4;
+    background-color: dimgray;
     width: 100%;
 }
 .gm_content_med_display_tfoot > tr > td > div {
@@ -253,11 +253,11 @@
     padding: 4px;
     cursor: pointer;
     border-radius: 5px;
-    background-color: rgb(18, 160, 207);
+    background-color: lightgray;
     transition: 0.2s ease;
 }
 .med_display_page_control_style:hover {
-    background-color: rgb(40, 190, 240);
+    background-color: gray;
     transition: 0.2s ease;
 }
 .med_display_page_control_style > img {

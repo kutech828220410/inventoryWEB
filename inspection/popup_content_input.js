@@ -124,6 +124,7 @@ function get_popup_input()
 }
 function edit_title_popup_input(Content)
 {
+    console.log(Content);
     const med_CODE_text = document.querySelector('#med_CODE_text_popup_input');
     med_CODE_text.innerText = `藥碼 : ${Content.CODE}`;
     const med_SKDIACODE_text = document.querySelector('#med_SKDIACODE_text_popup_input');

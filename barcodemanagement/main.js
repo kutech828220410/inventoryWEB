@@ -138,7 +138,7 @@ function get_header()
   My_Div.Init(header_div, 'header_div','header_div', '100%', '70px', '');
   My_Div.Set_Block(header_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
   My_Div.Set_position(header_div ,PositionEnum.FIXED ,0,0);
-  header_div.style.background = "linear-gradient(90deg, rgba(186, 185, 208, 1) 0%, rgba(235, 235, 235, 1) 100%)";
+  // header_div.style.background = "linear-gradient(90deg, rgba(186, 185, 208, 1) 0%, rgba(235, 235, 235, 1) 100%)";
   header_div.style.overflowX = "hidden";
  
 
@@ -150,7 +150,6 @@ function get_header()
   const header_title_text = document.createElement('div');
   My_Div.Init(header_title_text, 'header_title_text','header_title_text', '100%', '50%', '');
   My_Div.Set_Text(header_title_text ,"條碼建置" , TextAlignEnum.LEFT , "24px", true,"微軟正黑體","");
-  header_title_text.className = "h1";
   header_title_text.id = "header_title_text";
   header_title_text.style.marginLeft = "20px";
   header_title_text.style.marginTop = "5repx";
@@ -179,15 +178,16 @@ function get_header()
   header_contorls_allsvg.style.marginRight = "3px";
   header_contorls_allsvg.style.borderRadius = "3px";
   header_contorls_allsvg.onclick = allsvg_Click;
-  header_contorls_div.appendChild(header_contorls_allsvg);  
+  // header_contorls_div.appendChild(header_contorls_allsvg);  
 
-  const header_contorls_findsvg = Get_find_in_page_SVG("100%", "100%", "70%","100%","black","");
+  const header_contorls_findsvg = Get_find_in_page_SVG("100%", "100%", "70%","100%","rgb(246, 247, 247)","");
   My_Div.Init(header_contorls_findsvg, 'header_contorls_findsvg','header_contorls_findsvg', '60px', '80%', '');
   My_Div.Set_Block(header_contorls_findsvg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
+  header_contorls_findsvg.style.backgroundColor = "dimgray";
   header_contorls_findsvg.style.border = "1px solid black";
   header_contorls_findsvg.onclick = findsvg_Click;
   header_contorls_findsvg.style.marginRight = "3px";
-  header_contorls_findsvg.style.borderRadius = "3px";
+  header_contorls_findsvg.style.borderRadius = "5px";
   header_contorls_div.appendChild(header_contorls_findsvg);
 
   const header_contorls_donesvg = Get_find_check_SVG("100%", "100%", "70%","100%","black","");
@@ -203,7 +203,8 @@ function get_header()
   My_Div.Init(herader_view_div, 'herader_view_div','herader_view_div', '100%', '40px', '');
   My_Div.Set_Block(herader_view_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
   My_Div.Set_position(herader_view_div ,PositionEnum.FIXED ,0,70);
-  herader_view_div.style.background = "linear-gradient(90deg, rgba(186, 185, 208, 1) 0%, rgba(235, 235, 235, 1) 100%)";
+  herader_view_div.style.backgroundColor = "#6B6B63";
+  herader_view_div.style.color = "#F6F7F7";
   herader_view_div.style.overflowX = "hidden";
   herader_view_div.style.overflowY = "hidden";
   herader_view_div.style.borderTop = "1px solid black";

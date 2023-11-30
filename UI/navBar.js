@@ -15,6 +15,11 @@ function nav_bar_create(html_page, user_data) {
             html_name: "medGroup",
             html_ctName: "藥品管理",
             html_url: "../../medGroup"
+        },
+        {
+            html_name: "forDisplay",
+            html_ctName: "揀貨",
+            html_url: "../../for_display_demo_page"
         }
     ]
 
@@ -68,13 +73,14 @@ function nav_bar_create(html_page, user_data) {
     nav_bar_tigger_container.classList.add('nav_bar_tigger_container')
 
     nav_bar_tigger_container.style.display = "flex"
+    nav_bar_tigger_container.style.backgroundColor = "#F6F7F7"
     nav_bar_tigger_container.style.flexDirection = "column"
     nav_bar_tigger_container.style.width = "42px"
     nav_bar_tigger_container.style.height = "42px"
     nav_bar_tigger_container.style.justifyContent = "space-evenly"
     nav_bar_tigger_container.style.alignItems = "center"
     nav_bar_tigger_container.style.padding = "2px 0px"
-    nav_bar_tigger_container.style.border = "1px solid #1f1f1f"
+    nav_bar_tigger_container.style.border = "1px solid #030501"
     nav_bar_tigger_container.style.borderRadius = "5px"
     nav_bar_tigger_container.style.position = "absolute"
     nav_bar_tigger_container.style.top = "12px"
@@ -83,15 +89,15 @@ function nav_bar_create(html_page, user_data) {
     nav_bar_tigger_container.style.transition = "0.2s ease-out"
     nav_bar_tigger_container.style.zIndex = '1'
     nav_bar_tigger_container.style.opacity = 1
-    hover_style_change_bgc(nav_bar_tigger_container, "transparent", "#bcbcbc")
+    hover_style_change_bgc(nav_bar_tigger_container, "#F6F7F7", "#6B6B63")
 
     nav_bar_tigger_container.appendChild(nav_line_1)
     nav_bar_tigger_container.appendChild(nav_line_2)
     nav_bar_tigger_container.appendChild(nav_line_3)
 
-    nav_line_1.style.backgroundColor = "#1f1f1f"
-    nav_line_2.style.backgroundColor = "#1f1f1f"
-    nav_line_3.style.backgroundColor = "#1f1f1f"
+    nav_line_1.style.backgroundColor = "#030501"
+    nav_line_2.style.backgroundColor = "#030501"
+    nav_line_3.style.backgroundColor = "#030501"
     
     nav_line_1.style.width = '32px'
     nav_line_2.style.width = '32px'
@@ -234,7 +240,8 @@ function nav_bar_create(html_page, user_data) {
         if (element.html_name == html_page) {
             nav_bar_content.innerHTML += `
                 <div class="${element.html_name + "_class"}"                
-                    style="background-color: rgb(126, 179, 225);
+                    style="background-color: #030501;
+                    color: #F6F7F7;
                     border: 2px solid rgb(7, 50, 87);
                     border-radius: 5px;
                     font-size: 1.2rem;
@@ -250,9 +257,9 @@ function nav_bar_create(html_page, user_data) {
             nav_bar_content.innerHTML += `
             <a class="${element.html_name + "_class"}"
                     style="display: block;
-                    background-color: rgb(5, 55, 99);
-                    color: rgb(217, 223, 228);
-                    border: 2px solid rgb(10, 100, 178);
+                    background-color: #6B6B63;
+                    color: #F6F7F7;
+                    border: 2px solid #030501;
                     border-radius: 5px;
                     font-size: 1.2rem;
                     text-align: center;
@@ -333,12 +340,15 @@ function nav_bar_create(html_page, user_data) {
             if (e.html_name == html_page) {
                 type_content.innerHTML += `
                     <div class="${e.html_name + "_class"}"                
-                        style="background-color: rgb(126, 179, 225);
+                        style="background-color: #030501;
+                        color: #F6F7F7;
                         border: 2px solid rgb(7, 50, 87);
                         border-radius: 5px;
+                        font-size: 1rem;
                         text-align: center;
-                        padding: 0px 0px 0px 6px;
-                        margin: 8px 0px;
+                        padding: 6px;
+                        margin: 12px 2px;
+                        font-weight: 600;
                     ">
                     ${e.html_ctName}
                     </div>
@@ -347,14 +357,15 @@ function nav_bar_create(html_page, user_data) {
                 type_content.innerHTML += `
                 <a class="${e.html_name + "_class"}"
                         style="display: block;
-                        background-color: rgb(5, 55, 99);
-                        color: rgb(217, 223, 228);
-                        border: 2px solid rgb(10, 100, 178);
+                        background-color: #6B6B63;
+                        color: #F6F7F7;
+                        border: 2px solid #030501;
                         border-radius: 5px;
+                        font-size: 1rem;
                         text-align: center;
-                        cursor: pointer;
-                        padding: 0px 0px 0px 6px;
-                        margin: 8px 0px;
+                        padding: 6px;
+                        margin: 12px 2px;
+                        font-weight: 600;
                         text-decoration: none;"
                     href="${e.html_url}">
                 ${e.html_ctName}

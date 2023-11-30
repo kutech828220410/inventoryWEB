@@ -121,8 +121,12 @@
               if(popup_input_div_Content.GUID == jsonObject.Data.GUID) show_popup_input(jsonObject.Data);                     
           }
      
-       }
-       
+       } 
+    } else if (jsonObject.Method == 'creat_lock_by_IC_SN') {
+      if (jsonObject.Data.IC_SN == data['Data'][0].IC_SN) {
+        alert(`此驗收單已被鎖定，即將退出${data['Data'][0].IC_NAME}驗收單`);
+        popup_creatSelect_div.Show();
+      }
     }
   };
   ChathubErrorEvent = ChathubError;

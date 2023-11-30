@@ -98,7 +98,7 @@ function get_header()
   const header_div = document.createElement('div');
   My_Div.Init(header_div, 'header_div','header_div', '100%', '70px', '');
   My_Div.Set_Block(header_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
-  header_div.style.background = "linear-gradient(90deg, rgba(186, 185, 208, 1) 0%, rgba(235, 235, 235, 1) 100%)";
+  // header_div.style.background = "linear-gradient(90deg, rgba(186, 185, 208, 1) 0%, rgba(235, 235, 235, 1) 100%)";
   header_div.style.overflowX = "hidden";
 
 
@@ -110,7 +110,6 @@ function get_header()
   const header_title_text = document.createElement('div');
   My_Div.Init(header_title_text, 'header_title_text','header_title_text', '100%', '50%', '');
   My_Div.Set_Text(header_title_text ,"驗收單號" , TextAlignEnum.LEFT , "24px", true,"微軟正黑體","");
-  header_title_text.className = "h1";
   header_title_text.id = "header_title_text";
   header_title_text.style.marginLeft = "20px";
   header_title_text.style.marginTop = "5px";
@@ -133,30 +132,31 @@ function get_header()
   My_Div.Set_Block(header_contorls_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
   header_contorls_div.style.paddingRight = "5px";
 
-  const header_contorls_findsvg = Get_find_in_page_SVG("100%", "100%", "70%","100%","black","");
+  const header_contorls_findsvg = Get_find_in_page_SVG("100%", "100%", "70%","100%","#F6F7F7","");
   My_Div.Init(header_contorls_findsvg, 'header_contorls_findsvg','header_contorls_findsvg', '60px', '80%', '');
   My_Div.Set_Block(header_contorls_findsvg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
-  header_contorls_findsvg.style.border = "1px solid black";
+  header_contorls_findsvg.style.backgroundColor = "dimgray";
   header_contorls_findsvg.onclick = header_findsvg_Click;
   header_contorls_findsvg.style.marginRight = "3px";
-  header_contorls_findsvg.style.borderRadius = "3px";
+  header_contorls_findsvg.style.borderRadius = "5px";
   header_contorls_div.appendChild(header_contorls_findsvg);
 
-  const header_contorls_addsvg = Get_add_SVG("100%", "100%", "70%","100%","black","");
+  const header_contorls_addsvg = Get_add_SVG("100%", "100%", "70%","100%","#F6F7F7","");
   My_Div.Init(header_contorls_addsvg, 'header_contorls_addsvg','header_contorls_addsvg', '60px', '80%', '');
   My_Div.Set_Block(header_contorls_addsvg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
-  header_contorls_addsvg.style.border = "1px solid black";
+  header_contorls_addsvg.style.backgroundColor = "dimgray";
   header_contorls_addsvg.style.marginRight = "3px";
-  header_contorls_addsvg.style.borderRadius = "3px";
+  header_contorls_addsvg.style.borderRadius = "5px";
   header_contorls_addsvg.onclick = header_addsvg_Click;
   header_contorls_div.appendChild(header_contorls_addsvg);  
 
-  const header_contorls_uploadsvg = Get_upload_SVG("100%", "100%", "90%","100%","black","");
+  const header_contorls_uploadsvg = Get_upload_SVG("100%", "100%", "90%","100%","#F6F7F7","");
   My_Div.Init(header_contorls_uploadsvg, 'header_contorls_uploadsvg','header_contorls_uploadsvg', '60px', '80%', '');
   My_Div.Set_Block(header_contorls_uploadsvg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
-  header_contorls_uploadsvg.style.border = "1px solid black";
+  header_contorls_uploadsvg.style.backgroundColor = "dimgray";
   header_contorls_uploadsvg.style.marginRight = "3px";
-  header_contorls_uploadsvg.style.borderRadius = "3px";
+  header_contorls_uploadsvg.style.borderRadius = "5px";
+  header_contorls_uploadsvg.style.border = "1px solid #fff";
   header_contorls_uploadsvg.onclick = header_uploadsvg_Click;
   header_contorls_div.appendChild(header_contorls_uploadsvg);  
 

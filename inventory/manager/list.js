@@ -1,4 +1,5 @@
 let data;
+let merge_data;
 window.onload = load;
 
 async function load() 
@@ -98,7 +99,7 @@ function current_function_trgger(div_array, target) {
           break;
 
       case "合併":
-          merge_page_init(data)
+          merge_page_init(merge_data)
           break;
 
       default:
@@ -194,7 +195,7 @@ function get_header()
   const header_div = document.createElement('div');
   My_Div.Init(header_div, 'header_div','header_div', '100%', '70px', '');
   My_Div.Set_Block(header_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  header_div.style.background = "linear-gradient(90deg, rgba(186, 185, 208, 1) 0%, rgba(235, 235, 235, 1) 100%)";
+  // header_div.style.background = "linear-gradient(90deg, rgba(186, 185, 208, 1) 0%, rgba(235, 235, 235, 1) 100%)";
   header_div.style.overflowX = "hidden";
 
 
