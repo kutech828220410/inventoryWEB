@@ -608,8 +608,8 @@ function get_row(Sub_Content)
 }
 async function set_light_on(barcode) {
   let data_str = barcode;
-  // 加入綠色燈條件
-  data_str += `,0,255,0`;
+  // 加入綠色燈條件,字串最後一個單位為亮燈秒數(1為恆亮)
+  data_str += `,0,255,0,60000`;
   
   await fetch(`${api_ip}api/OutTakeMed/light_on`, {
       method: "POST",
