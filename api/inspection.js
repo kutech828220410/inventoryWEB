@@ -472,7 +472,7 @@ async function sub_contents_delete_by_GUID(_GUID, Master_GUID)
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
   return response;
 }
-async function download_excel_by_IC_SN(IC_SN)
+async function download_excel_by_IC_SN(IC_SN, API_inspection_excel_download)
 {
   const post_data = 
   {
@@ -487,8 +487,8 @@ async function download_excel_by_IC_SN(IC_SN)
     "TableName" : "",
     "TimeTaken": ""
   };
-  var _url = `${inspection_url}/download_excel_by_IC_SN`;
+  var _url = `${API_inspection_excel_download}`;
   console.log(`Url [${arguments.callee.name}]` , _url);
   console.log(`Post_data [${arguments.callee.name}]`,post_data);
-  await downloadExcel(_url,post_data, `${IC_SN}_盤點管理`);
+  await downloadExcel(_url,post_data, `${IC_SN}_驗收管理`);
 }

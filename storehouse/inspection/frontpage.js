@@ -12,11 +12,15 @@ async function load()
   const API01 = serch_APIServer(ServerName,ServerType,"API01");
   const API02 = serch_APIServer(ServerName,ServerType,"API02");
   const API_inspection_excel = serch_APIServer(ServerName,ServerType,"API_inspection_excel");
+  const API_inspection_excel_upload = serch_APIServer(ServerName,ServerType,"API_inspection_excel_upload");
+  const API_inspection_excel_download = serch_APIServer(ServerName,ServerType,"API_inspection_excel_download");
   
 
   console.log("API01",API01);
   console.log("API02",API02);
   console.log("API_inspection_excel",API_inspection_excel);
+  console.log("API_inspection_excel_upload",API_inspection_excel_upload);
+  console.log("API_inspection_excel_download",API_inspection_excel_download);
   if(API_inspection_excel.length > 0) inspection_excel_url = API_inspection_excel[0].server;
   else inspection_excel_url = `${server,API01[0].server}/api/inspection/excel_upload`;
   check_ip(API01[0].server,API02[0].server);

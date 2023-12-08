@@ -473,7 +473,7 @@ async function device_light(Color, device_basic)
   return response;
 }
 
-async function excel_upload(file, IC_NAME, PON, CT ) 
+async function excel_upload(file, IC_NAME, PON, CT , API_inspection_excel_upload) 
 {
 
   const formData = new FormData();
@@ -481,10 +481,10 @@ async function excel_upload(file, IC_NAME, PON, CT )
   formData.append('IC_NAME', IC_NAME);
   formData.append('PON', PON);
   formData.append('CT', CT);
-  console.log("excel_upload" , `${inspection_url}/excel_upload`);
+  console.log("excel_upload" , `${API_inspection_excel_upload}`);
   console.log("post_data [excel_upload]",formData);
   try {
-    const response = await fetch(`${inspection_url}/excel_upload`, {
+    const response = await fetch(`${API_inspection_excel_upload}`, {
       method: 'POST',
       body: formData
     });

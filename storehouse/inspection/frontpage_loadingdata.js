@@ -212,7 +212,7 @@ async function downloadbtn_Click(event)
   const confirmResult = confirm(`確定下載驗收單 [${IC_SN}]?`);
   if (!confirmResult) return;
   Set_main_div_enable(true);
-  await download_excel_by_IC_SN(IC_SN);
+  await download_excel_by_IC_SN(IC_SN, API_inspection_excel_download);
   Set_main_div_enable(false);
 }
 async function lockbtn_Click(event) 
