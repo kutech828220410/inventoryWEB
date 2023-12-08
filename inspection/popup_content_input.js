@@ -139,7 +139,7 @@ function edit_title_popup_input(Content)
     }
     else
     {
-        med_SKDIACODE_text.innerText = `料號 : ${temp_med_data[`${Content.CODE}`]}`;
+        med_SKDIACODE_text.innerText = `料號 : ${temp_med_data[`${Content.CODE}`].SKDIACODE}`;
     }
     const med_eng_name_text = document.querySelector('#med_eng_name_text_popup_input');
     if(Content.NAME != null)med_eng_name_text.innerText = `(英) : ${temp_med_data[`${Content.CODE}`].NAME}`;
@@ -353,7 +353,7 @@ function get_underline_popup_input()
     My_Div.Set_Block(underline_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
     underline_div.style.alignItems = "center";
 
-    // 新增批號、期效input欄位
+    // 新增批號、效期input欄位
     const batch_deadline_div = document.createElement("div")
     batch_deadline_div.classList.add("batch_deadline_div")
     batch_deadline_div.style.width = "100%"
@@ -375,7 +375,7 @@ function get_underline_popup_input()
     deadline_input.style.borderRadius = "5px";
     deadline_input.style.display = "block";
     deadline_input.style.margin = "0px auto 6px";
-    deadline_input.placeholder = "請輸入期效";
+    deadline_input.placeholder = "請輸入效期";
     deadline_input.type = "email";
     deadline_input.inputMode = "latin";
 
@@ -664,7 +664,7 @@ function get_block_popup_input(Sub_content)
     
     const block1_deadline_text_input = document.createElement('div');
     My_Div.Init(block1_deadline_text_input, 'block1_deadline_text_input','block1_deadline_text_input', '100%',"" , '');
-    My_Div.Set_Text(block1_deadline_text_input, `期效 : ${Sub_content.VAL.split(' ')[0]}`, TextAlignEnum.LEFT, "14px", true,"微軟正黑體","black" );
+    My_Div.Set_Text(block1_deadline_text_input, `效期 : ${Sub_content.VAL.split(' ')[0]}`, TextAlignEnum.LEFT, "14px", true,"微軟正黑體","black" );
     block1.appendChild(block1_deadline_text_input);
 
     M_block.appendChild(block1);
