@@ -149,6 +149,7 @@ async function init()
 
     await page_Init(data);
     hideLoadingPopup();
+    light_all_on_trigger_func(data);
 }
 async function page_Init(data) 
 {
@@ -403,9 +404,16 @@ function get_header()
         location.reload();
     }
   });
+
+  const light_all_on_trigger = document.createElement("button");
+  light_all_on_trigger.classList.add("control_btn");
+  My_Div.Init(light_all_on_trigger, 'control_btn','light_all_on_trigger', '', '40px', '');
+  My_Div.Set_Text(light_all_on_trigger ,"全部亮燈" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","white");
+
  
   header_controls.appendChild(header_logout);
   header_controls.appendChild(header_refresh_btn);
+  header_controls.appendChild(light_all_on_trigger);
   header_controls.appendChild(header_serch_btn);
   header_controls.appendChild(header_creatselect_btn);
 
@@ -598,4 +606,74 @@ function get_row(Sub_Content)
   
   return row_div;
 }
+async function set_light_on(barcode) {
+  let data_str = barcode;
+  // 加入綠色燈條件
+  data_str += `,0,255,0`;
+  
+  await fetch(`${api_ip}api/OutTakeMed/light_on`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+              "Data": {},
+              "Value": data_str,
+              "TableName": "",
+              "ServerName": "DS01",
+              "ServerType": "藥庫",
+              "TimeTaken": ""
+        }),
+    }).catch(e => {
+      console.log(e);
+    }).then(res => {
+      return res.json()
+    }).then(res => {
+      console.log(res);
+  });
+}
+async function set_light_off(barcode) {
+  let data_str = barcode;
+  // 加入黑色燈條件滅燈
+  data_str += `,0,0,0`;
+  
+  await fetch(`${api_ip}api/OutTakeMed/light_on`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+              "Data": {},
+              "Value": data_str,
+              "TableName": "",
+              "ServerName": "DS01",
+              "ServerType": "藥庫",
+              "TimeTaken": ""
+        }),
+    }).catch(e => {
+      console.log(e);
+    }).then(res => {
+      return res.json()
+    }).then(res => {
+      console.log(res);
+  });
+}
 
+function light_all_on_trigger_func(data) {
+  let temp_data = data["Data"][0]['Contents'];
+  console.log(temp_data);
+  let light_all_on_trigger = document.querySelector("#light_all_on_trigger");
+  light_all_on_trigger.addEventListener("click", () => {
+    if(light_all_on_trigger.innerHTML == '全部亮燈') {
+      light_all_on_trigger.innerHTML = "全部滅燈"
+      temp_data.forEach(element => {
+        set_light_on(element.CODE)
+      });
+    } else if (light_all_on_trigger.innerHTML == '全部滅燈') {
+      light_all_on_trigger.innerHTML = "全部亮燈"
+      temp_data.forEach(element => {
+        set_light_off(element.CODE)
+      });
+    }
+  })
+}

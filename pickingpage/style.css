@@ -1,0 +1,67 @@
+.main {
+    margin: auto;
+    text-align: center;
+    padding: 20px 0px;
+}
+.pk_title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 60px;
+}
+.radio_container {
+    display: flex;
+    max-width: 350px;
+    justify-content: space-between;
+    margin: auto;
+}
+.radio_container > label {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+.pp_barcode_input {
+    margin: 16px;
+    width: 320px;
+    height: 32px;
+    text-align: center;
+    font-size: 1.2rem;
+    border-radius: 16px;
+}
+.med_input_display_container {
+    width: 320px;
+    margin: auto;
+    margin-bottom: 20px;
+}
+.med_input_display_container> div {
+    text-align: left;
+    padding: 4px 0px;
+}
+.picking_list_container {
+    border-radius: 5px;
+    box-shadow: 1px 1px 2px 2px #89898936;
+    margin: auto;
+    width: 350px;
+    min-height: 300px;
+    background-color: #6B6B63;
+}
+.picking_list_select {
+    padding: 2px;
+    margin: 12px auto;
+    width: 280px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.under-line {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    color: #000000;
+    background-color: #ffffff;
+    height: 30px;
+    line-height: 30px;
+    display: block;
+}

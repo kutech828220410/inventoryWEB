@@ -56,7 +56,9 @@ async function load()
             med_name.innerHTML = `英文: ${temp_group_all_data[`${barcode}`].NAME}`
             med_ctname.innerHTML = `中文: ${temp_group_all_data[`${barcode}`].CHT_NAME}`
         } else {
-            alert("查無此藥品")
+            med_code.innerHTML = `藥碼: 查無此藥`
+            med_name.innerHTML = `英文: 查無此藥`
+            med_ctname.innerHTML = `中文: 查無此藥`
         }
     
     }
@@ -67,31 +69,75 @@ async function load()
     //     }
     // })
 
-    barcode_test.addEventListener("keydown", (e) => {
-        if (e.keyCode === 13 || e.key === "Enter") { 
 
-            set_light_on(barcode_test.value)
-            set_med_display(barcode_test.value)
+    // barcode_test.addEventListener('focus', async (element) => {
+    //     if (element.keyCode === 13 || element.key === "Enter") { 
+    //         const text = document.querySelector('#barcode_test');
+    //         const response = await serch_by_BarCode(text.value ,medicine_page.Data);
+    //         console.log("serch_by_BarCode",response)
+    //         if(response.Data.length == 0) return;
+     
+    //         console.log(response.Data[0].CODE);
+    //         await set_light_on(response.Data[0].CODE)
+    //         set_med_display(response.Data[0].CODE)
+    //         barcode_test.value = ''
+    //     }
+    // })
+
+    barcode_test.addEventListener('keydown', async function(e) 
+    {
+        if (e.keyCode === 13 || e.key === "Enter") { 
+            const text = document.querySelector('#barcode_test');
+            const response = await serch_by_BarCode(text.value ,medicine_page.Data);
+            console.log("serch_by_BarCode",response)
+            if(response.Data.length == 0) {
+                set_med_display("")
+                barcode_test.value = ''
+                return;
+            }
+     
+            console.log(response.Data[0].CODE);
+            await set_light_on(response.Data[0].CODE)
+            set_med_display(response.Data[0].CODE)
             barcode_test.value = ''
         }
-    })
-    barcode_test_btn.addEventListener('click', () => {
-        set_light_on(barcode_test.value)
-        set_med_display(barcode_test.value)
+    });
+    barcode_test_btn.addEventListener('click', async function() 
+    {
+        const text = document.querySelector('#barcode_test');
+        const response = await serch_by_BarCode(text.value ,medicine_page.Data);
+        console.log("serch_by_BarCode",response)
+
+        if(response.Data.length == 0) {
+            set_med_display("")
+            barcode_test.value = ''
+            return;
+        } 
+
+        console.log(response.Data[0].CODE);
+        await set_light_on(response.Data[0].CODE)
+        set_med_display(response.Data[0].CODE)
         barcode_test.value = ''
-    })
+    });
 
     BarcodeKeyinEvent = BarcodeKeyin;
     async function BarcodeKeyin(parsedCode)
     {
-        console.log(parsedCode);
-        await set_light_on(parsedCode)
-        set_med_display(parsedCode)
+        if(document.activeElement == barcode_test) return;
+
+        const response = await serch_by_BarCode(parsedCode ,medicine_page.Data);
+        console.log("serch_by_BarCode",response)
+        if(response.Data.length == 0) {
+            set_med_display("")
+            barcode_test.value = ''
+            return;
+        }
+ 
+        console.log(response.Data[0].CODE);
+        await set_light_on(response.Data[0].CODE)
+        set_med_display(response.Data[0].CODE)
+        barcode_test.value = ''
     }
-
-
-
-    console.log(selectedColor);
 }
 
 async function set_light_on(barcode) {

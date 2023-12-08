@@ -125,6 +125,11 @@ function get_popup_input()
 function edit_title_popup_input(Content)
 {
     console.log(Content);
+    set_light_on(Content.CODE)
+    let undo_SVG = document.querySelector(".undo_div_popup_input")
+    undo_SVG.onclick = () => {
+        set_light_off(Content.CODE)
+    }
     const med_CODE_text = document.querySelector('#med_CODE_text_popup_input');
     med_CODE_text.innerText = `藥碼 : ${Content.CODE}`;
     const med_SKDIACODE_text = document.querySelector('#med_SKDIACODE_text_popup_input');

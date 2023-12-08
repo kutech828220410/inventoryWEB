@@ -16,11 +16,6 @@ function nav_bar_create(html_page, user_data) {
             html_ctName: "藥品管理",
             html_url: "../../medGroup"
         },
-        {
-            html_name: "forDisplay",
-            html_ctName: "揀貨",
-            html_url: "../../for_display_demo_page"
-        }
     ]
 
     let block_select = [
@@ -32,6 +27,11 @@ function nav_bar_create(html_page, user_data) {
                         html_name: "inspection",
                         html_ctName: "驗收單管理",
                         html_url: "../../storehouse/inspection"
+                    },
+                    {
+                        html_name: "pickingpage",
+                        html_ctName: "揀貨",
+                        html_url: "../../pickingpage"
                     }
                 ]
             }
