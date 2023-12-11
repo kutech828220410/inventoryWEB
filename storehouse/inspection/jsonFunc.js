@@ -392,7 +392,7 @@ async function sub_contents_delete_by_GUID(_GUID, Master_GUID)
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
   return response;
 }
-async function download_excel_by_IC_SN(IC_SN)
+async function download_excel_by_IC_SN(IC_SN, API_inspection_excel_download)
 {
   const post_data = 
   {
@@ -414,7 +414,7 @@ async function download_excel_by_IC_SN(IC_SN)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  var _url = `${inspection_url}/download_excel_by_IC_SN`;
+  var _url = `${API_inspection_excel_download[0].server}`;
   console.log(`Url [${arguments.callee.name}]` , _url);
   console.log(`Post_data [${arguments.callee.name}]`,post_data);
   await downloadExcel(_url,post_data, `${IC_SN}_驗收單`);
@@ -472,18 +472,18 @@ async function device_light(Color, device_basic)
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
-async function excel_upload(file, IC_NAME, PON, CT ) 
+async function excel_upload(file, IC_NAME, PON, CT, API_inspection_excel_upload) 
 {
-
+  console.log("test02");
   const formData = new FormData();
   formData.append('file', file);
   formData.append('IC_NAME', IC_NAME);
   formData.append('PON', PON);
   formData.append('CT', CT);
-  console.log("excel_upload" , `${inspection_url}/excel_upload`);
+  console.log("excel_upload" , `${API_inspection_excel_upload[0].server}`);
   console.log("post_data [excel_upload]",formData);
   try {
-    const response = await fetch(`${inspection_url}/excel_upload`, {
+    const response = await fetch(`${API_inspection_excel_upload[0].server}`, {
       method: 'POST',
       body: formData
     });

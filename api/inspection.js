@@ -487,7 +487,7 @@ async function download_excel_by_IC_SN(IC_SN, API_inspection_excel_download)
     "TableName" : "",
     "TimeTaken": ""
   };
-  var _url = `${API_inspection_excel_download}`;
+  var _url = `${API_inspection_excel_download[0].server}`;
   console.log(`Url [${arguments.callee.name}]` , _url);
   console.log(`Post_data [${arguments.callee.name}]`,post_data);
   await downloadExcel(_url,post_data, `${IC_SN}_驗收管理`);

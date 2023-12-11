@@ -19,8 +19,8 @@ async function load()
   console.log("API01",API01);
   console.log("API02",API02);
   console.log("API_inspection_excel",API_inspection_excel);
-  console.log("API_inspection_excel_upload",API_inspection_excel_upload);
-  console.log("API_inspection_excel_download",API_inspection_excel_download);
+  console.log("API_inspection_excel_upload",API_inspection_excel_upload[0].server);
+  console.log("API_inspection_excel_download",API_inspection_excel_download[0].server);
   if(API_inspection_excel.length > 0) inspection_excel_url = API_inspection_excel[0].server;
   else inspection_excel_url = `${server,API01[0].server}/api/inspection/excel_upload`;
   check_ip(API01[0].server,API02[0].server);

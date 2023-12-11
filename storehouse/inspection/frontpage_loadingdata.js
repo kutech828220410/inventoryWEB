@@ -211,6 +211,7 @@ async function downloadbtn_Click(event)
   var IC_SN = this.getAttribute("IC_SN");
   const confirmResult = confirm(`確定下載驗收單 [${IC_SN}]?`);
   if (!confirmResult) return;
+  const API_inspection_excel_download = serch_APIServer("DS01","藥庫","API_inspection_excel_download");
   Set_main_div_enable(true);
   await download_excel_by_IC_SN(IC_SN, API_inspection_excel_download);
   Set_main_div_enable(false);

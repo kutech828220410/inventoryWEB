@@ -52,6 +52,9 @@ async function confirm_popup_upload()
         if (confirmResult)
         {     
             Set_main_div_enable(true);
+            console.log("test01");
+            const API_inspection_excel_upload = serch_APIServer("DS01","藥庫","API_inspection_excel_upload");
+            console.log(API_inspection_excel_upload[0].server);
             await excel_upload(upload_input.files[0],IC_NAME_input_popup.value,PON_input_popup.value,get_logedName(), API_inspection_excel_upload);
             Set_main_div_enable(false);
             hide_popup_upload();
