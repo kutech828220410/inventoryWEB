@@ -30,7 +30,7 @@ function nav_bar_create(html_page, user_data) {
                     },
                     {
                         html_name: "pickingpage",
-                        html_ctName: "揀貨",
+                        html_ctName: "上架",
                         html_url: "../../pickingpage"
                     }
                 ]

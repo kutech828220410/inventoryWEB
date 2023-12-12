@@ -528,6 +528,7 @@ function get_row(Sub_Content)
   }
   var _NAME = Sub_Content.NAME;
   var _CHT_NAME = Sub_Content.CHT_NAME;
+  var _PON = Sub_Content.PON
 
   const row_div = document.createElement('div');
   My_Div.Init(row_div, 'row_div',`row_div_${_GUID}`, '97%', '', '');
@@ -587,15 +588,27 @@ function get_row(Sub_Content)
   // row_content_NAME.style.marginLeft = '10px';
   // row_content_div02.appendChild(row_content_NAME);
 
-  const row_content_CODE = document.createElement('div');
-  My_Div.Set_Text(row_content_CODE ,`藥碼:${_CODE}` , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","black");
-  row_content_CODE.style.marginLeft = '10px';
-  row_content_CODE.style.width = "100%"
-  row_content_CODE.style.color = "rgb(200, 129, 20)";
-  row_content_CODE.style.fontSize = "14px";
-  row_content_CODE.style.fontFamily = "微軟正黑體";
-  row_content_CODE.style.fontWeight = "bold";
-  row_content_div02.appendChild(row_content_CODE);
+  const row_content_CHT_NAME = document.createElement('div');
+  My_Div.Init(row_content_CHT_NAME, 'row_content_CHT_NAME','row_content_CHT_NAME', '100%', '', '');
+  My_Div.Set_Text(row_content_CHT_NAME ,`(中):${_CHT_NAME}` , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","#c88114");
+  row_content_CHT_NAME.style.marginLeft = '10px';
+  row_content_CHT_NAME.style.lineHeight = '18px';
+  row_content_CHT_NAME.style.fontSize = '14px';
+  row_content_CHT_NAME.style.fontWeight = '600';
+  row_content_CHT_NAME.style.color = 'black';
+  row_content_CHT_NAME.style.marginLeft = '10px';
+  row_content_div02.appendChild(row_content_CHT_NAME);
+
+  const row_content_PON = document.createElement('div');
+  My_Div.Set_Text(row_content_PON ,`請購單號 : ${_PON}` , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","black");
+  row_content_PON.style.marginLeft = '10px';
+  row_content_PON.style.width = "100%"
+  row_content_PON.style.lineHeight = '18px';
+  row_content_PON.style.color = "black";
+  row_content_PON.style.fontSize = "14px";
+  row_content_PON.style.fontFamily = "微軟正黑體";
+  row_content_PON.style.fontWeight = "bold";
+  row_content_div02.appendChild(row_content_PON);
 
   const row_content_SKDIACODE = document.createElement('div');
   My_Div.Set_Text(row_content_SKDIACODE ,`料號:${_SKDIACODE}` , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","black");
@@ -607,11 +620,6 @@ function get_row(Sub_Content)
   row_content_SKDIACODE.style.fontWeight = "bold";
   row_content_div02.appendChild(row_content_SKDIACODE);
 
-  const row_content_CHT_NAME = document.createElement('div');
-  My_Div.Init(row_content_CHT_NAME, 'row_content_CHT_NAME','row_content_CHT_NAME', '100%', '', '');
-  My_Div.Set_Text(row_content_CHT_NAME ,`(中):${_CHT_NAME}` , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","#c88114");
-  row_content_CHT_NAME.style.marginLeft = '10px';
-  row_content_div02.appendChild(row_content_CHT_NAME);
 
   row_div.appendChild(row_content_div01);
   row_div.appendChild(row_content_div02);

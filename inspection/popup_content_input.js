@@ -343,12 +343,21 @@ function get_title_popup_input()
 }
 function edit_underline_popup_input(Content)
 {
+    const END_QTY_input = document.querySelector('#END_QTY_input_popup_input');
+
+    if(Content.START_QTY <= 0) {
+        END_QTY_input.value = '';
+        return
+    }
+    console.log(Content);
     let key_in_QTY = 0;
     Content["Sub_content"].forEach(element => {
         key_in_QTY += +element.END_QTY;
     });
-    let default_QTY = +Content.END_QTY - +key_in_QTY;
-    const END_QTY_input = document.querySelector('#END_QTY_input_popup_input');
+    console.log(key_in_QTY);
+    let default_QTY = 0 ;
+    default_QTY = +Content.START_QTY - +key_in_QTY;
+    console.log(default_QTY);
     END_QTY_input.value = default_QTY;
     
 }
