@@ -32,7 +32,7 @@ async function show_popup_input(Content , page_Initial , show_all_user)
     if(popup_input_PageIndex >= popup_input_MaxfPage) popup_input_PageIndex = 0;
     edit_title_popup_input(popup_input_div_Content);
     edit_rows_popup_input(popup_input_div_Content);
-    edit_underline_popup_input();
+    edit_underline_popup_input(Content);
     edit_rows_page_control_popup_input();
     await popup_input_div.Show();
     
@@ -67,7 +67,14 @@ async function confirm_popup_input()
     const LOT_input_popup_input = document.querySelector('.batch_input');
     const VAL_input_popup_input = document.querySelector('.deadline_input');
     const END_QTY_input = document.querySelector('#END_QTY_input_popup_input');
-    if(!END_QTY_input.value) return;
+    const med_end_QTY_text_popup_input = document.querySelector(".med_end_QTY_text_popup_input");
+    const med_end_qty_for_count = document.querySelector(".med_end_qty_for_count");
+
+    if(END_QTY_input.value == 0) {
+        alert('請輸入數量')
+        return;
+    }
+        
     if(isNaN(END_QTY_input.value))
     {
         alert("請輸入算式後按'=' 或 輸入數量");
@@ -78,6 +85,22 @@ async function confirm_popup_input()
         alert("請輸入效期");
         return;
     }
+
+    let temp_innerHTML = med_end_QTY_text_popup_input.innerHTML
+    let temp_indexOf_innerHTML = temp_innerHTML.indexOf("<br>");
+    let temp_number_for_count = temp_innerHTML.substring(temp_indexOf_innerHTML + 4);
+
+    if(med_end_qty_for_count.innerHTML >= 1) {
+        let count_total_number = +med_end_qty_for_count.innerHTML;
+        let confirm_number = count_total_number - (+temp_number_for_count) - +END_QTY_input.value
+
+        console.log(confirm_number);
+        if (confirm_number < 0) {
+            alert("輸入數量超過總量，請再進行確認");
+            return
+        }
+    }
+
     const GUID = popup_input_div_Content.GUID;
     const VAL = VAL_input_popup_input.value;
     const LOT = LOT_input_popup_input.value;
@@ -125,10 +148,10 @@ function get_popup_input()
 function edit_title_popup_input(Content)
 {
     console.log(Content);
-    set_light_on(Content.CODE)
+    // set_light_on(Content.CODE)
     let undo_SVG = document.querySelector(".undo_div_popup_input")
     undo_SVG.onclick = () => {
-        set_light_off(Content.CODE)
+        // set_light_off(Content.CODE)
     }
     const med_CODE_text = document.querySelector('#med_CODE_text_popup_input');
     med_CODE_text.innerText = `藥碼 : ${Content.CODE}`;
@@ -150,6 +173,12 @@ function edit_title_popup_input(Content)
     med_end_QTY_text.innerText = `總驗收量 : \n${Content.END_QTY}`;
     const med_end_PKG_text = document.querySelector('#med_end_PKG_text_popup_input');
     med_end_PKG_text.innerText = `單位 : \n${temp_med_data[`${Content.CODE}`].PAKAGE}`;
+
+    const med_end_qty_for_count = document.querySelector(".med_end_qty_for_count");
+    med_end_qty_for_count.innerText = `${Content.START_QTY}`;
+
+    // let END_QTY_input_popup_input = document.querySelector('.END_QTY_input_popup_input')
+    // console.log(END_QTY_input_popup_input);
     
 }
 function edit_rows_popup_input(Content)
@@ -249,10 +278,12 @@ function get_title_popup_input()
     My_Div.Init(med_info, 'med_info_popup_input','med_info_popup_input', '100%',"100%" ,'');
     My_Div.Set_Block(med_info, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.TOP);
     med_info.style.marginTop = "5px";
+
     const med_CODE_SKDIACODE_block = document.createElement('div');
     My_Div.Init(med_CODE_SKDIACODE_block, 'med_CODE_SKDIACODE_block_popup_input','med_CODE_SKDIACODE_block_popup_input', '100%',"20%",'');
     My_Div.Set_Block(med_CODE_SKDIACODE_block, DisplayEnum.FLEX, FlexDirectionEnum.ROW,JustifyContentEnum.CENTER)
     med_CODE_SKDIACODE_block.style.marginBottom = "5px";
+    med_CODE_SKDIACODE_block.style.position = "relative";
 
     const med_CODE_text = document.createElement('div');
     My_Div.Init(med_CODE_text,'med_CODE_text_popup_input','med_CODE_text_popup_input', '25%',"100%");
@@ -273,11 +304,19 @@ function get_title_popup_input()
     My_Div.Set_Text(med_end_PKG_text ,"PKG" , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","black");
     med_end_PKG_text.style.marginLeft = "5px";
 
+    const med_end_qty_for_count = document.createElement("div");
+    med_end_qty_for_count.classList.add("med_end_qty_for_count")
+    med_end_qty_for_count.style.position = "absolute";
+    med_end_qty_for_count.style.width = "1px";
+    med_end_qty_for_count.style.height = "1px";
+    med_end_qty_for_count.style.overflow = "hidden";
+
 
     med_CODE_SKDIACODE_block.appendChild(med_CODE_text);
     med_CODE_SKDIACODE_block.appendChild(med_SKDIACODE_text);
     med_CODE_SKDIACODE_block.appendChild(med_end_QTY_text);
     med_CODE_SKDIACODE_block.appendChild(med_end_PKG_text);
+    med_CODE_SKDIACODE_block.appendChild(med_end_qty_for_count);
 
     const med_eng_name_text = document.createElement('div');
     My_Div.Init(med_eng_name_text,'med_eng_name_text_popup_input','med_eng_name_text_popup_input', '100%',"",'');
@@ -302,10 +341,15 @@ function get_title_popup_input()
     // title_others.appendChild(title_control_block);
     return title_div;
 }
-function edit_underline_popup_input()
+function edit_underline_popup_input(Content)
 {
+    let key_in_QTY = 0;
+    Content["Sub_content"].forEach(element => {
+        key_in_QTY += +element.END_QTY;
+    });
+    let default_QTY = +Content.END_QTY - +key_in_QTY;
     const END_QTY_input = document.querySelector('#END_QTY_input_popup_input');
-    END_QTY_input.value = "";
+    END_QTY_input.value = default_QTY;
     
 }
 function get_row_popup_inputs_page_control_block()
@@ -404,6 +448,7 @@ function get_underline_popup_input()
     END_QTY_input.style.marginRight = "10px";
     END_QTY_input.placeholder = "請輸入算式";
     END_QTY_input.readOnly = true;
+    // console.log(content);
     END_QTY_input.onfocus = function()
     {
        //this.select();        

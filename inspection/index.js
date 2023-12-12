@@ -149,7 +149,7 @@ async function init()
 
     await page_Init(data);
     hideLoadingPopup();
-    light_all_on_trigger_func(data);
+    // light_all_on_trigger_func(data);
 }
 async function page_Init(data) 
 {
@@ -182,7 +182,27 @@ async function Refresh_rows()
     var timeB = new Date(b.OP_TIME).getTime();
     return timeA - timeB;
   });
-  for (var i = data["Data"][0].Contents.length - 1; i >= 0; i--)
+  // console.log(data["Data"][0].Contents);
+
+  let temp_sort_by_code_data = data["Data"][0].Contents;
+  console.log(temp_sort_by_code_data);
+  temp_sort_by_code_data.sort(function(a, b) {
+    let nameA = a.NAME.toUpperCase();
+    let nameB = b.NAME.toUpperCase();
+
+    if (nameA < nameB) {
+        return -1;
+    }
+
+    if (nameA > nameB) {
+        return 1;
+    }
+
+    return 0;
+  }); 
+  // console.log(temp_sort_by_code_data);
+
+  for (var i = temp_sort_by_code_data.length - 1; i >= 0; i--)
   {
     var row;
     // row = allrows.filter(function(row)
@@ -413,7 +433,7 @@ function get_header()
  
   header_controls.appendChild(header_logout);
   header_controls.appendChild(header_refresh_btn);
-  header_controls.appendChild(light_all_on_trigger);
+  // header_controls.appendChild(light_all_on_trigger);
   header_controls.appendChild(header_serch_btn);
   header_controls.appendChild(header_creatselect_btn);
 
@@ -533,15 +553,16 @@ function get_row(Sub_Content)
   My_Div.Set_Block(row_content_sub01_div01, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
   row_content_sub01_div01.style.paddingLeft = '10px';
 
-  const row_content_CODE = document.createElement('div');
-  My_Div.Set_Text(row_content_CODE ,`藥碼:${_CODE}` , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","black");
-  row_content_CODE.style.marginRight = '10px';
-  row_content_sub01_div01.appendChild(row_content_CODE);
-
-  const row_content_SKDIACODE = document.createElement('div');
-  My_Div.Set_Text(row_content_SKDIACODE ,`料號:${_SKDIACODE}` , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","black");
-  row_content_sub01_div01.appendChild(row_content_SKDIACODE);
-
+  const row_content_NAME = document.createElement('div');
+  My_Div.Init(row_content_NAME, 'row_content_NAME','row_content_NAME', '100%', '', '');
+  My_Div.Set_Text(row_content_NAME ,`${_NAME}` , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","#c88114");
+  row_content_NAME.style.marginLeft = '10px';
+  row_content_NAME.style.fontSize = '16px';
+  row_content_NAME.style.fontWeight = '600';
+  row_content_NAME.style.color = 'black';
+  row_content_NAME.style.marginLeft = '10px';
+  row_content_div01.appendChild(row_content_NAME);
+  
   const row_content_sub02_div01 = document.createElement('div');
   My_Div.Init(row_content_sub02_div01, 'row_content_sub02_div01',`row_content_sub02_div01__${_GUID}`, '30%', '', '');
   My_Div.Set_Block(row_content_sub02_div01, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
@@ -560,11 +581,31 @@ function get_row(Sub_Content)
   My_Div.Set_Block(row_content_div02, DisplayEnum.FLEX, FlexDirectionEnum.COLUNM, JustifyContentEnum.TOP);
   row_content_div02.style.marginTop = '5px';
 
-  const row_content_NAME = document.createElement('div');
-  My_Div.Init(row_content_NAME, 'row_content_NAME','row_content_NAME', '100%', '', '');
-  My_Div.Set_Text(row_content_NAME ,`(英):${_NAME}` , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","#c88114");
-  row_content_NAME.style.marginLeft = '10px';
-  row_content_div02.appendChild(row_content_NAME);
+  // const row_content_NAME = document.createElement('div');
+  // My_Div.Init(row_content_NAME, 'row_content_NAME','row_content_NAME', '100%', '', '');
+  // My_Div.Set_Text(row_content_NAME ,`(英):${_NAME}` , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","#c88114");
+  // row_content_NAME.style.marginLeft = '10px';
+  // row_content_div02.appendChild(row_content_NAME);
+
+  const row_content_CODE = document.createElement('div');
+  My_Div.Set_Text(row_content_CODE ,`藥碼:${_CODE}` , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","black");
+  row_content_CODE.style.marginLeft = '10px';
+  row_content_CODE.style.width = "100%"
+  row_content_CODE.style.color = "rgb(200, 129, 20)";
+  row_content_CODE.style.fontSize = "14px";
+  row_content_CODE.style.fontFamily = "微軟正黑體";
+  row_content_CODE.style.fontWeight = "bold";
+  row_content_div02.appendChild(row_content_CODE);
+
+  const row_content_SKDIACODE = document.createElement('div');
+  My_Div.Set_Text(row_content_SKDIACODE ,`料號:${_SKDIACODE}` , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","black");
+  row_content_SKDIACODE.style.marginLeft = '10px';
+  row_content_SKDIACODE.style.width = "100%";
+  row_content_SKDIACODE.style.color = "rgb(200, 129, 20)";
+  row_content_SKDIACODE.style.fontSize = "14px";
+  row_content_SKDIACODE.style.fontFamily = "微軟正黑體";
+  row_content_SKDIACODE.style.fontWeight = "bold";
+  row_content_div02.appendChild(row_content_SKDIACODE);
 
   const row_content_CHT_NAME = document.createElement('div');
   My_Div.Init(row_content_CHT_NAME, 'row_content_CHT_NAME','row_content_CHT_NAME', '100%', '', '');
@@ -659,21 +700,21 @@ async function set_light_off(barcode) {
   });
 }
 
-function light_all_on_trigger_func(data) {
-  let temp_data = data["Data"][0]['Contents'];
-  console.log(temp_data);
-  let light_all_on_trigger = document.querySelector("#light_all_on_trigger");
-  light_all_on_trigger.addEventListener("click", () => {
-    if(light_all_on_trigger.innerHTML == '全部亮燈') {
-      light_all_on_trigger.innerHTML = "全部滅燈"
-      temp_data.forEach(element => {
-        set_light_on(element.CODE)
-      });
-    } else if (light_all_on_trigger.innerHTML == '全部滅燈') {
-      light_all_on_trigger.innerHTML = "全部亮燈"
-      temp_data.forEach(element => {
-        set_light_off(element.CODE)
-      });
-    }
-  })
-}
+// function light_all_on_trigger_func(data) {
+//   let temp_data = data["Data"][0]['Contents'];
+//   // console.log(temp_data);
+//   let light_all_on_trigger = document.querySelector("#light_all_on_trigger");
+//   light_all_on_trigger.addEventListener("click", () => {
+//     if(light_all_on_trigger.innerHTML == '全部亮燈') {
+//       light_all_on_trigger.innerHTML = "全部滅燈"
+//       temp_data.forEach(element => {
+//         set_light_on(element.CODE)
+//       });
+//     } else if (light_all_on_trigger.innerHTML == '全部滅燈') {
+//       light_all_on_trigger.innerHTML = "全部亮燈"
+//       temp_data.forEach(element => {
+//         set_light_off(element.CODE)
+//       });
+//     }
+//   })
+// }

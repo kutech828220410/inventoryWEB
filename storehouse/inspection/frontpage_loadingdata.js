@@ -61,16 +61,16 @@ function creat_row_div(_index , item)
     info_div.style.borderRadius = "5px" ;
     time_info_btn_div.appendChild(info_div);
 
-    // 驗收資訊-驗收單號
+    // 驗收資訊-請購單號
     const PON_div = document.createElement('div');
     My_Div.Init(PON_div,`PON_div${_index}`,'formnnum_div', '100%','30px','');
     My_Div.Set_Text(PON_div ,`請購單號 : ${item.PON}` , TextAlignEnum.LEFT , "20px", true ,"","black");
     PON_div.setAttribute("IC_SN",item.IC_SN);
     PON_div.style.marginLeft = "10px";
     PON_div.style.marginTop = "5px";
-    info_div.appendChild(PON_div);
+    // info_div.appendChild(PON_div);
     
-    // 驗收資訊-請購單號
+    // 驗收資訊-驗收單號
     const IC_SN_div = document.createElement('div');
     My_Div.Init(IC_SN_div,`IC_SN_div${_index}`,'formnnum_div', '100%','30px','');
     My_Div.Set_Text(IC_SN_div ,`驗收單號 : ${item.IC_SN}` , TextAlignEnum.LEFT , "20px", true ,"","black");

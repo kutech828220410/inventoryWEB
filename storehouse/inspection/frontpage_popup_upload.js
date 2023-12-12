@@ -54,12 +54,15 @@ async function confirm_popup_upload()
             Set_main_div_enable(true);
             console.log("test01");
             const API_inspection_excel_upload = serch_APIServer("DS01","藥庫","API_inspection_excel_upload");
-            console.log(API_inspection_excel_upload[0].server);
+            // console.log(API_inspection_excel_upload[0].server);
+            // console.log(IC_NAME_input_popup.value);
+            // console.log(PON_input_popup.value);
+            // console.log(get_logedName());
             await excel_upload(upload_input.files[0],IC_NAME_input_popup.value,PON_input_popup.value,get_logedName(), API_inspection_excel_upload);
             Set_main_div_enable(false);
             hide_popup_upload();
             Set_main_div_enable(false);
-            // location.reload();
+            location.reload();
         }
       
     
