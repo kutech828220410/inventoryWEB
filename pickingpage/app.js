@@ -71,14 +71,14 @@ function mainDiplay(med_data, medicine_page) {
             藍色
         </label>
         <label for="none">
-            <input type="radio" name="color" id="none" value="none">
+            <input type="radio" name="color" id="black" value="black">
             不亮燈
         </label>
     `;
 
     const pp_barcode_input = document.createElement('input');
     pp_barcode_input.classList.add('pp_barcode_input');
-    pp_barcode_input.placeholder = "請輸入藥碼或掃描國際條碼";
+    pp_barcode_input.placeholder = "請輸入藥碼、藥名或掃描國際條碼";
 
     const med_input_display_container = document.createElement("div");
     med_input_display_container.classList.add("med_input_display_container");
@@ -97,9 +97,9 @@ function mainDiplay(med_data, medicine_page) {
     const picking_list_container = document.createElement("div");
     picking_list_container.classList.add("picking_list_container");
 
-    const picking_list_select = document.createElement("select");
-    picking_list_select.classList.add('picking_list_select')
-    picking_list_select.innerHTML += `<option value="">請選擇揀貨單</option>`;
+    // const picking_list_select = document.createElement("select");
+    // picking_list_select.classList.add('picking_list_select')
+    // picking_list_select.innerHTML += `<option value="">請選擇揀貨單</option>`;
 
     // picking_list_container.appendChild(picking_list_select)
 
@@ -107,43 +107,46 @@ function mainDiplay(med_data, medicine_page) {
     main.appendChild(radio_container);
     main.appendChild(pp_barcode_input);
     main.appendChild(med_input_display_container);
-    // main.appendChild(picking_list_container);
+    main.appendChild(picking_list_container);
+
+    let med_display_page = 1;
 
     pp_barcode_input.addEventListener('keydown', async function(e) 
     {
         if (e.keyCode === 13 || e.key === "Enter") { 
             const text = document.querySelector('.pp_barcode_input');
+            const text_for_search = text.value;
             const response = await serch_by_BarCode(text.value ,medicine_page.Data);
             console.log("serch_by_BarCode",response)
+            console.log(text_for_search);
             if(response.Data.length == 0) {
-                set_med_display("", med_data)
-                text.value = ''
+                let temp_medicine_page;
+                picking_list_container.innerHTML = ''
+                temp_medicine_page = medicine_page["Data"].filter(function(item)
+                {
+                    return item['NAME'].toUpperCase().includes(text_for_search.toUpperCase());
+                });
+
+                if (temp_medicine_page.length == 0) {
+                    console.log(temp_medicine_page);
+                    set_med_display("", med_data);
+                    text.value = '';
+                    return;
+                }
+
+                for (let i = 0; i < temp_medicine_page.length; i++) {
+                    picking_list_container.appendChild(display_search_med_by_name(temp_medicine_page[i], med_data))
+                }
+                text.value = '';
                 return;
             }
      
             console.log(response.Data[0].CODE);
-            await set_light_on(response.Data[0].CODE)
-            set_med_display(response.Data[0].CODE, med_data)
-            text.value = ''
+            await set_light_on(response.Data[0].CODE);
+            set_med_display(response.Data[0].CODE, med_data);
+            text.value = '';
         }
     });
-    // barcode_test_btn.addEventListener('click', async function() 
-    // {
-    //     const text = document.querySelector('#barcode_test');
-    //     const response = await serch_by_BarCode(text.value ,medicine_page.Data);
-    //     console.log("serch_by_BarCode",response)
-
-    //     if(response.Data.length == 0) {
-    //         set_med_display("")
-    //         barcode_test.value = ''
-    //         return;
-    //     } 
-
-    //     console.log(response.Data[0].CODE);
-    //     await set_light_on(response.Data[0].CODE)
-    //     set_med_display(response.Data[0].CODE)
-    //     barcode_test.value = ''
-    // });
 
     BarcodeKeyinEvent = BarcodeKeyin;
     async function BarcodeKeyin(parsedCode)
@@ -165,35 +168,29 @@ function mainDiplay(med_data, medicine_page) {
     }
 }
 
-// async function set_light_on(barcode) {
-//     selectedColor = document.querySelector('input[name="color"]:checked').value;
+function display_search_med_by_name (med, med_data) {
+    let search_med_display_container = document.createElement("div")
+    search_med_display_container.classList.add("search_med_display_container")
+    search_med_display_container.id = med.CODE;
 
-//     let data_str = barcode;
+    let search_med_name = document.createElement("div")
+    search_med_name.classList.add("search_med_name")
+    search_med_name.innerHTML = med.NAME;
 
-//     for (let i = 0; i < select_rgb[`${selectedColor}`].length; i++) {
-//         data_str += `,${select_rgb[`${selectedColor}`][i]}`;
-//     };
-//     await fetch(`${api_ip}api/OutTakeMed/light_on`, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//                 "Data": {},
-//                 "Value": data_str,
-//                 "TableName": "",
-//                 "ServerName": "展覽台",
-//                 "ServerType": "",
-//                 "TimeTaken": ""
-//           }),
-//       }).catch(e => {
-//         console.log(e);
-//       }).then(res => {
-//         return res.json()
-//       }).then(res => {
-//         console.log(res);
-//     });
-// }
+    let search_med_ctname = document.createElement("div")
+    search_med_ctname.classList.add("search_med_ctname")
+    search_med_ctname.innerHTML = med.CHT_NAME
+
+    search_med_display_container.appendChild(search_med_name)
+    search_med_display_container.appendChild(search_med_ctname)
+
+    search_med_display_container.addEventListener("click", async ()=> {
+        await set_light_on(search_med_display_container.id);
+        set_med_display(search_med_display_container.id, med_data);
+    })
+
+    return search_med_display_container
+}
 
 function set_med_display(barcode, med_data) {
     let med_code = document.querySelector('.med_display_code')
@@ -220,8 +217,8 @@ async function set_light_on(barcode) {
     for (let i = 0; i < select_rgb[`${selectedColor}`].length; i++) {
         data_str += `,${select_rgb[`${selectedColor}`][i]}`;
     };
-    // 加入綠色燈條件,字串最後一個單位為亮燈秒數(1為恆亮,單位為毫秒),不填入為預設10秒,0為滅燈
-    data_str += `,60000`;
+    // 加入綠色燈條件,字串最後一個單位為亮燈秒數(1為恆亮,單位為秒),不填入為預設10秒,0為滅燈
+    data_str += `,60`;
     
     await fetch(`${api_ip}api/OutTakeMed/light_on`, {
         method: "POST",

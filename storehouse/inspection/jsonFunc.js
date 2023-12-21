@@ -474,7 +474,6 @@ async function device_light(Color, device_basic)
 }
 async function excel_upload(file, IC_NAME, PON, CT, API_inspection_excel_upload) 
 {
-  console.log("test02");
   const formData = new FormData();
   formData.append('file', file);
   formData.append('IC_NAME', IC_NAME);

@@ -8,16 +8,24 @@ var popup_input_MaxfPage = 0;
 var popup_input_END_QTY_input = null;
 async function show_popup_input(Content , page_Initial , show_all_user)
 {
-    // console.log(temp_med_data[`${Content.CODE}`]);
+    // console.log(Content);
     if(Content == undefined) return;
     if(popup_input_div == undefined) page_Initial = false;
     const OP = sessionData.Name;
     if(show_all_user == undefined)
     {
-        popup_input_div_SubContent = Content.Sub_content.filter(function(subItem) 
-        {
-            return subItem.OP === OP;
-        });
+        let queryString = window.location.search;
+        let urlParams = new URLSearchParams(queryString);
+        if (urlParams.has('administrator')) {
+            console.log("顯示所有驗收");
+            popup_input_div_SubContent = Content.Sub_content;
+        } else {
+            // console.log('No data parameter found in the URL.');
+            popup_input_div_SubContent = Content.Sub_content.filter(function(subItem) 
+            {
+                return subItem.OP === OP;
+            });
+        }
     }
     else
     {
@@ -102,6 +110,7 @@ async function confirm_popup_input()
     }
 
     const GUID = popup_input_div_Content.GUID;
+    console.log(GUID);
     const VAL = VAL_input_popup_input.value;
     const LOT = LOT_input_popup_input.value;
     var END_QTY = END_QTY_input.value;
@@ -147,7 +156,7 @@ function get_popup_input()
 }
 function edit_title_popup_input(Content)
 {
-    console.log(Content);
+    // console.log(Content);
     // set_light_on(Content.CODE)
     let undo_SVG = document.querySelector(".undo_div_popup_input")
     undo_SVG.onclick = () => {
@@ -320,21 +329,21 @@ function get_title_popup_input()
 
     const med_eng_name_text = document.createElement('div');
     My_Div.Init(med_eng_name_text,'med_eng_name_text_popup_input','med_eng_name_text_popup_input', '100%',"",'');
-    My_Div.Set_Text(med_eng_name_text ,"(英) : XXXXXXXXXXXXXXXXX" , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","#c88114");
+    My_Div.Set_Text(med_eng_name_text ,"(英) : XXXXXXXXXXXXXXXXX" , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","#c88114");
     med_eng_name_text.style.marginLeft = "5px";
     med_eng_name_text.style.marginBottom = "5px";
 
     const med_cht_name_text = document.createElement('div');
     My_Div.Init(med_cht_name_text,'med_cht_name_text_popup_input','med_cht_name_text_popup_input', '100%',"");
-    My_Div.Set_Text(med_cht_name_text ,"(中) : XXXXXXXXXXXXXXXXX" , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","#c88114");
+    My_Div.Set_Text(med_cht_name_text ,"(中) : XXXXXXXXXXXXXXXXX" , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","#c88114");
     med_cht_name_text.style.marginLeft = "5px";
     med_cht_name_text.style.marginBottom = "5px";
 
    
-
-    med_info.appendChild(med_CODE_SKDIACODE_block);
     med_info.appendChild(med_eng_name_text);
     med_info.appendChild(med_cht_name_text);
+    med_info.appendChild(med_CODE_SKDIACODE_block);
+
     
     title_others.style.borderBottom = "2px solid";
     title_others.appendChild(med_info);
@@ -422,6 +431,9 @@ function get_underline_popup_input()
     batch_input.style.margin = "0px auto 6px";
     batch_input.placeholder = "請輸入批號";
 
+    let currentDate = new Date();
+    currentDate = currentDate.toISOString().split('T')[0];
+
     const deadline_input = document.createElement("input")
     My_Div.Init(deadline_input, 'deadline_input','deadline_input', '90%','80%','');
     My_Div.Set_Text(deadline_input, ``, TextAlignEnum.CENTER, "26px", true,"微軟正黑體","black");
@@ -429,8 +441,10 @@ function get_underline_popup_input()
     deadline_input.style.display = "block";
     deadline_input.style.margin = "0px auto 6px";
     deadline_input.placeholder = "請輸入效期";
-    deadline_input.type = "email";
-    deadline_input.inputMode = "latin";
+    deadline_input.type = "date";
+    deadline_input.min = currentDate;
+    // deadline_input.type = "email";
+    // deadline_input.inputMode = "latin";
 
     batch_deadline_div.appendChild(batch_input)
     batch_deadline_div.appendChild(deadline_input)
@@ -804,21 +818,21 @@ function calculateExpression(expression) {
       const serch_start_date_input = document.querySelector(".deadline_input");
       serch_start_date_input.value = "";
   }
-  $(function()
-  {
-    let currentDate = new Date();
-       $('.deadline_input').focus(function(event) 
-       {
-         /* Act on the event */
-         $(this).date(
-         {
-           theme:'date',
-           beginyear : currentDate.getFullYear() - 1,
-           endyear: currentDate.getFullYear() + 8,
-           curdate:false
-         },serch_start_date_input_Y_Click,serch_start_date_input_N_Click);
-       });
-  }) 
+//   $(function()
+//   {
+//     let currentDate = new Date();
+//        $('.deadline_input').focus(function(event) 
+//        {
+//          /* Act on the event */
+//          $(this).date(
+//          {
+//            theme:'date',
+//            beginyear : currentDate.getFullYear() - 1,
+//            endyear: currentDate.getFullYear() + 8,
+//            curdate:false
+//          },serch_start_date_input_Y_Click,serch_start_date_input_N_Click);
+//        });
+//   }) 
   
 
 

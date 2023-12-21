@@ -42,6 +42,7 @@
     width: 350px;
     min-height: 300px;
     background-color: #6B6B63;
+    padding: 12px;
 }
 .picking_list_select {
     padding: 2px;
@@ -51,7 +52,22 @@
     font-weight: 600;
     text-align: center;
 }
-
+.search_med_display_container {
+    box-sizing: border-box;
+    margin: 0px 0px 8px 0px;
+    padding: 6px 12px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    border: 2px solid #000000;
+    text-align: left;
+    transition: all 0.3s ease-out;
+    cursor: pointer;
+    min-height: 56px;
+}
+.search_med_display_container:hover {
+    background-color: #bdbdbd;
+    transition: all 0.3s ease-out;
+}
 .under-line {
     position: fixed;
     bottom: 0;

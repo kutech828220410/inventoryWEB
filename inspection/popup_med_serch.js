@@ -252,17 +252,25 @@ function popup_med_serch_typeSerch(text)
     }
     popup_med_serch_rows_div.length = 0;
     popup_med_serch_PageIndex = 0;
-    if(med != null)
+    if(med.length > 0)
     {
         const content_serch_result_div = document.querySelector("#content_serch_result_div");
         for(var i = 0 ; i < med.length; i ++)
         {
             const row = popup_med_serch_get_row(med[i] , i + 1);
             popup_med_serch_rows_div.push(row);
-            
-           
         }
         popup_med_serch_refresh_rows();
+    } else {
+        alert('查無此藥...')
+        popup_med_serch_div.Close(); // 關閉彈窗
+        const content_serch_type_textBox = document.querySelector('.content_serch_type_textBox');
+        content_serch_type_textBox.value = "";
+        const content_serch_result_div = document.querySelector("#content_serch_result_div");
+        content_serch_result_div.innerHTML = "";
+        // popup_med_serch_div.Close(); // 關閉彈窗
+        return false;
+  
     }
     
 }
@@ -280,6 +288,7 @@ function popup_med_serch_refresh_rows()
     var index = popup_med_serch_PageIndex * popup_med_serch_NumOfPageRows;
     console.log("popup_med_serch_PageIndex",popup_med_serch_PageIndex);
     var num = 0;
+
     while(true)
     {
         if(num >= popup_med_serch_NumOfPageRows)break;
@@ -288,7 +297,7 @@ function popup_med_serch_refresh_rows()
         index++;
         num++;
     }
-
+    
 }
 function popup_med_serch_get_row(medClass , index)
 {

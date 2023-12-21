@@ -315,7 +315,7 @@ async function sub_content_get_by_content_GUID(_GUID)
   return response;
 }
 
-async function sub_content_add_single(_Master_GUID, _END_QTY, _OP , _VAL,_LOT)
+async function sub_content_add_single(_Master_GUID, _END_QTY, _OP , _VAL, _LOT)
 {
   const post_data = 
   {
@@ -341,7 +341,7 @@ async function sub_content_add_single(_Master_GUID, _END_QTY, _OP , _VAL,_LOT)
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
-async function sub_content_add(_Master_GUID, _END_QTY, _OP, _VAL,_LOT)
+async function sub_content_add(_Master_GUID, _END_QTY, _OP, _VAL, _LOT)
 {
   const post_data = 
   {

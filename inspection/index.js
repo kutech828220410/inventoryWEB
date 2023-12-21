@@ -324,8 +324,16 @@ async function serch_CODE_input_enter(barcode)
     if(medicine_page == undefined) return;
     if(response.Data.length == 0) 
     {
-      alert("查無此藥品");
-      return;
+      popup_med_serch_div.Show();
+      let content_serch_type_textBox = document.querySelector(".content_serch_type_textBox");
+      content_serch_type_textBox.value = barcode;
+      let search_result = popup_med_serch_typeSerch(barcode);
+      
+      if (search_result) {
+        popup_med_serch_div.Close(); // 關閉彈窗
+    }
+
+      return ;
     }
     for(var i = 0; i < data.Data[0].Contents.length; i++)
     {
@@ -425,10 +433,10 @@ function get_header()
     }
   });
 
-  const light_all_on_trigger = document.createElement("button");
-  light_all_on_trigger.classList.add("control_btn");
-  My_Div.Init(light_all_on_trigger, 'control_btn','light_all_on_trigger', '', '40px', '');
-  My_Div.Set_Text(light_all_on_trigger ,"全部亮燈" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","white");
+  // const light_all_on_trigger = document.createElement("button");
+  // light_all_on_trigger.classList.add("control_btn");
+  // My_Div.Init(light_all_on_trigger, 'control_btn','light_all_on_trigger', '', '40px', '');
+  // My_Div.Set_Text(light_all_on_trigger ,"全部亮燈" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","white");
 
  
   header_controls.appendChild(header_logout);
@@ -446,7 +454,7 @@ function get_header()
   My_Div.Set_Text(header_serch_text ,"" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","black");
 
   My_Div.Set_Block(header_serch_text, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
-  header_serch_text.placeholder = '藥碼/料號/條碼 輸入搜尋';
+  header_serch_text.placeholder = '輸入搜尋';
   header_serch_text.style.marginTop = "5px";
   header_serch_text.style.borderRadius = "5px";
   header_serch_text.style.border = "2px solid gray";
@@ -514,6 +522,7 @@ function get_main()
 }
 function get_row(Sub_Content)
 {
+  // console.log("Sub_Content",Sub_Content,Sub_Content.CODE);
   var _GUID = Sub_Content.GUID;
   var _Master_GUID = Sub_Content.Master_GUID;
   var _CODE = Sub_Content.CODE;
@@ -642,10 +651,12 @@ function get_row(Sub_Content)
   row_div.addEventListener("click", function()
   {
       const Master_GUID = this.getAttribute("Master_GUID");
+      console.log(Master_GUID);
       const Content = data.Data[0].Contents.filter(function(content)
       {
         return content.GUID == Master_GUID;
       });
+      console.log(Content);
       if(Content.length > 0)
       {
          show_popup_input(Content[0]);

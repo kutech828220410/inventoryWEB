@@ -255,7 +255,7 @@ async function select_btn_Click(event)
   sessionStorage.setItem('IC_SN', IC_SN);
   await creat_update_startime_by_IC_SN(IC_SN);
   // location.href = "../inspection/main.html"
-  location.href = "../../inspection/"
+  location.href = "../../inspection/index.html?administrator"
 }
 
 async function delete_btn_Click(event) {

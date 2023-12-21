@@ -129,7 +129,7 @@ async function serch_CODE_input_enter(barcode)
   console.log("serch_by_BarCode",response)
   if(response.Data.length == 0) 
   {
-    alert("查無此藥品");
+    // alert("查無此藥品");
     return;
   }
    for(var i = 0; i < allrows.length; i++)
