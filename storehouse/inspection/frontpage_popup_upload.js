@@ -62,7 +62,7 @@ async function confirm_popup_upload()
             Set_main_div_enable(false);
             hide_popup_upload();
             Set_main_div_enable(false);
-            location.reload();
+            // location.reload();
         }
       
     

@@ -139,7 +139,7 @@ function get_popup_input()
     const rows_div = document.createElement('div');
     My_Div.Init(rows_div, 'rows_div_popup_input','rows_div_popup_input', '100%', '100%', '');
     My_Div.Set_Block(rows_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.TOP);
-    rows_div.style.marginTop = '10px';
+    rows_div.style.marginTop = '4px';
     updateDivHeight(rows_div , 0);
     const rows_page_control_block = get_row_popup_inputs_page_control_block();
     const under_line = get_underline_popup_input();
@@ -156,7 +156,7 @@ function get_popup_input()
 }
 function edit_title_popup_input(Content)
 {
-    // console.log(Content);
+    console.log(Content);
     // set_light_on(Content.CODE)
     let undo_SVG = document.querySelector(".undo_div_popup_input")
     undo_SVG.onclick = () => {
@@ -177,6 +177,12 @@ function edit_title_popup_input(Content)
     if(Content.NAME != null)med_eng_name_text.innerText = `(英) : ${temp_med_data[`${Content.CODE}`].NAME}`;
     const med_cht_name_text = document.querySelector('#med_cht_name_text_popup_input');
     if(Content.CHT_NAME != null) med_cht_name_text.innerText = `(中) : ${temp_med_data[`${Content.CODE}`].CHT_NAME}`;
+    const med_pon_text = document.querySelector('#med_pon_text');
+    if(Content.PON != "") {
+        med_pon_text.innerHTML = `請購單號 : ${Content.PON}`;
+    } else {
+        med_pon_text.innerHTML = `請購單號 : 無`;
+    };
 
     const med_end_QTY_text = document.querySelector('#med_end_QTY_text_popup_input');
     med_end_QTY_text.innerText = `總驗收量 : \n${Content.END_QTY}`;
@@ -339,9 +345,16 @@ function get_title_popup_input()
     med_cht_name_text.style.marginLeft = "5px";
     med_cht_name_text.style.marginBottom = "5px";
 
+    const med_pon_text = document.createElement('div');
+    My_Div.Init(med_pon_text,'med_pon_text','med_pon_text', '100%',"");
+    My_Div.Set_Text(med_pon_text ,"請購單號 : XXXXXXXXXXXXXXXXX" , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","#c88114");
+    med_pon_text.style.marginLeft = "5px";
+    med_pon_text.style.marginBottom = "5px";
+
    
     med_info.appendChild(med_eng_name_text);
     med_info.appendChild(med_cht_name_text);
+    med_info.appendChild(med_pon_text);
     med_info.appendChild(med_CODE_SKDIACODE_block);
 
     
@@ -376,7 +389,6 @@ function get_row_popup_inputs_page_control_block()
     My_Div.Init(rows_page_control_block, 'rows_page_control_block_popup_input','rows_page_control_block_popup_input', '100%','30px','');
     My_Div.Set_Block(rows_page_control_block, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
     rows_page_control_block.style.alignItems = "center";
-    rows_page_control_block.style.marginTop = "5px";
     const svg_next = Get_next_SVG("30px","100%" ,"60%","100%","green");
     My_Div.Init(svg_next, 'svg_next','svg_next', '30px', '30px', '');
     // svg_next.style.border = "1px solid gray";

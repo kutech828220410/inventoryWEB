@@ -42,6 +42,35 @@ html, body {
   font-family: 'Courier New', Courier, monospace;
 }
 
+.sbp_header_title {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.sbp_header_undo {
+  right: 0px;
+  top: 0px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+.sbp_header_undo > img {
+  width: 100%;
+}
+.row_div {
+  width: 95%;
+}
+@media screen and (max-width: 1024px) {
+  .row_div {
+    width: 90%;
+  }
+}
+@media screen and (max-width: 600px) {
+  .row_div {
+    width: 354px;
+  }
+}
+
 
 .almcontrol_btn{border-radius: 5px; background-color:#eb3232; padding:0 20px; color:#fff; transition:.2s;}
 .almcontrol_btn:hover{ background-color:#e76d6d; transition:.2s;}

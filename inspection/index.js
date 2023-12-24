@@ -147,6 +147,11 @@ async function init()
     console.log("驗收單資料" , data);
     State = StateType.等待條碼刷入;
 
+    get_select_by_pon();
+
+    // popup_select_by_pon.Set_Visible(true);
+    hide_popup_select_by_pon();
+
     await page_Init(data);
     hideLoadingPopup();
     // light_all_on_trigger_func(data);
@@ -335,18 +340,26 @@ async function serch_CODE_input_enter(barcode)
 
       return ;
     }
-    for(var i = 0; i < data.Data[0].Contents.length; i++)
-    {
 
-      const CODE = data.Data[0].Contents[i].CODE;     
-      if(CODE.toUpperCase() == response.Data[0].CODE.toUpperCase())
+    if(response.Data.length < 2) {
+      for(var i = 0; i < data.Data[0].Contents.length; i++)
       {
-        console.log("CODE",CODE);
-        show_popup_input(data.Data[0].Contents[i]);
-        return;
+        const CODE = data.Data[0].Contents[i].CODE;     
+        if(CODE.toUpperCase() == response.Data[0].CODE.toUpperCase())
+        {
+          console.log("CODE",CODE);
+          show_popup_input(data.Data[0].Contents[i]);
+          return;
+        }
       }
+    } else {
+      // 如果這個藥品有兩項請購單號跳出選擇彈窗
+      show_popup_select_by_pon();
+      response["Data"].forEach(element => {
+        get_row_by_pon(element);
+      });
+      return;
     }
-   
 }
 function get_header()
 {
@@ -540,7 +553,7 @@ function get_row(Sub_Content)
   var _PON = Sub_Content.PON
 
   const row_div = document.createElement('div');
-  My_Div.Init(row_div, 'row_div',`row_div_${_GUID}`, '97%', '', '');
+  My_Div.Init(row_div, 'row_div',`row_div_${_GUID}`, '', '', '');
   My_Div.Set_Block(row_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUNM, JustifyContentEnum.TOP);
   // row_div.setAttribute("GUID", _GUID);
   row_div.setAttribute("Master_GUID", _GUID);
@@ -553,6 +566,7 @@ function get_row(Sub_Content)
   // row_div.style.marginRight = '2px';
   row_div.style.paddingTop = '5px';
   row_div.style.paddingBottom = '5px';
+  // row_div.style.minWidth = '360px';
 
   const row_content_div01 = document.createElement('div');
   My_Div.Init(row_content_div01, `row_content_div01`,`row_content_div01_${_GUID}`, '100%', '', '');
