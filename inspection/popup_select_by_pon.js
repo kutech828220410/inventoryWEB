@@ -4,8 +4,9 @@ function get_select_by_pon()
 {
     popup_select_by_pon = new Basic_popup_Div('popup_select_by_pon_div','popup_select_by_pon_div','340px','');
     let popup_select_by_pon_div = document.querySelector(".popup_select_by_pon_div");
-    popup_select_by_pon_div.style.minHeight = '280px';
-    popup_select_by_pon_div.style.padding = "16px";
+    // popup_select_by_pon_div.style.minHeight = '280px';
+    popup_select_by_pon_div.style.maxHeight = '460px';
+    popup_select_by_pon_div.style.padding = "16px 0px";
     popup_select_by_pon_div.style.boxSizing = 'border-box';
 
     let sbp_header = document.createElement("div");
@@ -47,14 +48,18 @@ function show_popup_select_by_pon()
 {
     popup_select_by_pon.Set_Visible(true);
 }
+function init_get_row_by_pon() {
+    let sbp_main_div = document.querySelector('.sbp_main_div');
+
+    sbp_main_div.innerHTML = '';
+}
 function get_row_by_pon(sub_content) {
     let _GUID = sub_content.GUID;
     let sbp_main_div = document.querySelector('.sbp_main_div');
 
-    sbp_main_div.innerHTML = '';
-
     let sbp_med_list_container = document.createElement("div");
-    sbp_med_list_container.setAttribute("GUID", _GUID);
+    sbp_med_list_container.classList.add("sbp_med_list_container");
+    sbp_med_list_container.id = _GUID;
 
     let sbp_med_list_name = document.createElement("div");
     sbp_med_list_name.classList.add("sbp_med_list_name");
@@ -68,12 +73,12 @@ function get_row_by_pon(sub_content) {
     sbp_med_list_pon.classList.add("sbp_med_list_pon");
     sbp_med_list_pon.innerHTML = `請購單號: ${sub_content.PON}`;
 
+    sbp_med_list_container.appendChild(sbp_med_list_pon);
     sbp_med_list_container.appendChild(sbp_med_list_name);
     sbp_med_list_container.appendChild(sbp_med_list_ctname);
-    sbp_med_list_container.appendChild(sbp_med_list_pon);
 
-    sbp_med_list_container.addEventListener("click", () => {
-        let GUID = this.getAttribute("GUID");
+    sbp_med_list_container.addEventListener("click", (e) => {
+        let GUID = e.target.parentElement["id"];
         console.log(GUID);
         const Content = data.Data[0].Contents.filter(function(content)
         {

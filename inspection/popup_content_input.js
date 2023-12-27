@@ -453,10 +453,10 @@ function get_underline_popup_input()
     deadline_input.style.display = "block";
     deadline_input.style.margin = "0px auto 6px";
     deadline_input.placeholder = "請輸入效期";
-    deadline_input.type = "date";
-    deadline_input.min = currentDate;
-    // deadline_input.type = "email";
-    // deadline_input.inputMode = "latin";
+    // deadline_input.type = "date";
+    // deadline_input.min = currentDate;
+    deadline_input.type = "email";
+    deadline_input.inputMode = "latin";
 
     batch_deadline_div.appendChild(batch_input)
     batch_deadline_div.appendChild(deadline_input)
@@ -830,21 +830,21 @@ function calculateExpression(expression) {
       const serch_start_date_input = document.querySelector(".deadline_input");
       serch_start_date_input.value = "";
   }
-//   $(function()
-//   {
-//     let currentDate = new Date();
-//        $('.deadline_input').focus(function(event) 
-//        {
-//          /* Act on the event */
-//          $(this).date(
-//          {
-//            theme:'date',
-//            beginyear : currentDate.getFullYear() - 1,
-//            endyear: currentDate.getFullYear() + 8,
-//            curdate:false
-//          },serch_start_date_input_Y_Click,serch_start_date_input_N_Click);
-//        });
-//   }) 
+  $(function()
+  {
+    let currentDate = new Date();
+       $('.deadline_input').focus(function(event) 
+       {
+         /* Act on the event */
+         $(this).date(
+         {
+           theme:'date',
+           beginyear : currentDate.getFullYear() - 1,
+           endyear: currentDate.getFullYear() + 8,
+           curdate:false
+         },serch_start_date_input_Y_Click,serch_start_date_input_N_Click);
+       });
+  }) 
   
 
 

@@ -190,7 +190,7 @@ async function Refresh_rows()
   // console.log(data["Data"][0].Contents);
 
   let temp_sort_by_code_data = data["Data"][0].Contents;
-  console.log(temp_sort_by_code_data);
+  // console.log(temp_sort_by_code_data);
   temp_sort_by_code_data.sort(function(a, b) {
     let nameA = a.NAME.toUpperCase();
     let nameB = b.NAME.toUpperCase();
@@ -340,8 +340,13 @@ async function serch_CODE_input_enter(barcode)
 
       return ;
     }
+    let temp_code = response.Data[0].CODE;
+    let temp_display_pon_arr = data.Data[0].Contents.filter(function(e)
+    {
+        return e.CODE == temp_code;
+    });
 
-    if(response.Data.length < 2) {
+    if(temp_display_pon_arr.length < 2) {
       for(var i = 0; i < data.Data[0].Contents.length; i++)
       {
         const CODE = data.Data[0].Contents[i].CODE;     
@@ -355,7 +360,8 @@ async function serch_CODE_input_enter(barcode)
     } else {
       // 如果這個藥品有兩項請購單號跳出選擇彈窗
       show_popup_select_by_pon();
-      response["Data"].forEach(element => {
+      init_get_row_by_pon()
+      temp_display_pon_arr.forEach(element => {
         get_row_by_pon(element);
       });
       return;

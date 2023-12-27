@@ -48,7 +48,7 @@ html, body {
   font-weight: 600;
 }
 .sbp_header_undo {
-  right: 0px;
+  right: 16px;
   top: 0px;
   width: 24px;
   height: 24px;
@@ -56,6 +56,33 @@ html, body {
 }
 .sbp_header_undo > img {
   width: 100%;
+}
+.sbp_main_div {
+  padding: 0px 16px;
+  overflow-y: auto;
+}
+.sbp_med_list_container {
+  cursor: pointer;
+  border-radius: 5px;
+  border: 2px solid #000000;
+  margin: 8px 0px 12px;
+  background-color: transparent;
+  transition: all 0.3s ease-in;
+}
+.sbp_med_list_container:hover {
+  background-color: #c0c0c0;
+  transition: all 0.3s ease-in;
+}
+.sbp_med_list_pon {
+  font-size: 16px;
+  font-weight: 600;
+  padding: 8px;
+}
+.sbp_med_list_name, .sbp_med_list_ctname {
+  color: #484848;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px;
 }
 .row_div {
   width: 95%;
