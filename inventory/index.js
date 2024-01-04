@@ -69,7 +69,37 @@ function handleResize()
 async function popup_login_finished()
 {
    console.log(`[${arguments.callee.name}]`);
-   popup_creatSelect_div.Show();
+  //  popup_creatSelect_div.Show();
+   let popup_creatSelect_creat = await get_all_unlock_creat();
+   let creats = popup_creatSelect_creat.Data.filter(function(item) 
+   {
+      return item.IC_SN.charAt(0) != "Q";
+   })
+   let count_list = 0;
+   let loged_name = get_logedName();
+   console.log("loged_name", loged_name);
+   creats.forEach((element) => {
+      let temp_str = element.DEFAULT_OP;
+      let temp_arr = [];
+      if (temp_str != "") {
+        temp_arr = temp_str.split(',');
+      }
+
+      temp_arr.forEach(e => {  
+        if (e == loged_name) {
+            sessionStorage.setItem('IC_SN', element.IC_SN);
+            count_list = count_list + 1;
+        }
+      });
+   });
+   
+   if(count_list > 1) {
+    popup_creatSelect_div.Show();
+   } else if (count_list == 1) {
+    popup_creatSelect_finished();
+   } else {
+    popup_creatSelect_div.Show();
+   }
 }
 async function popup_med_serch_finished(CODE)
 {
@@ -142,12 +172,9 @@ async function init()
     State = StateType.等待條碼刷入;
 
     await page_Init(data);
-
-    
-
     hideLoadingPopup();
 }
-async function page_Init(data) 
+async function page_Init(data)
 {
   const userText = document.querySelector("#header_userName");
   userText.innerText = `姓名 : ${sessionData.Name}`;
@@ -156,26 +183,19 @@ async function page_Init(data)
   const main_div = document.querySelector('#main_div');
   main_div.innerHTML = "";
   My_Div.Init(main_div, 'main_div','main_div', '100%', '', '');
-  My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN_REVERSE, JustifyContentEnum.CENTER);
+  My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
 
   main_div.style.flexWrap = "wrap";
   main_div.style.overflowX = "hidden";
   main_div.style.overflowY = "hidden";
   allrows = [];
   await Refresh_rows();
-
 }
 async function Refresh_rows()
 {
   const main_div = document.querySelector('#main_div');
-  My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN_REVERSE, JustifyContentEnum.CENTER);
+  My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
   var subContentArray = get_subContentByOP(data);
-  subContentArray.sort(function(a, b) 
-  {
-    var timeA = new Date(a.OP_TIME).getTime();
-    var timeB = new Date(b.OP_TIME).getTime();
-    return timeA - timeB;
-  });
   for (var i = 0; i < subContentArray.length; i++)
   {
     var row;
@@ -188,10 +208,14 @@ async function Refresh_rows()
     if(row.length != 0)
     {
         const _QTY = subContentArray[i].END_QTY;
-        const _TOL_QTY = subContentArray[i].TOLTAL_QTY;
+        const _TOL_QTY = subContentArray[i].START_QTY;
         const row_content_QTY = row[0].querySelector(`.row_content_QTY`);
         row[0].style.backgroundColor = "white";
-        My_Div.Set_Text(row_content_QTY ,`${_QTY}/${_TOL_QTY}` , TextAlignEnum.RIGHT , "18px", true,"微軟正黑體","green");
+        if(_TOL_QTY == "0" || _TOL_QTY == "") {
+          My_Div.Set_Text(row_content_QTY ,`${_QTY}/${_QTY}` , TextAlignEnum.RIGHT , "18px", true,"微軟正黑體","green");
+        } else {
+          My_Div.Set_Text(row_content_QTY ,`${_QTY}/${_TOL_QTY}` , TextAlignEnum.RIGHT , "18px", true,"微軟正黑體","green");
+        }
     }
     else
     {
@@ -223,7 +247,7 @@ async function Refresh_rows()
   });
   if(allrows.length > 0)
   {
-    allrows[allrows.length - 1].style.backgroundColor = "#a6eb78";
+    // allrows[allrows.length - 1].style.backgroundColor = "";
   }
   const data_temp = data.Data[0].Contents.filter(function(constent){return constent.Sub_content.length > 0;});
   const inventory_num = data_temp.length;
@@ -233,13 +257,27 @@ async function Refresh_rows()
 }
 function get_subContentByOP(data)
 {
-  var subContentArray = data.Data[0].Contents.map(function(content) 
-  {
-    return content.Sub_content.filter(function(subContent) 
-    {
-        return subContent.OP === sessionData.Name;
+  // var subContentArray = data.Data[0].Contents.map(function(content) 
+  // {
+  //   return content.Sub_content.filter(function(subContent) 
+  //   {
+  //       return subContent.OP === sessionData.Name;
+  //   });
+  // }).flat();
+  var subContentArray = data.Data[0].Contents.sort((a, b) => {
+    return parseInt(a.INDEX) - parseInt(b.INDEX)
+  })
+
+  if(localStorage.getItem("invertory") == "check") {
+    subContentArray = subContentArray.filter(function(item) {
+      return item.Sub_content.length > 0;
     });
-  }).flat();
+  } else {
+    subContentArray = subContentArray.filter(function(item) {
+      return item.Sub_content.length === 0;
+    });
+  }
+  
   return subContentArray;
 }
 function Replace_data_by_content(_data)
@@ -283,6 +321,19 @@ async function serch_CODE_input_enter(barcode)
 }
 function get_header()
 {
+    // 检查浏览器是否支持localStorage
+    if (typeof(Storage) !== "undefined") {
+      // 浏览器支持localStorage
+
+      // 存储数据
+      if(!localStorage.getItem("invertory")) {
+        localStorage.setItem("invertory", "uncheck");
+      }
+      console.log("設定已盤未盤狀態", localStorage.getItem("invertory"));
+  } else {
+      // 浏览器不支持localStorage
+      console.log("抱歉，您的浏览器不支持LocalStorage。");
+  }
 
   const header_div = document.createElement('div');
   My_Div.Init(header_div, 'header_div','header_div', '100%', '', '');
@@ -313,9 +364,6 @@ function get_header()
   My_Div.Set_Text(header_creat_name ,"區域 : 無" , TextAlignEnum.LEFT , "18px", true,"微軟正黑體","");
   header_creat_name.style.marginLeft = "10px";
   header_creat_div.appendChild(header_creat_name);
-
-
-
   header_div.appendChild(header_creat_div);
 
 
@@ -365,11 +413,56 @@ function get_header()
         location.reload();
     }
   });
+
+  const header_invertory_check = document.createElement('div');
+  header_invertory_check.classList.add("header_invertory_check");
+  My_Div.Set_Text(header_invertory_check ,"已盤" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","");
+  header_invertory_check.addEventListener("click",async () => {
+    // let header_invertory_check = document.querySelector(".header_invertory_check");
+    // let header_invertory_uncheck = document.querySelector(".header_invertory_uncheck");
+    header_invertory_check.classList.remove("header_invertory_active");
+    header_invertory_uncheck.classList.remove("header_invertory_active");
+    localStorage.setItem("invertory", "check");
+
+    header_invertory_check.classList.add("header_invertory_active");
+
+    await Refresh_rows();
+  });
+
+  const header_invertory_uncheck = document.createElement('div');
+  header_invertory_uncheck.classList.add("header_invertory_uncheck");
+  // header_invertory_uncheck.classList.add("header_invertory_active");
+  My_Div.Set_Text(header_invertory_uncheck ,"未盤" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","");
+  header_invertory_uncheck.addEventListener("click",async () => {
+    header_invertory_check.classList.remove("header_invertory_active");
+    header_invertory_uncheck.classList.remove("header_invertory_active");
+
+    localStorage.setItem("invertory", "uncheck");
+
+    header_invertory_uncheck.classList.add("header_invertory_active");
+
+    await Refresh_rows();
+  });
+
+  console.log(localStorage.getItem("invertory"));
+  if(localStorage.getItem("invertory") == "check") {
+    header_invertory_check.classList.remove("header_invertory_active");
+    header_invertory_uncheck.classList.remove("header_invertory_active");
+    header_invertory_check.classList.add("header_invertory_active");
+    // Refresh_rows();
+  } else {
+    header_invertory_check.classList.remove("header_invertory_active");
+    header_invertory_uncheck.classList.remove("header_invertory_active");
+    header_invertory_uncheck.classList.add("header_invertory_active");
+    // Refresh_rows();
+  }
  
   header_controls.appendChild(header_logout);
   header_controls.appendChild(header_refresh_btn);
   header_controls.appendChild(header_serch_btn);
   header_controls.appendChild(header_creatselect_btn);
+  header_controls.appendChild(header_invertory_check);
+  header_controls.appendChild(header_invertory_uncheck);
 
   header_div.appendChild(header_controls);
 
@@ -436,7 +529,7 @@ function get_main()
 
   const main_div = document.createElement('div');
   My_Div.Init(main_div, 'main_div','main_div', '100%', '', '');
-  My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN_REVERSE, JustifyContentEnum.CENTER);
+  My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
 
   main_div.style.flexWrap = "wrap";
   main_div.style.overflowX = "hidden";
@@ -453,11 +546,11 @@ function get_row(Sub_Content)
   var _CODE = Sub_Content.CODE;
   var _SKDIACODE = Sub_Content.SKDIACODE;
   var _QTY = Sub_Content.END_QTY;
-  var _TOL_QTY = Sub_Content.TOLTAL_QTY;
+  var _TOL_QTY = Sub_Content.START_QTY;
   var _NAME = Sub_Content.NAME;
   var _CHT_NAME = Sub_Content.CHT_NAME;
+  var _STORAGE_NAME = Sub_Content.STORAGE_NAME;
 
-  console.log(Sub_Content);
   const row_div = document.createElement('div');
   My_Div.Init(row_div, 'row_div',`row_div_${_GUID}`, '97%', '', '');
   My_Div.Set_Block(row_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUNM, JustifyContentEnum.TOP);
@@ -490,6 +583,11 @@ function get_row(Sub_Content)
   My_Div.Set_Text(row_content_SKDIACODE ,`料號:${_SKDIACODE}` , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","black");
   row_content_sub01_div01.appendChild(row_content_SKDIACODE);
 
+  const row_content_STORAGE_NAME = document.createElement('div');
+  My_Div.Set_Text(row_content_STORAGE_NAME ,`儲位:${_STORAGE_NAME}` , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","black");
+  row_content_STORAGE_NAME.style.marginLeft = "12px";
+  row_content_sub01_div01.appendChild(row_content_STORAGE_NAME);
+
   const row_content_sub02_div01 = document.createElement('div');
   My_Div.Init(row_content_sub02_div01, 'row_content_sub02_div01',`row_content_sub02_div01__${_GUID}`, '30%', '', '');
   My_Div.Set_Block(row_content_sub02_div01, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
@@ -497,7 +595,11 @@ function get_row(Sub_Content)
 
   const row_content_QTY = document.createElement('div');
   My_Div.Init(row_content_QTY, 'row_content_QTY',`row_content_QTY${_GUID}`, '30%', '', '');
-  My_Div.Set_Text(row_content_QTY ,`${_QTY}/${_TOL_QTY}` , TextAlignEnum.RIGHT , "18px", true,"微軟正黑體","green");
+  if(_TOL_QTY == "0" || _TOL_QTY == "") {
+    My_Div.Set_Text(row_content_QTY ,`${_QTY}/${_QTY}` , TextAlignEnum.RIGHT , "18px", true,"微軟正黑體","green");
+  } else {
+    My_Div.Set_Text(row_content_QTY ,`${_QTY}/${_TOL_QTY}` , TextAlignEnum.RIGHT , "18px", true,"微軟正黑體","green");
+  }
   row_content_sub02_div01.appendChild(row_content_QTY);
 
   
@@ -541,7 +643,7 @@ function get_row(Sub_Content)
   });
   row_div.addEventListener("click", function()
   {
-      const Master_GUID = this.getAttribute("Master_GUID");
+      const Master_GUID = this.getAttribute("GUID");
       const Content = data.Data[0].Contents.filter(function(content)
       {
         return content.GUID == Master_GUID;
@@ -550,8 +652,6 @@ function get_row(Sub_Content)
       {
          show_popup_input(Content[0]);
       }
-      
-
   });
   
   return row_div;

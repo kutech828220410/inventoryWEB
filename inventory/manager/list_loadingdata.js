@@ -2,7 +2,7 @@
 function creat_row_div(_index , item) 
 {
     const all_div = document.createElement('div');
-    My_Div.Init(all_div,`all_div${_index}`,'all_div', '99%','200px','');
+    My_Div.Init(all_div,`all_div${_index}`,'all_div', '99%','220px','');
     My_Div.Set_Block(all_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
     all_div.style.paddingBottom = "10px";
     all_div.style.borderBottom = "2px solid gray";
@@ -67,7 +67,6 @@ function creat_row_div(_index , item)
     My_Div.Set_Block(info_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.LEFT);
     info_btn_div.appendChild(info_div);
 
-
     const in_text_div = document.createElement('div');
     My_Div.Init(in_text_div,`in_text_div${_index}`,'in_text_div', '15%','100%','');
     My_Div.Set_Block(in_text_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
@@ -126,7 +125,16 @@ function creat_row_div(_index , item)
     CT_div.style.marginLeft = "10px";
     CT_div.style.marginTop = "5px";
     info_div.appendChild(CT_div);
-   
+
+    const DEFAULT_OP = document.createElement("div");
+    My_Div.Init(DEFAULT_OP,`CT_div${_index}`,`formnnum_div_${item.IC_SN}`, '100%','20px','');
+    My_Div.Set_Text(DEFAULT_OP ,`` , TextAlignEnum.LEFT , "16px", true ,"","black");
+    DEFAULT_OP.innerHTML = `盤點人 : ${(isStringNull(item.DEFAULT_OP))? "無" : item.DEFAULT_OP}`;
+    DEFAULT_OP.setAttribute("DP",item.CT);
+    DEFAULT_OP.style.marginLeft = "10px";
+    DEFAULT_OP.style.marginTop = "5px";
+    info_div.appendChild(DEFAULT_OP);
+
     // 盤點資訊-開始時間
     const START_TIME_div = document.createElement('div');
     My_Div.Init(START_TIME_div,`START_TIME_div${_index}`,'formnnum_div', '100%','20px','');
@@ -191,14 +199,14 @@ function creat_row_div(_index , item)
     var selectbtn = document.createElement('div');
     if(item.STATE == '鎖定')  
     {
-      My_Div.Init(selectbtn,`selectbtn${_index}`,'selectbtn', '100%','33%','');
-      My_Div.Set_Text(selectbtn,`交至\n覆盤` , TextAlignEnum.CENTER , "20px", true ,"","steelblue");
+      My_Div.Init(selectbtn,`selectbtn${_index}`,'selectbtn', '100%','26%','');
+      My_Div.Set_Text(selectbtn,`交至\n覆盤` , TextAlignEnum.CENTER , "16px", true ,"","steelblue");
       selectbtn.style.backgroundColor = "#f5f5f5";
     }
     else
     {
-      My_Div.Set_Text(selectbtn,`等待\n盤點` , TextAlignEnum.CENTER , "20px", true ,"","gray");
-      My_Div.Init(selectbtn,`selectbtn${_index}`,'selectbtn', '100%','33%','');
+      My_Div.Set_Text(selectbtn,`等待\n盤點` , TextAlignEnum.CENTER , "16px", true ,"","gray");
+      My_Div.Init(selectbtn,`selectbtn${_index}`,'selectbtn', '100%','26%','');
       selectbtn.style.backgroundColor = "lightgray";
     }
   
@@ -208,7 +216,7 @@ function creat_row_div(_index , item)
     btn_div.appendChild(selectbtn);
 
     const downloadbtn = Get_download_SVG("100%", "60px", "90%","100%","steelblue","");
-    My_Div.Init(downloadbtn,`downloadbtn${_index}`,'downloadbtn', '100%','33%','');
+    My_Div.Init(downloadbtn,`downloadbtn${_index}`,'downloadbtn', '100%','26%','');
     downloadbtn.setAttribute("IC_SN",item.IC_SN);
     downloadbtn.style.border = "1px solid gray";
     downloadbtn.style.borderRadius = "5px";
@@ -220,7 +228,7 @@ function creat_row_div(_index , item)
     var lockbtn;
     if(item.STATE == '鎖定')lockbtn = Get_lock_SVG("100%", "60px", "90%","100%","red","");
     else lockbtn = Get_unlock_SVG("100%", "60px", "90%","100%","steelblue",""); 
-    My_Div.Init(lockbtn,`lockbtn${_index}`,'lockbtn', '100%','33%','');
+    My_Div.Init(lockbtn,`lockbtn${_index}`,'lockbtn', '100%','26%','');
     lockbtn.setAttribute("IC_SN",item.IC_SN);
     lockbtn.setAttribute("STATE",item.STATE);
     lockbtn.style.border = "1px solid gray";
@@ -230,6 +238,24 @@ function creat_row_div(_index , item)
     lockbtn.disabled = !GetPermissions("盤點報表鎖定");
     btn_div.appendChild(lockbtn);
 
+    const open_default_OP_window_btn = document.createElement("div");
+    open_default_OP_window_btn.classList.add("open_default_OP_window_btn");
+    open_default_OP_window_btn.setAttribute("IC_SN",item.IC_SN);
+    open_default_OP_window_btn.innerHTML = '新增<br>盤點人';
+    open_default_OP_window_btn.style.width = "100%";
+    open_default_OP_window_btn.style.height = "26%";
+    open_default_OP_window_btn.style.backgroundColor = "#F0F0F0";
+    open_default_OP_window_btn.style.color = "steelblue";
+    open_default_OP_window_btn.style.fontSize = "16px";
+    open_default_OP_window_btn.style.fontWeight = "bold";
+    open_default_OP_window_btn.style.textAlign = "center";
+    open_default_OP_window_btn.style.border = "1px solid gray";
+    open_default_OP_window_btn.style.borderRadius = "5px";
+    open_default_OP_window_btn.style.marginTop = "3px";
+    open_default_OP_window_btn.addEventListener("click", (e) => {
+      show_d_o(e);
+    })
+    btn_div.appendChild(open_default_OP_window_btn);
 
     return all_div;
 }
@@ -393,7 +419,7 @@ function edit_calendar_div(div)
 {
     var _index =parseInt(div.getAttribute("_index"));
     div.style.display = "flex";
-    div.style.width = "200px";
+    div.style.width = "220px";
     div.style.height= "100%"; 
     div.style.marginLeft = "2px";
     div.style.marginTop = "3px";

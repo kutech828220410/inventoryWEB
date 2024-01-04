@@ -1,6 +1,6 @@
 let data;
-let merge_data;
 window.onload = load;
+let merge_data;
 
 async function load() 
 {
@@ -247,7 +247,13 @@ function get_header()
   header_contorls_findsvg.style.border = "1px solid black";
   header_contorls_findsvg.onclick = header_findsvg_Click;
 
-
+  const header_contorls_uploadsvg = Get_upload_SVG("100%", "100%", "70%","100%","black","");
+  My_Div.Init(header_contorls_uploadsvg, 'header_contorls_uploadsvg','header_contorls_uploadsvg', '61.6px', '80%', '');
+  My_Div.Set_Block(header_contorls_uploadsvg, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
+  header_contorls_uploadsvg.style.padding = "0px"
+  header_contorls_uploadsvg.style.backgroundColor="lightblue";
+  header_contorls_uploadsvg.style.border = "1px solid black";
+  header_contorls_uploadsvg.onclick = header_uploadsvg_Click;
 
   const header_contorls_addsvg = Get_add_SVG("100%", "100%", "70%","100%","black","");
   My_Div.Init(header_contorls_addsvg, 'header_contorls_addsvg','header_contorls_addsvg', '60px', '80%', '');
@@ -256,6 +262,22 @@ function get_header()
   header_contorls_addsvg.style.border = "1px solid black";
   header_contorls_addsvg.onclick = header_addsvg_Click;
 
+  const excel_exsample_down = document.createElement("div");
+  excel_exsample_down.innerHTML = '範例下載';
+  excel_exsample_down.style.display = "flex";
+  excel_exsample_down.style.alignItems = "center";
+  excel_exsample_down.style.height = "80%";
+  excel_exsample_down.style.border = "1px solid gray";
+  excel_exsample_down.style.borderRadius = "8px";
+  excel_exsample_down.style.padding = "0px 4px";
+  excel_exsample_down.style.fontWeight = "700";
+  excel_exsample_down.style.marginRight = "12px";
+  excel_exsample_down.addEventListener("click", () => {
+    get_excel_header();
+  })
+ 
+
+  header_contorls_div.appendChild(excel_exsample_down);
   header_contorls_div.appendChild(header_contorls_allsvg); 
    
   const menuContainer = document.createElement('div');
@@ -265,11 +287,9 @@ function get_header()
   menuContainer.style.backgroundColor = "#ffffff";
 
   menuContainer.appendChild(header_contorls_findsvg);
+  menuContainer.appendChild(header_contorls_uploadsvg);
   menuContainer.appendChild(header_contorls_addsvg);
   header_contorls_div.appendChild(menuContainer);
-
-
-  
 
   header_div.appendChild(header_title_user_div);
   header_div.appendChild(header_contorls_div);
@@ -300,8 +320,36 @@ function header_findsvg_Click(event)
 {
   show_popup_serch();
 }
+function header_uploadsvg_Click(event)
+{
+  show_popup_upload();
+}
+async function get_excel_header()
+{
+  try {
+    const response = await fetch(`${api_ip}api/inventory/get_excel_header`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
 
+    if (!response.ok) {
+      throw new Error('Failed to fetch the Excel file.');
+    }
 
+    const blob = await response.blob();
+    const _url = window.URL.createObjectURL(blob);
+
+    // 创建下载链接
+    let downloadLink = document.createElement('a');
+    downloadLink.href = window.URL.createObjectURL(blob);
+    downloadLink.download = `範例表格.xls`;
+    downloadLink.click();
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 async function findcheckbtn_Click(event)
 {

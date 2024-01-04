@@ -20,11 +20,20 @@ async function popup_creatSelect_load()
        return item.IC_SN.charAt(0) != "Q";
     })
     popup_creatSelect_creat.Data = creats;
-    console.log("盤點單",popup_creatSelect_creat);   
+    console.log("盤點單",popup_creatSelect_creat);  
     popup_creatSelect_div.Set_BackgroundOpacity(1);
     popup_creatSelect_div.Clear();
     const title = popup_creatSelect_title_init();
     const content = popup_creatSelect_content_init();
+    
+    // let loged_name = get_logedName();
+    // creats.forEach(async(element) => {
+    //     if (element.DEFAULT_OP == loged_name) {
+    //         sessionStorage.setItem('IC_SN', element.IC_SN);
+    //         await popup_creatSelect_div.Close();
+    //         popup_creatSelect_finished();
+    //     }
+    // });
 
     popup_creatSelect_div.AddControl(title);
     popup_creatSelect_div.AddControl(content);
@@ -59,15 +68,54 @@ function popup_creatSelect_content_init()
     
     const normal_CN = document.createElement('div');
     My_Div.Init(normal_CN, 'popup_creatSelect_normal_CN','popup_creatSelect_normal_CN', '100%', '', '');
-    My_Div.Set_Block(normal_CN, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
-    normal_CN.style.marginTop = '5px';
+    My_Div.Set_Block(normal_CN, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN);
+    normal_CN.style.overflow = "auto";
+    normal_CN.style.margin = '5px';
     normal_CN.style.padding = '5px';
+
+    let loged_name = get_logedName();
+    let count_include = 0;
+
+    temp_data = [];
+    
+    popup_creatSelect_creat["Data"].forEach(element => {
+        let temp_str = element.DEFAULT_OP; // "123,4234,1124"
+        // let temp_arr = []; 
+        // if (temp_str != "") {
+        //   temp_arr = temp_str.split(',');
+        // }
+        // // temp_arr [123, 4234, 1134]
+        // temp_arr.forEach(e => {
+        // })
+        if(temp_str.includes(loged_name)) {
+            count_include = +count_include + 1;
+            temp_data.push(element);
+        }
+    });
+
+    if(temp_data.length == 1) {
+        popup_creatSelect_creat["Data"] = temp_data;
+        console.log(popup_creatSelect_creat["Data"]);
+    } else if (temp_data.length > 1) {
+        popup_creatSelect_creat["Data"] = temp_data;
+        console.log(popup_creatSelect_creat["Data"]);
+    } else {
+        temp_data = popup_creatSelect_creat["Data"].filter(item => {
+            return item.DEFAULT_OP == "";
+        })
+
+        popup_creatSelect_creat["Data"] = temp_data;
+        if(temp_data.length == 0) {
+            alert("目前沒有任何單據符合您, 請與管理員確認後再登入確認");
+        }
+    }
+
     for(var i = 0; i < popup_creatSelect_creat.Data.length; i++)
     {
         const IC_SN = popup_creatSelect_creat.Data[i].IC_SN;
         const IC_NAME = popup_creatSelect_creat.Data[i].IC_NAME;
         const temp_button = document.createElement('button');
-        My_Div.Init(temp_button, `creatSelect_button_${IC_SN}`,`creatSelect_button_${IC_SN}`, '95%', '50px',);
+        My_Div.Init(temp_button, `creatSelect_button`,`creatSelect_button_${IC_SN}`, '90%', '50px',);
         My_Div.Set_Text(temp_button ,`${IC_NAME}` , TextAlignEnum.CENTER , "20px", true,"微軟正黑體","black");
         temp_button.setAttribute("IC_SN",IC_SN);
         temp_button.setAttribute("IC_NAME",IC_NAME);

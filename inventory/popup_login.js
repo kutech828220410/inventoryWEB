@@ -19,7 +19,6 @@ async function popup_login_load()
     popup_login_div.AddControl(title);
     popup_login_div.AddControl(content);
     popup_login_div.AddControl(underline);
-
 }
 async function popup_login_closed()
 {
