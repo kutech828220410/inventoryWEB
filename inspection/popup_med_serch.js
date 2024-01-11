@@ -230,8 +230,6 @@ function popup_med_serch_typeSerch(text)
             return item.NAME.toUpperCase().includes(text.toUpperCase());
         });
 
-      
-    
         console.log("搜尋英文名結果",med);
     }
     else if(radio_content_DIANAME.checked == true)
@@ -255,6 +253,7 @@ function popup_med_serch_typeSerch(text)
     if(med.length > 0)
     {
         const content_serch_result_div = document.querySelector("#content_serch_result_div");
+        // popup_med_serch_div.Show();
         for(var i = 0 ; i < med.length; i ++)
         {
             const row = popup_med_serch_get_row(med[i] , i + 1);
@@ -263,7 +262,7 @@ function popup_med_serch_typeSerch(text)
         popup_med_serch_refresh_rows();
     } else {
         alert('查無此藥...')
-        popup_med_serch_div.Close(); // 關閉彈窗
+        // popup_med_serch_div.Close(); // 關閉彈窗
         const content_serch_type_textBox = document.querySelector('.content_serch_type_textBox');
         content_serch_type_textBox.value = "";
         const content_serch_result_div = document.querySelector("#content_serch_result_div");

@@ -163,3 +163,25 @@ body {
   color: rgb(239, 239, 239);
   background-color: rgb(196, 151, 29);
 }
+
+.med_add_item_div {
+  background-color: transparent;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 2px 8px;
+  border: 2px solid #888888;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 4px;
+  transition: all 0.3s ease;
+}
+
+.med_add_item_div:hover {
+  background-color: #a1a1a1;
+  transition: all 0.3s ease;
+}
+
+.med_add_item_CODE_title {
+  text-align: right;
+  font-size: 14px;
+}

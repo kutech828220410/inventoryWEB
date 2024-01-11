@@ -1,6 +1,8 @@
 let data;
 window.onload = load;
 let merge_data;
+let med_data;
+let med_add_event = false;
 
 async function load() 
 {
@@ -108,7 +110,7 @@ function current_function_trgger(div_array, target) {
 }
 
 //#region [rgba(0, 0, 255, 0.03)] public Function
-function page_Init(data) 
+async function page_Init(data) 
 {
   let header_title_text = document.querySelector("#header_title_text")
   header_title_text.innerHTML = "盤點單號"
@@ -116,6 +118,7 @@ function page_Init(data)
   const main_div = document.querySelector('#main_div');
   main_div.innerHTML = "";
 
+  med_data = await get_medicine_cloud()
   
   if (data.Data.length == 0) 
   {

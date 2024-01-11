@@ -25,6 +25,8 @@
             loadScript("../../inventory/manager/list_popup_serch.js");
             loadScript("../../inventory/manager/list_popup_upload.js");
             loadScript("../../inventory/manager/list_popup_add_default_op.js");
+            loadScript("../../inventory/manager/list_popup_setting.js");
+            loadScript("../../inventory/manager/list_popup_set_add_med.js");
             loadScript("../../UI/navBar.js");
             loadScript("../../inventory/manager/merge.js");
           })();
@@ -44,7 +46,9 @@
      get_popup_serch();
      get_popup_add();
      get_popup_upload();
-      get_popup_add_OP();
+     get_popup_add_OP();
+     get_popup_setting();
+     get_popup_add_med();
      popup_merge_add();
      popup_merge_create();
      document.body.appendChild(popup_serch_div.div);
@@ -53,6 +57,8 @@
      popup_add_div.Set_Visible(false);
      popup_upload_div.Set_Visible(false);
      popup_add_OP_div.Set_Visible(false);
+     pop_setting_div.Set_Visible(false);
+     popup_add_med_div.Set_Visible(false);
 
      
     </script>

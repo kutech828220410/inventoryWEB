@@ -241,19 +241,22 @@ function creat_row_div(_index , item)
     const open_default_OP_window_btn = document.createElement("div");
     open_default_OP_window_btn.classList.add("open_default_OP_window_btn");
     open_default_OP_window_btn.setAttribute("IC_SN",item.IC_SN);
-    open_default_OP_window_btn.innerHTML = '新增<br>盤點人';
+    open_default_OP_window_btn.setAttribute("GUID",item.GUID);
+    open_default_OP_window_btn.innerHTML = '設定';
     open_default_OP_window_btn.style.width = "100%";
-    open_default_OP_window_btn.style.height = "26%";
+    open_default_OP_window_btn.style.minHeight = "26%";
     open_default_OP_window_btn.style.backgroundColor = "#F0F0F0";
     open_default_OP_window_btn.style.color = "steelblue";
-    open_default_OP_window_btn.style.fontSize = "16px";
+    open_default_OP_window_btn.style.fontSize = "20px";
+    open_default_OP_window_btn.style.lineHeight = "43px";
     open_default_OP_window_btn.style.fontWeight = "bold";
     open_default_OP_window_btn.style.textAlign = "center";
     open_default_OP_window_btn.style.border = "1px solid gray";
     open_default_OP_window_btn.style.borderRadius = "5px";
     open_default_OP_window_btn.style.marginTop = "3px";
     open_default_OP_window_btn.addEventListener("click", (e) => {
-      show_d_o(e);
+      show_setting(e);
+      // show_d_o(e);
     })
     btn_div.appendChild(open_default_OP_window_btn);
 

@@ -314,6 +314,7 @@ async function serch_CODE_input_enter(barcode)
       {
         console.log("CODE",CODE);
         show_popup_input(data.Data[0].Contents[i]);
+        header_serch_text.blur();
         return;
       }
     }
@@ -416,44 +417,46 @@ function get_header()
 
   const header_invertory_check = document.createElement('div');
   header_invertory_check.classList.add("header_invertory_check");
-  My_Div.Set_Text(header_invertory_check ,"已盤" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","");
+  My_Div.Set_Text(header_invertory_check ,"未盤" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","");
   header_invertory_check.addEventListener("click",async () => {
-    // let header_invertory_check = document.querySelector(".header_invertory_check");
-    // let header_invertory_uncheck = document.querySelector(".header_invertory_uncheck");
-    header_invertory_check.classList.remove("header_invertory_active");
-    header_invertory_uncheck.classList.remove("header_invertory_active");
-    localStorage.setItem("invertory", "check");
+    let invertory_checked = localStorage.getItem("invertory");
 
-    header_invertory_check.classList.add("header_invertory_active");
-
-    await Refresh_rows();
-  });
-
-  const header_invertory_uncheck = document.createElement('div');
-  header_invertory_uncheck.classList.add("header_invertory_uncheck");
-  // header_invertory_uncheck.classList.add("header_invertory_active");
-  My_Div.Set_Text(header_invertory_uncheck ,"未盤" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","");
-  header_invertory_uncheck.addEventListener("click",async () => {
-    header_invertory_check.classList.remove("header_invertory_active");
-    header_invertory_uncheck.classList.remove("header_invertory_active");
-
-    localStorage.setItem("invertory", "uncheck");
-
-    header_invertory_uncheck.classList.add("header_invertory_active");
+    if (invertory_checked == "check") {
+      header_invertory_check.classList.remove("header_invertory_active");
+      header_invertory_check.innerHTML = '未盤';
+      localStorage.setItem("invertory", "uncheck");
+    } else {
+      header_invertory_check.classList.add("header_invertory_active");
+      header_invertory_check.innerHTML = '已盤';
+      localStorage.setItem("invertory", "check");
+    }
 
     await Refresh_rows();
   });
+
+  // const header_invertory_uncheck = document.createElement('div');
+  // header_invertory_uncheck.classList.add("header_invertory_uncheck");
+  // // header_invertory_uncheck.classList.add("header_invertory_active");
+  // My_Div.Set_Text(header_invertory_uncheck ,"未盤" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","");
+  // header_invertory_uncheck.addEventListener("click",async () => {
+  //   header_invertory_check.classList.remove("header_invertory_active");
+  //   header_invertory_uncheck.classList.remove("header_invertory_active");
+
+  //   localStorage.setItem("invertory", "uncheck");
+
+  //   header_invertory_uncheck.classList.add("header_invertory_active");
+
+  //   await Refresh_rows();
+  // });
 
   console.log(localStorage.getItem("invertory"));
   if(localStorage.getItem("invertory") == "check") {
-    header_invertory_check.classList.remove("header_invertory_active");
-    header_invertory_uncheck.classList.remove("header_invertory_active");
     header_invertory_check.classList.add("header_invertory_active");
+    header_invertory_check.innerHTML = '已盤';
     // Refresh_rows();
   } else {
     header_invertory_check.classList.remove("header_invertory_active");
-    header_invertory_uncheck.classList.remove("header_invertory_active");
-    header_invertory_uncheck.classList.add("header_invertory_active");
+    header_invertory_check.innerHTML = '未盤';
     // Refresh_rows();
   }
  
@@ -462,7 +465,7 @@ function get_header()
   header_controls.appendChild(header_serch_btn);
   header_controls.appendChild(header_creatselect_btn);
   header_controls.appendChild(header_invertory_check);
-  header_controls.appendChild(header_invertory_uncheck);
+  // header_controls.appendChild(header_invertory_uncheck);
 
   header_div.appendChild(header_controls);
 

@@ -60,6 +60,24 @@ function get_underline_d_o()
     My_Div.Init(underline_serchtype_div, 'underline_serchtype_div_popup_serch','underline_serchtype_div_popup_serch', '72%','100%','');
     My_Div.Set_Block(underline_serchtype_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
     underline_div.style.alignItems = "center";
+
+    const close_d_o_div = document.createElement("div");
+    close_d_o_div.classList.add("close_d_o_div");
+    close_d_o_div.innerHTML = '關閉設定';
+    close_d_o_div.style.padding = '7px 12px';
+    close_d_o_div.style.borderRadius = "5px";
+    close_d_o_div.style.border = "2px solid gray";
+    close_d_o_div.style.backgroundColor = "#454545";
+    close_d_o_div.style.color = "#F0F0F0";
+    close_d_o_div.style.fontWeight = "600";
+    close_d_o_div.style.marginLeft = "10px";
+    close_d_o_div.style.cursor = "pointer";
+
+    close_d_o_div.addEventListener("click", () => {
+        hide_d_o();
+    });
+
+    underline_serchtype_div.appendChild(close_d_o_div);
     
 
     const svg_confirm_SVG = Get_confirm_SVG("40px","100%" ,"60%","100%","green");
@@ -78,7 +96,10 @@ function get_underline_d_o()
     svg_undo_SVG.style.marginRight = "5px";
     svg_undo_SVG.addEventListener('click', function()
     {
-        hide_d_o();
+        let title_add_d_o_div = document.querySelector(".title_add_d_o_div");
+        let IC_SN = title_add_d_o_div.getAttribute('IC_SN')
+        let GUID = title_add_d_o_div.getAttribute('GUID')
+        return_setting(IC_SN, GUID);
     });
     underline_div.appendChild(underline_serchtype_div);
 
@@ -117,15 +138,18 @@ async function updata_d_o() {
     hide_d_o();
 }
  
-async function show_d_o(e)
+async function show_d_o(_IC_SN, _GUID)
 {
-    let IC_SN = e.target.getAttribute("IC_SN");
+    showLoadingPopup();
+    let IC_SN = _IC_SN;
+    let GUID = _GUID;
+    // let IC_SN = e.target.getAttribute("IC_SN");
     let data_by_IC_SN = await get_all_d_o(IC_SN);
     let all_d_o = data_by_IC_SN["Data"].DEFAULT_OP;
     let temp_d_o_arr = all_d_o.split(',');
     let title_add_d_o_div = document.querySelector(".title_add_d_o_div");
     title_add_d_o_div.setAttribute("IC_SN", IC_SN);
-    popup_add_OP_div.Set_Visible(true);
+    title_add_d_o_div.setAttribute("GUID", GUID);
 
     let d_o_name_input = document.querySelectorAll(".d_o_name_input");
     if (all_d_o != "") {
@@ -134,6 +158,9 @@ async function show_d_o(e)
             d_o_name_input[i].value = element;
         });
     }
+
+    popup_add_OP_div.Set_Visible(true);
+    hideLoadingPopup();
 }
 function hide_d_o()
 {
@@ -143,6 +170,7 @@ function hide_d_o()
     })
     let title_add_d_o_div = document.querySelector(".title_add_d_o_div");
     title_add_d_o_div.setAttribute("IC_SN", "");
+    title_add_d_o_div.setAttribute("GUID", "");
     popup_add_OP_div.Set_Visible(false);
 }
 

@@ -329,15 +329,22 @@ async function serch_CODE_input_enter(barcode)
     if(medicine_page == undefined) return;
     if(response.Data.length == 0) 
     {
-      popup_med_serch_div.Show();
-      let content_serch_type_textBox = document.querySelector(".content_serch_type_textBox");
-      content_serch_type_textBox.value = barcode;
-      let search_result = popup_med_serch_typeSerch(barcode);
-      
-      if (search_result) {
-        popup_med_serch_div.Close(); // 關閉彈窗
-    }
 
+      med = popup_med_serch_medclass.filter(function(item)
+      {
+          return item.NAME.toUpperCase().includes(barcode.toUpperCase());
+      });
+
+      if(med.length != 0) {
+        popup_med_serch_div.Show();
+        let content_serch_type_textBox = document.querySelector(".content_serch_type_textBox");
+        content_serch_type_textBox.value = barcode;
+        popup_med_serch_typeSerch(barcode);
+        header_serch_text.blur();
+      } else {
+        alert("查無此藥...");
+        return;
+      }
       return ;
     }
     let temp_code = response.Data[0].CODE;
@@ -353,6 +360,7 @@ async function serch_CODE_input_enter(barcode)
         if(CODE.toUpperCase() == response.Data[0].CODE.toUpperCase())
         {
           console.log("CODE",CODE);
+          header_serch_text.blur();
           show_popup_input(data.Data[0].Contents[i]);
           return;
         }
@@ -361,6 +369,7 @@ async function serch_CODE_input_enter(barcode)
       // 如果這個藥品有兩項請購單號跳出選擇彈窗
       show_popup_select_by_pon();
       init_get_row_by_pon()
+      header_serch_text.blur();
       temp_display_pon_arr.forEach(element => {
         get_row_by_pon(element);
       });

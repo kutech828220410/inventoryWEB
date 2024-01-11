@@ -197,6 +197,8 @@ async function inventory_excel_upload(file, IC_NAME, CT, DEFAULT_OP)
     if (response.ok) {
       const result = await response.json();
       console.log(result); // 处理返回的结果
+      alert(`${result.Result}`);
+      return result;
     } else {
       console.error('请求失败');
     }

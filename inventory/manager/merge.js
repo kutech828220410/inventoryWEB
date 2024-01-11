@@ -157,7 +157,9 @@ async function merge_page_init(data) {
     foot_right_button_2.classList.add("button_style");
     foot_right_button_2.innerHTML = "合併單匯出";
     foot_right_button_2.addEventListener("click", async() => {
+        showLoadingPopup();
         await inv_download_combine_list();
+        hideLoadingPopup();
     });
     merge_display_foot_right_div.appendChild(foot_right_button_2)
 
@@ -661,7 +663,12 @@ async function delete_record(item) {
     // console.log("temp_arr",temp_arr);
     // console.log("api_ip", api_ip);
 
-    await inv_creat_update(_NAME, INV_SN, CT, temp_arr);
+    if(confirm(`是否刪除${SN}?`)) {
+        await inv_creat_update(_NAME, INV_SN, CT, temp_arr);
+    } else {
+        return;
+    };
+
 
     let merge_add_list_select = document.querySelector(".merge_add_list_select");
     let header_merge_select_select = document.querySelector(".header_merge_select_select");
