@@ -85,9 +85,12 @@ html, body {
   padding: 8px;
 }
 .row_div {
-  width: 95%;
+  width: 90% !important;
 }
-@media screen and (max-width: 1024px) {
+.main_div {
+  height: auto !important;
+}
+/* @media screen and (max-width: 1024px) {
   .row_div {
     width: 90%;
   }
@@ -96,7 +99,7 @@ html, body {
   .row_div {
     width: 354px;
   }
-}
+} */
 
 
 .almcontrol_btn{border-radius: 5px; background-color:#eb3232; padding:0 20px; color:#fff; transition:.2s;}

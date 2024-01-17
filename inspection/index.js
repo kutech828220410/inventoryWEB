@@ -167,7 +167,7 @@ async function page_Init(data)
   My_Div.Init(main_div, 'main_div','main_div', '100%', '', '');
   My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN_REVERSE, JustifyContentEnum.CENTER);
 
-  main_div.style.flexWrap = "wrap";
+  // main_div.style.flexWrap = "wrap";
   main_div.style.overflowX = "hidden";
   main_div.style.overflowY = "hidden";
   allrows = [];
@@ -540,7 +540,7 @@ function get_main()
   My_Div.Init(main_div, 'main_div','main_div', '100%', '', '');
   My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN_REVERSE, JustifyContentEnum.CENTER);
 
-  main_div.style.flexWrap = "wrap";
+  // main_div.style.flexWrap = "wrap";
   main_div.style.overflowX = "hidden";
   main_div.style.overflowY = "hidden";
 
@@ -568,7 +568,7 @@ function get_row(Sub_Content)
   var _PON = Sub_Content.PON
 
   const row_div = document.createElement('div');
-  My_Div.Init(row_div, 'row_div',`row_div_${_GUID}`, '', '', '');
+  My_Div.Init(row_div, 'row_div',`row_div_${_GUID}`, '85%', '', '');
   My_Div.Set_Block(row_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUNM, JustifyContentEnum.TOP);
   // row_div.setAttribute("GUID", _GUID);
   row_div.setAttribute("Master_GUID", _GUID);
@@ -586,14 +586,15 @@ function get_row(Sub_Content)
   const row_content_div01 = document.createElement('div');
   My_Div.Init(row_content_div01, `row_content_div01`,`row_content_div01_${_GUID}`, '100%', '', '');
   My_Div.Set_Block(row_content_div01, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
+  row_content_div01.style.justifyContent = "space-between"
 
   const row_content_sub01_div01 = document.createElement('div');
-  My_Div.Init(row_content_sub01_div01, `row_content_sub01_div01`,`row_content_sub01_div01_${_GUID}`, '70%', '', '');
+  My_Div.Init(row_content_sub01_div01, `row_content_sub01_div01`,`row_content_sub01_div01_${_GUID}`, '', '', '');
   My_Div.Set_Block(row_content_sub01_div01, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
   row_content_sub01_div01.style.paddingLeft = '10px';
 
   const row_content_NAME = document.createElement('div');
-  My_Div.Init(row_content_NAME, 'row_content_NAME','row_content_NAME', '100%', '', '');
+  My_Div.Init(row_content_NAME, 'row_content_NAME','row_content_NAME', '', '', '');
   My_Div.Set_Text(row_content_NAME ,`${_NAME}` , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","#c88114");
   row_content_NAME.style.marginLeft = '10px';
   row_content_NAME.style.fontSize = '16px';
@@ -603,16 +604,20 @@ function get_row(Sub_Content)
   row_content_div01.appendChild(row_content_NAME);
   
   const row_content_sub02_div01 = document.createElement('div');
-  My_Div.Init(row_content_sub02_div01, 'row_content_sub02_div01',`row_content_sub02_div01__${_GUID}`, '30%', '', '');
+  My_Div.Init(row_content_sub02_div01, 'row_content_sub02_div01',`row_content_sub02_div01__${_GUID}`, '', '', '');
   My_Div.Set_Block(row_content_sub02_div01, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
   row_content_sub02_div01.style.marginRight = '10px';
 
   const row_content_QTY = document.createElement('div');
-  My_Div.Init(row_content_QTY, 'row_content_QTY',`row_content_QTY${_GUID}`, '30%', '', '');
-  My_Div.Set_Text(row_content_QTY ,`${_QTY}/${_TOL_QTY}` , TextAlignEnum.RIGHT , "18px", true,"微軟正黑體","green");
+  My_Div.Init(row_content_QTY, 'row_content_QTY',`row_content_QTY${_GUID}`, '', '', '');
+  if(Sub_Content['Sub_content'].length > 1) {
+    My_Div.Set_Text(row_content_QTY ,`(多筆)${_QTY}/${_TOL_QTY}` , TextAlignEnum.RIGHT , "18px", true,"微軟正黑體","green");
+  } else {
+    My_Div.Set_Text(row_content_QTY ,`${_QTY}/${_TOL_QTY}` , TextAlignEnum.RIGHT , "18px", true,"微軟正黑體","green");
+  }
   row_content_sub02_div01.appendChild(row_content_QTY);
 
-  row_content_div01.appendChild(row_content_sub01_div01);
+  // row_content_div01.appendChild(row_content_sub01_div01);
   row_content_div01.appendChild(row_content_sub02_div01);
 
   const row_content_div02 = document.createElement('div');

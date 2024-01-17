@@ -328,7 +328,7 @@ function get_header()
 
       // 存储数据
       if(!localStorage.getItem("invertory")) {
-        localStorage.setItem("invertory", "uncheck");
+        localStorage.setItem("invertory", "check");
       }
       console.log("設定已盤未盤狀態", localStorage.getItem("invertory"));
   } else {
