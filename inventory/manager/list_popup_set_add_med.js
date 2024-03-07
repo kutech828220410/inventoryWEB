@@ -303,9 +303,12 @@ async function get_search_med_result_div_row(arr) {
         med_add_item_div.appendChild(med_add_item_CT_title);
         med_add_item_div.appendChild(med_add_item_CODE_title);
 
-        med_add_item_div.addEventListener("click", () => {
+        med_add_item_div.addEventListener("click", async() => {
             if(confirm(`是否新增藥品：${element.NAME}?`)) {
-                content_add_by_IC_SN(element);
+                showLoadingPopup();
+                await content_add_by_IC_SN(element);
+                init_search_add_med_div();
+                hideLoadingPopup();
             }
         })
 
@@ -337,19 +340,28 @@ async function content_add_by_IC_SN(add_data) {
     temp_data.NAME = add_data.NAME;
     temp_data.PAKAGE = add_data.PAKAGE;
     temp_data.BARCODE1 = add_data.BARCODE1;
-    temp_data.BARCODE2 = add_data.BARCODE2;
+    if(add_data.BARCODE2 == "") {
+        temp_data.BARCODE2 = "[]";
+    } else {
+        temp_data.BARCODE2 = add_data.BARCODE2;
+    };
 
-    console.log(temp_data.CODE);
-    console.log(temp_data.SKDIACODE);
-    console.log(temp_data.CHT_NAME);
-    console.log(temp_data.NAME);
-    console.log(temp_data.PAKAGE);
-    console.log(temp_data.BARCODE1);
-    console.log(temp_data.BARCODE2);
+    // console.log("CODE => ",temp_data.CODE);
+    // console.log("SDKIACODE => ",temp_data.SKDIACODE);
+    // console.log("CHT_NAME => ",temp_data.CHT_NAME);
+    // console.log("NAME => ",temp_data.NAME);
+    // console.log("PAKAGE => ",temp_data.PAKAGE);
+    // console.log("BARCODE1 => ",temp_data.BARCODE1);
+    // console.log("BARCODE2 => ",temp_data.BARCODE2);
 
-    console.log("IC_SN",_IC_SN);
-    console.log("temp_data",temp_data);
+    console.log("IC_SN => ",_IC_SN);
+    console.log("temp_data => ",temp_data);
+    temp_data = {
+        Data: {Contents: [ temp_data ] },
+        Value : `${_IC_SN}`
+    };
     temp_data = JSON.stringify(temp_data);
+    console.log(temp_data);
 
     try {
         const response = await fetch(`${api_ip}api/inventory/content_add_by_IC_SN`, {
@@ -357,33 +369,39 @@ async function content_add_by_IC_SN(add_data) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: {
-                "Data": {"Contents": [ {temp_data} ] },
-                "Value" : `${_IC_SN}`
-            }
+            body: temp_data
         });
 
-        // [
-        //     {
-        //         "CODE": `${add_data.CODE}`,
-        //         "SKDIACODE": `${add_data.SKDIACODE}`,
-        //         "CHT_NAME": `${add_data.CHT_NAME}`,
-        //         "NAME": `${add_data.NAME}`,
-        //         "PAKAGE": `${add_data.PAKAGE}`,
-        //         "BARCODE1": `${add_data.BARCODE1}`,
-        //         "BARCODE2": `${add_data.BARCODE2}`,
-        //         "START_QTY": "0",
-        //         "END_QTY": "0",
-        //         "NOTE": "",
-        //         "Sub_content": []
-        //     }
-        // ]
+        // {
+        //     "Data": 
+        //     {                 
+        //         "Contents": 
+        //          [
+        //             {
+        //                 "CODE": "10105",
+        //                 "SKDIACODE": "",
+        //                 "CHT_NAME": "聲諾明",
+        //                 "NAME": "SonoVue Microbubbles Inj",
+        //                 "PAKAGE": "VIAL",
+        //                 "BARCODE1": "",
+        //                 "BARCODE2": "[]",
+        //                 "START_QTY": "0",
+        //                 "END_QTY": "0",
+        //                 "NOTE": "",
+        //                 "Sub_content": []
+        //             }
+        //          ]       
+        //      },
+        //      "Value" : "Q20240112-高價藥品"
+        // }
 
         if (!response.ok) {
             throw new Error('请求失败');
         }
 
         const responseData = await response.json();
+        console.log(responseData);
+        alert(responseData.Result);
         return responseData;
     } catch (error) {
         console.error(error);

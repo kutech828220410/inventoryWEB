@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>智慧藥局系統</title>
   <link rel="stylesheet" href="medGroup.css">
+  <link rel="stylesheet" href="medManager.css">
   <link rel="icon" href="../../favicon.ico" >
   <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="192x192">
   <link rel="icon" type="image/png" sizes="192x192" href="android-touch-icon.png">
@@ -21,17 +22,24 @@
     loadScript("../session_check.js");
     loadScript("../session.js");
     loadScript("./medGroup.js");
+    loadScript("./medManager.js");
     loadScript("../UI/navBar.js");
+    loadScript("./popup_med_item.js");
     })();
   </script>
 </head>
 <body>
+  <script>
+    get_popup_med_item();
+    
+    popup_med_item_div.Set_Visible(false);
+  </script>
   <div class="gm_main_container">
   </div>
   <div class="bottom_gm_nav_container">
     <div class="bottom_gm_nav_card_container">
+      <div class="bottom_gm_nav_card">藥檔管理</div>
       <div class="bottom_gm_nav_card">藥品群組</div>
-      <div class="bottom_gm_nav_card" style="display: none;">藥檔管理</div>
     </div>
   </div>
   <div class="under-line">

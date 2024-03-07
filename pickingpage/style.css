@@ -26,6 +26,22 @@
     font-size: 1.2rem;
     border-radius: 16px;
 }
+.pick_light_all_off_btn {
+    width: 160px;
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #000000;
+    line-height: 42px;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 0px auto 20px;
+    background-color: #ffffff;
+    transition: all 0.2s ease-in;
+}
+.pick_light_all_off_btn:hover {
+    background-color: #a4a4a4;
+    transition: all 0.2s ease-in;
+}
 .med_input_display_container {
     width: 320px;
     margin: auto;

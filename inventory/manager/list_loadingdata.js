@@ -265,7 +265,7 @@ function creat_row_div(_index , item)
 //#endregion
 
 //#region [rgba(0, 255, 0, 0.05)] Event
-async function downloadbtn_Click(event)
+async function downloadbtn_Click()
 {
   var IC_SN = this.getAttribute("IC_SN");
   const confirmResult = confirm(`確定下載盤點單 [${IC_SN}]?`);

@@ -94,6 +94,10 @@ function mainDiplay(med_data, medicine_page) {
         </div>
     `;
 
+    const pick_light_all_off_btn = document.createElement("div");
+    pick_light_all_off_btn.classList.add("pick_light_all_off_btn");
+    pick_light_all_off_btn.innerHTML = "全部滅燈";
+
     const picking_list_container = document.createElement("div");
     picking_list_container.classList.add("picking_list_container");
 
@@ -107,6 +111,7 @@ function mainDiplay(med_data, medicine_page) {
     main.appendChild(radio_container);
     main.appendChild(pp_barcode_input);
     main.appendChild(med_input_display_container);
+    main.appendChild(pick_light_all_off_btn);
     main.appendChild(picking_list_container);
 
     let med_display_page = 1;

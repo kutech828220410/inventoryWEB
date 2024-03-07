@@ -24,35 +24,36 @@ async function load()
     const test_user_data = {
       id: loggedID,
       name: loggedName,
-    }
+    };
 
-    popup_group_create()
-    nav_bar_create("medGroup", test_user_data)
-    current_funtion_check()
+    popup_group_create();
+    nav_bar_create("medGroup", test_user_data);
+    current_funtion_check();
 
     Set_main_div_enable(false);
-}
+};
 
 function current_funtion_check() {
-    let bottom_gm_nav_card = document.querySelectorAll(".bottom_gm_nav_card")
+    let bottom_gm_nav_card = document.querySelectorAll(".bottom_gm_nav_card");
 
     // 預設畫面
     if (bottom_gm_nav_card[0].classList[1] != "current_funtion") {
-        groups_manage_get_data("")
-        bottom_gm_nav_card[0].classList.add("current_funtion")
+        // groups_manage_get_data("")
+        med_manage_get_data();
+        bottom_gm_nav_card[0].classList.add("current_funtion");
     } else {
-        return
-    }
+        return;
+    };
 
     bottom_gm_nav_card.forEach(e => {
         e.addEventListener("click", () => {
             switch (e.innerHTML) {
                 case "藥品群組":
-                    current_function_trgger(bottom_gm_nav_card, e) 
+                    current_function_trgger(bottom_gm_nav_card, e);
                     break;
 
                 case "藥檔管理":
-                    current_function_trgger(bottom_gm_nav_card, e)
+                    current_function_trgger(bottom_gm_nav_card, e);
                     break;
 
                 default:
@@ -67,8 +68,8 @@ function current_function_trgger(div_array, target) {
     // 切換功能
     if (target.classList[1] != "current_funtion") {
         div_array.forEach(e => {
-            e.classList.remove("current_funtion")
-            target.classList.add("current_funtion")
+            e.classList.remove("current_funtion");
+            target.classList.add("current_funtion");
         });
     } else {
         return
@@ -76,12 +77,12 @@ function current_function_trgger(div_array, target) {
 
     switch (target.innerHTML) {
         case "藥品群組":
-            groups_manage_get_data("") 
+            groups_manage_get_data("") ;
             break;
 
         case "藥檔管理":
-            med_manage_get_data()
-            window.alert("功能開發中!!")
+            med_manage_get_data();
+            // window.alert("功能開發中!!");
             break;
 
         default:
@@ -1238,14 +1239,6 @@ function group_med_save_func(guid, gName, array) {
             window.alert("儲存成功!!")
     });
     groups_manage_get_data(guid)
-}
-
-
-
-// 藥檔管理功能
-function med_manage_get_data() {
-    let gm_main_container = document.querySelector('.gm_main_container')
-    container_display_init(gm_main_container)
 }
 
 // 頁面功能畫面初始化
