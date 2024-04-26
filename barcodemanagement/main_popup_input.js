@@ -22,7 +22,6 @@ function show_popup_input(Med , page_Initial)
     popup_input_div.Set_Visible(true);
     const BarCode_input = document.querySelector('#BarCode_input_popup_input');
     BarCode_input.focus();
- 
 }
 function hide_popup_input()
 {
@@ -60,13 +59,23 @@ async function confirm_popup_input()
     }
 
 
+    console.log(popup_input_div_Med);
     const GUID = popup_input_div_Med.GUID;
     const BarCode = BarCode_input.value;
     BarCode_input.value = "";
     if(BarCode!= "")
     {
+        if(popup_input_div_Med.BARCODE2 == "") {
+            popup_input_div_Med.BARCODE2 = [];
+        } else {
+            popup_input_div_Med.BARCODE2 = JSON.parse(popup_input_div_Med.BARCODE2);
+        }
+
         popup_input_div_Med.BARCODE.push(BarCode);
+        popup_input_div_Med.BARCODE2.push(BarCode);
+        popup_input_div_Med.BARCODE2 = JSON.stringify(popup_input_div_Med.BARCODE2);
         upadte_by_guid(popup_input_div_Med);
+        page_Init(data);
     }
   
  
@@ -75,13 +84,27 @@ async function confirm_popup_input()
 }
 async function delete_row_popup_input(BarCode)
 {
+    if(popup_input_div_Med.BARCODE1 != "") popup_input_div_Med.BARCODE2 = JSON.parse(popup_input_div_Med.BARCODE2);
+    if(popup_input_div_Med.BARCODE2 != "") popup_input_div_Med.BARCODE2 = JSON.parse(popup_input_div_Med.BARCODE2);
     if (confirm("是否刪除?")) 
     {
         popup_input_div_Med.BARCODE = popup_input_div_Med.BARCODE.filter(function(value) {
             return value !== BarCode;
         });
+        if(popup_input_div_Med.BARCODE1 != "") {
+            popup_input_div_Med.BARCODE1 = popup_input_div_Med.BARCODE1.filter(function(value) {
+                return value !== BarCode;
+            });
+        }
+        if(popup_input_div_Med.BARCODE2 != "") {
+            popup_input_div_Med.BARCODE2 = popup_input_div_Med.BARCODE2.filter(function(value) {
+                return value !== BarCode;
+            });
+        }
+        popup_input_div_Med.BARCODE2 = JSON.stringify(popup_input_div_Med.BARCODE2);
         console.log("popup_input_div_Med",popup_input_div_Med);
         await upadte_by_guid(popup_input_div_Med);
+        page_Init(data);
     }
 }
 function get_popup_input()
@@ -404,11 +427,7 @@ function get_block1_popup_input(Barcode)
             });
         }
     }
-    
-    
-
-
-
+  
     block1_barcode_div.appendChild(barcodeCanvas);
     block1_barcode_div.appendChild(block1_barcodenum);
     var trashBox_SVG = Get_trashBox_SVG("50px", "50px", "80%","100%","red","");
@@ -421,7 +440,9 @@ function get_block1_popup_input(Barcode)
     {
         const BarCode = this.getAttribute("BarCode");
         console.log("BarCode",BarCode);
-        delete_row_popup_input(BarCode)
+        delete_row_popup_input(BarCode);
+        trashBox_SVG.parentNode.parentNode.style.display = "none"
+        // hide_popup_input();
     };
 
     block1.appendChild(block1_barcode_div);

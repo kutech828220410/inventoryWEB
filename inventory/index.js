@@ -22,6 +22,9 @@ let allrows = [];
 let medicine_page = [];
 Window.load = load;
 var Header_state;
+
+let inventory_checked = "check";
+
 setInterval(function() 
 {
    refresh_Header_state();
@@ -264,20 +267,21 @@ function get_subContentByOP(data)
   //       return subContent.OP === sessionData.Name;
   //   });
   // }).flat();
+
   var subContentArray = data.Data[0].Contents.sort((a, b) => {
     return parseInt(a.INDEX) - parseInt(b.INDEX)
   })
 
-  if(localStorage.getItem("invertory") == "check") {
+  if(this.inventory_checked == "check") {
     subContentArray = subContentArray.filter(function(item) {
       return item.Sub_content.length > 0;
     });
   } else {
     subContentArray = subContentArray.filter(function(item) {
-      return item.Sub_content.length === 0;
+      return item.Sub_content.length == 0;
     });
   }
-  
+
   return subContentArray;
 }
 function Replace_data_by_content(_data)
@@ -322,19 +326,19 @@ async function serch_CODE_input_enter(barcode)
 }
 function get_header()
 {
-    // 检查浏览器是否支持localStorage
-    if (typeof(Storage) !== "undefined") {
-      // 浏览器支持localStorage
+  //   // 检查浏览器是否支持localStorage
+  //   if (typeof(Storage) !== "undefined") {
+  //     // 浏览器支持localStorage
 
-      // 存储数据
-      if(!localStorage.getItem("invertory")) {
-        localStorage.setItem("invertory", "check");
-      }
-      console.log("設定已盤未盤狀態", localStorage.getItem("invertory"));
-  } else {
-      // 浏览器不支持localStorage
-      console.log("抱歉，您的浏览器不支持LocalStorage。");
-  }
+  //     // 存储数据
+  //     if(!localStorage.getItem("invertory")) {
+  //       localStorage.setItem("invertory", "check");
+  //     }
+  //     console.log("設定已盤未盤狀態", localStorage.getItem("invertory"));
+  // } else {
+  //     // 浏览器不支持localStorage
+  //     console.log("抱歉，您的浏览器不支持LocalStorage。");
+  // }
 
   const header_div = document.createElement('div');
   My_Div.Init(header_div, 'header_div','header_div', '100%', '', '');
@@ -417,18 +421,23 @@ function get_header()
 
   const header_invertory_check = document.createElement('div');
   header_invertory_check.classList.add("header_invertory_check");
-  My_Div.Set_Text(header_invertory_check ,"未盤" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","");
-  header_invertory_check.addEventListener("click",async () => {
-    let invertory_checked = localStorage.getItem("invertory");
+  header_invertory_check.classList.add("header_invertory_active");
+  My_Div.Set_Text(header_invertory_check ,"已盤" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","");
 
-    if (invertory_checked == "check") {
+  this.inventory_checked = "check";
+  
+  header_invertory_check.addEventListener("click",async () => {
+    // let invertory_checked = localStorage.getItem("invertory");
+    if (this.inventory_checked == "check") {
       header_invertory_check.classList.remove("header_invertory_active");
       header_invertory_check.innerHTML = '未盤';
-      localStorage.setItem("invertory", "uncheck");
+      this.inventory_checked = "uncheck";
+      // localStorage.setItem("invertory", "uncheck");
     } else {
       header_invertory_check.classList.add("header_invertory_active");
       header_invertory_check.innerHTML = '已盤';
-      localStorage.setItem("invertory", "check");
+      this.inventory_checked = "check";
+      // localStorage.setItem("invertory", "check");
     }
 
     await Refresh_rows();
@@ -449,16 +458,16 @@ function get_header()
   //   await Refresh_rows();
   // });
 
-  console.log(localStorage.getItem("invertory"));
-  if(localStorage.getItem("invertory") == "check") {
-    header_invertory_check.classList.add("header_invertory_active");
-    header_invertory_check.innerHTML = '已盤';
-    // Refresh_rows();
-  } else {
-    header_invertory_check.classList.remove("header_invertory_active");
-    header_invertory_check.innerHTML = '未盤';
-    // Refresh_rows();
-  }
+  // console.log(localStorage.getItem("invertory"));
+  // if(localStorage.getItem("invertory") == "check") {
+  //   header_invertory_check.classList.add("header_invertory_active");
+  //   header_invertory_check.innerHTML = '已盤';
+  //   // Refresh_rows();
+  // } else {
+  //   header_invertory_check.classList.remove("header_invertory_active");
+  //   header_invertory_check.innerHTML = '未盤';
+  //   // Refresh_rows();
+  // }
  
   header_controls.appendChild(header_logout);
   header_controls.appendChild(header_refresh_btn);

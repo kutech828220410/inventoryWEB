@@ -7,10 +7,12 @@
   <meta http-equiv="pragma" content="no-cache">
   <meta http-equiv="expires" content="0">
   <title>藥品交易量查詢</title>
-  <link rel="stylesheet" href="main.css">
+  <!-- <link rel="stylesheet" href="main.css"> -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="popup_pharmacy_select_style.css">
+  <link rel="stylesheet" href="popup_search.css">
   <script src="../../Function/Basic.js?v=1.14"></script>
 
- 
   <script>
     (async function() 
         {
@@ -23,9 +25,12 @@
           loadScript("../../session_check.js");
           loadScript("../../session.js");
           loadScript("../../Function/WebApiFunc.js");
-          loadScript("main_popup_find.js");
-          loadScript("main_loadingdata.js");
-          loadScript("main.js");
+          // loadScript("main_popup_find.js");
+          // loadScript("main_loadingdata.js");
+          // loadScript("main.js");
+          loadScript("app.js");
+          loadScript("popup_pharmacy_select.js");
+          loadScript("popup_search.js");
           loadScript("jsonFunc.js");
           loadScript("../../UI/navBar.js");
         })();
@@ -37,15 +42,21 @@
       <script>
 
           
-          document.body.style.position = 'absolute';
-          const header_div = get_header();
-          document.body.appendChild(header_div);
-          const main_div = get_main();
-          document.body.appendChild(main_div);    
+          // document.body.style.position = 'absolute';
+          // const header_div = get_header();
+          // document.body.appendChild(header_div);
+          // const main_div = get_main();
+          // document.body.appendChild(main_div);  
           
-          const popup_find_div = get_popup_serch();
-          document.body.appendChild(popup_find_div.div);
-          popup_find_div.Set_Visible(false);
+          get_popup_pharmacy_select();
+          popup_pharmacy_select_div.Set_Visible(false);
+
+          get_popup_search_select();
+          popup_search_select_div.Set_Visible(true);
+          
+          // const popup_find_div = get_popup_serch();
+          // document.body.appendChild(popup_find_div.div);
+          // popup_find_div.Set_Visible(false);
       </script>
    
 

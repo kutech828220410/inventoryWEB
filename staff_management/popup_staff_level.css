@@ -1,0 +1,135 @@
+.popup_staff_level_div {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    width: 680px;
+}
+.ppsl_header_container {
+    width: 60%;
+    margin: 0px auto 12px;
+    text-align: center;
+    padding: 4px;
+    font-size: 20px;
+    font-weight: 600;
+    background-color: gray;
+    color: #fff;
+    border-radius: 5px;
+}
+.staff_level_block_container {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 12px;
+}
+.staff_level_block {
+    cursor: pointer;
+    padding: 2px 24px;
+    font-size: 18px;
+    background-color: #e2e2e2;
+    border-radius: 5px;
+    border: 1px solid #000;
+    text-align: center;
+    transition: all .2s;
+}
+.staff_level_block:hover {
+    box-shadow: 4px 2px 5px 1px #00000048;
+}
+.active_block {
+    color: #e2e2e2;
+    background-color: #000;
+    transition: all .2s;
+}
+.staff_level_selected_container {
+    display: flex;
+    padding: 0px 16px;
+    align-items: center;
+}
+.staff_level_select_label {
+    margin-right: 8px;
+    font-weight: 600;
+}
+.staff_level_select {
+    height: 32px;
+    font-weight: 600;
+    text-align: center;
+    margin-left: 8px;
+    border-radius: 5px;
+    flex-grow: 1;
+}
+.staff_level_change_btn {
+    margin-left: 16px;
+    font-weight: 600;
+}
+.staff_level_change_rule_container {
+    color: rgb(255, 0, 0);
+    margin: 8px 32px 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+.level_content_data_container {
+    margin: 8px auto;
+}
+
+.staff_level_data_container {
+    min-height: 582px;
+    display: grid;
+    grid-template-columns: 220px 220px 220px;
+}
+.level_data_div {
+    position: relative;
+    padding: 8px;
+    margin: 12px 5px;
+    min-height: 80px;
+    border-radius: 5px;
+    border: 1px solid #000;
+}
+.level_data_title {
+    position: absolute;
+    top: -14px;
+    left: 10px;
+    background-color: #fff;
+    padding: 0px 6px;
+}
+.ppsl_footer_container {
+    margin: 8px 8px;
+    display: flex;
+    justify-content: flex-end;
+}
+.level_data_checked_box {
+    display: none;
+}
+
+.level_data_label {
+    min-width: 100px;
+    display: flex;
+    align-items: center;
+}
+
+.level_data_label_trigger_container {
+    position: relative;
+    width: 50px;
+    height: 28px;
+    background-color: #858585;
+    margin-right: 8px;
+    transition: all 0.2s;
+    border-radius: 14px;
+    cursor: pointer;
+}
+.level_data_label_trigger {
+    position: absolute;
+    border-radius: 12px;
+    width: 24px;
+    height: 24px;
+    background-color: #fff;
+    transition: all 0.2s;
+    top: 2px;
+    left: 2px;
+}
+.level_data_label_title {
+    margin-bottom: 2px;
+}
+.level_data_checked_box:checked + .level_data_label > .level_data_label_trigger_container {
+    background-color: #2c2c2c;
+}
+.level_data_checked_box:checked + .level_data_label > .level_data_label_trigger_container > .level_data_label_trigger {
+   left: 24px;
+}

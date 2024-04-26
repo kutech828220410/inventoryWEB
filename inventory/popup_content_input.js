@@ -1,22 +1,33 @@
 var popup_input_div;
 var popup_input_div_Content;
 var popup_input_div_SubContent;
-var popup_input_NumOfPageRows = 3;
+var popup_input_NumOfPageRows = 1;
 var popup_input_PageIndex = 0;
 var popup_input_MaxfPage = 0;
 
 var popup_input_END_QTY_input = null;
 async function show_popup_input(Content , page_Initial , show_all_user)
 {
+
+    window.removeEventListener('keydown', get_barcode_input_event);
+
     if(Content == undefined) return;
     if(popup_input_div == undefined) page_Initial = false;
     const OP = sessionData.Name;
     if(show_all_user == undefined)
     {
-        popup_input_div_SubContent = Content.Sub_content.filter(function(subItem) 
-        {
-            return subItem.OP === OP;
-        });
+        let queryString = window.location.search;
+        let urlParams = new URLSearchParams(queryString);
+        if (urlParams.has('administrator')) {
+            console.log("顯示所有驗收");
+            popup_input_div_SubContent = Content.Sub_content;
+        } else {
+            // console.log('No data parameter found in the URL.');
+            popup_input_div_SubContent = Content.Sub_content.filter(function(subItem) 
+            {
+                return subItem.OP === OP;
+            });
+        }
     }
     else
     {
@@ -41,7 +52,8 @@ async function show_popup_input(Content , page_Initial , show_all_user)
 }
 function hide_popup_input()
 {
-     popup_input_div.Close();
+    window.addEventListener('keydown', get_barcode_input_event);
+    popup_input_div.Close();
 }
 
 function next_page_popup_input() 
@@ -158,6 +170,9 @@ function edit_rows_page_control_popup_input()
     {
         const rows_page_control_block = document.querySelector('#rows_page_control_block_popup_input');
         rows_page_control_block.style.visibility = "hidden";
+
+        const pages_display_div = document.querySelector(".pages_display_div");
+        pages_display_div.style.visibility = "hidden";
     }
     else
     {
@@ -165,6 +180,10 @@ function edit_rows_page_control_popup_input()
         const svg_next = document.querySelector('#svg_next');
         const svg_previous = document.querySelector('#svg_previous_popup_input');
         rows_page_control_block.visibility  = "visible";
+
+        const pages_display_div = document.querySelector(".pages_display_div");
+        pages_display_div.style.visibility = "visible";
+        pages_display_div.innerHTML = `${popup_input_PageIndex + 1} / ${popup_input_MaxfPage}`;
         if(popup_input_PageIndex + 1 < popup_input_MaxfPage) svg_next.style.visibility = "visible";
         else svg_next.style.visibility = "hidden";
         if(popup_input_PageIndex - 1 >= 0) svg_previous.style.visibility = "visible";
@@ -306,6 +325,12 @@ function get_row_popup_inputs_page_control_block()
     {
         previous_page_popup_input();
     });
+    let pages_display_div = document.createElement("div");
+    pages_display_div.classList.add("pages_display_div");
+    pages_display_div.innerHTML = `${popup_input_PageIndex + 1}/${popup_input_MaxfPage}`;
+    pages_display_div.style.marginRight = "80px";
+
+    rows_page_control_block.appendChild(pages_display_div);
     rows_page_control_block.appendChild(svg_previous);
     rows_page_control_block.appendChild(svg_next);
     return rows_page_control_block;

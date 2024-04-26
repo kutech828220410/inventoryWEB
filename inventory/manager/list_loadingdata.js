@@ -21,7 +21,7 @@ function creat_row_div(_index , item)
     del_btn_div.style.border = "1px solid gray";
     del_btn_div.style.borderRadius = "3px";
     del_btn_div.onclick = delete_btn_Click;
-    del_btn_div.disabled = !GetPermissions("盤點報表刪除");
+    // del_btn_div.disabled = !GetPermissions("盤點報表刪除");
     formnnum_delbtn_div.appendChild(del_btn_div);
 
     //盤點編號
@@ -216,26 +216,28 @@ function creat_row_div(_index , item)
     btn_div.appendChild(selectbtn);
 
     const downloadbtn = Get_download_SVG("100%", "60px", "90%","100%","steelblue","");
-    My_Div.Init(downloadbtn,`downloadbtn${_index}`,'downloadbtn', '100%','26%','');
+    My_Div.Init(downloadbtn,`downloadbtn${_index}`,`downloadbtn${_index}`, '100%','26%','');
     downloadbtn.setAttribute("IC_SN",item.IC_SN);
     downloadbtn.style.border = "1px solid gray";
     downloadbtn.style.borderRadius = "5px";
     downloadbtn.style.marginTop = "3px";
-    downloadbtn.disabled = !GetPermissions("盤點報表下載");
+    downloadbtn.style.cursor = "pointer";
+    // downloadbtn.disabled = !GetPermissions("盤點報表下載");
     downloadbtn.onclick = downloadbtn_Click;
     btn_div.appendChild(downloadbtn);
 
     var lockbtn;
     if(item.STATE == '鎖定')lockbtn = Get_lock_SVG("100%", "60px", "90%","100%","red","");
     else lockbtn = Get_unlock_SVG("100%", "60px", "90%","100%","steelblue",""); 
-    My_Div.Init(lockbtn,`lockbtn${_index}`,'lockbtn', '100%','26%','');
+    My_Div.Init(lockbtn,`lockbtn${_index}`,`lockbtn${_index}`, '100%','26%','');
     lockbtn.setAttribute("IC_SN",item.IC_SN);
     lockbtn.setAttribute("STATE",item.STATE);
     lockbtn.style.border = "1px solid gray";
     lockbtn.style.borderRadius = "5px";
     lockbtn.style.marginTop = "3px";
+    lockbtn.style.cursor = "pointer";
     lockbtn.onclick = lockbtn_Click;
-    lockbtn.disabled = !GetPermissions("盤點報表鎖定");
+    // lockbtn.disabled = !GetPermissions("盤點報表鎖定");
     btn_div.appendChild(lockbtn);
 
     const open_default_OP_window_btn = document.createElement("div");
@@ -254,6 +256,7 @@ function creat_row_div(_index , item)
     open_default_OP_window_btn.style.border = "1px solid gray";
     open_default_OP_window_btn.style.borderRadius = "5px";
     open_default_OP_window_btn.style.marginTop = "3px";
+    open_default_OP_window_btn.style.cursor = "pointer";
     open_default_OP_window_btn.addEventListener("click", (e) => {
       show_setting(e);
       // show_d_o(e);
@@ -313,7 +316,7 @@ async function select_btn_Click(event)
   sessionStorage.setItem('IC_SN', IC_SN);
   await creat_update_startime_by_IC_SN(IC_SN);
   // location.href = "../../../inventory/main.html"
-  location.href = "../../../inventory/"
+  location.href = "../../../inventory/index.html?administrator";
 }
 
 async function delete_btn_Click(event) {

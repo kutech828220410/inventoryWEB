@@ -131,7 +131,7 @@
   ChathubErrorEvent = ChathubError;
   function ChathubError()
   {
-    alert("連線斷開,重新整理");
+    // alert("連線斷開,重新整理");
     location.reload()
   }
 
@@ -151,8 +151,8 @@
      }
      
   }
-  window.addEventListener('keydown', function(event) 
-  {
+  window.addEventListener('keydown', get_barcode_input_event);
+  function get_barcode_input_event (event) {
       console.log("isDesktop",isDesktop);
       if(isDesktop)
       {
@@ -176,8 +176,7 @@
               }
           }
       }
-     
-  });
+  };
    // 阻止双击放大
    var lastTouchEnd = 0;
 

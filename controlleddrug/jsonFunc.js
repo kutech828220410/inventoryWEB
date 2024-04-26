@@ -34,8 +34,6 @@ async function serch(CODE, start_time, end_time)
 }
 async function serch_med_information_by_code(CODE)
 {
- 
-
   const post_data = 
   {
     "Data": {},

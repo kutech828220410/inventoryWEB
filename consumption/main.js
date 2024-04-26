@@ -106,7 +106,7 @@ function Set_main_div_enable(value)
     else {
       hideLoadingPopup();
     }
-  }
+}
 async function download_btn() 
 {
   const find_start_date_input = document.querySelector("#serch_start_date_input");
@@ -132,7 +132,9 @@ function findbtn_Click()
   }
 }
 
-
+function get_header() {
+  
+}
 function get_header()
 {
   const coverage_div =document.createElement("div");

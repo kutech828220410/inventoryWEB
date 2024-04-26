@@ -124,15 +124,15 @@
             {
               data.Data[i] = { ...jsonObject.Data };
             }
-        }
+        } 
+        page_Init(data);
      }
      if(jsonObject.Method == "creat_delete_by_IC_SN" || jsonObject.Method == "creat_add")
      {
+        page_Init(data);
         location.reload();
         return;
      }
-
-    page_Init(data);
      
   }); 
 

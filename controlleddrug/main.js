@@ -1,7 +1,6 @@
 let data;
 let data_information;
 
-
 window.onload = load;
 window.addEventListener('resize', handleResize);
 
