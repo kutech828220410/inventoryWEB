@@ -49,7 +49,7 @@ async function load()
   nav_bar_create("inventory", test_user_data)
   data = await creat_get_by_CT_TIME_ST_END(date_start,date_end);
   Set_main_div_enable(false);
-  current_funtion_check()
+  current_funtion_check();
 }
 
 function current_funtion_check() 

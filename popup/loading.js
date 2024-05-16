@@ -86,7 +86,7 @@ function GetLoadingpopup()
 }
 
 // 顯示彈跳視窗
-function showLoadingPopup() 
+function showLoadingPopup()
 {
   const loadingPopup = document.querySelector('#loadingPopup');
   document.body.style.pointerEvents = "none";
@@ -94,7 +94,7 @@ function showLoadingPopup()
 }
 
 // 隱藏彈跳視窗
-function hideLoadingPopup() 
+function hideLoadingPopup()
 {
   const loadingPopup = document.querySelector('#loadingPopup');
   loadingPopup.style.display = "none";

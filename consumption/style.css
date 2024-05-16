@@ -2,6 +2,10 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Noto Sans TC", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .header {
@@ -77,21 +81,54 @@
     margin: 6px;
 }
 .main_div {
-    margin: auto;
+    margin: 0px auto 60px;
 }
+.main_div_time_line_container {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.time_line_type {
+    background-color: #6B6B63;
+    padding: 4px 12px;
+    color: #ffffff;
+    margin-right: 12px;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.time_line_container {
+    display: flex;
+    font-size: 20px;
+    font-weight: 600;
+    margin-right: 24px;
+}
+.time_line_container > span {
+    margin: 0px 8px;
+}
+
 .main_div_table_th_container {
-    margin-top: 60px;
+    margin-top: 20px;
     display: grid;
     font-size: 14px;
     justify-content: center;
-    grid-template-columns: 24px 72px 72px 74px 170px 56px 60px 58px 60px 72px 90px 90px 80px 90px 84px 84px 80px 160px;
+    grid-template-columns: 32px 72px 72px 74px 170px 56px 60px 58px 60px 72px 90px 90px 80px 90px 84px 84px 80px 160px;
     /* grid-template-rows: 24px; */
 }
 .table_info_container {
     display: grid;
     font-size: 14px;
-    grid-template-columns: 24px 72px 72px 74px 170px 56px 60px 58px 60px 72px 90px 90px 80px 90px 84px 84px 80px 160px;
+    grid-template-columns: 32px 72px 72px 74px 170px 56px 60px 58px 60px 72px 90px 90px 80px 90px 84px 84px 80px 160px;
     justify-content: center;
+}
+.no_form_list_data {
+    padding: 36px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 32px;
+    color: #e73f3f;
 }
 .table_th {
     background-color: #595959;

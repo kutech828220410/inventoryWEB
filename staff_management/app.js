@@ -1,108 +1,12 @@
-let test_fake_med_data = [
-  {
-    id:"10103",
-    name:"李永知",
-    gender: "女",
-    unit: "藥劑科",
-    license: "",
-    permission_level: 1,
-    light_color: "225,0,225",
-    card_id: 144225115221,
-    barcode: 155213
-  },
-  {
-    id:"10103",
-    name:"安俞真",
-    gender: "女",
-    unit: "藥劑科",
-    license: "",
-    permission_level: 20,
-    light_color: "225,0,225",
-    card_id: 144225115221,
-    barcode: 155213
-  },
-  {
-    id:"10643",
-    name:"張員瑛",
-    gender: "女",
-    unit: "藥劑科",
-    license: "",
-    permission_level: 1,
-    light_color: "25,0,225",
-    card_id: 144225115221,
-    barcode: 155213
-  },
-  {
-    id:"10643",
-    name:"張員瑛",
-    gender: "女",
-    unit: "藥劑科",
-    license: "",
-    permission_level: 1,
-    light_color: "225,0,25",
-    card_id: 144225115221,
-    barcode: 155213
-  },
-  {
-    id:"10643",
-    name:"張員瑛",
-    gender: "女",
-    unit: "藥劑科",
-    license: "",
-    permission_level: 1,
-    light_color: "100,0,235",
-    card_id: 144225115221,
-    barcode: 155213
-  },
-  {
-    id:"10643",
-    name:"張員瑛",
-    gender: "女",
-    unit: "藥劑科",
-    license: "",
-    permission_level: 1,
-    light_color: "225,0,225",
-    card_id: 144225115221,
-    barcode: 155213
-  },
-  {
-    id:"10643",
-    name:"張員瑛",
-    gender: "女",
-    unit: "藥劑科",
-    license: "",
-    permission_level: 1,
-    light_color: "225,0,225",
-    card_id: 144225115221,
-    barcode: 155213
-  },
-  {
-    id:"10643",
-    name:"張員瑛",
-    gender: "女",
-    unit: "藥劑科",
-    license: "",
-    permission_level: 1,
-    light_color: "225,0,225",
-    card_id: 144225115221,
-    barcode: 155213
-  },
-  {
-    id:"10643",
-    name:"張員瑛",
-    gender: "女",
-    unit: "藥劑科",
-    license: "",
-    permission_level: 1,
-    light_color: "225,0,225",
-    card_id: 144225115221,
-    barcode: 155213
-  },
-]
-
 window.onload = load;
 // window.addEventListener('resize', handleResize);
-
+var staff_color_rgb_object = {
+  green: "",
+  red: "",
+  blue: "",
+  yellow: "",
+  orange: "",
+}
 function handleResize() 
 {
    //Set_popup_find_position();
@@ -136,13 +40,15 @@ async function load()
     name: loggedName,
   }
 
+  let staff_info = await get_all_staff_info();
+
   nav_bar_create("staff_management", test_user_data);
   get_header(test_user_data);
   // get_select_block_bar_container();
   get_main_div();
   get_search_container();
   get_main_div_table_th_init();
-  get_info_init(test_fake_med_data);
+  get_info_init(staff_info["Data"]);
   Set_main_div_enable(false);
   // page_Init();
 }
@@ -192,7 +98,7 @@ function get_header(test_user_data) {
     });
 
     header_btn_container.appendChild(add_new_staff_popup_btn);
-    header_btn_container.appendChild(permission_management_popup_btn);
+    // header_btn_container.appendChild(permission_management_popup_btn);
 
     header.appendChild(header_title_container);
     header.appendChild(header_btn_container);
@@ -234,7 +140,7 @@ function get_search_container() {
   let select_option_data = [
     {
       name: "ID",
-      value: "id"
+      value: "ID"
     },
     {
       name: "姓名",
@@ -270,8 +176,9 @@ function get_search_container() {
   search_all_btn.classList.add("btn");
   search_all_btn.id = "search_all_btn";
   search_all_btn.innerHTML = "顯示全部";
-  search_all_btn.addEventListener("click", () => {
-      get_info_init(test_fake_med_data);
+  search_all_btn.addEventListener("click", async () => {
+      let staff_info = await get_all_staff_info();
+      get_info_init(staff_info["Data"]);
     } 
   );
 
@@ -313,6 +220,8 @@ function get_info_init(array) {
   let main_div_table_display_container = document.querySelector(".main_div_table_display_container");
   main_div_table_display_container.innerHTML = '';
 
+  console.log(array);
+
   array.forEach((element, index) => {
     let table_info_container = document.createElement("div");
     table_info_container.classList.add("table_info_container");
@@ -322,6 +231,8 @@ function get_info_init(array) {
 
       let ppams_btn = document.querySelector(".ppams_btn");
       ppams_btn.innerHTML = "修改";
+      temp_staff_data = element;
+      reset_popup_staff_info(element);
       popup_add_modify_staff_div_open();
     });
 
@@ -338,7 +249,7 @@ function get_info_init(array) {
           td.innerHTML = index + 1;
           break;
         case 1:
-          td.innerHTML = element.id;
+          td.innerHTML = element.ID;
           break;
         case 2:
           td.innerHTML = element.name;
@@ -347,20 +258,20 @@ function get_info_init(array) {
           td.innerHTML = element.gender;
           break;
         case 4:
-          td.innerHTML = element.unit;
+          td.innerHTML = element.employer;
           break;
         case 5:
           td.innerHTML = element.license;
           break;
         case 6:
-          td.innerHTML = element.permission_level;
+          td.innerHTML = element.level;
           break;
         case 7:
           // td.innerHTML = element.light_color;
-          td.style.backgroundColor = `rgb(${element.light_color})`;
+          td.style.backgroundColor = `rgb(${element.color})`;
           break;
         case 8:
-          td.innerHTML = element.card_id;
+          td.innerHTML = element.UID;
           break;
         case 9:
           td.innerHTML = element.barcode;
@@ -376,17 +287,19 @@ function get_info_init(array) {
     main_div_table_display_container.appendChild(table_info_container);
   });
 }
-function search_result_display() {
+async function search_result_display() {
   let search_select = document.querySelector(".search_select");
   let search_input = document.querySelector("#search_input");
   
   if(search_input.value == "" || search_input.value === null) {
     alert("請輸入關鍵字");
     return;
-  }
+  };
+
+  let staff_info = await get_all_staff_info();
 
   let temp_result_array = [];
-  temp_result_array = test_fake_med_data.filter((e) => {
+  temp_result_array = staff_info["Data"].filter((e) => {
     return e[`${search_select["value"]}`].includes(search_input.value);
   });
 
@@ -396,4 +309,88 @@ function search_result_display() {
   } else {
     get_info_init(temp_result_array);
   }
+}
+
+function reset_popup_staff_info(element) {
+  let staff_info_id = document.querySelector("#staff_info_id");
+  let staff_info_name = document.querySelector("#staff_info_name");
+  let staff_gender_radio = document.getElementsByName("staff_gender_radio");
+  let staff_info_pwd = document.querySelector("#staff_info_pwd");
+  let staff_info_unit = document.querySelector("#staff_info_unit");
+  let staff_info_level = document.querySelector("#staff_info_level");
+  let staff_info_color = document.querySelector("#staff_info_color");
+  let staff_info_card_num = document.querySelector("#staff_info_card_num");
+  let staff_info_barcode = document.querySelector("#staff_info_barcode");
+  let staff_info_license = document.querySelector("#staff_info_license");
+
+  if(element == "") {
+    staff_info_id.value = "";
+    staff_info_name.value = "";
+    staff_gender_radio.forEach(item => {
+      item.checked = false;
+    });
+    staff_info_pwd.value = "";
+    staff_info_unit.value = "";
+    staff_info_level.value = "1";
+    staff_info_color.value = "green";
+    staff_info_card_num.value = "";
+    staff_info_barcode.value = "";
+    staff_info_license.value = "";
+
+  } else {
+    staff_info_id.value = element.ID;
+    staff_info_name.value = element.name;
+    staff_gender_radio.forEach(item => {
+      if(element.gender == "男" && item.value == "male") {
+        item.checked = true;
+      } else if(element.gender == "女" && item.value == "female") {
+        item.checked = true;
+      }
+    });
+    staff_info_pwd.value = element.password;
+    staff_info_unit.value = element.employer;
+    staff_info_level.value = element.level;
+    staff_info_card_num.value = element.UID;
+    staff_info_barcode.value = element.barcode;
+    staff_info_license.value = element.license;
+    if(element["color"] == "") {
+      staff_info_color.value = "green";
+    } else {
+      let temp_rgb = element["color"].split(",").map((value) => {
+        return parseInt(value);
+      });
+      console.log(temp_rgb);
+      console.log(set_color_type(temp_rgb));
+      staff_info_color.value = set_color_type(temp_rgb);
+    }
+  }
+}
+
+function set_color_type(rgb) {
+  if(rgb == "") {
+    return green;
+  }
+  let colorPoints = [
+    { name: "red", rgb: [255, 0, 0] },      // 红色
+    { name: "yellow", rgb: [255, 255, 0] }, // 黄色
+    { name: "blue", rgb: [0, 0, 255] },     // 蓝色
+    { name: "green", rgb: [0, 255, 0] },    // 绿色
+    { name: "orange", rgb: [255, 128, 0] }  // 橙色
+  ];
+  let minDistance = Number.MAX_VALUE;
+  let closestColor = "";
+
+  // 计算每个颜色系的代表颜色与输入RGB值的距离，并选择距离最近的颜色系
+  for (let i = 0; i < colorPoints.length; i++) {
+      let distance = Math.sqrt(
+          Math.pow(rgb[0] - colorPoints[i].rgb[0], 2) +
+          Math.pow(rgb[1] - colorPoints[i].rgb[1], 2) +
+          Math.pow(rgb[2] - colorPoints[i].rgb[2], 2)
+      );
+      if (distance < minDistance) {
+          minDistance = distance;
+          closestColor = colorPoints[i].name;
+      }
+  };
+  return closestColor;
 }

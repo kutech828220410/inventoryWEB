@@ -1,132 +1,3 @@
-let test_fake_med_data = [
-  {
-    index:1,
-    code:"10103",
-    name:"asdfasdfasaaaasfda aaffw  10/10mg",
-    trade: -15,
-    total: 99985,
-  },
-  {
-    index:1,
-    code:"10103",
-    name:"asdfasdfasaaaasfda aaffw  10/10mg",
-    trade: -15,
-    total: 99985,
-  },
-  {
-    index:1,
-    code:"10103",
-    name:"asdfasdfasaaaasfda aaffw  10/10mg",
-    trade: -15,
-    total: 99985,
-  },
-  {
-    index:1,
-    code:"10103",
-    name:"asdfasdfasaaaasfda aaffw  10/10mg",
-    trade: -15,
-    total: 99985,
-  },
-  {
-    index:1,
-    code:"10103",
-    name:"asdfasdfasaaaasfda aaffw  10/10mg",
-    trade: -15,
-    total: 99985,
-  },
-  {
-    index:1,
-    code:"10103",
-    name:"asdfasdfasaaaasfda aaffw  10/10mg",
-    trade: -15,
-    total: 99985,
-  },
-  {
-    index:1,
-    code:"10103",
-    name:"asdfasdfasaaaasfda aaffw  10/10mg",
-    trade: -15,
-    total: 99985,
-  },
-  {
-    index:1,
-    code:"10103",
-    name:"asdfasdfasaaaasfda aaffw  10/10mg",
-    trade: -15,
-    total: 99985,
-  },
-  {
-    index:1,
-    code:"10103",
-    name:"asdfasdfasaaaasfda aaffw  10/10mg",
-    trade: -15,
-    total: 99985,
-  },
-  {
-    index:1,
-    code:"10103",
-    name:"asdfasdfasaaaasfda aaffw  10/10mg",
-    trade: -15,
-    total: 99985,
-  },
-  {
-    index:1,
-    code:"10103",
-    name:"asdfasdfasaaaasfda aaffw  10/10mg",
-    trade: -15,
-    total: 99985,
-  },
-  {
-    index:1,
-    code:"10103",
-    name:"asdfasdfasaaaasfda aaffw  10/10mg",
-    trade: -15,
-    total: 99985,
-  },
-  {
-    index:1,
-    code:"10103",
-    name:"asdfasdfasaaaasfda aaffw  10/10mg",
-    trade: -15,
-    total: 99985,
-  },
-  {
-    index:1,
-    code:"10103",
-    name:"asdfasdfasaaaasfda aaffw  10/10mg",
-    trade: -15,
-    total: 99985,
-  },
-  {
-    index:1,
-    code:"10103",
-    name:"asdfasdfasaaaasfda aaffw  10/10mg",
-    trade: -15,
-    total: 99985,
-  },
-  {
-    index:1,
-    code:"10103",
-    name:"asdfasdfasaaaasfda aaffw  10/10mg",
-    trade: -15,
-    total: 99985,
-  },
-  {
-    index:1,
-    code:"10103",
-    name:"asdfasdfasaaaasfda aaffw  10/10mg",
-    trade: -15,
-    total: 99985,
-  },
-  {
-    index:1,
-    code:"10103",
-    name:"asdfasdfasaaaasfda aaffw  10/10mg",
-    trade: -15,
-    total: 99985,
-  }
-]
-
 window.onload = load;
 // window.addEventListener('resize', handleResize);
 
@@ -172,13 +43,16 @@ async function load()
   let temp_search_med_data;
   let temp_sort_med_data;
 
+  get_popup_pharmacy_select();
+  popup_pharmacy_select_div.Set_Visible(true);
+
   nav_bar_create("med_balance", test_user_data);
   get_header(test_user_data);
   get_select_block_bar_container();
   get_main_div();
   get_search_container();
   get_main_div_table_th_init();
-  get_info_init(test_fake_med_data);
+  // get_info_init(test_fake_med_data);
   Set_main_div_enable(false);
 //   page_Init();
 }
@@ -322,6 +196,19 @@ function get_search_container() {
   search_date_range_btn.classList.add("btn");
   search_date_range_btn.classList.add('search_date_range_btn');
   search_date_range_btn.innerHTML = '顯示區間';
+  search_date_range_btn.addEventListener("click", async () => {
+    Set_main_div_enable(true);
+    let post_data = get_post_data_for_consumption();
+    console.log(post_data);
+    let form_data = await get_datas_by_op_time_st_end_consumption(post_data);
+    console.log(form_data);
+    if (form_data.Code == -200) {
+      alert('資料讀取失敗！');
+    } else {
+      get_info_init(form_data["Data"]);
+    }
+    Set_main_div_enable(false);
+  });
 
   search_date_range_container.appendChild(search_date_label);
   search_date_range_container.appendChild(search_start_date);
@@ -333,6 +220,9 @@ function get_search_container() {
   download_excel_btn.classList.add("btn");
   download_excel_btn.classList.add('download_excel_btn');
   download_excel_btn.innerHTML = '匯出';
+  download_excel_btn.addEventListener('click', () => {
+    download_excel_form_func();
+  });
 
   main_div_search_container.appendChild(search_date_range_container);
   main_div_search_container.appendChild(download_excel_btn);
@@ -355,6 +245,14 @@ function get_info_init(array) {
   let main_div_table_display_container = document.querySelector(".main_div_table_display_container");
   main_div_table_display_container.innerHTML = '';
 
+  if (array.length == 0) {
+    let no_info_data_div = document.createElement("div");
+    no_info_data_div.classList.add("no_info_data_div");
+    no_info_data_div.innerHTML = "該時間區間沒有任何紀錄！";
+
+    main_div_table_display_container.appendChild(no_info_data_div);
+  }
+
   array.forEach((element, index) => {
     let table_info_container = document.createElement("div");
     table_info_container.classList.add("table_info_container");
@@ -371,16 +269,16 @@ function get_info_init(array) {
           td.innerHTML = index + 1;
           break;
         case 1:
-          td.innerHTML = element.code;
+          td.innerHTML = element.CODE;
           break;
         case 2:
-          td.innerHTML = element.name;
+          td.innerHTML = element.NAME;
           break;
         case 3:
-          td.innerHTML = element.trade;
+          td.innerHTML = element.TXN_QTY;
           break;
         case 4:
-          td.innerHTML = element.total;
+          td.innerHTML = element.INV_QTY;
           break;
         
         default:
@@ -406,4 +304,76 @@ function get_select_block_func(arr) {
 
       cd_main_select_block_content_container.appendChild(cd_main_block_item_div);
   });
+}
+function get_post_data_for_consumption() {
+  let search_start_date = document.querySelector("#search_start_date");
+  let search_end_date = document.querySelector("#search_end_date");
+
+  console.log(temp_selected_arr);
+  console.log(search_start_date.value);
+  console.log(search_end_date.value);
+
+  let serverNameStr = "";
+  let serverTypeStr = "";
+
+  temp_selected_arr.forEach(element => {
+      serverNameStr += element.serverName + ",";
+      serverTypeStr += element.serverType + ",";
+  });
+
+  // Remove the trailing comma
+  serverNameStr = serverNameStr.slice(0, -1);
+  serverTypeStr = serverTypeStr.slice(0, -1);
+
+  let temp_data = {
+    Data: {},
+    ValueAry : 
+    [
+      `${search_start_date.value}`,
+      `${search_end_date.value}`,
+      `${serverNameStr}`,
+      `${serverTypeStr}`
+    ]  
+  }
+
+  return temp_data
+}
+async function download_excel_form_func() {
+    Set_main_div_enable(true);
+    let start_date = document.querySelector("#search_start_date").value;
+    let end_date = document.querySelector("#search_end_date").value;
+    let serverNameStr = "";
+    let serverTypeStr = "";
+
+    temp_selected_arr.forEach(element => {
+        serverNameStr += element.serverName + ",";
+        serverTypeStr += element.serverType + ",";
+    });
+
+    // Remove the trailing comma
+    serverNameStr = serverNameStr.slice(0, -1);
+    serverTypeStr = serverTypeStr.slice(0, -1);
+
+    // console.log(st_time);
+    // console.log(end_time);
+    // console.log(serverNameStr);
+    // console.log(serverTypeStr);
+
+    let post_data = {
+        Data: {},
+        ValueAry: [
+            `${start_date}`,
+            `${end_date}`,
+            `${serverNameStr}`,
+            `${serverTypeStr}`]
+    };
+
+    let form_data = await get_datas_by_op_time_st_end_consumption(post_data);
+    if(form_data["Data"].length < 1) {
+      alert("該區間沒有紀錄");
+      Set_main_div_enable(false);
+    } else {
+      await download_datas_excel_by_serch(post_data);
+      Set_main_div_enable(false);
+    }
 }

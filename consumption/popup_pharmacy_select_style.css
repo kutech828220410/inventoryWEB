@@ -52,6 +52,7 @@
     font-weight: 600;
     padding-right: 12px;
     cursor: pointer;
+    text-align: center;
 }
 .pps_card_checkbox_container {
     display: flex;

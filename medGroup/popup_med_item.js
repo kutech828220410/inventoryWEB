@@ -1,4 +1,5 @@
 var popup_med_item_div;
+let temp_med_data = {};
 
 function get_popup_med_item()
 {
@@ -20,12 +21,14 @@ function get_popup_med_item()
         let popup_blind_inventory = document.querySelector("#popup_blind_inventory");
         let popup_balance_report = document.querySelector("#popup_balance_report");
         let popup_double_review = document.querySelector("#popup_double_review");
+        let popup_narcosis_med = document.querySelector("#popup_narcosis_med");
 
         let popup_date_manager_div = document.querySelector("#popup_date_manager_div");
         let popup_double_inventory_div = document.querySelector("#popup_double_inventory_div");
         let popup_blind_inventory_div = document.querySelector("#popup_blind_inventory_div");
         let popup_balance_report_div = document.querySelector("#popup_balance_report_div");
         let popup_double_review_div = document.querySelector("#popup_double_review_div");
+        let popup_narcosis_med_div = document.querySelector("#popup_narcosis_med_div");
 
         if (e.target.value != "N") {
             self_med_item_set.disabled = true;
@@ -36,12 +39,14 @@ function get_popup_med_item()
             popup_blind_inventory.disabled = true;
             popup_balance_report.disabled = true;
             popup_double_review.disabled = true;
+            popup_narcosis_med.disabled = true;
 
             popup_date_manager_div.style.display = "none";
             popup_double_inventory_div.style.display = "none";
             popup_blind_inventory_div.style.display = "none";
             popup_balance_report_div.style.display = "none";
             popup_double_review_div.style.display = "none";
+            popup_narcosis_med_div.style.display = "none";
             
         } else {
             self_med_item_set.disabled = false;
@@ -58,12 +63,14 @@ function get_popup_med_item()
         let popup_blind_inventory = document.querySelector("#popup_blind_inventory");
         let popup_balance_report = document.querySelector("#popup_balance_report");
         let popup_double_review = document.querySelector("#popup_double_review");
+        let popup_narcosis_med = document.querySelector("#popup_narcosis_med");
 
         let popup_date_manager_div = document.querySelector("#popup_date_manager_div");
         let popup_double_inventory_div = document.querySelector("#popup_double_inventory_div");
         let popup_blind_inventory_div = document.querySelector("#popup_blind_inventory_div");
         let popup_balance_report_div = document.querySelector("#popup_balance_report_div");
         let popup_double_review_div = document.querySelector("#popup_double_review_div");
+        let popup_narcosis_med_div = document.querySelector("#popup_narcosis_med_div");
 
         if(popup_med_drugkind.value != "N") {
             alert(`非'N'類管制藥品，請去管制藥品設定！`);
@@ -76,12 +83,14 @@ function get_popup_med_item()
                 popup_blind_inventory.disabled = false;
                 popup_balance_report.disabled = false;
                 popup_double_review.disabled = false;
+                popup_narcosis_med.disabled = false;
 
                 popup_date_manager_div.style.display = "block";
                 popup_double_inventory_div.style.display = "block";
                 popup_blind_inventory_div.style.display = "block";
                 popup_balance_report_div.style.display = "block";
                 popup_double_review_div.style.display = "block";
+                popup_narcosis_med_div.style.display = "block";
 
             } else {
                 popup_date_manager.disabled = true;
@@ -89,12 +98,14 @@ function get_popup_med_item()
                 popup_blind_inventory.disabled = true;
                 popup_balance_report.disabled = true;
                 popup_double_review.disabled = true;
+                popup_narcosis_med.disabled = true;
 
                 popup_date_manager_div.style.display = "none";
                 popup_double_inventory_div.style.display = "none";
                 popup_blind_inventory_div.style.display = "none";
                 popup_balance_report_div.style.display = "none";
                 popup_double_review_div.style.display = "none";
+                popup_narcosis_med_div.style.display = "none";
             }
         }
     });
@@ -232,6 +243,16 @@ function get_serch_box_med_item()
                     >雙人覆核</label
                     >
                 </div>
+                <div class="popup_med_item_control_div" id="popup_narcosis_med_div">
+                <input
+                type="checkbox"
+                name="popup_narcosis_med"
+                id="popup_narcosis_med"
+                />
+                <label class="kind_set_style" for="popup_narcosis_med"
+                >麻醉藥品</label
+                >
+            </div>
             </div>
             <div class="popup_med_special_mark_container">
                 <div class="popup_med_item_control_div">
@@ -258,16 +279,6 @@ function get_serch_box_med_item()
                     <input type="checkbox" name="popup_bio_med" id="popup_bio_med" />
                     <label class="kind_set_style" for="popup_bio_med">生物藥劑</label>
                 </div>
-                <div class="popup_med_item_control_div">
-                    <input
-                    type="checkbox"
-                    name="popup_narcosis_med"
-                    id="popup_narcosis_med"
-                    />
-                    <label class="kind_set_style" for="popup_narcosis_med"
-                    >麻醉藥品</label
-                    >
-                </div>
             </div>
         </div>
     `;
@@ -284,6 +295,11 @@ function get_underline_med_item()
     let underline_new_modify_med_btn = document.createElement("div");
     underline_new_modify_med_btn.classList.add("underline_new_modify_med_btn");
     underline_new_modify_med_btn.innerHTML = "新增/修改";
+    underline_new_modify_med_btn.addEventListener("click", async (e) => {
+        Set_main_div_enable(true);
+        med_add_or_edit(e);
+        Set_main_div_enable(false);
+    });
 
     let underline_close_med_item_popup_btn = document.createElement("div");
     underline_close_med_item_popup_btn.classList.add('underline_close_med_item_popup_btn');
@@ -312,6 +328,7 @@ async function show_med_item(CODE)
         let med_data = await get_medicine_cloud();
         let temp_arr = med_data["Data"].filter(e => e["CODE"] == CODE);
         get_popup_med_item_info(temp_arr[0]);
+        temp_med_data = temp_arr[0];
     }
 
     popup_med_item_div.Set_Visible(true);
@@ -352,6 +369,7 @@ function popup_med_item_info_init() {
     let popup_blind_inventory_div = document.querySelector("#popup_blind_inventory_div");
     let popup_balance_report_div = document.querySelector("#popup_balance_report_div");
     let popup_double_review_div = document.querySelector("#popup_double_review_div");
+    let popup_narcosis_med_div = document.querySelector("#popup_narcosis_med_div");
 
     popup_med_code.value = "";
     popup_med_code.disabled = false;
@@ -375,20 +393,27 @@ function popup_med_item_info_init() {
     popup_balance_report.disabled = true;
     popup_double_review.checked = false;
     popup_double_review.disabled = true;
+    popup_narcosis_med.checked = false;
+    popup_narcosis_med.disabled = true;
 
     popup_date_manager_div.style.display = "none";
     popup_double_inventory_div.style.display = "none";
     popup_blind_inventory_div.style.display = "none";
     popup_balance_report_div.style.display = "none";
     popup_double_review_div.style.display = "none";
+    popup_narcosis_med_div.style.display = "none";
 
     popup_warning_med.checked = false;
     popup_high_price_med.checked = false;
     popup_bio_med.checked = false;
-    popup_narcosis_med.checked = false;
 }
 
-function get_popup_med_item_info(object) {
+async function get_popup_med_item_info(object) {
+    // 藥品自定義設定資料
+    let med_config_data = await get_medConfig_data();
+
+    console.log(med_config_data);
+
     let popup_med_code = document.querySelector("#popup_med_code");
     let popup_med_name = document.querySelector("#popup_med_name");
     let popup_med_dianame = document.querySelector("#popup_med_dianame");
@@ -416,6 +441,7 @@ function get_popup_med_item_info(object) {
     let popup_blind_inventory_div = document.querySelector("#popup_blind_inventory_div");
     let popup_balance_report_div = document.querySelector("#popup_balance_report_div");
     let popup_double_review_div = document.querySelector("#popup_double_review_div");
+    let popup_narcosis_med_div = document.querySelector("#popup_narcosis_med_div");
 
     popup_med_code.value = object.CODE;
     popup_med_code.disabled = true;
@@ -432,47 +458,391 @@ function get_popup_med_item_info(object) {
         popup_med_drugkind.value = object.DRUGKIND;
     }
 
-    if(object.DRUGKIND == "N" || object.DRUGKIND == "") {
-        self_med_item_set.checked = false;
-        popup_date_manager.checked = false;
-        popup_date_manager.disabled = true;
-        popup_double_inventory.checked = false;
-        popup_double_inventory.disabled = true;
-        popup_blind_inventory.checked = false;
-        popup_blind_inventory.disabled = true;
-        popup_balance_report.checked = false;
-        popup_balance_report.disabled = true;
-        popup_double_review.checked = false;
-        popup_double_review.disabled = true;
+    console.log(med_config_data[`${object.CODE}`]);
 
-        popup_date_manager_div.style.display = "none";
-        popup_double_inventory_div.style.display = "none";
-        popup_blind_inventory_div.style.display = "none";
-        popup_balance_report_div.style.display = "none";
-        popup_double_review_div.style.display = "none";
+    if(med_config_data[`${object.CODE}`] == undefined) {
+        if(object.DRUGKIND == "N" || object.DRUGKIND == "") {
+            self_med_item_set.checked = false;
+            self_med_item_set.disabled = false;
+            popup_date_manager.checked = false;
+            popup_date_manager.disabled = true;
+            popup_double_inventory.checked = false;
+            popup_double_inventory.disabled = true;
+            popup_blind_inventory.checked = false;
+            popup_blind_inventory.disabled = true;
+            popup_balance_report.checked = false;
+            popup_balance_report.disabled = true;
+            popup_double_review.checked = false;
+            popup_double_review.disabled = true;
+            popup_narcosis_med.checked = false;
+            popup_narcosis_med.disabled = true;
+    
+            popup_date_manager_div.style.display = "none";
+            popup_double_inventory_div.style.display = "none";
+            popup_blind_inventory_div.style.display = "none";
+            popup_balance_report_div.style.display = "none";
+            popup_double_review_div.style.display = "none";
+            popup_narcosis_med_div.style.display = "none";
+        } else {
+            self_med_item_set.checked = false;
+            self_med_item_set.disabled = true;
+            popup_date_manager.checked = false;
+            popup_date_manager.disabled = true;
+            popup_double_inventory.checked = false;
+            popup_double_inventory.disabled = true;
+            popup_blind_inventory.checked = false;
+            popup_blind_inventory.disabled = true;
+            popup_balance_report.checked = false;
+            popup_balance_report.disabled = true;
+            popup_double_review.checked = false;
+            popup_double_review.disabled = true;
+            popup_narcosis_med.checked = false;
+            popup_narcosis_med.disabled = true;
+    
+            popup_date_manager_div.style.display = "none";
+            popup_double_inventory_div.style.display = "none";
+            popup_blind_inventory_div.style.display = "none";
+            popup_balance_report_div.style.display = "none";
+            popup_double_review_div.style.display = "none";
+            popup_narcosis_med_div.style.display = "none";
+        }
     } else {
-        self_med_item_set.checked = false;
-        self_med_item_set.disabled = true;
-        popup_date_manager.checked = false;
-        popup_date_manager.disabled = true;
-        popup_double_inventory.checked = false;
-        popup_double_inventory.disabled = true;
-        popup_blind_inventory.checked = false;
-        popup_blind_inventory.disabled = true;
-        popup_balance_report.checked = false;
-        popup_balance_report.disabled = true;
-        popup_double_review.checked = false;
-        popup_double_review.disabled = true;
+        if (object.DRUGKIND == "N" || object.DRUGKIND == "") {
+            self_med_item_set.checked = true;
+            popup_date_manager.disabled = false;
+            popup_double_inventory.disabled = false;
+            popup_blind_inventory.disabled = false;
+            popup_balance_report.disabled = false;
+            popup_double_review.disabled = false;
+            popup_narcosis_med.disabled = false;
+            popup_date_manager_div.style.display = "block";
+            popup_double_inventory_div.style.display = "block";
+            popup_blind_inventory_div.style.display = "block";
+            popup_balance_report_div.style.display = "block";
+            popup_double_review_div.style.display = "block";
+            popup_narcosis_med_div.style.display = "block";
 
-        popup_date_manager_div.style.display = "block";
-        popup_double_inventory_div.style.display = "block";
-        popup_blind_inventory_div.style.display = "block";
-        popup_balance_report_div.style.display = "block";
-        popup_double_review_div.style.display = "block";
+            if(med_config_data[`${object.CODE}`].expiry == "True") {
+                popup_date_manager.checked = true;
+            } else {
+                popup_date_manager.checked = false;
+            }
+
+            if(med_config_data[`${object.CODE}`].recheck == "True") {
+                popup_double_inventory.checked = true;
+            } else {
+                popup_double_inventory.checked = false;
+            }
+
+            if(med_config_data[`${object.CODE}`].blind == "True") {
+                popup_blind_inventory.checked = true;
+            } else {
+                popup_blind_inventory.checked = false;
+            }
+
+            if(med_config_data[`${object.CODE}`].inventoryReport == "True") {
+                popup_balance_report.checked = true;
+            } else {
+                popup_balance_report.checked = false;
+            }
+
+            if(med_config_data[`${object.CODE}`].dual_verification == "True") {
+                popup_double_review.checked = true;
+            } else {
+                popup_double_review.checked = false;
+            }
+
+            if(med_config_data[`${object.CODE}`].isAnesthetic == "True") {
+                popup_narcosis_med.checked = true;
+            } else {
+                popup_narcosis_med.checked = false;
+            }
+        } else {
+            self_med_item_set.checked = false;
+            popup_date_manager_div.style.display = "none";
+            popup_double_inventory_div.style.display = "none";
+            popup_blind_inventory_div.style.display = "none";
+            popup_balance_report_div.style.display = "none";
+            popup_double_review_div.style.display = "none";
+            popup_narcosis_med_div.style.display = "none";
+
+            if(med_config_data[`${object.CODE}`].expiry == "True") {
+                popup_date_manager.checked = true;
+            } else {
+                popup_date_manager.checked = false;
+            }
+
+            if(med_config_data[`${object.CODE}`].recheck == "True") {
+                popup_double_inventory.checked = true;
+            } else {
+                popup_double_inventory.checked = false;
+            }
+
+            if(med_config_data[`${object.CODE}`].blind == "True") {
+                popup_blind_inventory.checked = true;
+            } else {
+                popup_blind_inventory.checked = false;
+            }
+
+            if(med_config_data[`${object.CODE}`].inventoryReport == "True") {
+                popup_balance_report.checked = true;
+            } else {
+                popup_balance_report.checked = false;
+            }
+
+            if(med_config_data[`${object.CODE}`].dual_verification == "True") {
+                popup_double_review.checked = true;
+            } else {
+                popup_double_review.checked = false;
+            }
+
+            if(med_config_data[`${object.CODE}`].isAnesthetic == "True") {
+                popup_narcosis_med.checked = true;
+            } else {
+                popup_narcosis_med.checked = false;
+            }
+        }
     }
 
-    popup_warning_med.checked = object.IS_WARRING;
-    popup_high_price_med.checked = object.IS_H_COST;
-    popup_bio_med.checked = object.IS_BIO;
-    popup_narcosis_med.checked = false;
+    if (object.IS_WARRING == "" || object.IS_WARRING == false || object.IS_WARRING == "False"
+    ) {
+        popup_warning_med.checked = false;
+    } else {
+        popup_warning_med.checked = true;
+    }
+
+    if (object.IS_H_COST == "" || object.IS_H_COST == false || object.IS_H_COST == "False"
+    ) {
+        popup_high_price_med.checked = false;
+    } else {
+        popup_high_price_med.checked = true;
+    }
+
+    if (object.IS_BIO == "" || object.IS_BIO == false || object.IS_BIO == "False"
+    ) {
+        popup_bio_med.checked = false;
+    } else {
+        popup_bio_med.checked = true;
+    }
 }
+
+async function med_add_or_edit(e) {
+    let popup_med_code = document.querySelector("#popup_med_code");
+    let popup_med_name = document.querySelector("#popup_med_name");
+    let popup_med_dianame = document.querySelector("#popup_med_dianame");
+    let popup_med_ctname = document.querySelector("#popup_med_ctname");
+    let popup_med_pakage = document.querySelector("#popup_med_pakage");
+    let popup_med_scode = document.querySelector("#popup_med_scode");
+    let popup_med_factory = document.querySelector("#popup_med_factory");
+    let popup_med_lincense = document.querySelector("#popup_med_lincense");
+    let popup_med_drugkind = document.querySelector("#popup_med_drugkind");
+
+    let self_med_item_set = document.querySelector("#self_med_item_set");
+    let popup_date_manager = document.querySelector("#popup_date_manager");
+    let popup_double_inventory = document.querySelector("#popup_double_inventory");
+    let popup_blind_inventory = document.querySelector("#popup_blind_inventory");
+    let popup_balance_report = document.querySelector("#popup_balance_report");
+    let popup_double_review = document.querySelector("#popup_double_review");
+    let popup_narcosis_med = document.querySelector("#popup_narcosis_med");
+
+    let popup_warning_med = document.querySelector("#popup_warning_med");
+    let popup_high_price_med = document.querySelector("#popup_high_price_med");
+    let popup_bio_med = document.querySelector("#popup_bio_med");
+    
+    let temp_post_med_data = {
+        BARCODE : [],
+        GUID : "",
+        CODE : "",
+        SKDIACODE : "",
+        CHT_NAME : "",
+        NAME : "",
+        DIANAME : "",
+        GROUP : "",
+        HI_CODE : "",
+        PAKAGE : "",
+        PAKAGE_VAL : "",
+        MIN_PAKAGE : "",
+        MIN_PAKAGE_VAL : "",
+        BARCODE1 : "",
+        BARCODE2 : "",
+        IS_WARRING : "",
+        IS_H_COST : "",
+        IS_BIO : "",
+        DRUGKIND : "",
+        BRD : "",
+        LICENSE : "",
+        FILE_STATUS : ""
+    };
+
+    let temp_post_medConfig_data = [
+        {
+            GUID : "",
+            CODE : "",
+            expiry : "",
+            blind : "",
+            recheck : "",
+            inventoryReport : "",
+            dual_verification : "",
+            isAnesthetic : "",
+            isShapeSimilar : "",
+            isSoundSimilar : "",
+            customVar : ""
+        }
+    ];
+
+    console.log(temp_med_data);
+    console.log(e.target.innerHTML);
+    
+    if(e.target.innerHTML == "新增") {
+        // 藥碼
+        temp_post_med_data.CODE = popup_med_code.value;
+        // 管制級別
+        temp_post_med_data.DRUGKIND = popup_med_drugkind.value;
+        // 藥名
+        temp_post_med_data.NAME = popup_med_name.value;
+        // 學名
+        temp_post_med_data.DIANAME = popup_med_dianame.value;
+        // 中文名
+        temp_post_med_data.CHT_NAME = popup_med_ctname.value;
+        // 包裝單位
+        temp_post_med_data.PAKAGE_VAL = popup_med_pakage.value;
+        // 健保碼
+        temp_post_med_data.HI_CODE = popup_med_scode.value;
+        // 廠牌
+        temp_post_med_data.BRD = popup_med_factory.value;
+        // 許可證號
+        temp_post_med_data.LICENSE = popup_med_lincense.value;
+        // 警訊藥品
+        temp_post_med_data.IS_WARRING = popup_warning_med.checked ? "True" : "False";
+        // 高價藥品
+        temp_post_med_data.IS_H_COST = popup_high_price_med.checked ? "True" : "False";
+        // 生物製藥
+        temp_post_med_data.IS_BIO = popup_bio_med.checked ? "True" : "False";
+
+        if(popup_med_drugkind.value == "N" && self_med_item_set.checked) {
+            // 藥碼
+            temp_post_medConfig_data[0].CODE = popup_med_code.value;
+            // 管理效期
+            temp_post_medConfig_data[0].expiry = popup_date_manager.checked ? "True" : "False";
+            // 復盤
+            temp_post_medConfig_data[0].recheck = popup_double_inventory.checked ? "True" : "False";
+            // 盲盤
+            temp_post_medConfig_data[0].blind = popup_blind_inventory.checked ? "True" : "False";
+            // 結存報表
+            temp_post_medConfig_data[0].expiry = popup_balance_report.checked ? "True" : "False";
+            // 雙人覆核
+            temp_post_medConfig_data[0].dual_verification = popup_double_review.checked ? "True" : "False";
+            // 麻醉藥品
+            temp_post_medConfig_data[0].isAnesthetic = popup_narcosis_med.checked ? "True" : "False";
+
+            
+
+            let med_res = await upadte_by_guid(temp_post_med_data);
+            console.log("med_add", med_res);
+            
+            let res = await set_medConfig_add(temp_post_medConfig_data);
+            console.log("set_medConfig", res);
+
+            if(med_res.Code != 200) {
+                alert('發生錯誤，請確認資料是否正確！');
+            } else {
+                alert('藥品 新增/修改 成功！');
+                search_med_result_func();
+                hide_med_item();
+            }
+        } else {
+            let med_res = await upadte_by_guid(temp_post_med_data);
+            console.log("med_add", med_res);
+
+            if(med_res.Code != 200) {
+                alert('發生錯誤，請確認資料是否正確！');
+            } else {
+                alert('藥品 新增/修改 成功！');
+                search_med_result_func();
+                hide_med_item();
+            }
+        }
+    } else if (e.target.innerHTML == "修改") {
+        // 藥碼
+        // temp_post_med_data.CODE = popup_med_code.value;
+        // 管制級別
+        temp_post_med_data.DRUGKIND = popup_med_drugkind.value;
+        // 藥名
+        temp_post_med_data.NAME = popup_med_name.value;
+        // 學名
+        temp_post_med_data.DIANAME = popup_med_dianame.value;
+        // 中文名
+        temp_post_med_data.CHT_NAME = popup_med_ctname.value;
+        // 包裝單位
+        temp_post_med_data.PAKAGE = popup_med_pakage.value;
+        // 健保碼
+        temp_post_med_data.HI_CODE = popup_med_scode.value;
+        // 廠牌
+        temp_post_med_data.BRD = popup_med_factory.value;
+        // 許可證號
+        temp_post_med_data.LICENSE = popup_med_lincense.value;
+        // 警訊藥品
+        temp_post_med_data.IS_WARRING = popup_warning_med.checked ? "True" : "False";
+        // 高價藥品
+        temp_post_med_data.IS_H_COST = popup_high_price_med.checked ? "True" : "False";
+        // 生物製藥
+        temp_post_med_data.IS_BIO = popup_bio_med.checked ? "True" : "False";
+
+        temp_post_med_data.BARCODE = temp_med_data.BARCODE;
+        temp_post_med_data.CODE = temp_med_data.CODE;
+        temp_post_med_data.GUID = temp_med_data.GUID;
+        temp_post_med_data.GROUP = temp_med_data.GROUP;
+        temp_post_med_data.PAKAGE_VAL = temp_med_data.PAKAGE_VAL;
+        temp_post_med_data.MIN_PAKAGE = temp_med_data.MIN_PAKAGE;
+        temp_post_med_data.MIN_PAKAGE_VAL = temp_med_data.MIN_PAKAGE_VAL;
+        temp_post_med_data.BARCODE1 = temp_med_data.BARCODE1;
+        temp_post_med_data.BARCODE2 = temp_med_data.BARCODE2;
+        temp_post_med_data.FILE_STATUS = temp_med_data.FILE_STATUS;
+
+        if(popup_med_drugkind.value == "N" && self_med_item_set.checked) {
+            // 藥碼
+            temp_post_medConfig_data[0].CODE = popup_med_code.value;
+            // 管理效期
+            temp_post_medConfig_data[0].expiry = popup_date_manager.checked ? "True" : "False";
+            // 復盤
+            temp_post_medConfig_data[0].recheck = popup_double_inventory.checked ? "True" : "False";
+            // 盲盤
+            temp_post_medConfig_data[0].blind = popup_blind_inventory.checked ? "True" : "False";
+            // 結存報表
+            temp_post_medConfig_data[0].expiry = popup_balance_report.checked ? "True" : "False";
+            // 雙人覆核
+            temp_post_medConfig_data[0].dual_verification = popup_double_review.checked ? "True" : "False";
+            // 麻醉藥品
+            temp_post_medConfig_data[0].isAnesthetic = popup_narcosis_med.checked ? "True" : "False";
+
+            console.log(temp_post_medConfig_data);
+
+            let med_res = await upadte_by_guid(temp_post_med_data);
+            console.log("med_add", med_res);
+
+            let res = await set_medConfig_add(temp_post_medConfig_data);
+            console.log("set_medConfig", res);
+
+            if(med_res.Code != 200) {
+                alert('發生錯誤，請確認資料是否正確！');
+            } else {
+                alert('藥品 新增/修改 成功！');
+                search_med_result_func();
+                hide_med_item();
+            }
+        } else {
+            let med_res = await upadte_by_guid(temp_post_med_data);
+            console.log("med_add", med_res);
+
+            if(med_res.Code != 200) {
+                alert('發生錯誤，請確認資料是否正確！');
+            } else {
+                alert('藥品 新增/修改 成功！');
+                search_med_result_func();
+                hide_med_item();
+            }
+        }
+    }
+};
+
+

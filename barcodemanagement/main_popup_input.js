@@ -84,20 +84,23 @@ async function confirm_popup_input()
 }
 async function delete_row_popup_input(BarCode)
 {
-    if(popup_input_div_Med.BARCODE1 != "") popup_input_div_Med.BARCODE2 = JSON.parse(popup_input_div_Med.BARCODE2);
-    if(popup_input_div_Med.BARCODE2 != "") popup_input_div_Med.BARCODE2 = JSON.parse(popup_input_div_Med.BARCODE2);
+    if(popup_input_div_Med.BARCODE1 != "" && typeof popup_input_div_Med.BARCODE1 != "object") popup_input_div_Med.BARCODE2 = JSON.parse(popup_input_div_Med.BARCODE2);
+    if(popup_input_div_Med.BARCODE2 != "" && typeof popup_input_div_Med.BARCODE2 != "object") popup_input_div_Med.BARCODE2 = JSON.parse(popup_input_div_Med.BARCODE2);
+    console.log(popup_input_div_Med);
+    console.log(popup_input_div_Med.BARCODE1);
+    console.log(popup_input_div_Med.BARCODE2);
     if (confirm("是否刪除?")) 
     {
         popup_input_div_Med.BARCODE = popup_input_div_Med.BARCODE.filter(function(value) {
             return value !== BarCode;
         });
-        if(popup_input_div_Med.BARCODE1 != "") {
-            popup_input_div_Med.BARCODE1 = popup_input_div_Med.BARCODE1.filter(function(value) {
-                return value !== BarCode;
-            });
-        }
+        // if(popup_input_div_Med.BARCODE1 != "") {
+        //     popup_input_div_Med.BARCODE1 = popup_input_div_Med["BARCODE1"].filter(function(value) {
+        //         return value !== BarCode;
+        //     });
+        // }
         if(popup_input_div_Med.BARCODE2 != "") {
-            popup_input_div_Med.BARCODE2 = popup_input_div_Med.BARCODE2.filter(function(value) {
+            popup_input_div_Med.BARCODE2 = popup_input_div_Med["BARCODE2"].filter(function(value) {
                 return value !== BarCode;
             });
         }

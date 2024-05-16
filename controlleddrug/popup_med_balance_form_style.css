@@ -21,11 +21,18 @@
     padding-left: 8px;
     font-weight: 600;
 }
+.pp_mbf_h_title,
+.pp_mbf_h_start_time_title,
+.pp_mbf_h_end_time_title {
+    font-weight: 600;
+    text-shadow: 0px 0px 3px 3px black;
+}
 .pp_mbf_header_name_div,
 .pp_mbf_header_ctname_div,
 .pp_mbf_header_code_div {
     display: flex;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
+    align-items: center;
 }
 #pp_mbf_h_code_content,
 #pp_mbf_h_dkind_content,
@@ -34,12 +41,30 @@
 #pp_mbf_h_name_content {
     margin-right: 16px;
 }
+#pp_mbf_h_code_content,
+#pp_mbf_h_dkind_content,
+#pp_mbf_h_unit_content,
+#pp_mbf_h_sum_content,
+#pp_mbf_h_name_content,
+#pp_mbf_h_ctname_content,
+.pp_mbf_h_start_time,
+.pp_mbf_h_end_time {
+    padding: 0px 4px;
+    border-bottom: 1px solid black;
+}
 .pp_mbf_header_daterange_div {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 .pp_mbf_h_time_div {
     width: 50%;
+    display: flex;
+    align-items: center;
+}
+.pp_mbf_main_container {
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 .pp_mbf_footer_container {

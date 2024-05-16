@@ -265,9 +265,13 @@ function get_ppdatetime_footer()
     let pp_dt_confirm_btn = document.createElement("div");
     pp_dt_confirm_btn.classList.add("pp_dt_confirm_btn");
     pp_dt_confirm_btn.innerHTML = "輸出報表";
-    pp_dt_confirm_btn.addEventListener("click", () => {
+    pp_dt_confirm_btn.addEventListener("click", async () => {
+        showLoadingPopup();
         popup_datetime_select_div_close();
+        let form_data = await set_med_balance_form_data();
+        popup_mbf_get_form_list(form_data);
         popup_med_balance_form_open();
+        hideLoadingPopup();
     });
 
     pp_datetime_footer_container.appendChild(pp_dt_return_btn);
@@ -283,8 +287,9 @@ function popup_datetime_select_div_close() {
 function popup_datetime_select_div_open(med_data) {
     // console.log(med_data);
     temp_med_data = med_data;
-    console.log(temp_med_data);
+    // console.log(temp_med_data);
     get_pp_dt_med_info_func(med_data);
+    pp_set_med_bal_form_info(med_data);
     popup_datetime_select_div.Set_Visible(true);
 }
 function popup_datetime_reset() {
@@ -327,11 +332,87 @@ function get_pp_dt_med_info_func(med_data) {
         pp_dt_med_ctname.innerHTML = `中文名：${med_data.CHT_NAME}`;
     }
 
-
     let pp_dt_med_code = document.querySelector(".pp_dt_med_code");
     if(med_data.SKDIACODE == "") {
         pp_dt_med_code.innerHTML = `藥碼：${med_data.CODE}`;
     } else {
         pp_dt_med_code.innerHTML = `藥碼：${med_data.CODE}&nbsp&nbsp&nbsp&nbsp料號:${med_data.SKDIACODE}`;
     }
+
+    let popup_datetime_header = document.querySelector(".popup_datetime_header");
+    popup_datetime_header.setAttribute("code", med_data.CODE);
+}
+async function set_med_balance_form_data() {
+
+    let popup_datetime_header = document.querySelector(".popup_datetime_header");
+    let temp_code = popup_datetime_header.getAttribute("code");
+
+    // console.log(temp_selected_arr);
+    let start_datetime = get_start_time_data();
+    let end_datetime = get_end_time_data();
+
+    let pp_mbf_h_start_time = document.querySelector(".pp_mbf_h_start_time");
+    let pp_mbf_h_end_time = document.querySelector(".pp_mbf_h_end_time");
+
+    pp_mbf_h_start_time.innerHTML = start_datetime;
+    pp_mbf_h_end_time.innerHTML = end_datetime;
+
+    // console.log(start_datetime);
+    // console.log(end_datetime);
+
+    let serverNameStr = "";
+    let serverTypeStr = "";
+
+    temp_selected_arr.forEach(element => {
+        serverNameStr += element.serverName + ",";
+        serverTypeStr += element.serverType + ",";
+    });
+
+    // Remove the trailing comma
+    serverNameStr = serverNameStr.slice(0, -1);
+    serverTypeStr = serverTypeStr.slice(0, -1);
+
+    // console.log(st_time);
+    // console.log(end_time);
+    // console.log(serverNameStr);
+    // console.log(serverTypeStr);
+
+    let post_data = {
+        Data: {},
+        ValueAry: [   
+            `${start_datetime}`,
+            `${end_datetime}`,
+            `${serverNameStr}`,
+            `${serverTypeStr}`]
+    };
+
+    console.log(post_data);
+
+    let data = await get_datas_by_op_time_st_end_transactions(post_data);
+    console.log(data);
+    let temp_data = data["Data"].filter((e) => {
+        return e.CODE == temp_code;
+    });
+
+    return temp_data
+}
+
+function get_start_time_data() {
+    let date = "";
+    let pp_dt_start_date_input = document.querySelector("#pp_dt_start_date_input");
+    let pp_dt_start_hour_input = document.querySelector("#pp_dt_start_hour_input");
+    let pp_dt_start_minute_input = document.querySelector("#pp_dt_start_minute_input");
+
+    date = `${pp_dt_start_date_input.value} ${pp_dt_start_hour_input.value}:${pp_dt_start_minute_input.value}`;
+
+    return date;
+}
+function get_end_time_data() {
+    let date;
+    let pp_dt_end_date_input = document.querySelector("#pp_dt_end_date_input");
+    let pp_dt_end_hour_input = document.querySelector("#pp_dt_end_hour_input");
+    let pp_dt_end_minute_input = document.querySelector("#pp_dt_end_minute_input");
+    date = `${pp_dt_end_date_input.value} ${pp_dt_end_hour_input.value}:${pp_dt_end_minute_input.value}`;
+
+    return date;
 }

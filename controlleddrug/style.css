@@ -63,16 +63,28 @@ body {
   align-items: center;
 }
 .cd_main_search_select {
+  border-radius: 5px;
+  padding: 4px 6px;
   font-size: 20px;
   font-weight: 600;
-  width: 88px;
+  width: 120px;
+  text-align: center;
 }
-#cd_main_search_input {
+#cd_main_search_input,
+.cd_main_search_select_list {
   font-size: 20px;
   font-weight: 600;
-  padding-left: 6px;
+  border-radius: 5px;
+  padding: 4px 6px;
   margin: 0px 24px 0px 8px;
   width: 280px;
+}
+#cd_main_search_input {
+  display: block;
+}
+.cd_main_search_select_list {
+  display: none;
+  text-align: center;
 }
 .cd_main_search_btn {
   font-size: 16px;

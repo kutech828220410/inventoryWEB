@@ -15,7 +15,13 @@
 .main_div {
     margin-bottom: 60px;
 }
-
+.no_info_data_div {
+    padding: 36px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 32px;
+    color: #e73f3f;
+}
 .h_title {
     font-size: 24px;
     font-weight: 600;

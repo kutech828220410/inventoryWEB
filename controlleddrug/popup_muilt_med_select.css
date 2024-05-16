@@ -56,6 +56,13 @@
   justify-content: space-between;
   padding-top: 12px;
 }
+.no_trans_data {
+  text-align: center;
+  color: #ef2c2c;
+  font-weight: 600;
+  font-size: 32px;
+  padding: 48px;
+}
 .pp_mms_return_btn,
 .pp_mms_confirm_btn {
   padding: 4px 16px;

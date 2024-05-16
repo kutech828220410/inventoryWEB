@@ -1,144 +1,25 @@
 let popup_pharmacy_select_div;
-let pharmacy_table_data = [
-    {
-        serverName:'藥局一',
-        serverType:'pharmacy_1',
-        serverTable:[
-            {
-                serverName:'調劑台A1',
-                serverType:'table_A1',
-                checked:true
-            },
-            {
-                serverName:'調劑台A2',
-                serverType:'table_A2',
-                checked:true
-            }, 
-            {
-                serverName:'調劑台A3',
-                serverType:'table_A3',
-                checked:true
-            },
-            {
-                serverName:'調劑台A4',
-                serverType:'table_A4',
-                checked:true
-            },
-            {
-                serverName:'調劑台A5',
-                serverType:'table_A5',
-                checked:true
-            },
-            {
-                serverName:'調劑台A6',
-                serverType:'table_A6',
-                checked:true
-            },
-            {
-                serverName:'調劑台A7',
-                serverType:'table_A7',
-                checked:true
-            },
-            {
-                serverName:'調劑台A8',
-                serverType:'table_A8',
-                checked:true
-            },
-        ],
-        checked:true
-    },
-    {
-        serverName:'急診中藥藥局',
-        serverType:'pharmacy_2',
-        serverTable:[
-            {
-                serverName:'調劑台B1',
-                serverType:'table_B1',
-                checked:true
-            },
-            {
-                serverName:'調劑台B2',
-                serverType:'table_B2',
-                checked:true
-            }, 
-            {
-                serverName:'調劑台B3',
-                serverType:'table_B3',
-                checked:true
-            },
-            {
-                serverName:'調劑台B4',
-                serverType:'table_B4',
-                checked:true
-            },
-        ],
-        checked:true
-    },
-    {
-        serverName:'藥局三',
-        serverType:'pharmacy_3',
-        serverTable:[
-            {
-                serverName:'調劑台C1',
-                serverType:'table_C1',
-                checked:true
-            },
-            {
-                serverName:'調劑台C2',
-                serverType:'table_C2',
-                checked:true
-            }, 
-            {
-                serverName:'調劑台C3',
-                serverType:'table_C3',
-                checked:true
-            },
-            {
-                serverName:'調劑台C4',
-                serverType:'table_C4',
-                checked:true
-            },
-        ],
-        checked:true
-    },
-    {
-        serverName:'藥局四',
-        serverType:'pharmacy_4',
-        serverTable:[
-            {
-                serverName:'調劑台D1',
-                serverType:'table_D1',
-                checked:true
-            },
-            {
-                serverName:'調劑台D2',
-                serverType:'table_D2',
-                checked:true
-            }, 
-            {
-                serverName:'調劑台D3',
-                serverType:'table_D3',
-                checked:true
-            },
-            {
-                serverName:'調劑台D4',
-                serverType:'table_D4',
-                checked:true
-            },
-        ],
-        checked:true
-    },
-];
 
 var temp_selected_arr;
 
-function get_popup_pharmacy_select()
+async function get_popup_pharmacy_select()
 {
     popup_pharmacy_select_div = new Basic_popup_Div('popup_pharmacy_select_div','popup_pharmacy_select_div','','');
     popup_pharmacy_select_div._popup_div.style.border = '10px solid white';
 
+    let pharmacy_table_data = await get_serversetting_by_type();
+    console.log(pharmacy_table_data["Data"]);
+
+    temp_table_data = [
+        {
+            serverName:'全部調劑台',
+            serverType:'pharmacy_1',
+            serverTable: pharmacy_table_data["Data"]
+        }
+    ]
+
     let header = get_pps_header();
-    let main = get_pps_main();
+    let main = get_pps_main(temp_table_data);
     let footer = get_pps_footer();
 
     popup_pharmacy_select_div.AddControl(header);
@@ -157,12 +38,12 @@ function get_pps_header()
     return pps_header_container;
 };
 
-function get_pps_main()
+function get_pps_main(data)
 {
     let pps_main_container = document.createElement("div");
     pps_main_container.classList.add("pps_main_container");
 
-    pharmacy_table_data.forEach((item) => {
+    data.forEach((item) => {
         pps_main_container.appendChild(get_pps_card(item));
     });
 
@@ -176,7 +57,7 @@ function get_pps_footer()
     let pps_f_confirm_btn = document.createElement("div");
     pps_f_confirm_btn.classList.add('pps_f_confirm_btn');
     pps_f_confirm_btn.innerText = '確認';
-    pps_f_confirm_btn.addEventListener("click", () => {
+    pps_f_confirm_btn.addEventListener("click", async () => {
         temp_selected_arr = [];
         temp_selected_arr = checked_pharmacy_arr();
         console.log(temp_selected_arr);
@@ -184,8 +65,14 @@ function get_pps_footer()
             alert('至少選擇一個調劑台！！');
             return;
         } else {
+            Set_main_div_enable(true);
             popup_pharmacy_select_div_close();
             get_select_block_func(temp_selected_arr);
+            let post_data = get_init_post_data();
+            let res_data = await get_datas_by_op_time_st_end_transactions(post_data);
+            data_information = res_data["Data"];
+            get_info_init(res_data["Data"]);
+            Set_main_div_enable(false);
         }
     });
     
@@ -222,14 +109,14 @@ function get_pps_card(item) {
 
         let pps_checkbox_label = document.createElement("label");
         pps_checkbox_label.classList.add('pps_checkbox_label');
-        pps_checkbox_label.setAttribute('for', element.serverType);
-        pps_checkbox_label.innerHTML = element.serverName;
+        pps_checkbox_label.setAttribute('for', element.GUID);
+        pps_checkbox_label.innerHTML = element.name;
 
         let pps_checkbox_input = document.createElement('input');
         pps_checkbox_input.type = "checkbox";
-        pps_checkbox_input.id = element.serverType;
-        pps_checkbox_input.name = element.serverType;
-        pps_checkbox_input.checked = element.checked;
+        pps_checkbox_input.id = element.GUID;
+        pps_checkbox_input.name = element.GUID;
+        pps_checkbox_input.checked = true;
 
         pps_checkbox_div.appendChild(pps_checkbox_input);
         pps_checkbox_div.appendChild(pps_checkbox_label);
@@ -238,16 +125,15 @@ function get_pps_card(item) {
     });
 
     pps_card_title.addEventListener('click',() => {
+        let pps_checkbox_div = document.querySelectorAll(".pps_checkbox_div");
         set_all_select = !set_all_select;
         if(set_all_select) {
-            item["serverTable"].forEach((e) => {
-                let temp_input = document.querySelector(`#${e.serverType}`);
-                temp_input.checked = true;
+            pps_checkbox_div.forEach(element => {
+                element.childNodes[0].checked = true;
             });
         } else {
-            item["serverTable"].forEach((e) => {
-                let temp_input = document.querySelector(`#${e.serverType}`);
-                temp_input.checked = false;
+            pps_checkbox_div.forEach(element => {
+                element.childNodes[0].checked = false;
             });
         }
     });
@@ -267,17 +153,43 @@ function popup_pharmacy_select_div_open() {
 }
 function checked_pharmacy_arr() {
     let temp_arr = [];
-    pharmacy_table_data.forEach(e => {
+    temp_table_data.forEach(e => {
         e["serverTable"].forEach(element => {
-            let temp_input = document.querySelector(`#${element.serverType}`);
+            let temp_input = document.getElementById(`${element.GUID}`);
             if(temp_input.checked) {
                 let temp_data = {};
-                temp_data.serverName = element.serverName;
-                temp_data.serverType = element.serverType;
+                temp_data.serverName = element.name;
+                temp_data.serverType = element.type;
                 temp_arr.push(temp_data);
             }
         });
     });
 
     return temp_arr;
-} 
+}
+// http://220.135.128.247:4433/api/ServerSetting/get_serversetting_by_type
+// ${api_ip}/api/ServerSetting/get_serversetting_by_type
+
+async function get_serversetting_by_type() {
+    let temp_data = await fetch(`${api_ip}api/ServerSetting/get_serversetting_by_type`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            Data: 
+            {
+                
+            },
+            ValueAry : 
+            [
+                "調劑台"
+            ]
+        }),
+    })
+    .then((response) => {
+        return response.json();
+    })
+
+    return temp_data;
+}

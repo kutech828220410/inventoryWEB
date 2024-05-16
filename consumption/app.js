@@ -1,171 +1,7 @@
 let data;
 let data_information;
 
-let fake_data = [
-  {
-    move:'掃碼領藥',
-    type:"出院帶藥",
-    code:"ODER34",
-    name:"asdasdfasdfasdf/afsdfaasdfas 1230g",
-    med_num: "3522",
-    inventory: 122222,
-    trade:'-23',
-    io_num: "111111",
-    inventory_num:"無",
-    person: "山本六十九",
-    p_person: '阿部瑪莉亞',
-    p_room:'',
-    p_num: "1111111111",
-    s_date:'2024/04/04 00:00:00',
-    e_date:'2024/04/04 00:00:00',
-    io_reason:'',
-    ps:"[效期]:2050/01/01,[批號]:32231"
-  },  {
-    move:'掃碼領藥',
-    type:"出院帶藥",
-    code:"ODER34",
-    name:"asdasdfasdfasdf/afsdfaasdfas 1230g",
-    med_num: "3522",
-    inventory: 122222,
-    trade:'-23',
-    io_num: "111111",
-    inventory_num:"無",
-    person: "山本六十九",
-    p_person: '阿部瑪莉亞',
-    p_room:'',
-    p_num: "1111111111",
-    s_date:'2024/04/04 00:00:00',
-    e_date:'2024/04/04 00:00:00',
-    io_reason:'',
-    ps:"[效期]:2050/01/01,[批號]:32231"
-  },  {
-    move:'掃碼領藥',
-    type:"出院帶藥",
-    code:"ODER34",
-    name:"asdasdfasdfasdf/afsdfaasdfas 1230g",
-    med_num: "3522",
-    inventory: 122222,
-    trade:'-23',
-    io_num: "111111",
-    inventory_num:"無",
-    person: "山本六十九",
-    p_person: '阿部瑪莉亞',
-    p_room:'',
-    p_num: "1111111111",
-    s_date:'2024/04/04 00:00:00',
-    e_date:'2024/04/04 00:00:00',
-    io_reason:'',
-    ps:"[效期]:2050/01/01,[批號]:32231"
-  },  {
-    move:'掃碼領藥',
-    type:"出院帶藥",
-    code:"ODER34",
-    name:"asdasdfasdfasdf/afsdfaasdfas 1230g",
-    med_num: "3522",
-    inventory: 122222,
-    trade:'-23',
-    io_num: "111111",
-    inventory_num:"無",
-    person: "山本六十九",
-    p_person: '阿部瑪莉亞',
-    p_room:'',
-    p_num: "1111111111",
-    s_date:'2024/04/04 00:00:00',
-    e_date:'2024/04/04 00:00:00',
-    io_reason:'',
-    ps:"[效期]:2050/01/01,[批號]:32231"
-  },  {
-    move:'掃碼領藥',
-    type:"出院帶藥",
-    code:"ODER34",
-    name:"asdasdfasdfasdf/afsdfaasdfas 1230g",
-    med_num: "3522",
-    inventory: 122222,
-    trade:'-23',
-    io_num: "111111",
-    inventory_num:"無",
-    person: "山本六十九",
-    p_person: '阿部瑪莉亞',
-    p_room:'',
-    p_num: "1111111111",
-    s_date:'2024/04/04 00:00:00',
-    e_date:'2024/04/04 00:00:00',
-    io_reason:'',
-    ps:"[效期]:2050/01/01,[批號]:32231"
-  },  {
-    move:'掃碼領藥',
-    type:"出院帶藥",
-    code:"ODER34",
-    name:"asdasdfasdfasdf/afsdfaasdfas 1230g",
-    med_num: "3522",
-    inventory: 122222,
-    trade:'-23',
-    io_num: "111111",
-    inventory_num:"無",
-    person: "山本六十九",
-    p_person: '阿部瑪莉亞',
-    p_room:'',
-    p_num: "1111111111",
-    s_date:'2024/04/04 00:00:00',
-    e_date:'2024/04/04 00:00:00',
-    io_reason:'',
-    ps:"[效期]:2050/01/01,[批號]:32231"
-  },  {
-    move:'掃碼領藥',
-    type:"出院帶藥",
-    code:"ODER34",
-    name:"asdasdfasdfasdf/afsdfaasdfas 1230g",
-    med_num: "3522",
-    inventory: 122222,
-    trade:'-23',
-    io_num: "111111",
-    inventory_num:"無",
-    person: "山本六十九",
-    p_person: '阿部瑪莉亞',
-    p_room:'',
-    p_num: "1111111111",
-    s_date:'2024/04/04 00:00:00',
-    e_date:'2024/04/04 00:00:00',
-    io_reason:'',
-    ps:"[效期]:2050/01/01,[批號]:32231"
-  },  {
-    move:'掃碼領藥',
-    type:"出院帶藥",
-    code:"ODER34",
-    name:"asdasdfasdfasdf/afsdfaasdfas 1230g",
-    med_num: "3522",
-    inventory: 122222,
-    trade:'-23',
-    io_num: "111111",
-    inventory_num:"無",
-    person: "山本六十九",
-    p_person: '阿部瑪莉亞',
-    p_room:'',
-    p_num: "1111111111",
-    s_date:'2024/04/04 00:00:00',
-    e_date:'2024/04/04 00:00:00',
-    io_reason:'',
-    ps:"[效期]:2050/01/01,[批號]:32231"
-  },  {
-    move:'掃碼領藥',
-    type:"出院帶藥",
-    code:"ODER34",
-    name:"asdasdfasdfasdf/afsdfaasdfas 1230g",
-    med_num: "3522",
-    inventory: 122222,
-    trade:'-23',
-    io_num: "111111",
-    inventory_num:"無",
-    person: "山本六十九",
-    p_person: '阿部瑪莉亞',
-    p_room:'',
-    p_num: "1111111111",
-    s_date:'2024/04/04 00:00:00',
-    e_date:'2024/04/04 00:00:00',
-    io_reason:'',
-    ps:"[效期]:2050/01/01,[批號]:32231"
-  },
-]
+let temp_form_data = [];
 
 window.onload = load;
 // window.addEventListener('resize', handleResize);
@@ -176,6 +12,9 @@ function handleResize()
 }
 async function load()
 {
+  const Loadingpopup = GetLoadingpopup();
+  document.body.appendChild(Loadingpopup);
+  Set_main_div_enable(true);
   check_session_off();
   var serverName = "管藥";
 //   ServerName = serverName;
@@ -192,15 +31,13 @@ async function load()
   console.log(permissions);
 
   let rowNum = 1;
-  const Loadingpopup = GetLoadingpopup();
-  document.body.appendChild(Loadingpopup);
-  Set_main_div_enable(true);
   const currentDate = new Date();
   var date_end = DateTimeAddDays(currentDate, 1);
   var date_start = DateTimeAddDays(currentDate, -30);
   date_start = getDateStr(date_start);
   date_end = getDateStr(date_end);
-  data = await serch_by_ST_END(date_start,date_end);
+  // data = await serch_by_ST_END(date_start,date_end);
+  // console.log("data", data);
 
   var loggedID = sessionStorage.getItem('loggedID');  
   var loggedName = sessionStorage.getItem('loggedName');  
@@ -212,12 +49,15 @@ async function load()
   let temp_search_med_data;
   let temp_sort_med_data;
 
+  get_popup_pharmacy_select();
+  popup_pharmacy_select_div.Set_Visible(true);
+
   nav_bar_create("consumption_report", test_user_data);
   get_header(test_user_data);
   get_select_block_bar_container();
   get_main_div();
   get_main_div_table_th_init();
-  get_info_init(fake_data);
+  // get_info_init(fake_data);
   Set_main_div_enable(false);
 //   page_Init();
 }
@@ -294,12 +134,46 @@ function get_main_div() {
     main_div.id = "main_div";
     main_div.className = "main_div";
 
+    let main_div_time_line_container = document.createElement("div");
+    main_div_time_line_container.classList.add("main_div_time_line_container");
+
     let main_div_table_th_container = document.createElement("div");
     main_div_table_th_container.classList.add("main_div_table_th_container");
+
+    let time_line_type = document.createElement("div");
+    time_line_type.classList.add("time_line_type");
+    time_line_type.innerHTML = "操作時間";
+
+    let time_line_container = document.createElement("div");
+    time_line_container.classList.add("time_line_container");
+    time_line_container.innerHTML = `
+      <div class="time_line_st"></div>
+      <span>～</span>
+      <div class="time_line_end"></div>
+    `;
+
+    let download_excel_trans_log_btn = document.createElement("div");
+    download_excel_trans_log_btn.classList.add("btn");
+    download_excel_trans_log_btn.classList.add("download_excel_trans_log_btn");
+    download_excel_trans_log_btn.innerHTML = "匯出excel";
+    download_excel_trans_log_btn.addEventListener("click", async () => {
+      Set_main_div_enable(true);
+      let start_date = document.querySelector(".time_line_st").innerHTML;
+      let end_date = document.querySelector(".time_line_end").innerHTML;
+      if(typeof data_information == "object") {
+        await download_datas_excel(data_information, start_date, end_date);
+      }
+      Set_main_div_enable(false);
+    });
+
+    main_div_time_line_container.appendChild(time_line_type);
+    main_div_time_line_container.appendChild(time_line_container);
+    main_div_time_line_container.appendChild(download_excel_trans_log_btn);
 
     let main_div_table_display_container = document.createElement("div");
     main_div_table_display_container.classList.add("main_div_table_display_container");
 
+    main_div.appendChild(main_div_time_line_container);
     main_div.appendChild(main_div_table_th_container);
     main_div.appendChild(main_div_table_display_container);
 
@@ -346,83 +220,136 @@ function get_main_div_table_th_init() {
 function get_info_init(array) {
   let th_data = ["","動作","診別","藥品碼","藥品名稱","領藥號","庫存量","交易量","結存量","盤點量","操作人","病人姓名","病歷號","病房號","操作時間","開方時間","收支原因",'備註'];
 
+  console.log(array);
+
   let main_div_table_display_container = document.querySelector(".main_div_table_display_container");
   main_div_table_display_container.innerHTML = '';
 
-  array.forEach((element, index) => {
-    let table_info_container = document.createElement("div");
-    table_info_container.classList.add("table_info_container");
-
-    for (let i = 0; i < th_data.length; i++) {
-      let td = document.createElement("p");
-      td.classList.add("table_td");
-      td.classList.add(`th_${i}`);
-      if(index%2 != 0) {
-        td.classList.add("bgc_gray");
-      }
-      switch (i) {
-        case 0:
-          td.innerHTML = index + 1;
-          break;
-        case 1:
-          td.innerHTML = element.move;
-          break;
-        case 2:
-          td.innerHTML = element.type;
-          break;
-        case 3:
-          td.innerHTML = element.code;
-          break;
-        case 4:
-          td.innerHTML = element.name;
-          break;
-        case 5:
-          td.innerHTML = element.med_num;
-          break;
-        case 6:
-          td.innerHTML = element.inventory;
-          break;
-        case 7:
-          td.innerHTML = element.trade;
-          break;
-        case 8:
-          td.innerHTML = element.io_num;
-          break;
-        case 9:
-          td.innerHTML = element.inventory_num;
-          break;
-        case 10:
-          td.innerHTML = element.person;
-          break;
-        case 11:
-          td.innerHTML = element.p_person;
-          break;
-        case 12:
-          td.innerHTML = element.p_room;
-          break;
-        case 13:
-          td.innerHTML = element.p_num;
-          break;
-        case 14:
-          td.innerHTML = element.s_date;
-          break;
-        case 15:
-          td.innerHTML = element.e_date;
-          break;
-        case 16:
-          td.innerHTML = element.io_reason;
-          break;
-        case 17:
-          td.innerHTML = element.ps;
-          break;
+  if(array.length != 0) {
+    array.forEach((element, index) => {
+      let table_info_container = document.createElement("div");
+      table_info_container.classList.add("table_info_container");
+  
+      for (let i = 0; i < th_data.length; i++) {
+        let td = document.createElement("p");
+        td.classList.add("table_td");
+        td.classList.add(`th_${i}`);
+        if(index%2 != 0) {
+          td.classList.add("bgc_gray");
+        }
+        switch (i) {
+          case 0:
+            td.innerHTML = index + 1;
+            break;
+          case 1:
+            td.innerHTML = element.ACTION;
+            break;
+          case 2:
+            td.innerHTML = element.MEDKND;
+            break;
+          case 3:
+            td.innerHTML = element.CODE;
+            break;
+          case 4:
+            td.innerHTML = element.NAME;
+            break;
+          case 5:
+            td.innerHTML = element.MED_BAG_NUM;
+            break;
+          case 6:
+            td.innerHTML = element.INV_QTY;
+            break;
+          case 7:
+            td.innerHTML = element.TXN_QTY;
+            break;
+          case 8:
+            td.innerHTML = element.EBQ_QTY;
+            break;
+          case 9:
+            td.innerHTML = element.PHY_QTY;
+            break;
+          case 10:
+            td.innerHTML = element.OP;
+            break;
+          case 11:
+            td.innerHTML = element.PAT;
+            break;
+          case 12:
+            td.innerHTML = element.MRN;
+            break;
+          case 13:
+            td.innerHTML = element.WARD_NAME;
+            break;
+          case 14:
+            td.innerHTML = element.OP_TIME;
+            break;
+          case 15:
+            td.innerHTML = element.RX_TIME;
+            break;
+          case 16:
+            td.innerHTML = element.RSN;
+            break;
+          case 17:
+            td.innerHTML = element.NOTE;
+            break;
+          
+          default:
+            break;
+        }
         
-        default:
-          break;
-      }
-      
-      table_info_container.appendChild(td);
-    };
+        table_info_container.appendChild(td);
+      };
+  
+      main_div_table_display_container.appendChild(table_info_container);
+    });
+  } else {
+    main_div_table_display_container.innerHTML = `
+      <div class="no_form_list_data">目前無交易紀錄</div>
+    `
+  }
 
-    main_div_table_display_container.appendChild(table_info_container);
+}
+
+function get_init_post_data() {
+  let time_line_st = document.querySelector(".time_line_st");
+  let time_line_end = document.querySelector(".time_line_end");
+  let time_line_type = document.querySelector(".time_line_type");
+
+  const currentDate = new Date();
+  var date_end = DateTimeAddDays(currentDate, 1);
+  var date_start = DateTimeAddDays(currentDate, -30);
+  date_start = getDateStr(date_start);
+  date_end = getDateStr(date_end);
+
+  time_line_st.innerHTML = date_start;
+  time_line_end.innerHTML = date_end;
+  time_line_type.innerHTML = "操作時間";
+
+  let serverNameStr = "";
+  let serverTypeStr = "";
+
+  temp_selected_arr.forEach(element => {
+      serverNameStr += element.serverName + ",";
+      serverTypeStr += element.serverType + ",";
   });
+
+  // Remove the trailing comma
+  serverNameStr = serverNameStr.slice(0, -1);
+  serverTypeStr = serverTypeStr.slice(0, -1);
+
+  // console.log(st_time);
+  // console.log(end_time);
+  // console.log(serverNameStr);
+  // console.log(serverTypeStr);
+
+  let post_data = {
+      Data: {},
+      ValueAry: [   
+          `${date_start}`,
+          `${date_end}`,
+          `${serverNameStr}`,
+          `${serverTypeStr}`]
+  };
+
+  return post_data
 }

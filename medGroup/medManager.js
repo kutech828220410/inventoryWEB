@@ -97,6 +97,7 @@ function mm_main_init() {
             <option value="barcode">藥品條碼</option>
             <option value="drugkind">管制級別</option>
             <option value="h_price">高價藥品</option>
+            <option value="med_group">藥品群組</option>
         </select>
         <div class="search_input_container">
             <input type="text" id="search_med_input" />
@@ -108,7 +109,7 @@ function mm_main_init() {
             <option value="4">4</option>
             </select>
         </div>
-        <div class="search_med_btn">搜尋</div>
+        <div class="btn search_med_btn">搜尋</div>
     `;
 
     // 展示搜尋結果容器
@@ -122,16 +123,34 @@ function mm_main_init() {
 
     // 搜尋列功能
     let search_med_select_method = document.querySelector("#search_med_select_method");
-    search_med_select_method.addEventListener("change", (element) => {
+    search_med_select_method.addEventListener("change", async (element) => {
         let search_med_input = document.querySelector("#search_med_input");
         let search_drug_kind_select = document.querySelector("#search_drug_kind_select");
 
         search_med_input.value = "";
-        search_drug_kind_select.value = "N";
+        // search_drug_kind_select.value = "N";
         // console.log(element.target.value);
         if (element.target.value == "drugkind") {
             search_med_input.style.display = "none";
             search_drug_kind_select.style.display = "block";
+            search_drug_kind_select.innerHTML = "";
+            search_drug_kind_select.innerHTML = `
+                <option value="N">N</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            `;
+        } else if(element.target.value == "med_group") {            
+            search_med_input.style.display = "none";
+            search_drug_kind_select.style.display = "block";
+            let temp_med_group_data = await groups_manage_get_data();
+            search_drug_kind_select.innerHTML = "";
+            temp_med_group_data["Data"].forEach(element => {
+                search_drug_kind_select.innerHTML += `
+                    <option value="${element.GUID}">${element.NAME}</option>
+                `;
+            });
         } else {
             search_med_input.style.display = "block";
             search_drug_kind_select.style.display = "none";
@@ -146,40 +165,47 @@ function mm_main_init() {
 
     let search_med_btn = document.querySelector(".search_med_btn");
     search_med_btn.addEventListener("click", () => {
-        let search_med_input = document.querySelector("#search_med_input");
-        let search_drug_kind_select = document.querySelector("#search_drug_kind_select");
-        let value = search_med_input.value;
-
-        switch (search_med_select_method.value) {
-            case "code":
-                search_by_code(value);
-                break;
-            case "name":
-                search_by_name(value);
-                break;
-            case "cht_name":
-                search_by_ctname(value);
-                break;
-            case "dianame":
-                search_by_dianame(value);
-                break;
-            case "barcode":
-            
-                break;
-            case "drugkind":
-                value = search_drug_kind_select.value;
-                search_by_drugkind(value);
-                break;
-            case "h_price":
-                search_by_h_price();
-                break;
-        }
+        search_med_result_func();
     });
 };
 
 function main_all_display_init() {
     let mm_all_display_container = document.querySelector(".mm_all_display_container");
     mm_all_display_container.innerHTML = '';
+}
+
+function search_med_result_func() {
+    let search_med_input = document.querySelector("#search_med_input");
+    let search_drug_kind_select = document.querySelector("#search_drug_kind_select");
+    let value = search_med_input.value;
+
+    switch (search_med_select_method.value) {
+        case "code":
+            search_by_code(value);
+            break;
+        case "name":
+            search_by_name(value);
+            break;
+        case "cht_name":
+            search_by_ctname(value);
+            break;
+        case "dianame":
+            search_by_dianame(value);
+            break;
+        case "barcode":
+        
+            break;
+        case "drugkind":
+            value = search_drug_kind_select.value;
+            search_by_drugkind(value);
+            break;
+        case "h_price":
+            search_by_h_price();
+            break;
+        case "med_group":
+            search_by_med_group();
+            break;
+    }
 }
 
 function get_search_result_display(arr) {
@@ -209,10 +235,10 @@ function get_search_result_display(arr) {
                 </div>
                 <div class="med_item_btn_container">
                     <div class="med_item_modify_btn" id="med_modify_code_${element.CODE}">修改</div>
-                    <div class="med_item_delete_btn" id="med_delete_code_${element.CODE}">刪除</div>
                 </div>
             </div>
         `;
+                    // <div class="med_item_delete_btn" id="med_delete_code_${element.CODE}">刪除</div>
 
         mm_all_display_container.appendChild(med_item_card_container);
 
@@ -249,6 +275,8 @@ function skdiacode_switch(text) {
 async function search_by_code(value) {
     showLoadingPopup();
     let med_data = await get_medicine_cloud();
+
+    console.log(med_data["Data"]);
 
     if(value == "") {
         alert("請輸入資料");
@@ -355,3 +383,57 @@ async function search_by_h_price() {
     }
     hideLoadingPopup();
 };
+async function search_by_med_group() {
+    showLoadingPopup();
+    let search_drug_kind_select = document.querySelector("#search_drug_kind_select");
+    let temp_med_group_data = await groups_manage_get_data();
+    let med_data = await get_medicine_cloud();
+    let temp_med_group = temp_med_group_data["Data"].filter(e => e["GUID"].includes(search_drug_kind_select.value));
+    let match_arr = [];
+    temp_med_group[0]["MedClasses"].forEach(element => {
+      match_arr.push(element.CODE);
+    });
+    console.log(match_arr);
+    if(match_arr.length < 1) {
+      alert("藥品群組無資料");
+      hideLoadingPopup();
+      return;
+    }
+    temp_arr = med_data["Data"].filter(e => match_arr.includes(e["CODE"]));
+
+    if(temp_arr.length < 1) {
+        alert("查無此藥");
+    } else {
+        console.log(temp_arr);
+        get_search_result_display(temp_arr);
+    }
+    hideLoadingPopup();
+};
+
+// 自定義設定功能資料
+async function get_medConfig_data() {
+    let temp_data = {};
+    let med_config_data = await get_all_medConfig();
+
+    med_config_data["Data"].forEach(element => {
+        temp_data[`${element.CODE}`] = element
+    });
+
+    return temp_data;
+}
+async function groups_manage_get_data() {
+    console.log("api_ip",api_ip);
+    let data = await fetch(`${api_ip}api/medGroup/get_all_group`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}),
+      }).catch(e => {
+        console.log(e);
+      }).then(res => {
+        return res.json()
+      });
+  
+      return data
+}

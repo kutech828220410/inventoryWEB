@@ -46,6 +46,9 @@ function get_ppsearch_footer() {
     pps_btn.classList.add('btn');
     pps_btn.classList.add('pps_btn');
     pps_btn.innerHTML = "搜尋";
+    pps_btn.addEventListener("click", async () => {
+        await get_search_result();
+    });
 
     let pps_close_btn = document.createElement("div");
     pps_close_btn.classList.add('btn');
@@ -216,6 +219,112 @@ function get_pp_search_patient_block() {
     select_trigger_container.appendChild(select_patient_input);
 
     return select_trigger_container;
+}
+
+async function get_search_result() {
+    Set_main_div_enable(true);
+    // checkbox
+    // 調劑作業
+    let adjustment_work = document.querySelector("#adjustment_work");
+    // 收支作業
+    let input_output_work = document.querySelector("#input_output_work");
+    // 自動過帳
+    let auto_posting = document.querySelector("#auto_posting");
+    // 效期庫存異動
+    let inventory_changes = document.querySelector("#inventory_changes");
+
+    // select
+    // 藥碼、藥名
+    let select_med_kind = document.querySelector('.select_med_kind');
+    // 操作人、病人姓名、病例號
+    let select_patient_kind = document.querySelector('.select_patient_kind');
+    // 操作時間、開方時間
+    let select_date_kind = document.querySelector('.select_date_kind');
+
+    // input
+    let select_med_input = document.querySelector("#select_med_input");
+    let select_patient_input = document.querySelector("#select_patient_input");
+
+    let ppds_start_input = document.querySelector("#ppds_start_input");
+    let ppds_end_input = document.querySelector("#ppds_end_input");
+
+    if(!ppds_start_input.value) {
+        alert("請選起始時間！！");
+        Set_main_div_enable(false);
+        return;
+    } else if(!ppds_end_input.value) {
+        alert("請選結束時間！！");
+        Set_main_div_enable(false);
+        return;
+    }
+
+    // 根據操作或開方時間請求資料
+    let temp_post_data = get_trans_form_post_data();
+    let temp_data;
+    if (select_date_kind.value == "operate") {
+        temp_data = await get_datas_by_op_time_st_end_transactions(temp_post_data);
+        data_information = temp_data["Data"];
+    } else {
+        temp_data = await get_datas_by_rx_time_st_end_transactions(temp_post_data);
+        data_information = temp_data["Data"];
+    }
+
+    get_info_init(temp_data["Data"]);
+    set_main_div_time_line();
+
+    popup_search_select_div_close();
+    Set_main_div_enable(false);
+}
+
+function get_trans_form_post_data() {
+    let ppds_start_input = document.querySelector("#ppds_start_input");
+    let ppds_end_input = document.querySelector("#ppds_end_input");
+
+    let serverNameStr = "";
+    let serverTypeStr = "";
+  
+    temp_selected_arr.forEach(element => {
+        serverNameStr += element.serverName + ",";
+        serverTypeStr += element.serverType + ",";
+    });
+  
+    // Remove the trailing comma
+    serverNameStr = serverNameStr.slice(0, -1);
+    serverTypeStr = serverTypeStr.slice(0, -1);
+  
+    // console.log(st_time);
+    // console.log(end_time);
+    // console.log(serverNameStr);
+    // console.log(serverTypeStr);
+  
+    let post_data = {
+        Data: {},
+        ValueAry: [   
+            `${ppds_start_input.value}`,
+            `${ppds_end_input.value}`,
+            `${serverNameStr}`,
+            `${serverTypeStr}`]
+    };
+
+    return post_data;
+}
+
+function set_main_div_time_line() {
+    let select_date_kind = document.querySelector('.select_date_kind');
+    let ppds_start_input = document.querySelector("#ppds_start_input");
+    let ppds_end_input = document.querySelector("#ppds_end_input");
+
+    let time_line_type = document.querySelector(".time_line_type");
+    let time_line_st = document.querySelector(".time_line_st");
+    let time_line_end = document.querySelector(".time_line_end");
+
+    if (select_date_kind.value == "operate") {
+        time_line_type.innerHTML = "操作時間";
+    } else {
+        time_line_type.innerHTML = "開方時間";
+    }
+    time_line_st.innerHTML = ppds_start_input.value;
+    time_line_end.innerHTML = ppds_end_input.value;
 }
 
 function popup_search_select_div_close() {

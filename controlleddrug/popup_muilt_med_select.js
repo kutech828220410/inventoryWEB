@@ -255,8 +255,7 @@ function get_pp_muilt_med_select_footer()
     pp_mms_confirm_btn.classList.add("pp_mms_confirm_btn");
     pp_mms_confirm_btn.innerHTML = "下載報表";
     pp_mms_confirm_btn.addEventListener("click", () => {
-        popup_muilt_med_select_div_close();
-        popup_med_balance_form_open();
+        get_download_excel_form_func();
     });
 
     pp_muilt_med_select_footer_container.appendChild(pp_mms_return_btn);
@@ -420,3 +419,50 @@ function get_pp_mms_display(array) {
         pp_mms_med_info_container.appendChild(pp_mms_med_item_div);
     });
 }
+async function get_download_excel_form_func() {
+    showLoadingPopup();
+    let start_date = document.querySelector("#pp_mms_start_date_input").value;
+    let start_hour = document.querySelector("#pp_mms_start_hour_input").value;
+    let start_min = document.querySelector("#pp_mms_start_minute_input").value;
+    let end_date = document.querySelector("#pp_mms_end_date_input").value;
+    let end_hour = document.querySelector("#pp_mms_start_hour_input").value;
+    let end_min = document.querySelector("#pp_mms_start_minute_input").value;
+    let start_datetime = `${start_date} ${start_hour}:${start_min}`;
+    let end_datetime = `${end_date} ${end_hour}:${end_min}`;
+    let med_arr_str = "";
+    let serverNameStr = "";
+    let serverTypeStr = "";
+
+    temp_selected_arr.forEach(element => {
+        serverNameStr += element.serverName + ",";
+        serverTypeStr += element.serverType + ",";
+    });
+
+    med_select_array.forEach(element => {
+        med_arr_str += element + ",";
+    });
+
+    // Remove the trailing comma
+    serverNameStr = serverNameStr.slice(0, -1);
+    serverTypeStr = serverTypeStr.slice(0, -1);
+    med_arr_str = med_arr_str.slice(0, -1);
+
+    // console.log(st_time);
+    // console.log(end_time);
+    // console.log(serverNameStr);
+    // console.log(serverTypeStr);
+
+    let post_data = {
+        Data: {},
+        ValueAry: [
+            `${med_arr_str}`,
+            `${start_datetime}`,
+            `${end_datetime}`,
+            `${serverNameStr}`,
+            `${serverTypeStr}`]
+    };
+
+    console.log(post_data);
+    await download_cdmis_datas_excel(post_data);
+    hideLoadingPopup();
+};

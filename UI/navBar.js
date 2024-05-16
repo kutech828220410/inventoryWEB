@@ -71,21 +71,23 @@ let html_pages = [
                 html_name: "drugs_report",
                 html_ctName: "管制結存",
                 html_url: "../../controlleddrug",
-                icon_url: "../../image/icon/assortment.png",
+                icon_url: "../../image/icon/compliance.png",
                 icon_big_url: "../../image/icon/controlled_big_icon.png"
             },
             {
                 html_name: "consumption_report",
                 html_ctName: "交易紀錄",
                 html_url: "../../consumption",
-                icon_url: "../../image/icon/assortment.png",
+                icon_url: "../../image/icon/transaction.png",
                 icon_big_url: "../../image/icon/traded_big_icon.png"
+            },
+            {
+                html_name: "medicine_cart",
+                html_ctName: "住院藥車",
+                html_url: "../../medicine_cart",
+                icon_url: "../../image/icon/drug_cart.png",
+                icon_big_url: "../../image/icon/drug_cart_big_icon.png"
             }
-            // {
-            //     html_name: "quick_inventory",
-            //     html_ctName: "快速盤點",
-            //     html_url: ""
-            // }
         ]
     }
 ]
@@ -295,7 +297,7 @@ function nav_bar_create(html_page, user_data) {
                 nav_list_link.classList.add("nav_list_link");
                 nav_list_link.style.display = 'block';
                 nav_list_link.style.margin = '18px 16px';
-                nav_list_link.style.fontWeight = '600';
+                // nav_list_link.style.fontWeight = '600';
                 nav_list_link.style.fontSize = '20px';
                 // nav_list_link.style.textDecoration = 'underline';
                 nav_list_link.style.color = '#000000';
@@ -343,7 +345,7 @@ function nav_bar_create(html_page, user_data) {
                 nav_list_link.href = `${e.html_url}`;
                 nav_list_link.style.display = 'block';
                 nav_list_link.style.margin = '18px 16px';
-                nav_list_link.style.fontWeight = '600';
+                // nav_list_link.style.fontWeight = '600';
                 nav_list_link.style.fontSize = '20px';
                 nav_list_link.style.textDecoration = 'none';
                 nav_list_link.style.color = '#000000';

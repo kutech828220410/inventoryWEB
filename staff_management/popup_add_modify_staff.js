@@ -1,4 +1,5 @@
 let popup_add_modify_staff_div;
+let temp_staff_data = {};
 
 function get_popup_add_modify_staff()
 {
@@ -68,6 +69,7 @@ function get_pp_add_modify_staff_main() {
                 staff_gender_female_radio.value = "female";
                 staff_gender_female_radio.name = "staff_gender_radio";
                 staff_gender_female_radio.id = "staff_gender_female_radio";
+                staff_gender_female_radio.default = true;
 
                 let staff_male_label = document.createElement("label");
                 staff_male_label.classList.add('staff_gender_label');
@@ -109,15 +111,15 @@ function get_pp_add_modify_staff_main() {
                 let staff_info_level = document.createElement("select");
                 staff_info_level.id = "staff_info_level";
                 staff_info_level.innerHTML = `
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
                     <option value="10">10</option>
                     <option value="11">11</option>
                     <option value="12">12</option>
@@ -192,12 +194,16 @@ function get_pp_add_modify_staff_footer() {
     ppams_btn.classList.add('btn');
     ppams_btn.classList.add('ppams_btn');
     ppams_btn.innerHTML = "新增";
+    ppams_btn.addEventListener("click", (e) => {
+        staff_add_edit_func(e);
+    });
 
     let ppams_close_btn = document.createElement("div");
     ppams_close_btn.classList.add('btn');
     ppams_close_btn.classList.add('ppams_close_btn');
     ppams_close_btn.innerHTML = "關閉";
     ppams_close_btn.addEventListener("click", () => {
+        reset_popup_staff_info("");
         popup_add_modify_staff_div_close();
     })
 
@@ -213,4 +219,182 @@ function popup_add_modify_staff_div_close() {
  
 function popup_add_modify_staff_div_open() {
     popup_add_modify_staff_div.Set_Visible(true);
+}
+
+async function staff_add_edit_func(e) {
+    Set_main_div_enable(true);
+    // {
+    //     GUID: "", str
+    //     ID: "", str
+    //     name: "測試人員", str
+    //     gender: "男", str
+    //     password: "T999", str
+    //     employer: "藥劑科", str
+    //     license: "", str
+    //     level: "20", str
+    //     color: "200,0,255", str
+    //     UID: "8A226D7E99999", str
+    //     barcode: "", 
+    //     face_image: "", 
+    //     finger_feature: "", 
+    //     finger_ID: "", 
+    //     open_access: ""
+    // }
+    let staff_info_id = document.querySelector("#staff_info_id");
+    let staff_info_name = document.querySelector("#staff_info_name");
+    let staff_gender_radio = document.getElementsByName("staff_gender_radio");
+    let staff_info_pwd = document.querySelector("#staff_info_pwd");
+    let staff_info_unit = document.querySelector("#staff_info_unit");
+    let staff_info_level = document.querySelector("#staff_info_level");
+    let staff_info_color = document.querySelector("#staff_info_color");
+    let staff_info_card_num = document.querySelector("#staff_info_card_num");
+    let staff_info_barcode = document.querySelector("#staff_info_barcode");
+    let staff_info_license = document.querySelector("#staff_info_license");
+
+    console.log(e.target.innerHTML);
+    console.log(temp_staff_data);
+
+    let temp_post_data = [
+        {
+            GUID: "",
+            ID: "",
+            name: "",
+            gender: "",
+            password: "",
+            employer: "",
+            license: "",
+            level: "",
+            color: "",
+            UID: "",
+            barcode: "",
+            face_image: "",
+            finger_feature: "",
+            finger_ID: "",
+            open_access: ""
+        }
+    ];
+
+    if(e.target.innerHTML == "新增") {
+        temp_post_data[0].ID = staff_info_id.value;
+        temp_post_data[0].name = staff_info_name.value;
+        staff_gender_radio.forEach(e => {
+            if(e.checked) {
+                switch (e.value) {
+                    case "male":
+                        temp_post_data[0].gender = "男";
+                        break;
+
+                    case "female":
+                        temp_post_data[0].gender = "女";
+                        break;
+                
+                    default:
+                        break;
+                }
+            }
+        });
+        temp_post_data[0].password = staff_info_pwd.value;
+        temp_post_data[0].employer = staff_info_unit.value;
+        temp_post_data[0].level = staff_info_level.value;
+        switch (staff_info_color.value) {
+            case "green":
+                temp_post_data[0].color = "40,255,40";
+                break;
+        
+            case "yellow":
+                temp_post_data[0].color = "255,255,40";
+                break;
+        
+            case "red":
+                temp_post_data[0].color = "255,40,40";
+                break;
+        
+            case "blue":
+                temp_post_data[0].color = "40,40,255";
+                break;
+        
+            case "orange":
+                temp_post_data[0].color = "255,160,40";
+                break;
+        
+            default:
+                break;
+        }
+        temp_post_data[0].UID = staff_info_card_num.value;
+        temp_post_data[0].barcode = staff_info_barcode.value;
+        temp_post_data[0].license = staff_info_license.value;
+
+        console.log("post_data", temp_post_data);
+    } else if(e.target.innerHTML == "修改") {
+        temp_post_data[0].GUID = temp_staff_data.GUID;
+        temp_post_data[0].face_image = temp_staff_data.face_image;
+        temp_post_data[0].finger_feature = temp_staff_data.finger_feature;
+        temp_post_data[0].finger_ID = temp_staff_data.finger_ID;
+        temp_post_data[0].open_access = temp_staff_data.open_access;
+
+        temp_post_data[0].ID = staff_info_id.value;
+        temp_post_data[0].name = staff_info_name.value;
+        staff_gender_radio.forEach(e => {
+            if(e.checked) {
+                switch (e.value) {
+                    case "male":
+                        temp_post_data[0].gender = "男";
+                        break;
+
+                    case "female":
+                        temp_post_data[0].gender = "女";
+                        break;
+                
+                    default:
+                        break;
+                }
+            }
+        });
+        temp_post_data[0].password = staff_info_pwd.value;
+        temp_post_data[0].employer = staff_info_unit.value;
+        temp_post_data[0].level = staff_info_level.value;
+        switch (staff_info_color.value) {
+            case "green":
+                temp_post_data[0].color = "40,255,40";
+                break;
+        
+            case "yellow":
+                temp_post_data[0].color = "255,255,40";
+                break;
+        
+            case "red":
+                temp_post_data[0].color = "255,40,40";
+                break;
+        
+            case "blue":
+                temp_post_data[0].color = "40,40,255";
+                break;
+        
+            case "orange":
+                temp_post_data[0].color = "255,160,40";
+                break;
+        
+            default:
+                break;
+        }
+        temp_post_data[0].UID = staff_info_card_num.value;
+        temp_post_data[0].barcode = staff_info_barcode.value;
+        temp_post_data[0].license = staff_info_license.value;
+
+        console.log("post_data", temp_post_data);
+    }
+
+    let res = await staff_add_edit_api(temp_post_data);
+    this.staff_info = await get_all_staff_info();
+    get_info_init(this.staff_info["Data"]);
+    
+    console.log(res);
+    if(res.Code != 200) {
+        alert('發生不可預期錯誤！');
+    } else {
+        alert("新增/修改人員成功");
+        popup_add_modify_staff_div_close();
+    }
+
+    Set_main_div_enable(false);
 }

@@ -1,5 +1,5 @@
 async function merge_page_init(data) {
-
+    let records_data = await get_all_records();
     let combine_data = await get_combine_list();
     console.log("combine_data", combine_data);
 
@@ -173,6 +173,7 @@ async function merge_page_init(data) {
                 </tr>
             `
         } else {
+            console.log(header_merge_select_select.value);
             combine_data["Data"].forEach(item => {
                 if(item.INV_SN == header_merge_select_select.value) {
                     merge_display_header_name.innerHTML = `${item.INV_NAME}`;
@@ -193,10 +194,10 @@ async function merge_page_init(data) {
                                     <td class="">${e.SN}</td>
                                     <td class="">${e.NAME}</td>
                                     <td>
-                                        <div class="merge_display_button" SN="${e.SN}" INV_SN="${e.INV_SN}">匯出</div>
+                                        <div class="merge_display_button" SN="${e.SN}" INV_SN="${header_merge_select_select.value}">匯出</div>
                                     </td>
                                     <td class="">
-                                        <div class="merge_delete_button" SN="${e.SN}" INV_SN="${e.INV_SN}">刪除</div>
+                                        <div class="merge_delete_button" SN="${e.SN}" INV_SN="${header_merge_select_select.value}">刪除</div>
                                     </td>
                                 </tr>
                             `
@@ -258,7 +259,7 @@ async function merge_page_init(data) {
             merge_add_list_select.innerHTML = `<option value="" disabled>目前${merge_add_type_select.value}沒有單子</option>`;
         }
     });
-
+    await get_merge_search_input_result(records_data, combine_data);
 }
 
 // 新增合併單彈窗
@@ -274,7 +275,7 @@ function popup_merge_create() {
         </div>
     `
 
-    popup_merge_create_div.Set_Visible(false)
+    popup_merge_create_div.Set_Visible(false);
 
     const close_merge_create_button = document.createElement('div');
     close_merge_create_button.classList.add('close_merge_create_button')
@@ -353,10 +354,10 @@ function popup_merge_create() {
                                         <td class="">${e.SN}</td>
                                         <td class="">${e.NAME}</td>
                                         <td>
-                                            <div class="merge_display_button" SN="${e.SN}" INV_SN="${e.INV_SN}">匯出</div>
+                                            <div class="merge_display_button" SN="${e.SN}" INV_SN="${header_merge_select_select.value}">匯出</div>
                                         </td>
                                         <td class="">
-                                            <div class="merge_delete_button" SN="${e.SN}" INV_SN="${e.INV_SN}">刪除</div>
+                                            <div class="merge_delete_button" SN="${e.SN}" INV_SN="${header_merge_select_select.value}">刪除</div>
                                         </td>
                                     </tr>
                                 `
@@ -406,7 +407,80 @@ async function popup_merge_add() {
     const merge_add_list_select = document.createElement("select");
     merge_add_list_select.classList.add("merge_add_list_select");
     merge_add_list_select.innerHTML = `<option value="" disabled>單號 / 名稱</option>`;
+    merge_add_list_select.style.display = "none";
     merge_add_container.appendChild(merge_add_list_select);
+    
+    
+    // 測試新搜尋方式
+    const merge_add_list_input_div = document.createElement("div");
+    merge_add_list_input_div.classList.add("merge_add_list_input_div");
+
+    const merge_add_list_input = document.createElement("input");
+    merge_add_list_input.id = "merge_add_list_input";
+    merge_add_list_input.type = "text";
+    merge_add_list_input.autocomplete = "off";
+    merge_add_list_input.addEventListener("blur", () => {
+        setTimeout(() => {
+            let merge_add_list_input_result_container = document.querySelector(".merge_add_list_input_result_container");
+            merge_add_list_input_result_container.style.display = "none";
+        }, 200);
+    });
+    merge_add_list_input.addEventListener("focus", () => {
+        let merge_add_list_input_result_container = document.querySelector(".merge_add_list_input_result_container");
+        merge_add_list_input_result_container.style.display = "block";
+    });
+    merge_add_list_input.addEventListener("keydown", (event) => {
+        if(event.key === 'Enter') {
+            if(pp_input_select_index != -1) {
+                let input_current_result_div = document.querySelector(".input_current_result_div");
+                let merge_add_list_select = document.querySelector(".merge_add_list_select");
+                let temp_sn = input_current_result_div.getAttribute("sn");
+                merge_add_list_select.value = temp_sn;
+                merge_add_list_input.value = input_current_result_div.getAttribute("name");
+                merge_add_list_input.blur();
+            } else {
+                let input_result_div = document.querySelectorAll(".input_result_div");
+                if(input_result_div.length < 2) {
+                    if(input_result_div[0].getAttribute("sn") == undefined || input_result_div[0].getAttribute("sn") == "") {
+                        alert("查無此單");
+                        merge_add_list_input.blur();
+                    } else {
+                        let merge_add_list_select = document.querySelector(".merge_add_list_select");
+                        let temp_sn = input_result_div[0].getAttribute("sn");
+                        merge_add_list_select.value = temp_sn;
+                        merge_add_list_input.value = input_result_div[0].getAttribute("name");
+                        merge_add_list_input.blur();
+                    }
+                }
+            }
+        } else if(event.key === 'ArrowUp') {
+            let input_result_div = document.querySelectorAll(".input_result_div");
+            if(input_result_div.length > 0 && pp_input_select_index > -1) {
+                pp_input_select_index -= 1;
+                input_result_div.forEach(element => {
+                    element.classList.remove("input_current_result_div");
+                });
+                input_result_div[pp_input_select_index].classList.add('input_current_result_div');
+            }
+        } else if(event.key === 'ArrowDown') {
+            let input_result_div = document.querySelectorAll(".input_result_div");
+            if(input_result_div.length > 0 && input_result_div.length - 1 > pp_input_select_index) {
+                pp_input_select_index += 1;
+                input_result_div.forEach(element => {
+                    element.classList.remove("input_current_result_div");
+                });
+                input_result_div[pp_input_select_index].classList.add('input_current_result_div');
+            }
+        }
+    });
+
+    const merge_add_list_input_result_container = document.createElement("div");
+    merge_add_list_input_result_container.classList.add("merge_add_list_input_result_container");
+
+    merge_add_list_input_div.appendChild(merge_add_list_input);
+    merge_add_list_input_div.appendChild(merge_add_list_input_result_container);
+
+    merge_add_container.appendChild(merge_add_list_input_div);
 
     const merge_add_confirm_button = document.createElement("div");
     merge_add_confirm_button.classList.add("merge_add_confirm_button");
@@ -423,8 +497,9 @@ async function popup_merge_add() {
     close_merge_add_button.innerHTML = `<img src="../../image/close.png" alt="">`;
     close_merge_add_button.addEventListener('click', () => {
         merge_add_type_select.value = "";
+        merge_add_list_input.value = "";
         merge_add_list_select.innerHTML = `<option value="" disabled>單號 / 名稱</option>`;
-        popup_merge_add_div.Set_Visible(false)
+        popup_merge_add_div.Set_Visible(false);
     });
 
     popup_merge_add_container.appendChild(close_merge_add_button);
@@ -501,9 +576,13 @@ async function add_record() {
         }   
     })
 
-    let merge_add_type_select = document.querySelector(".merge_add_type_select");
-    merge_add_type_select.value = "";
+    // let merge_add_type_select = document.querySelector(".merge_add_type_select");
+    let merge_add_list_input = document.querySelector("#merge_add_list_input");
+    // merge_add_type_select.value = "";
     merge_add_list_select.value = "";
+    merge_add_list_input.value = "";
+    console.log("test");
+    console.log(merge_add_list_input.value);
 
     let temp_SN_for_reset = header_merge_select_select.value;
 
@@ -551,10 +630,10 @@ async function add_record() {
                                         <td class="">${e.SN}</td>
                                         <td class="">${e.NAME}</td>
                                         <td>
-                                            <div class="merge_display_button" SN="${e.SN}" INV_SN="${e.INV_SN}">匯出</div>
+                                            <div class="merge_display_button" SN="${e.SN}" INV_SN="${header_merge_select_select.value}">匯出</div>
                                         </td>
                                         <td class="">
-                                            <div class="merge_delete_button" SN="${e.SN}" INV_SN="${e.INV_SN}">刪除</div>
+                                            <div class="merge_delete_button" SN="${e.SN}" INV_SN="${header_merge_select_select.value}">刪除</div>
                                         </td>
                                     </tr>
                                 `
@@ -603,10 +682,10 @@ async function add_record() {
                                 <td class="">${e.SN}</td>
                                 <td class="">${e.NAME}</td>
                                 <td>
-                                    <div class="merge_display_button" SN="${e.SN}" INV_SN="${e.INV_SN}">匯出</div>
+                                    <div class="merge_display_button" SN="${e.SN}" INV_SN="${header_merge_select_select.value}">匯出</div>
                                 </td>
                                 <td class="">
-                                    <div class="merge_delete_button" SN="${e.SN}" INV_SN="${e.INV_SN}">刪除</div>
+                                    <div class="merge_delete_button" SN="${e.SN}" INV_SN="${header_merge_select_select.value}">刪除</div>
                                 </td>
                             </tr>
                         `
@@ -638,10 +717,11 @@ async function delete_record(item) {
     let INV_SN = item.getAttribute("INV_SN");
     let SN = item.getAttribute("SN");
     let CT = get_logedName();
+    console.log(combine_data);
     temp_data = combine_data["Data"].filter(e => {
         return e.INV_SN == INV_SN
-    })
-    console.log(temp_data[0]["records_Ary"]);
+    });
+    console.log(temp_data);
     let temp_arr = [];
     temp_data[0]["records_Ary"].forEach((e) => {
         if(e.SN != SN) {
@@ -703,6 +783,7 @@ async function delete_record(item) {
                 `
             } else {
                 combine_data["Data"].forEach(item => {
+                    // console.log(header_merge_select_select.value);
                     if(item.INV_SN == header_merge_select_select.value) {
                         merge_display_header_name.innerHTML = `${item.INV_NAME}`;
                         merge_display_header_lists_count.innerHTML = `合併數量 : ${item["records_Ary"].length}`;
@@ -722,10 +803,10 @@ async function delete_record(item) {
                                         <td class="">${e.SN}</td>
                                         <td class="">${e.NAME}</td>
                                         <td>
-                                            <div class="merge_display_button" SN="${e.SN}" INV_SN="${e.INV_SN}">匯出</div>
+                                            <div class="merge_display_button" SN="${e.SN}" INV_SN="${header_merge_select_select.value}">匯出</div>
                                         </td>
                                         <td class="">
-                                            <div class="merge_delete_button" SN="${e.SN}" INV_SN="${e.INV_SN}">刪除</div>
+                                            <div class="merge_delete_button" SN="${e.SN}" INV_SN="${header_merge_select_select.value}">刪除</div>
                                         </td>
                                     </tr>
                                 `
@@ -774,10 +855,10 @@ async function delete_record(item) {
                                 <td class="">${e.SN}</td>
                                 <td class="">${e.NAME}</td>
                                 <td>
-                                    <div class="merge_display_button" SN="${e.SN}" INV_SN="${e.INV_SN}">匯出</div>
+                                    <div class="merge_display_button" SN="${e.SN}" INV_SN="${header_merge_select_select.value}">匯出</div>
                                 </td>
                                 <td class="">
-                                    <div class="merge_delete_button" SN="${e.SN}" INV_SN="${e.INV_SN}">刪除</div>
+                                    <div class="merge_delete_button" SN="${e.SN}" INV_SN="${header_merge_select_select.value}">刪除</div>
                                 </td>
                             </tr>
                         `
@@ -958,10 +1039,10 @@ async function delete_combine_list(data) {
                                         <td class="">${e.SN}</td>
                                         <td class="">${e.NAME}</td>
                                         <td>
-                                            <div class="merge_display_button" SN="${e.SN}" INV_SN="${e.INV_SN}">匯出</div>
+                                            <div class="merge_display_button" SN="${e.SN}" INV_SN="${header_merge_select_select.value}">匯出</div>
                                         </td>
                                         <td class="">
-                                            <div class="merge_delete_button" SN="${e.SN}" INV_SN="${e.INV_SN}">刪除</div>
+                                            <div class="merge_delete_button" SN="${e.SN}" INV_SN="${header_merge_select_select.value}">刪除</div>
                                         </td>
                                     </tr>
                                 `
@@ -1115,4 +1196,110 @@ async function get_full_inv_Excel_by_SN(INV_SN) {
       } catch (error) {
         console.error(error);
       }
+}
+
+// 搜尋結果功能
+async function get_merge_search_input_result(data, combine_data) {
+    let merge_add_type_select = document.querySelector(".merge_add_type_select");
+    let merge_add_list_input = document.querySelector("#merge_add_list_input");
+    let merge_add_list_input_result_container = document.querySelector(".merge_add_list_input_result_container");
+
+    let inv_data = data["Data"].filter((e) => {
+        return e.TYPE == "盤點單";
+    });
+    let con_data = data["Data"].filter((e) => {
+        return e.TYPE == "消耗單";
+    });
+    let rev_data = data["Data"].filter((e) => {
+        return e.TYPE == "覆盤單";
+    });
+
+    merge_add_list_input.addEventListener("input", (e) => {
+        let input_value = e.target.value;
+        if(merge_add_type_select.value == undefined || merge_add_type_select.value == "") {
+            alert("請先選擇清單種類!");
+            merge_add_list_input.value = "";
+        } else {
+            switch (merge_add_type_select.value) {
+                case "盤點單":
+                    get_input_result_option(input_value, inv_data, combine_data);
+                    break;
+                case "消耗單":
+                    get_input_result_option(input_value, con_data, combine_data);
+                    break;
+                case "覆盤單":
+                    get_input_result_option(input_value, rev_data, combine_data);
+                    break;
+                default:
+                    break;
+            }
+        }
+    });
+}
+
+function get_input_result_option(value, array, combine_data) {
+    let header_merge_select_select = document.querySelector(".header_merge_select_select");
+    let merge_add_list_input = document.querySelector("#merge_add_list_input");
+    let merge_add_list_select = document.querySelector(".merge_add_list_select");
+    let merge_add_list_input_result_container = document.querySelector(".merge_add_list_input_result_container");
+    merge_add_list_input_result_container.innerHTML = "";
+    pp_input_select_index = -1;
+    console.log(pp_input_select_index);
+
+    if(value == "") {
+        return;
+    };
+
+    let temp_value = value.toUpperCase();
+
+    let disable_array = [];
+
+    let temp_disable_array = combine_data["Data"].filter(e => {
+        return e.INV_SN == header_merge_select_select.value;
+    })
+
+    temp_disable_array = temp_disable_array[0].records_Ary;
+
+    temp_disable_array.forEach(element => {
+        disable_array.push(element["SN"]);
+    });
+
+    console.log(disable_array);
+
+    let temp_arr = array.filter(item => !disable_array.includes(item["SN"]));
+    
+    console.log(temp_arr);
+
+    temp_arr = temp_arr.filter(item => item.NAME.includes(temp_value));
+
+    console.log(temp_arr);
+
+    if(temp_arr.length > 0) {
+        temp_arr.forEach(element => {
+            let input_result_div = document.createElement("div");
+            input_result_div.innerHTML = element["NAME"].replace(temp_value, `<span class="highlight_color">${temp_value}</span>`);
+            input_result_div.classList.add("input_result_div");
+            input_result_div.setAttribute("sn", element.SN);
+            input_result_div.setAttribute("name", element.NAME);
+
+            input_result_div.addEventListener("click", (e) => {
+                let temp_SN = e.target.getAttribute("sn");
+                merge_add_list_input.setAttribute("sn", temp_SN);
+                merge_add_list_input.value = element.NAME;
+
+                merge_add_list_select.value = temp_SN;
+
+                // merge_add_list_input.blur();
+                merge_add_list_input_result_container.innerHTML = "";
+            });
+
+            merge_add_list_input_result_container.appendChild(input_result_div);
+        });
+    } else {
+        let input_result_div = document.createElement("div");
+        input_result_div.innerHTML = "查無此單";
+        input_result_div.classList.add("input_result_div");
+
+        merge_add_list_input_result_container.appendChild(input_result_div);
+    }
 }

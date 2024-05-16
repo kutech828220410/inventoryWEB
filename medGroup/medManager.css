@@ -297,7 +297,8 @@
     margin: 4px 4px 4px 0px;
     min-width: 80px;
     background-color: #e6e6e6;
-    padding: 2px 8px;
+    padding: 2px 0px;
+    width: 100px;
     border-radius: 5px;
     border: 1px solid #9b9b9b;
     font-weight: 600;
@@ -306,7 +307,11 @@
 }
 .popup_med_info_container > div > input {
     font-size: 16px;
-    padding: 2px;
+    padding: 4px 4px;
+}
+.popup_med_info_container > div > input:not(.validation) {
+    border: 1px solid #5a5a58;
+    border-radius: 5px;
 }
 #popup_med_name,
 #popup_med_dianame,
@@ -315,21 +320,25 @@
 #popup_med_scode,
 #popup_med_factory, 
 #popup_med_lincense {
-    flex-grow: 1;
+    margin-left: 8px;
+    width: 524px;
+    /* flex-grow: 1; */
 }
 
 #popup_med_code {
     display: block;
+    margin-left: 8px;
     margin-right: 12px;
-    width: 230px;
+    width: 200px;
 }
 #popup_med_drugkind {
     display: block;
     text-align: center;
+    margin-left: 8px;
     padding: 2px 4px;
     font-size: 16px;
     font-weight: 600;
-    width: 220px;
+    width: 200px;
 }
 
 .popup_med_item_control_div {
@@ -357,7 +366,8 @@
 #popup_double_inventory_div,
 #popup_blind_inventory_div,
 #popup_balance_report_div,
-#popup_double_review_div {
+#popup_double_review_div,
+#popup_narcosis_med_div {
     display: none;
 }
 
@@ -404,6 +414,7 @@
     font-size: 16px;
     font-weight: 600;
     height: 32px;
+    border-radius: 5px;
 }
 .search_input_container {
     height: 32px;
@@ -417,7 +428,7 @@
     left: 0px;
     position: absolute;
     width: 100%;
-    border-radius: 15px;
+    border-radius: 5px;
     height: 30px;
     padding: 2px 8px;
     font-size: 16px;
@@ -562,10 +573,32 @@
     .popup_med_item_div {
         width: 356px;
     }
+    .popup_med_info_container > div > label {
+        display: inline-block;
+        margin: 4px 4px 4px 0px;
+        min-width: 80px;
+        background-color: #e6e6e6;
+        padding: 2px 0px;
+        width: 86px;
+        border-radius: 5px;
+        border: 1px solid #9b9b9b;
+        font-weight: 600;
+        text-align: center;
+        justify-content: center;
+    }
+    #popup_med_name,
+    #popup_med_dianame,
+    #popup_med_ctname,
+    #popup_med_pakage,
+    #popup_med_scode,
+    #popup_med_factory, 
+    #popup_med_lincense {
+        width: 230px;
+    }
     #popup_med_code {
-        width: 82px;
+        width: 72px;
     }
     #popup_med_drugkind {
-        width: 64px;
+        width: 48px;
     }
 }
