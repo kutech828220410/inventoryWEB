@@ -16,9 +16,9 @@ async function load()
   document.body.appendChild(Loadingpopup);
   Set_main_div_enable(true);
   check_session_off();
-  var serverName = "管藥";
+  var serverName = "";
 //   ServerName = serverName;
-  ServerType = "調劑台";
+  ServerType = "網頁";
   TableName = "medicine_page";
   APIServer = await LoadAPIServer();
   console.log(ServerType, TableName, APIServer);

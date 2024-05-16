@@ -3,6 +3,10 @@ async function load()
 {
     const serverName ="";
     const serverType = "網頁";
+    sessionStorage.setItem('ServerName', "");
+    // sessionStorage.setItem('ServerName', "DS01");
+    sessionStorage.setItem('ServerType', "網頁");
+    // sessionStorage.setItem('ServerType', "藥庫");
     APIServer = await LoadAPIServer();
     const API01 = serch_APIServer(serverName,serverType,"API01");
     const API02 = serch_APIServer(serverName,serverType,"API02");

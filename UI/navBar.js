@@ -81,13 +81,13 @@ let html_pages = [
                 icon_url: "../../image/icon/transaction.png",
                 icon_big_url: "../../image/icon/traded_big_icon.png"
             },
-            {
-                html_name: "medicine_cart",
-                html_ctName: "住院藥車",
-                html_url: "../../medicine_cart",
-                icon_url: "../../image/icon/drug_cart.png",
-                icon_big_url: "../../image/icon/drug_cart_big_icon.png"
-            }
+            // {
+            //     html_name: "medicine_cart",
+            //     html_ctName: "住院藥車",
+            //     html_url: "../../medicine_cart",
+            //     icon_url: "../../image/icon/drug_cart.png",
+            //     icon_big_url: "../../image/icon/drug_cart_big_icon.png"
+            // }
         ]
     }
 ]

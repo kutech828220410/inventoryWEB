@@ -21,8 +21,8 @@ function handleResize()
 async function load()
 { 
     check_session_off();
-    ServerName = "DS01";
-    ServerType = "藥庫";
+    ServerName = "";
+    ServerType = "網頁";
     TableName = "medicine_page_cloud";
     DbName = "dbvm";
     APIServer = await LoadAPIServer();

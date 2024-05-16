@@ -15,10 +15,10 @@ async function load()
   document.body.appendChild(Loadingpopup);
   showLoadingPopup();
   // Set_main_div_enable(true);
-  var serverName = "管藥";  
+  var serverName = "";  
   console.log("ServerName",serverName);
   ServerName = serverName;
-  ServerType = "調劑台";
+  ServerType = "網頁";
   TableName = "medicine_page";
   APIServer = await LoadAPIServer();
   const API01 = serch_APIServer(serverName,"調劑台","API01");
