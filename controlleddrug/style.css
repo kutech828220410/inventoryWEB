@@ -175,7 +175,7 @@ body {
   transform: rotate(90deg);
 }
 .cd_med_select_div_selected {
-  background-color: #6B6B63;
+  background-color: #35ab23;
 }
 .cd_med_select_div_selected > .cd_med_span_1 {
   width: 32px;

@@ -144,7 +144,7 @@ function mm_main_init() {
         } else if(element.target.value == "med_group") {            
             search_med_input.style.display = "none";
             search_drug_kind_select.style.display = "block";
-            let temp_med_group_data = await groups_manage_get_data();
+            let temp_med_group_data = await get_med_group_data_api();
             search_drug_kind_select.innerHTML = "";
             temp_med_group_data["Data"].forEach(element => {
                 search_drug_kind_select.innerHTML += `
@@ -386,7 +386,7 @@ async function search_by_h_price() {
 async function search_by_med_group() {
     showLoadingPopup();
     let search_drug_kind_select = document.querySelector("#search_drug_kind_select");
-    let temp_med_group_data = await groups_manage_get_data();
+    let temp_med_group_data = await get_med_group_data_api();
     let med_data = await get_medicine_cloud();
     let temp_med_group = temp_med_group_data["Data"].filter(e => e["GUID"].includes(search_drug_kind_select.value));
     let match_arr = [];
@@ -421,7 +421,7 @@ async function get_medConfig_data() {
 
     return temp_data;
 }
-async function groups_manage_get_data() {
+async function get_med_group_data_api() {
     console.log("api_ip",api_ip);
     let data = await fetch(`${api_ip}api/medGroup/get_all_group`, {
         method: "POST",

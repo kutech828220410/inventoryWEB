@@ -321,7 +321,7 @@ function get_muilt_med_icon() {
 
     let muilt_med_icon_content = document.createElement("img");
     muilt_med_icon_content.classList.add("muilt_med_icon_content");
-    muilt_med_icon_content.src = "../image/icon/medicine.png";
+    muilt_med_icon_content.src = "../image/icon/add-to-cart.png";
     muilt_med_icon_content.alt = "muilt med selected icom";
 
     let muilt_med_icon_number = document.createElement("div");
@@ -363,7 +363,7 @@ function get_pp_mms_display(array) {
         
         let pp_mms_med_name_title = document.createElement("div");
         pp_mms_med_name_title.classList.add("pp_mms_med_name_title");
-        pp_mms_med_name_title.innerHTML = "藥名：";
+        pp_mms_med_name_title.innerHTML = "(英)：";
 
         let pp_mms_med_name_content = document.createElement("div");
         pp_mms_med_name_content.classList.add('pp_mms_med_name_content');
@@ -381,7 +381,7 @@ function get_pp_mms_display(array) {
 
         let pp_mms_med_ctname_title = document.createElement("div");
         pp_mms_med_ctname_title.classList.add("pp_mms_med_ctname_title");
-        pp_mms_med_ctname_title.innerHTML = "中文名：";
+        pp_mms_med_ctname_title.innerHTML = "(中)：";
 
         let pp_mms_med_ctname_content = document.createElement("div");
         pp_mms_med_ctname_content.classList.add('pp_mms_med_ctname_content');

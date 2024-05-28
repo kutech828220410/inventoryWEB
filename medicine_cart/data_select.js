@@ -46,11 +46,7 @@ let func_list = [
     },
     {
         name: "review",
-        ctname: "覆核"
-    },
-    {
-        name: "revise",
-        ctname: "改車"
+        ctname: "初盤清單"
     },
     {
         name: "deliver",
@@ -118,3 +114,5 @@ let med_table = [
 let med_table_triiger = false;
 let current_med_table = "";
 let last_current_med_table = "";
+
+let popup_last_cart_mark = "";

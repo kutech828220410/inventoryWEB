@@ -1,3 +1,6 @@
+let book_mark = 1;
+let page_num = 200;
+let med_balance_form_data;
 window.onload = load;
 // window.addEventListener('resize', handleResize);
 
@@ -136,9 +139,13 @@ function get_main_div() {
     let main_div_table_display_container = document.createElement("div");
     main_div_table_display_container.classList.add("main_div_table_display_container");
 
+    let main_table_form_page_container = document.createElement("div");
+    main_table_form_page_container.classList.add("main_table_form_page_container");
+
     main_div.appendChild(main_div_search_container);
     main_div.appendChild(main_div_table_th_container);
     main_div.appendChild(main_div_table_display_container);
+    main_div.appendChild(main_table_form_page_container);
 
     body.appendChild(main_div);
 }
@@ -147,7 +154,6 @@ function Set_main_div_enable(value)
     const main_div = document.querySelector('#main_div');
     if (value) {
       showLoadingPopup();
-
     }
     else {
       hideLoadingPopup();
@@ -203,9 +209,12 @@ function get_search_container() {
     let form_data = await get_datas_by_op_time_st_end_consumption(post_data);
     console.log(form_data);
     if (form_data.Code == -200) {
-      alert('資料讀取失敗！');
+      alert('資料讀取失敗');
     } else {
-      get_info_init(form_data["Data"]);
+      book_mark = 1;
+      med_balance_form_data = form_data["Data"];
+      get_info_init();
+      table_form_page_init();
     }
     Set_main_div_enable(false);
   });
@@ -241,19 +250,22 @@ function get_main_div_table_th_init() {
     main_div_table_th_container.appendChild(table_th);
   });
 }
-function get_info_init(array) {
+function get_info_init() {
   let main_div_table_display_container = document.querySelector(".main_div_table_display_container");
   main_div_table_display_container.innerHTML = '';
 
-  if (array.length == 0) {
+  if (med_balance_form_data.length == 0) {
     let no_info_data_div = document.createElement("div");
     no_info_data_div.classList.add("no_info_data_div");
-    no_info_data_div.innerHTML = "該時間區間沒有任何紀錄！";
+    no_info_data_div.innerHTML = "該時間區間沒有任何紀錄";
 
     main_div_table_display_container.appendChild(no_info_data_div);
   }
 
-  array.forEach((element, index) => {
+  for (let index = page_num * (book_mark - 1); index < page_num * book_mark; index++) {
+    const element = med_balance_form_data[index];
+    if(element == undefined) return;
+
     let table_info_container = document.createElement("div");
     table_info_container.classList.add("table_info_container");
 
@@ -289,7 +301,7 @@ function get_info_init(array) {
     };
     
     main_div_table_display_container.appendChild(table_info_container);
-  });
+  }
 }
 function get_select_block_func(arr) {
   let cd_main_select_block_container = document.querySelector(".cd_main_select_block_container");
@@ -376,4 +388,21 @@ async function download_excel_form_func() {
       await download_datas_excel_by_serch(post_data);
       Set_main_div_enable(false);
     }
+}
+function table_form_page_init() {
+  let main_table_form_page_container = document.querySelector(".main_table_form_page_container");
+  main_table_form_page_container.innerHTML = "";
+
+  let temp_data_num = med_balance_form_data.length;
+  let temp_pages = temp_data_num / page_num;
+  temp_pages = Math.ceil(temp_pages);
+
+  let pre_page_btn = document.createElement("div");
+  pre_page_btn.classList.add("pre_page_btn");
+
+  let next_page_btn = document.createElement("div");
+  next_page_btn.classList.add("next_page_btn");
+
+  let pages_list_container = document.createElement("div");
+  pages_list_container.classList.add('pages_list_container');
 }

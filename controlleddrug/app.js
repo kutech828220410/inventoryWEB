@@ -143,8 +143,8 @@ function get_main_search_div() {
     cd_main_search_select.classList.add('cd_main_search_select');
     cd_main_search_select.innerHTML = `
       <option value="code">藥碼</option>
-      <option value="name">藥名</option>
-      <option value="ctname">中文名</option>
+      <option value="name">(英)</option>
+      <option value="ctname">(中)</option>
       <option value="drugkind">管制級別</option>
       <option value="medgroup">藥品群組</option>
     `;
@@ -403,19 +403,19 @@ function get_search_med_result_display(array) {
 
       let cd_main_med_card_name = document.createElement("div");
       cd_main_med_card_name.classList.add("cd_main_med_card_content");
-      cd_main_med_card_name.innerHTML = `藥名:${element.NAME}`;
+      cd_main_med_card_name.innerHTML = `(英):${element.NAME}`;
       if(element.NAME == "") {
-        cd_main_med_card_name.innerHTML = `藥名: 無`;
+        cd_main_med_card_name.innerHTML = `(英): 無`;
       } else {
-        cd_main_med_card_name.innerHTML = `藥名:${element.NAME}`;
+        cd_main_med_card_name.innerHTML = `(英):${element.NAME}`;
       }
 
       let cd_main_med_card_ctname = document.createElement("div");
       cd_main_med_card_ctname.classList.add("cd_main_med_card_content");
       if(element.CHT_NAME == "") {
-        cd_main_med_card_ctname.innerHTML = `中文名: 無`;
+        cd_main_med_card_ctname.innerHTML = `(中): 無`;
       } else {
-        cd_main_med_card_ctname.innerHTML = `中文名:${element.CHT_NAME}`;
+        cd_main_med_card_ctname.innerHTML = `(中):${element.CHT_NAME}`;
       }
 
       let cd_main_med_card_code = document.createElement("div");

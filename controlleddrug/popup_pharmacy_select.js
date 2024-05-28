@@ -226,7 +226,17 @@ function get_pps_card(item) {
 
     let pps_card_title = document.createElement("div");
     pps_card_title.classList.add("pps_card_title");
-    pps_card_title.innerHTML = item.serverName;
+    // pps_card_title.innerHTML = item.serverName;
+
+    let pps_card_checkbox = document.createElement("div");
+    pps_card_checkbox.classList = "pps_card_checkbox pps_card_checkbox_active";
+
+    let pps_card_label = document.createElement("div");
+    pps_card_label.classList.add("pps_card_label");
+    pps_card_label.innerHTML = item.serverName;
+
+    pps_card_title.appendChild(pps_card_checkbox);
+    pps_card_title.appendChild(pps_card_label);
 
     let pps_card_checkbox_container = document.createElement("div");
     pps_card_checkbox_container.classList.add('pps_card_checkbox_container');
@@ -245,6 +255,25 @@ function get_pps_card(item) {
         pps_checkbox_input.id = element.GUID;
         pps_checkbox_input.name = element.GUID;
         pps_checkbox_input.checked = true;
+        pps_checkbox_input.addEventListener("change", (e) => {
+            if(!e.target.checked) {
+                pps_card_checkbox.classList.remove("pps_card_checkbox_active");
+                set_all_select = false;
+            } else {
+                let pps_checkbox_div = document.querySelectorAll(".pps_checkbox_div");
+                let count_num = 0
+                pps_checkbox_div.forEach(element => {
+                    if(element.childNodes[0].checked == true) {
+                        count_num = count_num + 1;
+                    }
+                });
+                if(count_num == pps_checkbox_div.length) {
+                    pps_card_checkbox.classList.remove("pps_card_checkbox_active");
+                    pps_card_checkbox.classList.add("pps_card_checkbox_active");
+                    set_all_select = true;
+                }
+            }
+        });
 
         pps_checkbox_div.appendChild(pps_checkbox_input);
         pps_checkbox_div.appendChild(pps_checkbox_label);
@@ -259,10 +288,13 @@ function get_pps_card(item) {
             pps_checkbox_div.forEach(element => {
                 element.childNodes[0].checked = true;
             });
+            pps_card_checkbox.classList.remove("pps_card_checkbox_active");
+            pps_card_checkbox.classList.add("pps_card_checkbox_active");
         } else {
             pps_checkbox_div.forEach(element => {
                 element.childNodes[0].checked = false;
             });
+            pps_card_checkbox.classList.remove("pps_card_checkbox_active");
         }
     });
 

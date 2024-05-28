@@ -36,7 +36,7 @@ function get_mbf_header()
 
     let pp_mbf_h_name_title = document.createElement("div");
     pp_mbf_h_name_title.classList.add("pp_mbf_h_title");
-    pp_mbf_h_name_title.innerHTML = "藥名：";
+    pp_mbf_h_name_title.innerHTML = "(英)：";
 
     let pp_mbf_h_name_content = document.createElement("div");
     // pp_mbf_h_name_content.classList.add("pp_mbf_h_title");
@@ -50,7 +50,7 @@ function get_mbf_header()
 
     let pp_mbf_h_ctname_title = document.createElement("div");
     pp_mbf_h_ctname_title.classList.add("pp_mbf_h_title");
-    pp_mbf_h_ctname_title.innerHTML = "中文名：";
+    pp_mbf_h_ctname_title.innerHTML = "(中)：";
 
     let pp_mbf_h_ctname_content = document.createElement("div");
     // pp_mbf_h_ctname_content.classList.add("pp_mbf_h_title");
@@ -211,8 +211,8 @@ function popup_mbf_main_th_get() {
             if (i == 4)pp_mbf_th.innerHTML = "病人姓名";
             if (i == 5)pp_mbf_th.innerHTML = "病歷號";
             if (i == 6)pp_mbf_th.innerHTML = "調劑人";
-            if (i == 7)pp_mbf_th.innerHTML = "交易量";
-            if (i == 8)pp_mbf_th.innerHTML = "結存量";
+            if (i == 7)pp_mbf_th.innerHTML = "收支";
+            if (i == 8)pp_mbf_th.innerHTML = "結存";
             if (i == 9)pp_mbf_th.innerHTML = "收支原因";
             
         pp_mbf_main_th_container.appendChild(pp_mbf_th);

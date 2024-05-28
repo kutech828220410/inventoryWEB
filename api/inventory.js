@@ -296,11 +296,12 @@ async function creat_auto_add(IC_NAME , CT)
     "TableName":`${BalsicDeviceTableName}`,
     "Result": "",
     "Value": "",
-    "ServerName" : ServerName,
-    "ServerType" : ServerType,
+    "ServerName" : "DS01",
+    "ServerType" : "藥庫",
     "TableName" : TableName,
     "TimeTaken": ""
   };
+  console.log(post_data);
   var _url = `${inventory_url}/creat_auto_add`;
   console.log(`Url [${arguments.callee.name}]` , _url);
   console.log(`Post_data [${arguments.callee.name}]`,post_data);

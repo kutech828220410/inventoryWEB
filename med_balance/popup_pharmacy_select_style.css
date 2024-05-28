@@ -52,6 +52,44 @@
     font-weight: 600;
     padding-right: 12px;
     cursor: pointer;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+.pps_card_checkbox {
+    position: relative;
+    width: 12px;
+    height: 12px;
+    background-color: #fff;
+    border: 1px solid #6B6B63;
+    border-radius: 2px;
+    margin-right: 4px;
+}
+.pps_card_checkbox_active {
+    background-color: #0073ff;
+    border: 1px solid #0073ff;
+}
+.pps_card_checkbox_active::before {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 3px;
+    border-radius: 4px;
+    background-color: #fff;
+    transform: rotate(45deg);
+    bottom: 2.5px;
+    left: 0px;
+}
+.pps_card_checkbox_active::after {
+    content: "";
+    position: absolute;
+    width: 9px;
+    height: 3px;
+    border-radius: 1px;
+    background-color: #fff;
+    transform: rotate(-56deg);
+    bottom: 3.5px;
+    left: 2px;
 }
 .pps_card_checkbox_container {
     display: flex;

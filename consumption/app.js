@@ -1,5 +1,7 @@
 let data;
 let data_information;
+let current_pagination = 1;
+let pagination_num = 50;
 
 let temp_form_data = [];
 
@@ -40,7 +42,7 @@ async function load()
   // console.log("data", data);
 
   var loggedID = sessionStorage.getItem('loggedID');  
-  var loggedName = sessionStorage.getItem('loggedName');  
+  var loggedName = sessionStorage.getItem('loggedName');
   const test_user_data = {
     id: loggedID,
     name: loggedName,
@@ -152,6 +154,13 @@ function get_main_div() {
       <div class="time_line_end"></div>
     `;
 
+    let main_list_num_sum_container = document.createElement("div");
+    main_list_num_sum_container.classList.add("main_list_num_sum_container");
+    main_list_num_sum_container.innerHTML = `
+      <div class="main_list_num_sum_title">交易紀錄總數：</div>
+      <div class="main_list_num_sum"></div>
+    `;
+
     let download_excel_trans_log_btn = document.createElement("div");
     download_excel_trans_log_btn.classList.add("btn");
     download_excel_trans_log_btn.classList.add("download_excel_trans_log_btn");
@@ -168,14 +177,19 @@ function get_main_div() {
 
     main_div_time_line_container.appendChild(time_line_type);
     main_div_time_line_container.appendChild(time_line_container);
+    main_div_time_line_container.appendChild(main_list_num_sum_container);
     main_div_time_line_container.appendChild(download_excel_trans_log_btn);
 
     let main_div_table_display_container = document.createElement("div");
     main_div_table_display_container.classList.add("main_div_table_display_container");
 
+    let pagination_container = document.createElement("div");
+    pagination_container.classList.add("pagination_container");
+
     main_div.appendChild(main_div_time_line_container);
     main_div.appendChild(main_div_table_th_container);
     main_div.appendChild(main_div_table_display_container);
+    main_div.appendChild(pagination_container);
 
     body.appendChild(main_div);
 }
@@ -205,7 +219,7 @@ function get_select_block_func(arr) {
   });
 }
 function get_main_div_table_th_init() {
-  let th_data = ["","動作","診別","藥品碼","藥品名稱","領藥號","庫存量","交易量","結存量","盤點量","操作人","病人姓名","病歷號","病房號","操作時間","開方時間","收支原因",'備註'];
+  let th_data = ["","動作","診別","藥品碼","藥品名稱","領藥號","庫存量","交易量","結存量","盤點量","操作人","病人姓名","病歷號","病房號","操作時間","開方時間","庫名","收支原因",'備註'];
   let main_div_table_th_container = document.querySelector(".main_div_table_th_container");
 
   th_data.forEach((element, index) => {
@@ -217,16 +231,21 @@ function get_main_div_table_th_init() {
     main_div_table_th_container.appendChild(table_th);
   });
 }
-function get_info_init(array) {
-  let th_data = ["","動作","診別","藥品碼","藥品名稱","領藥號","庫存量","交易量","結存量","盤點量","操作人","病人姓名","病歷號","病房號","操作時間","開方時間","收支原因",'備註'];
+function get_info_init() {
+  let th_data = ["","動作","診別","藥品碼","藥品名稱","領藥號","庫存量","交易量","結存量","盤點量","操作人","病人姓名","病歷號","病房號","操作時間","開方時間","庫名","收支原因",'備註'];
 
-  console.log(array);
+  console.log(data_information);
+
+  let main_list_num_sum = document.querySelector(".main_list_num_sum");
+  main_list_num_sum.innerHTML = data_information.length;
 
   let main_div_table_display_container = document.querySelector(".main_div_table_display_container");
   main_div_table_display_container.innerHTML = '';
 
-  if(array.length != 0) {
-    array.forEach((element, index) => {
+  if(data_information.length != 0) {
+    for (let index = pagination_num * (current_pagination - 1); index < pagination_num * current_pagination; index++) {
+      let element = data_information[index];
+      if(element == undefined) return;
       let table_info_container = document.createElement("div");
       table_info_container.classList.add("table_info_container");
   
@@ -234,7 +253,7 @@ function get_info_init(array) {
         let td = document.createElement("p");
         td.classList.add("table_td");
         td.classList.add(`th_${i}`);
-        if(index%2 != 0) {
+        if(index % 2 != 0) {
           td.classList.add("bgc_gray");
         }
         switch (i) {
@@ -287,9 +306,12 @@ function get_info_init(array) {
             td.innerHTML = element.RX_TIME;
             break;
           case 16:
-            td.innerHTML = element.RSN;
+            td.innerHTML = "";
             break;
           case 17:
+            td.innerHTML = element.RSN;
+            break;
+          case 18:
             td.innerHTML = element.NOTE;
             break;
           
@@ -301,15 +323,297 @@ function get_info_init(array) {
       };
   
       main_div_table_display_container.appendChild(table_info_container);
-    });
+    }
+
+    // array.forEach((element, index) => {
+    //   let table_info_container = document.createElement("div");
+    //   table_info_container.classList.add("table_info_container");
+  
+    //   for (let i = 0; i < th_data.length; i++) {
+    //     let td = document.createElement("p");
+    //     td.classList.add("table_td");
+    //     td.classList.add(`th_${i}`);
+    //     if(index%2 != 0) {
+    //       td.classList.add("bgc_gray");
+    //     }
+    //     switch (i) {
+    //       case 0:
+    //         td.innerHTML = index + 1;
+    //         break;
+    //       case 1:
+    //         td.innerHTML = element.ACTION;
+    //         break;
+    //       case 2:
+    //         td.innerHTML = element.MEDKND;
+    //         break;
+    //       case 3:
+    //         td.innerHTML = element.CODE;
+    //         break;
+    //       case 4:
+    //         td.innerHTML = element.NAME;
+    //         break;
+    //       case 5:
+    //         td.innerHTML = element.MED_BAG_NUM;
+    //         break;
+    //       case 6:
+    //         td.innerHTML = element.INV_QTY;
+    //         break;
+    //       case 7:
+    //         td.innerHTML = element.TXN_QTY;
+    //         break;
+    //       case 8:
+    //         td.innerHTML = element.EBQ_QTY;
+    //         break;
+    //       case 9:
+    //         td.innerHTML = element.PHY_QTY;
+    //         break;
+    //       case 10:
+    //         td.innerHTML = element.OP;
+    //         break;
+    //       case 11:
+    //         td.innerHTML = element.PAT;
+    //         break;
+    //       case 12:
+    //         td.innerHTML = element.MRN;
+    //         break;
+    //       case 13:
+    //         td.innerHTML = element.WARD_NAME;
+    //         break;
+    //       case 14:
+    //         td.innerHTML = element.OP_TIME;
+    //         break;
+    //       case 15:
+    //         td.innerHTML = element.RX_TIME;
+    //         break;
+    //       case 16:
+    //         td.innerHTML = element.RSN;
+    //         break;
+    //       case 17:
+    //         td.innerHTML = element.NOTE;
+    //         break;
+          
+    //       default:
+    //         break;
+    //     }
+        
+    //     table_info_container.appendChild(td);
+    //   };
+  
+    //   main_div_table_display_container.appendChild(table_info_container);
+    // });
   } else {
     main_div_table_display_container.innerHTML = `
       <div class="no_form_list_data">目前無交易紀錄</div>
-    `
+    `;
+  }
+}
+function set_pagination_init() {
+  let pagination_container = document.querySelector(".pagination_container");
+  pagination_container.innerHTML = "";
+
+  let temp_data_num = data_information.length;
+  let temp_pages = temp_data_num / pagination_num;
+  temp_pages = Math.ceil(temp_pages);
+
+  let pre_page_btn = document.createElement("img");
+  pre_page_btn.classList.add("pre_page_btn");
+  pre_page_btn.src = '../image/left-arrow.png';
+  if(current_pagination == 1) pre_page_btn.classList.add("disable_page_btn");
+
+  pre_page_btn.addEventListener("click", () => {
+    if(current_pagination == 1) {
+      return;
+    } else {
+      current_pagination = current_pagination - 1;
+      set_pagination_init();
+      get_info_init();
+    }
+  });
+
+  let next_page_btn = document.createElement("img");
+  next_page_btn.classList.add('next_page_btn');
+  next_page_btn.src = '../image/left-arrow.png';
+  if(current_pagination == temp_pages) next_page_btn.classList.add("disable_page_btn");
+
+  next_page_btn.addEventListener("click", () => {
+    if(current_pagination == temp_pages) {
+      return;
+    } else {
+      current_pagination = current_pagination + 1;
+      set_pagination_init();
+      get_info_init();
+    }
+  });
+
+  let pagination_pages_container = document.createElement("div");
+  pagination_pages_container.classList.add("pagination_pages_container");
+
+  if(temp_pages < 13) {
+    for (let i = 1; i <= temp_pages; i++) {
+      let pagination_page_container = document.createElement("div");
+      pagination_page_container.classList.add("pagination_page");
+      pagination_page_container.setAttribute("tab_page", i);
+      pagination_page_container.innerHTML = i;
+
+      if(i == current_pagination) {
+        pagination_page_container.classList.add("current_pagination_page");
+      } else {
+        pagination_page_container.addEventListener("click", (e) => {
+          let temp_page = +e.target.getAttribute("tab_page");
+          current_pagination = temp_page;
+          set_pagination_init();
+          get_info_init();
+        });
+      };
+      pagination_pages_container.appendChild(pagination_page_container);
+    };
+  } else {
+    if(current_pagination < 7) {
+      for (let i = 1; i <= 9; i++) {
+        if(i <= 7) {
+          // 前七頁
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.setAttribute("tab_page", i);
+          pagination_page_container.innerHTML = i;
+    
+          if(i == current_pagination) {
+            pagination_page_container.classList.add("current_pagination_page");
+          } else {
+            pagination_page_container.addEventListener("click", (e) => {
+              let temp_page = +e.target.getAttribute("tab_page");
+              current_pagination = temp_page;
+              set_pagination_init();
+              get_info_init();
+            });
+          };
+          pagination_pages_container.appendChild(pagination_page_container);
+        } else if(i == 8) {
+          // 中間頁數
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.innerHTML = "...";
+          pagination_pages_container.appendChild(pagination_page_container);
+        } else {
+          // 最後一頁
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.setAttribute("tab_page", temp_pages);
+          pagination_page_container.innerHTML = temp_pages;
+          pagination_page_container.addEventListener("click", (e) => {
+            let temp_page = +e.target.getAttribute("tab_page");
+            current_pagination = temp_page;
+            set_pagination_init();
+            get_info_init();
+          });
+          pagination_pages_container.appendChild(pagination_page_container);
+        }
+      }
+    } else if (current_pagination > temp_pages - 7) {
+      for (let i = 1; i <= 9; i++) {
+        if(i == 1) {
+          // 第一頁
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.setAttribute("tab_page", i);
+          pagination_page_container.innerHTML = i;
+    
+          pagination_page_container.addEventListener("click", (e) => {
+            let temp_page = +e.target.getAttribute("tab_page");
+            current_pagination = temp_page;
+            set_pagination_init();
+            get_info_init();
+          });
+          pagination_pages_container.appendChild(pagination_page_container);
+        } else if(i == 2) {
+          // 中間頁數
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.innerHTML = "...";
+          pagination_pages_container.appendChild(pagination_page_container);
+        } else {
+          // 最後一頁
+          let temp_num_page = i - 9;
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.setAttribute("tab_page", temp_pages + temp_num_page);
+          pagination_page_container.innerHTML = temp_pages + temp_num_page;
+
+          if(temp_pages + temp_num_page == current_pagination) {
+            pagination_page_container.classList.add("current_pagination_page");
+          } else {
+            pagination_page_container.addEventListener("click", (e) => {
+              let temp_page = +e.target.getAttribute("tab_page");
+              current_pagination = temp_page;
+              set_pagination_init();
+              get_info_init();
+            });
+          };
+          pagination_pages_container.appendChild(pagination_page_container);
+        }
+      }
+    } else {
+      for (let i = 1; i <= 9; i++) {
+        if(i == 1) {
+          // 第一頁
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.setAttribute("tab_page", i);
+          pagination_page_container.innerHTML = i;
+          pagination_page_container.addEventListener("click", (e) => {
+            let temp_page = +e.target.getAttribute("tab_page");
+            current_pagination = temp_page;
+            set_pagination_init();
+            get_info_init();
+          });
+          pagination_pages_container.appendChild(pagination_page_container);
+        } else if(i == 2 || i == 8) {
+          // 中間頁數...
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.innerHTML = "...";
+          pagination_pages_container.appendChild(pagination_page_container);
+        } else if(i > 2 && i < 8) {
+          // 中間頁數
+          let temp_num_page = i - 5;
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.setAttribute("tab_page", current_pagination + temp_num_page);
+          pagination_page_container.innerHTML = current_pagination + temp_num_page;
+    
+          if(current_pagination + temp_num_page == current_pagination) {
+            pagination_page_container.classList.add("current_pagination_page");
+          } else {
+            pagination_page_container.addEventListener("click", (e) => {
+              let temp_page = +e.target.getAttribute("tab_page");
+              current_pagination = temp_page;
+              set_pagination_init();
+              get_info_init();
+            });
+          };
+          pagination_pages_container.appendChild(pagination_page_container);
+        } else {
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.setAttribute("tab_page", temp_pages);
+          pagination_page_container.innerHTML = temp_pages;
+          pagination_page_container.addEventListener("click", (e) => {
+            let temp_page = +e.target.getAttribute("tab_page");
+            current_pagination = temp_page;
+            set_pagination_init();
+            get_info_init();
+          });
+          pagination_pages_container.appendChild(pagination_page_container);
+        }
+      }
+    }
   }
 
-}
+  pagination_container.appendChild(pre_page_btn);
+  pagination_container.appendChild(pagination_pages_container);
+  pagination_container.appendChild(next_page_btn);
 
+}
 function get_init_post_data() {
   let time_line_st = document.querySelector(".time_line_st");
   let time_line_end = document.querySelector(".time_line_end");

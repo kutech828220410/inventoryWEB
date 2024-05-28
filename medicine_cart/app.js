@@ -8,9 +8,9 @@ function handleResize()
 async function load()
 {
   check_session_off();
-  var serverName = "管藥";
+  var serverName = "";
 //   ServerName = serverName;
-  ServerType = "調劑台";
+  ServerType = "網頁";
   TableName = "medicine_page";
   APIServer = await LoadAPIServer();
   console.log(ServerType, TableName, APIServer);
@@ -55,11 +55,11 @@ function get_header(test_user_data) {
 
     let h_title = document.createElement("div");
     h_title.classList = 'h_title';
-    h_title.innerHTML = "藥車調劑";
+    h_title.innerHTML = "住院藥車調劑";
 
     let header_user = document.createElement("div");
     header_user.classList.add("header_user");
-    header_user.innerHTML = `長青樓`;
+    header_user.innerHTML = ``;
 
     header_title_container.appendChild(h_title);
     header_title_container.appendChild(header_user);
@@ -598,9 +598,6 @@ function set_func_select_logic() {
     case "review":
       review_func();
       break;
-    case "revise":
-      revise_func();
-      break;
     case "deliver":
       deliver_func();
       break;
@@ -656,32 +653,6 @@ async function review_func() {
     return;
   } else {
     console.log("生成覆核清單");
-    return;
-  }
-}
-// 改車作業
-async function revise_func() {
-  let cart_select_container = document.querySelector(".cart_select_container");
-  let med_table_select_container = document.querySelector(".med_table_select_container");
-
-  let cart_content = document.querySelector(".cart_content");
-  let med_table_content = document.querySelector(".med_table_content");
-
-  div_event_click_cir_able(cart_select_container);
-  div_event_click_cir_disable(med_table_select_container);
-
-  cart_content.addEventListener("click", open_cart_list);
-  med_table_content.removeEventListener("click", open_med_table_list);
-
-  med_table_content.innerHTML = '調劑台';
-  current_med_table = "";
-  last_current_med_table = "";
-
-  if(current_cart == "" && current_med_table == "") {
-    return;
-  } else {
-    console.log("生成改車清單");
-    display_revise_func();
     return;
   }
 }

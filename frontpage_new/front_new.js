@@ -16,6 +16,14 @@ async function load()
     console.log("inventory_url",inventory_url);
 
     get_pages_container(html_pages);
+    set_web_info_icon();
+}
+
+function set_web_info_icon() {
+  let info_btn = document.querySelector(".info_btn");
+  info_btn.addEventListener("click", () => {
+    popup_info_div_open();
+  });
 }
 
 function get_pages_container(array) {
@@ -78,4 +86,18 @@ function get_page_icon(object) {
 //   page_card.appendChild(page_card_engtitle);
 
   return page_card;
+}
+
+async function get_api_version() {
+  let temp_data = await fetch(`${api_ip}api/test`, {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      // body: JSON.stringify({"Data":{}}),
+  }).then((response) => {
+      return response.json();
+  })
+  
+  return temp_data
 }

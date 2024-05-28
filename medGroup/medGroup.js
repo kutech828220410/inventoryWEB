@@ -93,6 +93,7 @@ function current_function_trgger(div_array, target) {
     // 藥品群組API
 async function groups_manage_get_data(guid) {
     console.log("api_ip",api_ip);
+    console.log(guid);
     fetch(`${api_ip}api/medGroup/get_all_group`, {
         method: "POST",
         headers: {

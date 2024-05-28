@@ -320,16 +320,16 @@ function popup_datetime_reset() {
 function get_pp_dt_med_info_func(med_data) {
     let pp_dt_med_name = document.querySelector(".pp_dt_med_name");
     if(med_data.NAME == "") {
-        pp_dt_med_name.innerHTML = '藥名：無';
+        pp_dt_med_name.innerHTML = '(英)：無';
     } else {
-        pp_dt_med_name.innerHTML = `藥名：${med_data.NAME}`;
+        pp_dt_med_name.innerHTML = `(英)：${med_data.NAME}`;
     }
 
     let pp_dt_med_ctname = document.querySelector(".pp_dt_med_ctname");
     if(med_data.CHT_NAME == "") {
-        pp_dt_med_ctname.innerHTML = '中文名：無';
+        pp_dt_med_ctname.innerHTML = '(中)：無';
     } else {
-        pp_dt_med_ctname.innerHTML = `中文名：${med_data.CHT_NAME}`;
+        pp_dt_med_ctname.innerHTML = `(中)：${med_data.CHT_NAME}`;
     }
 
     let pp_dt_med_code = document.querySelector(".pp_dt_med_code");

@@ -16,7 +16,6 @@ async function get_datas_by_op_time_st_end_transactions(data) {
     //     "口服1,口服2",
     //     "調劑台,調劑台"
     // ]
-
     return temp_data;
 }
 async function get_datas_by_rx_time_st_end_transactions(data) {

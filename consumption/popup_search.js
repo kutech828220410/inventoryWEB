@@ -31,7 +31,7 @@ function get_ppsearch_main() {
     let patient_div = get_pp_search_patient_block();
     let date_div = get_pp_search_date_block();
 
-    pps_main_container.appendChild(trigger_div);
+    // pps_main_container.appendChild(trigger_div);
     pps_main_container.appendChild(med_div);
     pps_main_container.appendChild(patient_div);
     pps_main_container.appendChild(date_div);
@@ -189,6 +189,27 @@ function get_pp_search_date_block() {
     ppds_end_input.name = "ppds_end_input";
     ppds_end_input.type = "date";
 
+    ppds_start_input.addEventListener("change", (e) => {
+        console.log(e.target.value);
+        let startDate = new Date(e.target.value);
+        if(!isNaN(startDate.getTime())) {
+            let endDate = new Date(startDate);
+            endDate.setMonth(startDate.getMonth() + 1);
+
+            // 如果月份超過12月，日期可能需要調整
+            if (endDate.getMonth() !== (startDate.getMonth() + 1) % 12) {
+                endDate.setDate(0);
+            }
+            // console.log(endDate);
+            // 格式化日期為 YYYY-MM-DD
+            let year = endDate.getFullYear();
+            let month = String(endDate.getMonth() + 1).padStart(2, '0');
+            let day = String(endDate.getDate()).padStart(2, '0');
+            ppds_end_input.value = `${year}-${month}-${day}`;
+            console.log(ppds_end_input.value);
+        }
+    });
+
     popup_date_end_container.appendChild(ppds_end_lable);
     popup_date_end_container.appendChild(ppds_end_input);
 
@@ -263,13 +284,17 @@ async function get_search_result() {
     let temp_data;
     if (select_date_kind.value == "operate") {
         temp_data = await get_datas_by_op_time_st_end_transactions(temp_post_data);
+        // console.log(temp_data);
         data_information = temp_data["Data"];
     } else {
         temp_data = await get_datas_by_rx_time_st_end_transactions(temp_post_data);
+        // console.log(temp_data);
         data_information = temp_data["Data"];
     }
 
-    get_info_init(temp_data["Data"]);
+    current_pagination = 1;
+    get_info_init();
+    set_pagination_init();
     set_main_div_time_line();
 
     popup_search_select_div_close();

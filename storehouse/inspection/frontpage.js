@@ -7,10 +7,12 @@ async function load()
   check_session_off();
   ServerName = "DS01";
   ServerType = "藥庫";
+  // ServerName = "";
+  // ServerType = "網頁";
   TableName = "medicine_page_firstclass";
   APIServer = await LoadAPIServer();
-  const API01 = serch_APIServer(ServerName,ServerType,"API01");
-  const API02 = serch_APIServer(ServerName,ServerType,"API02");
+  const API01 = serch_APIServer("","網頁","API01");
+  const API02 = serch_APIServer("","網頁","API02");
   const API_inspection_excel = serch_APIServer(ServerName,ServerType,"API_inspection_excel");
   const API_inspection_excel_upload = serch_APIServer(ServerName,ServerType,"API_inspection_excel_upload");
   const API_inspection_excel_download = serch_APIServer(ServerName,ServerType,"API_inspection_excel_download");

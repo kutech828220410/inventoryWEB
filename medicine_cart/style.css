@@ -122,6 +122,12 @@
 .hos_block_option_container {
     width: 200px;
 }
+.func_content {
+    width: 120px;
+}
+.func_option_container {
+    width: 120px;
+}
 .func_option_container,
 .hos_block_option_container,
 .cart_option_container,
@@ -173,9 +179,9 @@
     background-color: var(--disable-select);
 }
 .cir_arrow {
-    width: 50px;
+    /* width: 50px;
     height: 50px;
-    border-radius: 50%;
+    border-radius: 50%; */
 }
 .tri_arrow {
     width: 0;

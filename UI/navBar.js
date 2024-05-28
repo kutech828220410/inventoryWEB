@@ -83,7 +83,7 @@ let html_pages = [
             },
             // {
             //     html_name: "medicine_cart",
-            //     html_ctName: "住院藥車",
+            //     html_ctName: "住院藥車調劑",
             //     html_url: "../../medicine_cart",
             //     icon_url: "../../image/icon/drug_cart.png",
             //     icon_big_url: "../../image/icon/drug_cart_big_icon.png"
@@ -588,5 +588,11 @@ function hover_style_change_bgc
         target.style.transition = "0.2s ease-out"
         target.style.backgroundColor = before_bgc
     })
+}
+
+async function action_log_api(action_page, action_type) {
+    let op = sessionStorage.getItem('loggedName');
+    console.log(action_page + ", " + action_type);
+    console.log(op);
 }
 
