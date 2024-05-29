@@ -146,7 +146,7 @@ async function get_popup_pharmacy_select()
 
     temp_table_data = [
         {
-            serverName:'全部調劑台',
+            serverName:'全選',
             serverType:'pharmacy_1',
             serverTable: pharmacy_table_data["Data"]
         }

@@ -21,7 +21,10 @@ async function load()
 
 function set_web_info_icon() {
   let info_btn = document.querySelector(".info_btn");
-  info_btn.addEventListener("click", () => {
+  info_btn.addEventListener("click", async () => {
+    let web_info_api = await get_web_version_info();
+    let api_version_data = await get_api_version();
+    set_version_func(web_info_api, api_version_data);
     popup_info_div_open();
   });
 }

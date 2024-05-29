@@ -40,7 +40,7 @@ let html_pages = [
                 icon_url: "../../image/icon/staff_icon.png",
                 icon_big_url: "../../image/icon/staff_big_icon.png"
             },
-        ]
+        ],
     },
     {
         name: "藥庫",

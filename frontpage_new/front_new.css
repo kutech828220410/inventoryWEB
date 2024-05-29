@@ -128,8 +128,12 @@
 }
 .ppi_header_content {
     color: #333;
-    font-size: 14px;
-    line-height: 24px;
+    font-size: 16px;
+    line-height: 18px;
+    text-align: center;
+}
+.ppi_header_content > span {
+    font-size: 12px;
 }
 .ppi_close_btn {
     position: absolute;
@@ -144,7 +148,7 @@
 }
 .main_info {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
 .logo_div {
@@ -152,12 +156,12 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 168px;
+    width: 80px;
 }
 .logo_div_img {
     display: block;
-    width: 56px;
-    height: 56px;
+    width: 72px;
+    height: 72px;
     object-fit: cover;
 }
 .logo_div_c_name {
@@ -169,9 +173,11 @@
     width: 1px;
     height: 116px;
     background-color: #000000;
-    margin: 0px 8px;
+    margin: 0px 12px;
 }
-
+.company_info_div {
+    flex-grow: 1;
+}
 .company_info_container {
     margin: 6px 0px;
     display: flex;
@@ -184,6 +190,21 @@
     object-fit: cover;
     display: block;
     margin-right: 6px;
+}
+.version_container {
+    text-decoration: underline;
+    text-align: end;
+    font-size: 12px;
+}
+.company_info_content_a {
+    color: #000000;
+}
+.web_info_content {
+    margin: 4px 0px;
+    cursor: pointer;
+}
+.api_info_content {
+    cursor: pointer;
 }
 .business_div {
     margin: 4px 0px;

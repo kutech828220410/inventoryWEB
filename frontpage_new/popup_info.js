@@ -1,5 +1,6 @@
 let web_info = {
     company_name: "鴻森智能科技有限公司",
+    eng_name: "Hongsen Intelligent Technology Co., Ltd",
     system_name: "次世代智慧藥局整合平台",
     logo_url: "../image/hs_logo.png",
     tel: "02-82822040",
@@ -7,7 +8,7 @@ let web_info = {
     mail: "kutech@outlook.com",
     GUI_number: "66437068",
     location: "新北市蘆洲區和平路114巷8號6樓",
-    business: ["自動化控制", " | ", "工聯網規劃", " | ", "智慧醫療"],
+    business: ["設備規劃", " | ", "AIOT", " | ", "AI智慧醫療"],
     product: [
         {
             name: "智慧調劑台",
@@ -54,7 +55,10 @@ function get_ppi_header() {
 
     let ppi_header_content = document.createElement("div");
     ppi_header_content.classList.add("ppi_header_content");
-    ppi_header_content.innerHTML = web_info.system_name;
+    ppi_header_content.innerHTML = `
+    ${web_info.company_name}<br>
+    <span>${web_info.eng_name}</span>
+    `;
 
     let ppi_close_btn = document.createElement("img");
     ppi_close_btn.classList.add("ppi_close_btn");
@@ -74,12 +78,14 @@ function get_ppi_main() {
     ppi_main_container.classList.add("ppi_main_container");
 
     let top_main_div = set_company_info();
-    let mid_main_div = set_business_list();
-    let bottom_main_div = set_product_list();
-
+    let version_main_div = set_version_info();
+    let product_main_div = set_product_list();
+    let business_main_div = set_business_list();
+    
     ppi_main_container.appendChild(top_main_div);
-    ppi_main_container.appendChild(mid_main_div);
-    ppi_main_container.appendChild(bottom_main_div);
+    ppi_main_container.appendChild(business_main_div);
+    ppi_main_container.appendChild(product_main_div);
+    ppi_main_container.appendChild(version_main_div);
 
     return ppi_main_container;
 }
@@ -88,21 +94,20 @@ function get_ppi_footer() {
     let ppi_footer_container = document.createElement("div");
     ppi_footer_container.classList.add("ppi_footer_container");
 
-    let version_download_btn = document.createElement("div")
-    version_download_btn.classList.add("btn");
-    version_download_btn.innerHTML = "版本";
-    version_download_btn.addEventListener("click", () => {
-        if(confirm("是否下載版本檔案")) {
-            download_api_version_txt();
-            download_web_version_txt();
-        }
-    });
+    // let version_download_btn = document.createElement("div")
+    // version_download_btn.classList.add("btn");
+    // version_download_btn.innerHTML = "版本";
+    // version_download_btn.addEventListener("click", () => {
+    //     if(confirm("是否下載版本檔案")) {
+    //         download_api_version_txt();
+    //         download_web_version_txt();
+    //     }
+    // });
 
-    ppi_footer_container.appendChild(version_download_btn);
+    // ppi_footer_container.appendChild(version_download_btn);
 
     return ppi_footer_container;
 }
-
 function set_company_info() {
     let main_info = document.createElement("div");
     main_info.classList.add("main_info");
@@ -111,8 +116,8 @@ function set_company_info() {
     logo_div.classList.add("logo_div");
     logo_div.innerHTML = `
         <img class="logo_div_img" src="${web_info.logo_url}" alt="鴻森logo">
-        <div class="logo_div_c_name">${web_info.company_name}</div>
     `;
+    // <div class="logo_div_c_name">${web_info.company_name}</div>
 
     let i_am_line = document.createElement("div");
     i_am_line.classList.add("i_am_line");
@@ -125,20 +130,20 @@ function set_company_info() {
             <div class="company_info_content">${web_info.tel}</div>
         </div>
         <div class="company_info_container">
-            <img class="company_info_icon" src="../image/about/fax.png" alt="傳真icon">
-            <div class="company_info_content">${web_info.fax}</div>
-        </div>
-        <div class="company_info_container">
             <img class="company_info_icon" src="../image/about/mail.png" alt="信箱icon">
             <div class="company_info_content">${web_info.mail}</div>
+        </div>
+        <div class="company_info_container">
+            <img class="company_info_icon" src="../image/about/com.png" alt="地址icon">
+            <div class="company_info_content">${web_info.GUI_number}</div>
         </div>
         <div class="company_info_container">
             <img class="company_info_icon" src="../image/about/location.png" alt="地址icon">
             <div class="company_info_content">${web_info.location}</div>
         </div>
         <div class="company_info_container">
-            <span>統編：</span>
-            <div class="company_info_content">${web_info.GUI_number}</div>
+            <img class="company_info_icon" src="../image/about/url.png" alt="傳真icon">
+            <a class="company_info_content_a" href="https://www.kutech.tw/" target="_blank">https://www.kutech.tw/</a>
         </div>
     `;
 
@@ -149,7 +154,33 @@ function set_company_info() {
 
     return main_info
 }
+function set_version_info() {
+    let version_container = document.createElement("div");
+    version_container.classList.add("version_container");
 
+    let web_info_content = document.createElement("div");
+    web_info_content.classList.add("web_info_content");
+    web_info_content.addEventListener("click", () => {
+        if(confirm("是否下載Web版本資訊？")) {
+            download_web_version_txt();
+        }
+    });
+    // web_info_content.innerHTML = `網頁版本：${web_info_api.version}`;
+
+    let api_info_content = document.createElement("div");
+    api_info_content.classList.add("api_info_content");
+    api_info_content.addEventListener("click", () => {
+        if(confirm("是否下載API版本資訊？")) {
+            download_api_version_txt();
+        }
+    });
+    // api_info_content.innerHTML = `API版本：${api_version_data.Data[4]}`
+
+    version_container.appendChild(web_info_content);
+    version_container.appendChild(api_info_content);
+
+    return version_container;
+}
 function set_business_list() {
     let business_div = document.createElement("div");
     business_div.classList.add("business_div");
@@ -164,7 +195,6 @@ function set_business_list() {
 
     return  business_div;
 }
-
 function set_product_list() {
     let product_div = document.createElement("div");
     product_div.classList.add("product_div");
@@ -182,15 +212,12 @@ function set_product_list() {
 
     return product_div;
 }
-
 function popup_info_div_close() {
     popup_info_div.Set_Visible(false);
 }
-
 function popup_info_div_open() {
     popup_info_div.Set_Visible(true);
 }
-
 function download_web_version_txt() {
     let protocol = window.location.protocol;
     // 設置文件的URL，根據頁面的協議動態設置
@@ -235,4 +262,26 @@ async function download_api_version_txt() {
     // 下載後移除<a>元素並釋放URL對象
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+}
+async function get_web_version_info() {
+    let data = fetch(`../version.json`)
+    .then((response) => {
+        return response.json();
+    })
+
+    // [
+    //     "起始時間",
+    //     "結束時間",
+    //     "口服1,口服2",
+    //     "調劑台,調劑台"
+    // ]
+
+    return data;
+}
+function set_version_func(web_info_api, api_version_data) {
+    let web_info_content = document.querySelector(".web_info_content");
+    web_info_content.innerHTML = `Web Version：${web_info_api.version}`;
+
+    let api_info_content = document.querySelector(".api_info_content");
+    api_info_content.innerHTML = `API ${api_version_data.Data[4]}`;
 }
