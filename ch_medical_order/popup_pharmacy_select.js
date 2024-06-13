@@ -57,24 +57,16 @@ function get_pps_footer()
     let pps_f_confirm_btn = document.createElement("div");
     pps_f_confirm_btn.classList.add('pps_f_confirm_btn');
     pps_f_confirm_btn.innerText = '確認';
-    pps_f_confirm_btn.addEventListener("click", async () => {
+    pps_f_confirm_btn.addEventListener("click", () => {
         temp_selected_arr = [];
         temp_selected_arr = checked_pharmacy_arr();
         console.log(temp_selected_arr);
         if(temp_selected_arr.length == 0) {
-            alert('至少選擇一個調劑台！！');
+            alert('至少選擇一個調劑台');
             return;
         } else {
-            Set_main_div_enable(true);
             popup_pharmacy_select_div_close();
             get_select_block_func(temp_selected_arr);
-            // let post_data = get_init_post_data();
-            // let res_data = await get_datas_by_op_time_st_end_transactions(post_data);
-            // data_information = res_data["Data"];
-            // current_pagination = 1;
-            // get_info_init();
-            // set_pagination_init();
-            Set_main_div_enable(false);
         }
     });
     

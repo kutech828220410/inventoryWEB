@@ -70,8 +70,6 @@
     font-size: 16px;
     font-weight: 600;
     margin-right: 8px;
-    width: 80px;
-    border-radius: 5px;
 }
 #select_med_input,
 #select_patient_input {
@@ -79,7 +77,6 @@
     font-size: 16px;
     font-weight: 600;
     flex-grow: 1;
-    border-radius: 5px;
 }
 
 .select_date_kind {
@@ -105,5 +102,4 @@
     font-size: 16px;
     flex-grow: 1;
     text-align: center;
-    border-radius: 5px;
 }

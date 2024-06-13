@@ -224,6 +224,15 @@ async function set_light_on(barcode) {
     };
     // 加入綠色燈條件,字串最後一個單位為亮燈秒數(1為恆亮,單位為秒),不填入為預設10秒,0為滅燈
     data_str += `,60`;
+
+    console.log({
+        "Data": {},
+        "Value": data_str,
+        "TableName": "",
+        "ServerName": "DS01",
+        "ServerType": "藥庫",
+        "TimeTaken": ""
+  });
     
     await fetch(`${api_ip}api/OutTakeMed/light_on`, {
         method: "POST",

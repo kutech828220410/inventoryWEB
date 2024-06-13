@@ -52,6 +52,74 @@ function get_ppdatetime_main()
 
     let hr_line = document.createElement("hr");
 
+    let set_current_month_range_div = document.createElement("div");
+    set_current_month_range_div.classList.add("set_current_month_range_div");
+
+    let set_last_month_range_btn = document.createElement("div");
+    set_last_month_range_btn.classList.add("btn");
+    set_last_month_range_btn.classList.add("set_last_month_range_btn");
+    set_last_month_range_btn.innerHTML = "上一月份";
+    set_last_month_range_btn.addEventListener("click", () => {
+        let pp_dt_start_date_input = document.querySelector("#pp_dt_start_date_input");
+        let pp_dt_end_date_input = document.querySelector("#pp_dt_end_date_input");
+
+        // 获取当前日期
+        let currentDate = new Date();
+
+        // 获取当前年份和月份
+        let year = currentDate.getFullYear();
+        let month = currentDate.getMonth();
+
+        // 如果当前是1月，需要处理跨年
+        if (month === 0) {
+            year -= 1;
+            month = 11; // 12月是11
+        } else {
+            month -= 1;
+        }
+
+        // 获取上个月的第一天
+        let firstDay = new Date(year, month, 2);
+        let firstDayFormatted = firstDay.toISOString().split('T')[0];
+
+        // 获取上个月的最后一天
+        let lastDay = new Date(year, month + 1, 1);
+        let lastDayFormatted = lastDay.toISOString().split('T')[0];
+
+        pp_dt_start_date_input.value = firstDayFormatted;
+        pp_dt_end_date_input.value = lastDayFormatted;
+    });
+
+    let set_current_month_range_btn = document.createElement("div");
+    set_current_month_range_btn.classList.add("btn");
+    set_current_month_range_btn.classList.add("set_current_month_range_btn");
+    set_current_month_range_btn.innerHTML = "當前月份";
+    set_current_month_range_btn.addEventListener("click", () => {
+        let pp_dt_start_date_input = document.querySelector("#pp_dt_start_date_input");
+        let pp_dt_end_date_input = document.querySelector("#pp_dt_end_date_input");
+
+        let currentDate = new Date();
+
+        // 获取当前年份和月份
+        let year = currentDate.getFullYear();
+        let month = currentDate.getMonth();
+        console.log(month);
+
+        // 获取当月第一天
+        let firstDay = new Date(year, month, 2);
+        let firstDayFormatted = firstDay.toISOString().split('T')[0];
+
+        // 获取当月最后一天
+        let lastDay = new Date(year, month + 1, 1);
+        let lastDayFormatted = lastDay.toISOString().split('T')[0];
+
+        pp_dt_start_date_input.value = firstDayFormatted;
+        pp_dt_end_date_input.value = lastDayFormatted;
+    })
+
+    set_current_month_range_div.appendChild(set_last_month_range_btn);
+    set_current_month_range_div.appendChild(set_current_month_range_btn);
+
     let pp_dt_start_time_container = document.createElement("div");
     pp_dt_start_time_container.classList.add("pp_dt_start_time_container");
 
@@ -244,6 +312,7 @@ function get_ppdatetime_main()
 
     pp_datetime_main_container.appendChild(pp_dt_med_info_container);
     pp_datetime_main_container.appendChild(hr_line);
+    pp_datetime_main_container.appendChild(set_current_month_range_div);
     pp_datetime_main_container.appendChild(pp_dt_start_time_container);
     pp_datetime_main_container.appendChild(pp_dt_end_time_container);
 
@@ -296,8 +365,13 @@ function popup_datetime_reset() {
     let today = new Date();
     let temp_date = today.toISOString().split('T')[0];
     let pre_date = new Date(today);
-    pre_date.setDate(pre_date.getDate() - 1);
-    let temp_pre_date = pre_date.toISOString().split('T')[0];
+    // 减去一个月
+    pre_date.setMonth(pre_date.getMonth() - 1);
+
+    // 处理跨年份的情况，设置月份后自动调整年份
+    let year = pre_date.getFullYear();
+    let month = (pre_date.getMonth() + 1).toString().padStart(2, '0'); // 月份是从0开始的，需要+1
+    let day = pre_date.getDate().toString().padStart(2, '0');
     let temp_hour = 8;
     temp_hour = temp_hour.toLocaleString('en-US', {minimumIntegerDigits: 2});
     let temp_minute = 0;
@@ -306,7 +380,7 @@ function popup_datetime_reset() {
     let pp_dt_start_date_input = document.querySelector("#pp_dt_start_date_input");
     let pp_dt_start_hour_input = document.querySelector("#pp_dt_start_hour_input");
     let pp_dt_start_minute_input = document.querySelector("#pp_dt_start_minute_input");
-    pp_dt_start_date_input.value = temp_pre_date;
+    pp_dt_start_date_input.value = year + "-" + month + "-" + day;
     pp_dt_start_hour_input.value = temp_hour;
     pp_dt_start_minute_input.value = temp_minute;
 

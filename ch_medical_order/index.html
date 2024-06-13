@@ -2,18 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no/>">
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="pragma" content="no-cache">
   <meta http-equiv="expires" content="0">
-  <title>藥品交易紀錄</title>
+  <title>次世代藥局管理系統</title>
   <!-- <link rel="stylesheet" href="main.css"> -->
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="popup_pharmacy_select_style.css">
   <link rel="stylesheet" href="popup_search.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
   <script src="../../Function/Basic.js?v=1.14"></script>
 
   <script>
@@ -26,15 +23,12 @@
           loadScript("../../popup/map.js");    
           loadScript("../../dist/JsBarcode.all.js");
           loadScript("../../session_check.js");
+          loadScript("../../api/transaction.js");
           loadScript("../../session.js");
           loadScript("../../Function/WebApiFunc.js");
-          // loadScript("main_popup_find.js");
-          // loadScript("main_loadingdata.js");
-          // loadScript("main.js");
           loadScript("app.js");
-          loadScript("../../api/transaction.js");
-          loadScript("popup_pharmacy_select.js");
-          loadScript("popup_search.js");
+          // loadScript("popup_pharmacy_select.js");
+          // loadScript("popup_search.js");
           loadScript("jsonFunc.js");
           loadScript("../../UI/navBar.js");
         })();
@@ -52,18 +46,17 @@
           // const main_div = get_main();
           // document.body.appendChild(main_div);  
 
-          get_popup_search_select();
-          popup_search_select_div.Set_Visible(false);
+          // get_popup_search_select();
+          // popup_search_select_div.Set_Visible(true);
           
           // const popup_find_div = get_popup_serch();
           // document.body.appendChild(popup_find_div.div);
           // popup_find_div.Set_Visible(false);
       </script>
-   
-
   <div class="under-line">
     <B> Copyright ©2024 鴻森智能科技 </B>
   </div>
+  
   <script>
   var barcode_value = '';
     // 監聽頁面的keydown事件

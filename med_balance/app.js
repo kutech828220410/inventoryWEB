@@ -71,7 +71,7 @@ function get_header(test_user_data) {
 
     let h_title = document.createElement("div");
     h_title.classList = 'h_title';
-    h_title.innerHTML = "結存量";
+    h_title.innerHTML = "庫存量清單";
 
     let header_user = document.createElement("div");
     header_user.classList.add("header_user");
@@ -188,6 +188,15 @@ function get_search_container() {
     // 預設時間當天
     // 取得當天日期
     let today = new Date();
+    let pre_month = new Date();
+
+    // 减去一个月
+    pre_month.setMonth(pre_month.getMonth() - 1);
+
+    // 处理跨年份的情况，设置月份后自动调整年份
+    let year = pre_month.getFullYear();
+    let month = (pre_month.getMonth() + 1).toString().padStart(2, '0'); // 月份是从0开始的，需要+1
+    let day = pre_month.getDate().toString().padStart(2, '0');
 
     // 格式化日期為 YYYY-MM-DD
     let dd = String(today.getDate()).padStart(2, '0');
@@ -195,13 +204,13 @@ function get_search_container() {
     let yyyy = today.getFullYear();
   
     // 設定input元素的value為當天日期
-    search_start_date.value = yyyy + '-' + mm + '-' + dd;
+    search_start_date.value = year + '-' + month + '-' + day;
     search_end_date.value = yyyy + '-' + mm + '-' + dd;
 
   let search_date_range_btn = document.createElement("div");
   search_date_range_btn.classList.add("btn");
   search_date_range_btn.classList.add('search_date_range_btn');
-  search_date_range_btn.innerHTML = '顯示區間';
+  search_date_range_btn.innerHTML = '搜尋';
   search_date_range_btn.addEventListener("click", async () => {
     Set_main_div_enable(true);
     let post_data = get_post_data_for_consumption();
@@ -272,7 +281,7 @@ function get_info_init() {
     for (let i = 0; i < 5; i++) {
       let td = document.createElement("p");
       td.classList.add("table_td");
-      td.classList.add(`th_${i}`);
+      td.classList.add(`td_${i}`);
       if(index%2 != 0) {
         td.classList.add("bgc_gray");
       }

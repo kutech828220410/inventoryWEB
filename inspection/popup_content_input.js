@@ -78,6 +78,8 @@ async function confirm_popup_input()
     const med_end_QTY_text_popup_input = document.querySelector(".med_end_QTY_text_popup_input");
     const med_end_qty_for_count = document.querySelector(".med_end_qty_for_count");
 
+    console.log(VAL_input_popup_input);
+
     if(END_QTY_input.value == 0) {
         alert('請輸入數量')
         return;
@@ -446,23 +448,30 @@ function get_underline_popup_input()
     let currentDate = new Date();
     currentDate = currentDate.toISOString().split('T')[0];
 
-    const deadline_input = document.createElement("input")
-    My_Div.Init(deadline_input, 'deadline_input','deadline_input', '90%','80%','');
-    My_Div.Set_Text(deadline_input, ``, TextAlignEnum.CENTER, "26px", true,"微軟正黑體","black");
+    const deadline_input = document.createElement("input");
+    // My_Div.Init(deadline_input, 'deadline_input','deadline_input', '310px','43px','');
+    // My_Div.Set_Text(deadline_input, ``, TextAlignEnum.CENTER, "26px", true,"微軟正黑體","black");
+    deadline_input.id = "deadline_input";
+    deadline_input.classList.add("deadline_input");
     deadline_input.style.borderRadius = "5px";
     deadline_input.style.display = "block";
     deadline_input.style.margin = "0px auto 6px";
-    deadline_input.placeholder = "請輸入效期";
-    // deadline_input.type = "date";
-    // deadline_input.min = currentDate;
-    deadline_input.type = "email";
-    deadline_input.inputMode = "latin";
+    deadline_input.style.textAlign = "center";
+    deadline_input.style.fontSize = "26px";
+    deadline_input.style.fontFamily = "微軟正黑體";
+    deadline_input.style.width = "300px";
+    deadline_input.style.height = "44px";
+    // deadline_input.placeholder = "請輸入效期";
+    deadline_input.type = "date";
+    deadline_input.min = currentDate;
+    deadline_input.max = "9999-12-31";
+    // deadline_input.inputMode = "latin";
 
-    batch_deadline_div.appendChild(batch_input)
-    batch_deadline_div.appendChild(deadline_input)
-    underline_div.appendChild(batch_deadline_div)
-    focus_blur_event_with_keydown(batch_input)
-    focus_blur_event_with_keydown(deadline_input)
+    batch_deadline_div.appendChild(batch_input);
+    batch_deadline_div.appendChild(deadline_input);
+    underline_div.appendChild(batch_deadline_div);
+    focus_blur_event_with_keydown(batch_input);
+    focus_blur_event_with_keydown(deadline_input);
 
     const END_QTY_input_div = document.createElement('div');
     My_Div.Init(END_QTY_input_div, 'END_QTY_input_div','END_QTY_input_div', '100%','100%','');
@@ -830,21 +839,21 @@ function calculateExpression(expression) {
       const serch_start_date_input = document.querySelector(".deadline_input");
       serch_start_date_input.value = "";
   }
-  $(function()
-  {
-    let currentDate = new Date();
-       $('.deadline_input').focus(function(event) 
-       {
-         /* Act on the event */
-         $(this).date(
-         {
-           theme:'date',
-           beginyear : currentDate.getFullYear() - 1,
-           endyear: currentDate.getFullYear() + 8,
-           curdate:false
-         },serch_start_date_input_Y_Click,serch_start_date_input_N_Click);
-       });
-  }) 
+//   $(function()
+//   {
+//     let currentDate = new Date();
+//        $('.deadline_input').focus(function(event) 
+//        {
+//          /* Act on the event */
+//          $(this).date(
+//          {
+//            theme:'date',
+//            beginyear : currentDate.getFullYear() - 1,
+//            endyear: currentDate.getFullYear() + 8,
+//            curdate:false
+//          },serch_start_date_input_Y_Click,serch_start_date_input_N_Click);
+//        });
+//   }) 
   
 
 

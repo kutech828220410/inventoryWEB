@@ -32,7 +32,8 @@ body {
   margin-right: 32px;
 }
 .cd_header_pharmacy_select_popup_btn,
-.cd_header_pharmacy_muilt_select_popup_btn {
+.cd_header_pharmacy_muilt_select_popup_btn,
+.btn {
   margin: 4px;
   font-weight: 600;
   cursor: pointer;
@@ -46,9 +47,15 @@ body {
 }
 
 .cd_header_pharmacy_select_popup_btn:hover,
-.cd_header_pharmacy_muilt_select_popup_btn:hover {
+.cd_header_pharmacy_muilt_select_popup_btn:hover,
+.btn:hover {
   background-color: #6B6B63;
   transition: all 0.2s ease-out;
+}
+.set_current_month_range_div {
+  padding-top: 12px;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .cd_main_container {

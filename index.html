@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no/>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="expires" content="0">
@@ -10,10 +10,20 @@
     <title>次世代智慧藥局管理平台</title>
     <script src="../Function/Basic.js"></script>
 
-    <script src="../ApiURL.js"></script>
-    <script src="../login.js"></script>
-    <script src="../session.js"></script>
-
+    <script>
+        (async function(){
+        loadScript("../api/map.js");
+        loadScript("../ApiURL.js");
+        loadScript("../ChatHub.js");
+        loadScript("../svg/mySVG.js");
+        loadScript("../UI/map.js");
+        loadScript("../popup/map.js");
+        loadScript("../dist/JsBarcode.all.js");
+        loadScript("../session_check.js");
+        loadScript("../session.js");
+        loadScript("../login.js");
+        })();
+    </script>
 </head>
 <body>
     <div class="container">
@@ -27,13 +37,13 @@
                 <label for="account">
                     <img src="../user_little.png" alt="">
                 </label>
-                <input type="text" name="account" placeholder="account">
+                <input id="account" autocomplete="username" type="text" name="account" placeholder="account">
             </div>
             <div class="input_container">
                 <label for="password">
                     <img src="../lock_icon.png" alt="">
                 </label>
-                <input type="password" name="password" placeholder="password">
+                <input id="password" autocomplete="current-password" type="password" name="password" placeholder="password">
             </div>
             <button type="submit" id="login-btn">LOGIN</button>
         </form>

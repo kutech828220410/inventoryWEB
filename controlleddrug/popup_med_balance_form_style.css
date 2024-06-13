@@ -38,7 +38,8 @@
 #pp_mbf_h_dkind_content,
 #pp_mbf_h_unit_content,
 #pp_mbf_h_sum_content,
-#pp_mbf_h_name_content {
+#pp_mbf_h_name_content,
+#pp_mbf_h_form_num {
     margin-right: 16px;
 }
 #pp_mbf_h_code_content,
@@ -48,7 +49,8 @@
 #pp_mbf_h_name_content,
 #pp_mbf_h_ctname_content,
 .pp_mbf_h_start_time,
-.pp_mbf_h_end_time {
+.pp_mbf_h_end_time,
+#pp_mbf_h_form_num {
     padding: 0px 4px;
     border-bottom: 1px solid black;
 }

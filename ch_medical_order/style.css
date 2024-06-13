@@ -13,6 +13,7 @@
     padding-left: 80px;
 }
 .main_div {
+    margin-top: 40px;
     margin-bottom: 60px;
 }
 .no_info_data_div {
@@ -85,82 +86,108 @@
 }
 
 .main_div_search_container {
-    margin-top: 60px;
-}
-.search_date_range_container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-}
-.search_date_label {
-    padding: 4px 24px;
-    border-radius: 5px;
-    background-color: #b7b7b7;
-    margin-right: 24px;
-}
-.search_date_range_div {
-    margin: 0px 12px;
-}
-#search_start_date,
-#search_end_date {
-    padding: 4px;
-    font-size: 16px;
-    font-weight: 600;
-}
-.search_date_range_btn {
-    margin-left: 24px;
-}
-.download_excel_btn {
+    max-width: 1200px;
     margin: auto;
-    text-align: center;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.search_date_container,
+.search_input_container,
+.search_condition_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px 32px;
+}
+
+.main_search_btn {
+    height: 48px;
+    display: flex;
+    align-items: center;
+}
+
+.search_date_container {        
+    width: 260px;
+}
+
+.search_input_container {
+    width: 200px;
+}
+.search_condition_container {
     width: 120px;
 }
+
+.sd_label {
+    font-size: 18px;
+    font-weight: 600;
+    width: 100%;
+    text-align: center;
+    padding: 2px;
+    background-color: #6B6B63;
+    color: whitesmoke;
+    border-radius: 10px;
+}
+.sd_start_date_container,
+.sd_end_date_container {
+    width: 100%;
+    display: flex;
+    margin: 8px 0px;
+}
+.date_label {
+    margin: 0px 8px;
+}
+.date_input {
+    flex-grow: 1;
+    margin-right: 8px;
+}
+
+#si_select,
+#si_input {
+    width: 100%;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 8px 0px;
+}
+#si_input {
+    padding: 0px 2px;
+}
+#si_select {
+    text-align: center;
+    border-radius: 5px;
+}
+
+.sc_checkbox_container {
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    margin: 8px 0px;
+}
+#sc_checkbox,
+#sc_uncheckbox {
+    position: relative;
+    display: block;
+    top: 1px;
+}
+
 .main_div_table_th_container {
-    margin-top: 40px;
+    margin-top: 24px;
     display: grid;
+    grid-template-columns: 32px 120px 160px 160px 48px 48px 48px 48px 60px 160px;
     justify-content: center;
-    grid-template-columns: 40px 100px 340px 100px 100px;
 }
-.table_info_container {
-    display: grid;
-    justify-content: center;
-    grid-template-columns: 40px 100px 340px 100px 100px;
-}
-.table_th {
-    background-color: #595959;
-    color: #ffffff;
-    padding: 6px 4px;
+.th {
+    padding: 4px 0px;
+    background-color: #cacaca;
     text-align: center;
     border-top: 1px solid #000000;
     border-left: 1px solid #000000;
     border-bottom: 2px solid #000000;
-    word-wrap: break-word; /* 超出範圍自動換行（舊版本瀏覽器） */
-    overflow-wrap: break-word; /* 超出範圍自動換行（新版本瀏覽器） */
 }
-.table_td {
-    border-left: 1px solid #000000;
-    border-bottom: 1px solid #000000;
-    padding: 6px 4px;
-    word-wrap: break-word; /* 超出範圍自動換行（舊版本瀏覽器） */
-    overflow-wrap: break-word; /* 超出範圍自動換行（新版本瀏覽器） */
-    text-align: center;
-}
-.td_2 {
-    text-align: start;
-    padding-left: 8px;
-}
-.bgc_gray {
-    background-color: #e6e6e6;
-}
-.table_th:last-child,
-.table_td:last-child {
+.th:last-child {
     border-right: 1px solid #000000;
-}
-.th_1 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .under-line {

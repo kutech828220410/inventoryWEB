@@ -146,6 +146,10 @@ function get_search_container() {
       name: "姓名",
       value: "name"
     },
+    {
+      name: "全部",
+      value: "all"
+    },
   ]
   let main_div_search_container = document.querySelector(".main_div_search_container");
 
@@ -171,21 +175,21 @@ function get_search_container() {
   search_btn.innerHTML = "搜尋";
   search_btn.addEventListener("click", search_result_display);
 
-  let search_all_btn = document.createElement("div");
-  search_all_btn.classList.add("search_all_btn");
-  search_all_btn.classList.add("btn");
-  search_all_btn.id = "search_all_btn";
-  search_all_btn.innerHTML = "顯示全部";
-  search_all_btn.addEventListener("click", async () => {
-      let staff_info = await get_all_staff_info();
-      get_info_init(staff_info["Data"]);
-    } 
-  );
+  // let search_all_btn = document.createElement("div");
+  // search_all_btn.classList.add("search_all_btn");
+  // search_all_btn.classList.add("btn");
+  // search_all_btn.id = "search_all_btn";
+  // search_all_btn.innerHTML = "顯示全部";
+  // search_all_btn.addEventListener("click", async () => {
+  //     let staff_info = await get_all_staff_info();
+  //     get_info_init(staff_info["Data"]);
+  //   } 
+  // );
 
   main_div_search_container.appendChild(search_select);
   main_div_search_container.appendChild(search_input);
   main_div_search_container.appendChild(search_btn);
-  main_div_search_container.appendChild(search_all_btn);
+  // main_div_search_container.appendChild(search_all_btn);
 }
 
 function get_select_block_func(arr) {
@@ -290,6 +294,12 @@ function get_info_init(array) {
 async function search_result_display() {
   let search_select = document.querySelector(".search_select");
   let search_input = document.querySelector("#search_input");
+
+  if(search_select.value == "all") {
+    let staff_info = await get_all_staff_info();
+    get_info_init(staff_info["Data"]);
+    return;
+  }
   
   if(search_input.value == "" || search_input.value === null) {
     alert("請輸入關鍵字");

@@ -82,6 +82,13 @@ let html_pages = [
                 icon_big_url: "../../image/icon/traded_big_icon.png"
             },
             // {
+            //     html_name: "ch_medical_order",
+            //     html_ctName: "中藥醫令查詢",
+            //     html_url: "../../ch_medical_order",
+            //     icon_url: "../../image/icon/transaction.png",
+            //     icon_big_url: "../../image/icon/traded_big_icon.png"
+            // },
+            // {
             //     html_name: "medicine_cart",
             //     html_ctName: "住院藥車調劑",
             //     html_url: "../../medicine_cart",
@@ -89,7 +96,34 @@ let html_pages = [
             //     icon_big_url: "../../image/icon/drug_cart_big_icon.png"
             // }
         ]
-    }
+    },
+    // {
+    //     name: "中藥局",
+    //     engname: "Chinese Pharmacy",
+    //     pages: [
+    //         {
+    //             html_name: "drugs_report",
+    //             html_ctName: "方濟",
+    //             html_url: "../../controlleddrug",
+    //             icon_url: "../../image/icon/compliance.png",
+    //             icon_big_url: "../../image/icon/controlled_big_icon.png"
+    //         },
+    //         {
+    //             html_name: "consumption_report",
+    //             html_ctName: "交易紀錄",
+    //             html_url: "../../consumption",
+    //             icon_url: "../../image/icon/transaction.png",
+    //             icon_big_url: "../../image/icon/traded_big_icon.png"
+    //         },
+    //         // {
+    //         //     html_name: "medicine_cart",
+    //         //     html_ctName: "住院藥車調劑",
+    //         //     html_url: "../../medicine_cart",
+    //         //     icon_url: "../../image/icon/drug_cart.png",
+    //         //     icon_big_url: "../../image/icon/drug_cart_big_icon.png"
+    //         // }
+    //     ]
+    // }
 ]
 function nav_bar_create(html_page, user_data) {
 
@@ -185,7 +219,7 @@ function nav_bar_create(html_page, user_data) {
 
     homepage_btn.addEventListener("click", () => 
     {
-            location.href = "../../frontpage_new/";
+            location.href = "../../frontpage/";
         // window.alert("登出摟")
     })
 

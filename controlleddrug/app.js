@@ -142,11 +142,12 @@ function get_main_search_div() {
     let cd_main_search_select = document.createElement("select");
     cd_main_search_select.classList.add('cd_main_search_select');
     cd_main_search_select.innerHTML = `
-      <option value="code">藥碼</option>
-      <option value="name">(英)</option>
-      <option value="ctname">(中)</option>
-      <option value="drugkind">管制級別</option>
-      <option value="medgroup">藥品群組</option>
+    <option value="all">全部</option>
+    <option value="drugkind">管制級別</option>
+    <option value="medgroup">藥品群組</option>
+    <option value="code">藥碼</option>
+    <option value="name">藥名</option>
+    <option value="ctname">中文名</option>
     `;
 
     let cd_main_search_select_list = document.createElement("select");
@@ -181,7 +182,12 @@ function get_main_search_div() {
           default:
             break;
         }
+      } else if(e.target.value == "all") {
+        cd_main_search_input.disabled = true;
+        cd_main_search_input.style.display = "block";
+        cd_main_search_select_list.style.display = "none";
       } else {
+        cd_main_search_input.disabled = false;
         cd_main_search_input.style.display = "block";
         cd_main_search_select_list.style.display = "none";
       }
@@ -191,6 +197,7 @@ function get_main_search_div() {
     cd_main_search_input.id = 'cd_main_search_input';
     cd_main_search_input.name = 'cd_main_search_input';
     cd_main_search_input.type = 'text';
+    cd_main_search_input.disabled = true;
     cd_main_search_input.addEventListener("keydown", async (e) => {
       if(e.keyCode === 13 || e.key === "Enter") {
         showLoadingPopup();
@@ -264,6 +271,11 @@ function get_select_block_func(arr) {
 }
 
 async function get_search_med_data(select, input) {
+  if(select == "all") {
+    let med_data = await get_medicine_cloud();
+    med_data = med_data.Data;
+    return med_data;
+  }
   if(input == "" || input == null) {
     alert("請輸入資料!!");
     return [];

@@ -83,16 +83,72 @@
 .main_div {
     margin: 0px auto 60px;
 }
+.main_search_container {
+    display: flex;
+    max-width: 1200px;
+    margin: 20px auto;
+    align-items: center;
+    justify-content: center;
+}
+.main_date_container {
+    width: 290px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+#md_select {
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+}
+.md_start_container,
+.md_end_container {
+    width: 100%;
+    display: flex;
+    margin-top: 8px;
+    align-items: center;
+}
+.date_label {
+    padding-right: 8px;
+}
+#md_start_date_input,
+#md_end_date_input {
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    display: block;
+    flex-grow: 1;
+}
+.main_condition_container {
+    margin: 0px 36px;
+    display: flex;
+    align-items: center;
+}
+#mc_select {
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 5px;
+    text-align: center;
+    min-width: 80px;
+    margin-right: 8px;
+}
+#mc_input {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 0px 4px;
+}
 .main_div_time_line_container {
-    margin-top: 40px;
+    margin: 24px auto 12px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .time_line_type {
-    background-color: #6B6B63;
+    /* background-color: #6B6B63; */
     padding: 4px 12px;
-    color: #ffffff;
+    /* color: #ffffff; */
     margin-right: 12px;
     border-radius: 5px;
     font-size: 18px;
@@ -111,7 +167,7 @@
 .main_list_num_sum_container {
     font-size: 18px;
     font-weight: 600;
-    margin-right: 60px;
+    /* margin-right: 60px; */
     display: flex;
 }
 .main_list_num_sum {
@@ -119,17 +175,17 @@
 }
 
 .main_div_table_th_container {
-    margin-top: 20px;
+    margin-top: 12px;
     display: grid;
     font-size: 14px;
     justify-content: center;
-    grid-template-columns: 48px 72px 72px 74px 140px 56px 60px 58px 60px 72px 72px 90px 80px 90px 84px 84px 54px 80px 140px;
+    grid-template-columns: 48px 72px 72px 54px 74px 140px 56px 60px 58px 60px 72px 72px 72px 90px 90px 84px 84px 80px 140px;
     /* grid-template-rows: 24px; */
 }
 .table_info_container {
     display: grid;
     font-size: 14px;
-    grid-template-columns: 48px 72px 72px 74px 140px 56px 60px 58px 60px 72px 72px 90px 80px 90px 84px 84px 54px 80px 140px;
+    grid-template-columns: 48px 72px 72px 54px 74px 140px 56px 60px 58px 60px 72px 72px 72px 90px 90px 84px 84px 80px 140px;
     justify-content: center;
 }
 .no_form_list_data {
@@ -168,13 +224,11 @@
 .th_1,
 .th_2,
 .th_3,
-.th_5,
 .th_6,
 .th_7,
 .th_8,
 .th_9,
 .th_10,
-.th_11,
 .th_13 {
     text-align: center;
 }

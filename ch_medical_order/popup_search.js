@@ -31,7 +31,7 @@ function get_ppsearch_main() {
     let patient_div = get_pp_search_patient_block();
     let date_div = get_pp_search_date_block();
 
-    // pps_main_container.appendChild(trigger_div);
+    pps_main_container.appendChild(trigger_div);
     pps_main_container.appendChild(med_div);
     pps_main_container.appendChild(patient_div);
     pps_main_container.appendChild(date_div);
@@ -46,9 +46,6 @@ function get_ppsearch_footer() {
     pps_btn.classList.add('btn');
     pps_btn.classList.add('pps_btn');
     pps_btn.innerHTML = "搜尋";
-    pps_btn.addEventListener("click", async () => {
-        await get_search_result();
-    });
 
     let pps_close_btn = document.createElement("div");
     pps_close_btn.classList.add('btn');
@@ -132,23 +129,13 @@ function get_pp_search_med_block() {
     let select_med_kind = document.createElement('select');
     select_med_kind.classList.add('select_med_kind');
     select_med_kind.innerHTML = `
-        <option value="all">全部</option>
-        <option value="code">藥碼</option>
-        <option value="name">藥名</option>
+        <option value="code">藥品碼</option>
+        <option value="name">藥品名稱</option>
     `
 
     let select_med_input = document.createElement("input");
     select_med_input.type = "text";
     select_med_input.id = "select_med_input";
-    select_med_input.disabled = true;
-
-    select_med_kind.addEventListener("change", () => {
-        if(select_med_kind.value != "all") {
-            select_med_input.disabled = false;
-        } else {
-            select_med_input.disabled = true;
-        }
-    });
 
     select_trigger_container.appendChild(select_med_kind);
     select_trigger_container.appendChild(select_med_input);
@@ -181,8 +168,7 @@ function get_pp_search_date_block() {
     let ppds_start_input = document.createElement("input");
     ppds_start_input.id = "ppds_start_input";
     ppds_start_input.name = "ppds_start_input";
-    ppds_start_input.type = "datetime-local";
-    ppds_start_input.max = "9999-12-31T00:00";
+    ppds_start_input.type = "date";
 
     popup_date_start_container.appendChild(ppds_start_lable);
     popup_date_start_container.appendChild(ppds_start_input);
@@ -198,29 +184,7 @@ function get_pp_search_date_block() {
     let ppds_end_input = document.createElement("input");
     ppds_end_input.id = "ppds_end_input";
     ppds_end_input.name = "ppds_end_input";
-    ppds_end_input.type = "datetime-local";
-    ppds_end_input.max = "9999-12-31T23:59";
-
-    ppds_start_input.addEventListener("change", (e) => {
-        console.log(e.target.value);
-        let startDate = new Date(e.target.value);
-        if(!isNaN(startDate.getTime())) {
-            let endDate = new Date(startDate);
-            endDate.setMonth(startDate.getMonth() + 1);
-
-            // 如果月份超過12月，日期可能需要調整
-            if (endDate.getMonth() !== (startDate.getMonth() + 1) % 12) {
-                endDate.setDate(0);
-            }
-            // console.log(endDate);
-            // 格式化日期為 YYYY-MM-DD
-            let year = endDate.getFullYear();
-            let month = String(endDate.getMonth() + 1).padStart(2, '0');
-            let day = String(endDate.getDate()).padStart(2, '0');
-            ppds_end_input.value = `${year}-${month}-${day}T23:59`;
-            console.log(ppds_end_input.value);
-        }
-    });
+    ppds_end_input.type = "date";
 
     popup_date_end_container.appendChild(ppds_end_lable);
     popup_date_end_container.appendChild(ppds_end_input);
@@ -242,7 +206,6 @@ function get_pp_search_patient_block() {
         <option value="operator">操作人</option>
         <option value="patient_name">病人姓名</option>
         <option value="patient_number">病歷號</option>
-        <option value="med_bag_num">領藥號</option>
     `
 
     let select_patient_input = document.createElement("input");
@@ -253,167 +216,6 @@ function get_pp_search_patient_block() {
     select_trigger_container.appendChild(select_patient_input);
 
     return select_trigger_container;
-}
-
-async function get_search_result() {
-    Set_main_div_enable(true);
-    // checkbox
-    // 調劑作業
-    let adjustment_work = document.querySelector("#adjustment_work");
-    // 收支作業
-    let input_output_work = document.querySelector("#input_output_work");
-    // 自動過帳
-    let auto_posting = document.querySelector("#auto_posting");
-    // 效期庫存異動
-    let inventory_changes = document.querySelector("#inventory_changes");
-
-    // select
-    // 藥碼、藥名
-    let select_med_kind = document.querySelector('.select_med_kind');
-    // 操作人、病人姓名、病例號
-    let select_patient_kind = document.querySelector('.select_patient_kind');
-    // 操作時間、開方時間
-    let select_date_kind = document.querySelector('.select_date_kind');
-
-    // input
-    let select_med_input = document.querySelector("#select_med_input");
-    let select_patient_input = document.querySelector("#select_patient_input");
-
-    let ppds_start_input = document.querySelector("#ppds_start_input");
-    let ppds_end_input = document.querySelector("#ppds_end_input");
-
-    if(!ppds_start_input.value) {
-        alert("請選起始時間！！");
-        Set_main_div_enable(false);
-        return;
-    } else if(!ppds_end_input.value) {
-        alert("請選結束時間！！");
-        Set_main_div_enable(false);
-        return;
-    }
-    // 根據操作或開方時間請求資料
-    let temp_post_data = get_trans_form_post_data();
-    let temp_data;
-    if (select_date_kind.value == "operate") {
-        temp_data = await get_datas_by_op_time_st_end_transactions(temp_post_data);
-        // console.log(temp_data);
-        data_information = temp_data["Data"];
-    } else {
-        temp_data = await get_datas_by_rx_time_st_end_transactions(temp_post_data);
-        // console.log(temp_data);
-        data_information = temp_data["Data"];
-    }
-
-    if(select_med_input.value != "" && select_med_kind.value != "all") {
-        let temp_data = data_information;
-        switch (select_med_kind.value) {
-            case "code":
-                temp_data = data_information.filter((e) => {
-                    return e["CODE"].includes(select_med_input.value);
-                });
-                data_information = temp_data;
-                break;
-            case "name":
-                temp_data = data_information.filter((e) => {
-                    return e["NAME"].includes(select_med_input.value);
-                });
-                data_information = temp_data;
-                break;
-            default:
-                break;
-        }
-    }
-
-    if(select_patient_input.value != "") {
-        let temp_data = data_information;
-        switch (select_patient_kind.value) {
-            case "operator":
-                temp_data = data_information.filter((e) => {
-                    return e["OP"].includes(select_patient_input.value);
-                });
-                data_information = temp_data;
-                break;
-            case "patient_name":
-                temp_data = data_information.filter((e) => {
-                    return e["PAT"].includes(select_patient_input.value);
-                });
-                data_information = temp_data;
-                break;
-            case "patient_number":
-                temp_data = data_information.filter((e) => {
-                    return e["MRN"].includes(select_patient_input.value);
-                });
-                data_information = temp_data;
-                break;
-            case "med_bag_num":
-                temp_data = data_information.filter((e) => {
-                    return e["MED_BAG_NUM"].includes(select_patient_input.value);
-                });
-                data_information = temp_data;
-                break;
-            default:
-                break;
-        }
-    }
-
-    current_pagination = 1;
-    get_info_init();
-    set_pagination_init();
-    set_main_div_time_line();
-    popup_search_select_div_close();
-    Set_main_div_enable(false);
-};
-
-function get_trans_form_post_data() {
-    let ppds_start_input = document.querySelector("#ppds_start_input");
-    let ppds_end_input = document.querySelector("#ppds_end_input");
-
-    let serverNameStr = "";
-    let serverTypeStr = "";
-  
-    temp_selected_arr.forEach(element => {
-        serverNameStr += element.serverName + ",";
-        serverTypeStr += element.serverType + ",";
-    });
-  
-    // Remove the trailing comma
-    serverNameStr = serverNameStr.slice(0, -1);
-    serverTypeStr = serverTypeStr.slice(0, -1);
-  
-    // console.log(st_time);
-    // console.log(end_time);
-    // console.log(serverNameStr);
-    // console.log(serverTypeStr);
-  
-    let post_data = {
-        Data: {},
-        ValueAry: [   
-            `${ppds_start_input.value}`,
-            `${ppds_end_input.value}`,
-            `${serverNameStr}`,
-            `${serverTypeStr}`]
-    };
-
-    return post_data;
-}
-
-function set_main_div_time_line() {
-    console.log("進階搜尋");
-    let select_date_kind = document.querySelector('.select_date_kind');
-    let ppds_start_input = document.querySelector("#ppds_start_input");
-    let ppds_end_input = document.querySelector("#ppds_end_input");
-
-    let time_line_type = document.querySelector(".time_line_type");
-    let time_line_st = document.querySelector(".time_line_st");
-    let time_line_end = document.querySelector(".time_line_end");
-
-    if (select_date_kind.value == "operate") {
-        time_line_type.innerHTML = "操作時間";
-    } else {
-        time_line_type.innerHTML = "開方時間";
-    }
-    time_line_st.innerHTML = ppds_start_input.value;
-    time_line_end.innerHTML = ppds_end_input.value;
 }
 
 function popup_search_select_div_close() {

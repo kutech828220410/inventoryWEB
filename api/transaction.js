@@ -1,4 +1,8 @@
 async function get_datas_by_op_time_st_end_transactions(data) {
+    let start_p = performance.now();
+    console.log("進入api取得資料");
+    console.log(data);
+    console.log(`${api_ip}api/transactions/get_datas_by_op_time_st_end`);
     let temp_data = await fetch(`${api_ip}api/transactions/get_datas_by_op_time_st_end`, {
         method: "POST",
         headers: {
@@ -7,15 +11,18 @@ async function get_datas_by_op_time_st_end_transactions(data) {
         body: JSON.stringify(data),
     })
     .then((response) => {
+        console.log("取得資料ＪＳＯＮ格式");
         return response.json();
-    })
-
+    });
     // [
     //     "起始時間",
     //     "結束時間",
     //     "口服1,口服2",
     //     "調劑台,調劑台"
     // ]
+    let end_p = performance.now();
+    console.log(end_p - start_p);
+
     return temp_data;
 }
 async function get_datas_by_rx_time_st_end_transactions(data) {
@@ -27,6 +34,7 @@ async function get_datas_by_rx_time_st_end_transactions(data) {
         body: JSON.stringify(data),
     })
     .then((response) => {
+        console.log("取得資料");
         return response.json();
     })
 
@@ -179,4 +187,28 @@ async function download_datas_excel_by_serch(data)
     } catch (error) {
         console.error(error);
     }
+}
+
+async function get_orderT_by_rx_time_st_end(data) {
+    console.log("中藥醫令查詢(時間區間) api請求");
+    let temp_data = await fetch(`${api_ip}api/orderT/get_by_rx_time_st_end`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then((response) => {
+        console.log("取得資料");
+        return response.json();
+    })
+
+    // [
+    //     "起始時間",
+    //     "結束時間",
+    //     "口服1,口服2",
+    //     "調劑台,調劑台"
+    // ]
+
+    return temp_data;
 }

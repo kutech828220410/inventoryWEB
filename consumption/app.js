@@ -95,17 +95,31 @@ function get_header(test_user_data) {
       popup_pharmacy_select_div_open();
     });
 
-
     let search_popup_btn = document.createElement("div");
     search_popup_btn.classList.add('btn');
     search_popup_btn.classList.add('search_popup_btn');
-    search_popup_btn.innerHTML = "搜尋";
+    search_popup_btn.innerHTML = "進階搜尋";
     search_popup_btn.addEventListener("click", () => {
       popup_search_select_div_open()
     });
 
+    let download_excel_trans_log_btn = document.createElement("div");
+    download_excel_trans_log_btn.classList.add("btn");
+    download_excel_trans_log_btn.classList.add("download_excel_trans_log_btn");
+    download_excel_trans_log_btn.innerHTML = "匯出";
+    download_excel_trans_log_btn.addEventListener("click", async () => {
+      Set_main_div_enable(true);
+      let start_date = document.querySelector(".time_line_st").innerHTML;
+      let end_date = document.querySelector(".time_line_end").innerHTML;
+      if(typeof data_information == "object") {
+        await download_datas_excel(data_information, start_date, end_date);
+      }
+      Set_main_div_enable(false);
+    });
+
     header_btn_container.appendChild(block_change_popup_btn);
     header_btn_container.appendChild(search_popup_btn);
+    header_btn_container.appendChild(download_excel_trans_log_btn);
 
     header.appendChild(header_title_container);
     header.appendChild(header_btn_container);
@@ -136,15 +150,14 @@ function get_main_div() {
     main_div.id = "main_div";
     main_div.className = "main_div";
 
+    let main_search_container = set_main_search_container();
+
     let main_div_time_line_container = document.createElement("div");
     main_div_time_line_container.classList.add("main_div_time_line_container");
 
-    let main_div_table_th_container = document.createElement("div");
-    main_div_table_th_container.classList.add("main_div_table_th_container");
-
     let time_line_type = document.createElement("div");
     time_line_type.classList.add("time_line_type");
-    time_line_type.innerHTML = "操作時間";
+    time_line_type.innerHTML = "操作時間：";
 
     let time_line_container = document.createElement("div");
     time_line_container.classList.add("time_line_container");
@@ -161,24 +174,12 @@ function get_main_div() {
       <div class="main_list_num_sum"></div>
     `;
 
-    let download_excel_trans_log_btn = document.createElement("div");
-    download_excel_trans_log_btn.classList.add("btn");
-    download_excel_trans_log_btn.classList.add("download_excel_trans_log_btn");
-    download_excel_trans_log_btn.innerHTML = "匯出excel";
-    download_excel_trans_log_btn.addEventListener("click", async () => {
-      Set_main_div_enable(true);
-      let start_date = document.querySelector(".time_line_st").innerHTML;
-      let end_date = document.querySelector(".time_line_end").innerHTML;
-      if(typeof data_information == "object") {
-        await download_datas_excel(data_information, start_date, end_date);
-      }
-      Set_main_div_enable(false);
-    });
-
     main_div_time_line_container.appendChild(time_line_type);
     main_div_time_line_container.appendChild(time_line_container);
     main_div_time_line_container.appendChild(main_list_num_sum_container);
-    main_div_time_line_container.appendChild(download_excel_trans_log_btn);
+
+    let main_div_table_th_container = document.createElement("div");
+    main_div_table_th_container.classList.add("main_div_table_th_container");
 
     let main_div_table_display_container = document.createElement("div");
     main_div_table_display_container.classList.add("main_div_table_display_container");
@@ -186,12 +187,126 @@ function get_main_div() {
     let pagination_container = document.createElement("div");
     pagination_container.classList.add("pagination_container");
 
+    main_div.appendChild(main_search_container);
     main_div.appendChild(main_div_time_line_container);
     main_div.appendChild(main_div_table_th_container);
     main_div.appendChild(main_div_table_display_container);
     main_div.appendChild(pagination_container);
 
     body.appendChild(main_div);
+}
+function set_main_search_container() {
+  let main_search_container = document.createElement("div");
+  main_search_container.classList.add("main_search_container");
+
+  let main_date_container = document.createElement("div");
+  main_date_container.classList.add("main_date_container");
+
+  let md_select = document.createElement("select");
+  md_select.id = "md_select";
+  md_select.innerHTML = `
+    <option value="operate">操作時間</option>
+    <option value="prescribe">開方時間</option>
+  `;
+
+  function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day} 00:00:00`;
+  }
+  function formatDateEnd(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day} 23:59`;
+  }
+  let today = new Date();
+  let aweekago = new Date();
+  aweekago.setDate(today.getDate() - 14);
+
+  let md_start_container = document.createElement("div");
+  md_start_container.classList.add("md_start_container");
+
+  let md_start_date_label = document.createElement("label");
+  md_start_date_label.innerHTML = "起始";
+  md_start_date_label.setAttribute("for", "md_start_date_input");
+  md_start_date_label.classList.add("date_label");
+
+  let md_start_date_input = document.createElement("input");
+  md_start_date_input.id = "md_start_date_input";
+  md_start_date_input.type = "datetime-local";
+  md_start_date_input.name = "md_start_date_input";
+  md_start_date_input.value = formatDate(aweekago);
+  md_start_date_input.min = "0001-01-01T00:00";
+  md_start_date_input.max = "9999-12-31T23:59";
+
+  md_start_container.appendChild(md_start_date_label);
+  md_start_container.appendChild(md_start_date_input);
+
+  let md_end_container = document.createElement("div");
+  md_end_container.classList.add("md_end_container");
+
+  let md_end_date_label = document.createElement("label");
+  md_end_date_label.innerHTML = "結束";
+  md_end_date_label.setAttribute("for", "md_end_date_input");
+  md_end_date_label.classList.add("date_label");
+
+  let md_end_date_input = document.createElement("input");
+  md_end_date_input.id = "md_end_date_input";
+  md_end_date_input.type = "datetime-local";
+  md_end_date_input.name = "md_end_date_input";
+  md_end_date_input.value = formatDateEnd(today);
+
+  md_end_container.appendChild(md_end_date_label);
+  md_end_container.appendChild(md_end_date_input);
+
+  main_date_container.appendChild(md_select);
+  main_date_container.appendChild(md_start_container);
+  main_date_container.appendChild(md_end_container);
+
+  let main_condition_container = document.createElement("div");
+  main_condition_container.classList.add("main_condition_container");
+
+  let mc_select = document.createElement("select");
+  mc_select.id = "mc_select";
+  mc_select.innerHTML = `
+    <option value="all">全部</option>
+    <option value="code">藥碼</option>
+    <option value="name">藥名</option>
+  `;
+
+  let mc_input = document.createElement("input");
+  mc_input.id = "mc_input";
+  mc_input.type = "text";
+  mc_input.disabled = true;
+
+  mc_select.addEventListener("change", () => {
+    if(mc_select.value != "all") {
+      mc_input.disabled = false;
+    } else {
+      mc_input.disabled = true;
+      // mc_input.value = "";
+    }
+    return
+  });
+
+  let main_search_btn = document.createElement("div");
+  main_search_btn.classList.add("main_search_btn");
+  main_search_btn.classList.add("btn");
+  main_search_btn.innerHTML = "搜尋";
+  main_search_btn.addEventListener("click", async () => {
+    await get_main_search_result();
+  })
+
+  main_condition_container.appendChild(mc_select);
+  main_condition_container.appendChild(mc_input);
+
+  main_search_container.appendChild(main_date_container);
+  main_search_container.appendChild(main_condition_container);
+  main_search_container.appendChild(main_search_btn);
+
+  return main_search_container;
 }
 function Set_main_div_enable(value) 
 {
@@ -219,7 +334,7 @@ function get_select_block_func(arr) {
   });
 }
 function get_main_div_table_th_init() {
-  let th_data = ["","動作","診別","藥品碼","藥品名稱","領藥號","庫存量","交易量","結存量","盤點量","操作人","病人姓名","病歷號","病房號","操作時間","開方時間","庫名","收支原因",'備註'];
+  let th_data = ["","動作","診別","庫別", "藥品碼","藥品名稱","領藥號","庫存量","交易量","結存量","盤點量","操作人","病人姓名","病歷號","病房號","操作時間","開方時間","收支原因",'備註'];
   let main_div_table_th_container = document.querySelector(".main_div_table_th_container");
 
   th_data.forEach((element, index) => {
@@ -232,7 +347,7 @@ function get_main_div_table_th_init() {
   });
 }
 function get_info_init() {
-  let th_data = ["","動作","診別","藥品碼","藥品名稱","領藥號","庫存量","交易量","結存量","盤點量","操作人","病人姓名","病歷號","病房號","操作時間","開方時間","庫名","收支原因",'備註'];
+  let th_data = ["","動作","診別","庫別","藥品碼","藥品名稱","領藥號","庫存量","交易量","結存量","盤點量","操作人","病人姓名","病歷號","病房號","操作時間","開方時間","收支原因",'備註'];
 
   console.log(data_information);
 
@@ -253,6 +368,7 @@ function get_info_init() {
         let td = document.createElement("p");
         td.classList.add("table_td");
         td.classList.add(`th_${i}`);
+        td.classList.add(`td_${i}`);
         if(index % 2 != 0) {
           td.classList.add("bgc_gray");
         }
@@ -267,46 +383,46 @@ function get_info_init() {
             td.innerHTML = element.MEDKND;
             break;
           case 3:
-            td.innerHTML = element.CODE;
+            td.innerHTML = element.STOREHOUSE;
             break;
           case 4:
-            td.innerHTML = element.NAME;
+            td.innerHTML = element.CODE;
             break;
           case 5:
-            td.innerHTML = element.MED_BAG_NUM;
+            td.innerHTML = element.NAME;
             break;
           case 6:
-            td.innerHTML = element.INV_QTY;
+            td.innerHTML = element.MED_BAG_NUM;
             break;
           case 7:
-            td.innerHTML = element.TXN_QTY;
+            td.innerHTML = element.INV_QTY;
             break;
           case 8:
-            td.innerHTML = element.EBQ_QTY;
+            td.innerHTML = element.TXN_QTY;
             break;
           case 9:
-            td.innerHTML = element.PHY_QTY;
+            td.innerHTML = element.EBQ_QTY;
             break;
           case 10:
-            td.innerHTML = element.OP;
+            td.innerHTML = element.PHY_QTY;
             break;
           case 11:
-            td.innerHTML = element.PAT;
+            td.innerHTML = element.OP;
             break;
           case 12:
-            td.innerHTML = element.MRN;
+            td.innerHTML = element.PAT;
             break;
           case 13:
-            td.innerHTML = element.WARD_NAME;
+            td.innerHTML = element.MRN;
             break;
           case 14:
-            td.innerHTML = element.OP_TIME;
+            td.innerHTML = element.WARD_NAME;
             break;
           case 15:
-            td.innerHTML = element.RX_TIME;
+            td.innerHTML = element.OP_TIME;
             break;
           case 16:
-            td.innerHTML = "";
+            td.innerHTML = element.RX_TIME;
             break;
           case 17:
             td.innerHTML = element.RSN;
@@ -656,4 +772,124 @@ function get_init_post_data() {
   };
 
   return post_data
+}
+async function get_main_search_result() {
+  Set_main_div_enable(true);
+  let start_p = performance.now();
+
+  // select
+  // 藥碼、藥名
+  let mc_select = document.querySelector('#mc_select');
+  // 操作時間、開方時間
+  let md_select = document.querySelector('#md_select');
+
+  // input
+  let mc_input = document.querySelector("#mc_input");
+
+  let md_start_date_input = document.querySelector("#md_start_date_input");
+  let md_end_date_input = document.querySelector("#md_end_date_input");
+
+  if(!md_start_date_input.value) {
+      alert("請選起始時間！！");
+      Set_main_div_enable(false);
+      return;
+  } else if(!md_end_date_input.value) {
+      alert("請選結束時間！！");
+      Set_main_div_enable(false);
+      return;
+  }
+  
+  // 根據操作或開方時間請求資料
+  let temp_post_data = get_main_trans_form_post_data();
+  let temp_data;
+  if (md_select.value == "operate") {
+      temp_data = await get_datas_by_op_time_st_end_transactions(temp_post_data);
+      console.log(temp_data);
+      data_information = temp_data["Data"];
+  } else {
+      temp_data = await get_datas_by_rx_time_st_end_transactions(temp_post_data);
+      // console.log(temp_data);
+      data_information = temp_data["Data"];
+  }
+
+  if(mc_input.value != "" && mc_select.value != "all") {
+      let temp_data = data_information;
+      switch (mc_select.value) {
+          case "code":
+              temp_data = data_information.filter((e) => {
+                  return e["CODE"].includes(mc_input.value);
+              });
+              data_information = temp_data;
+              break;
+          case "name":
+              temp_data = data_information.filter((e) => {
+                  return e["NAME"].includes(mc_input.value);
+              });
+              data_information = temp_data;
+              break;
+          default:
+              break;
+      }
+  };
+
+  current_pagination = 1;
+  get_info_init();
+  set_pagination_init();
+  set_ez_main_div_time_line();
+  popup_search_select_div_close();
+  Set_main_div_enable(false);
+
+  let end_p = performance.now();
+  console.log("out：", end_p - start_p);
+};
+
+function get_main_trans_form_post_data() {
+  let md_start_date_input = document.querySelector("#md_start_date_input");
+  let md_end_date_input = document.querySelector("#md_end_date_input");
+
+  let serverNameStr = "";
+  let serverTypeStr = "";
+
+  temp_selected_arr.forEach(element => {
+      serverNameStr += element.serverName + ",";
+      serverTypeStr += element.serverType + ",";
+  });
+
+  // Remove the trailing comma
+  serverNameStr = serverNameStr.slice(0, -1);
+  serverTypeStr = serverTypeStr.slice(0, -1);
+
+  // console.log(st_time);
+  // console.log(end_time);
+  // console.log(serverNameStr);
+  // console.log(serverTypeStr);
+
+  let post_data = {
+      Data: {},
+      ValueAry: [   
+          `${md_start_date_input.value}`,
+          `${md_end_date_input.value}`,
+          `${serverNameStr}`,
+          `${serverTypeStr}`]
+  };
+
+  return post_data;
+}
+function set_ez_main_div_time_line() {
+  console.log("簡易搜尋");
+  let md_select = document.querySelector('#md_select');
+  let md_start_date_input = document.querySelector("#md_start_date_input");
+  let md_end_date_input = document.querySelector("#md_end_date_input");
+
+  let time_line_type = document.querySelector(".time_line_type");
+  let time_line_st = document.querySelector(".time_line_st");
+  let time_line_end = document.querySelector(".time_line_end");
+
+  if (md_select.value == "operate") {
+      time_line_type.innerHTML = "操作時間";
+  } else {
+      time_line_type.innerHTML = "開方時間";
+  }
+  time_line_st.innerHTML = md_start_date_input.value;
+  time_line_end.innerHTML = md_end_date_input.value;
 }

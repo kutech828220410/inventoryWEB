@@ -106,6 +106,17 @@ function get_mbf_header()
     pp_mbf_header_code_div.appendChild(pp_mbf_h_sum_title);
     pp_mbf_header_code_div.appendChild(pp_mbf_h_sum_content);
 
+    let pp_mbf_h_form_num_title = document.createElement("div");
+    pp_mbf_h_form_num_title.classList.add("pp_mbf_h_title");
+    pp_mbf_h_form_num_title.innerHTML = "清單筆數：";
+
+    let pp_mbf_h_form_num = document.createElement("div");
+    pp_mbf_h_form_num.id = "pp_mbf_h_form_num";
+    pp_mbf_h_form_num.innerHTML = "0";
+
+    pp_mbf_header_code_div.appendChild(pp_mbf_h_form_num_title);
+    pp_mbf_header_code_div.appendChild(pp_mbf_h_form_num);
+
     let pp_mbf_header_daterange_div = document.createElement("div");
     pp_mbf_header_daterange_div.classList.add('pp_mbf_header_daterange_div');
 
@@ -230,6 +241,7 @@ function popup_mbf_get_form_list(array) {
     popup_mbf_table_init();
 
     let pp_mbf_h_sum_content = document.querySelector("#pp_mbf_h_sum_content");
+    let pp_mbf_h_form_num = document.querySelector("#pp_mbf_h_form_num");
     let temp_total_TXN_QTY = 0;
 
     console.log(array);
@@ -237,12 +249,14 @@ function popup_mbf_get_form_list(array) {
         array.forEach((element, index) => {
             popup_mgf_get_form_item(element, index);
     
-            temp_total_TXN_QTY = temp_total_TXN_QTY + +element.TXN_QTY
+            temp_total_TXN_QTY = temp_total_TXN_QTY + +element.TXN_QTY;
+            pp_mbf_h_form_num.innerHTML = array.length;
         });
     } else {
         let pp_mbf_main_table_container = document.querySelector(".pp_mbf_main_table_container");
 
-        pp_mbf_main_table_container.innerHTML = `<div class="no_trans_data">查無交易紀錄</div>`; 
+        pp_mbf_main_table_container.innerHTML = `<div class="no_trans_data">查無交易紀錄</div>`;
+        pp_mbf_h_form_num.innerHTML = "0"; 
     }
 
     pp_mbf_h_sum_content.innerHTML = temp_total_TXN_QTY;
