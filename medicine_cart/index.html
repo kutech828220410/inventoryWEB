@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no/>">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="pragma" content="no-cache">
   <meta http-equiv="expires" content="0">
@@ -23,27 +23,51 @@
           loadScript("../../session_check.js");
           loadScript("../../session.js");
           loadScript("../../Function/WebApiFunc.js");
+          // loadScript("main_loadingdata.js");
+          // loadScript("main_popup_serch.js");
+          loadScript("popup_login.js");
           loadScript("data_select.js");
           loadScript("app.js");
           loadScript("deliver.js");
           loadScript("allocate.js");
           loadScript("review.js");
           loadScript("../../UI/navBar.js");
+          
         })();
 
   </script>
 </head>
 <body>
-  
-      <script>
 
-      </script>
-   
   <div class="under-line">
     <B> Copyright ©2024 鴻森智能科技 </B>
   </div>
   
   <script>
+
+    
+  (async function() {
+    
+    await popup_login_init();
+    
+    popup_login_finishedEvent.push(popup_login_finished);
+    
+
+    if(!IsLogged)
+  {
+    await popup_login_div.Show();
+  }
+  // else if(IsLogged && !IsCreatSelected)
+  // {
+  //   await popup_creatSelect_div.Show();
+  //   await  popup_login_div.Close();
+  // }
+  // else if(IsLogged && IsCreatSelected)
+  // {
+  //   popup_creatSelect_finished();
+  // }
+  })();
+
   var barcode_value = '';
     // 監聽頁面的keydown事件
   window.addEventListener('keydown', function(event) 

@@ -84,7 +84,6 @@ function popup_login_content_init()
 
     return content;
 }
-
 function popup_login_underline_init()
 {
     const underline = document.createElement('div');
@@ -118,7 +117,6 @@ function popup_login_underline_init()
 
     return underline;
 }
-
 
 async function popup_login_content_submit_button_click(event) 
 {

@@ -1,6 +1,9 @@
 window.onload = load;
 // window.addEventListener('resize', handleResize);
-
+var IsLogged = (function() 
+{
+  return (sessionData.Name != null && sessionData.Name != "");
+})();
 function handleResize() 
 {
    //Set_popup_find_position();
@@ -34,7 +37,7 @@ async function load()
     name: loggedName,
   }
 
-  nav_bar_create("medicine_cart", test_user_data);
+  // nav_bar_create("medicine_cart", test_user_data);
   get_header(test_user_data);
   get_main_div();
   get_main_ui();
@@ -59,7 +62,7 @@ function get_header(test_user_data) {
 
     let header_user = document.createElement("div");
     header_user.classList.add("header_user");
-    header_user.innerHTML = ``;
+    header_user.innerHTML = `使用者：${test_user_data.name}`;
 
     header_title_container.appendChild(h_title);
     header_title_container.appendChild(header_user);
@@ -87,6 +90,7 @@ function get_header(test_user_data) {
           light_color_list.forEach(element => {
             if(element.name == e.target.getAttribute("color")) {
               color_select = element;
+              console.log("color_select", color_select);
             }
           });
           close_light_color_list();
@@ -99,8 +103,27 @@ function get_header(test_user_data) {
     light_color_select_div.appendChild(current_light_color_display);
     light_color_select_div.appendChild(light_color_select_container);
 
-    header.appendChild(header_title_container);
-    header.appendChild(light_color_select_div);
+    let header_display_div = document.createElement("div");
+    header_display_div.classList.add("header_display_div");
+
+    header_display_div.appendChild(header_title_container);
+    header_display_div.appendChild(light_color_select_div);
+
+    let header_logout_btn = document.createElement("div");
+    header_logout_btn.classList.add("header_logout_btn");
+    header_logout_btn.classList.add("btn");
+    header_logout_btn.innerText = "登出";
+    header_logout_btn.addEventListener("click", () => {
+      if (confirm("是否登出？")) {
+        sessionStorage.removeItem("login_json");
+        sessionStorage.removeItem("IC_SN");
+
+        location.reload();
+      }
+    })
+
+    header.appendChild(header_display_div);
+    header.appendChild(header_logout_btn);
     body.appendChild(header);
 }
 
@@ -545,28 +568,52 @@ async function get_cart_list_and_med_table() {
 
   let med_table_option_container = document.querySelector(".med_table_option_container");
   med_table_option_container.innerHTML = "";
-  med_table.forEach(element => {
-    let med_table_option_div = document.createElement("div");
-    med_table_option_div.classList.add("med_table_option_div");
-    med_table_option_div.setAttribute("med_table", element.uid);
-    med_table_option_div.innerHTML = element.ctname;
-    med_table_option_div.addEventListener("click", () => {
-      med_table_content.innerHTML = med_table_option_div.innerHTML;
-      current_med_table = element;
-      if(last_current_med_table == current_med_table) {
-        close_med_table_list();
-        return
-      } else {
-        console.log(current_med_table);
-        let temp_logic = get_func_logic();
-        get_all_select_option_logic(temp_logic);
-        last_current_med_table = current_med_table;
-        close_med_table_list();
-      }
-    });
-
-    med_table_option_container.appendChild(med_table_option_div);
-  });
+  for (let i = 0; i < med_table.length + 1; i++) {
+    if (i == 0) {
+      let med_table_option_div = document.createElement("div");
+      med_table_option_div.classList.add("med_table_option_div");
+      med_table_option_div.setAttribute("med_table", "all");
+      med_table_option_div.innerHTML = "全部";
+      med_table_option_div.addEventListener("click", () => {
+        med_table_content.innerHTML = med_table_option_div.innerHTML;
+        current_med_table = "all";
+        if(last_current_med_table == current_med_table) {
+          close_med_table_list();
+          return
+        } else {
+          console.log(current_med_table);
+          let temp_logic = get_func_logic();
+          get_all_select_option_logic(temp_logic);
+          last_current_med_table = current_med_table;
+          close_med_table_list();
+        }
+      });
+  
+      med_table_option_container.appendChild(med_table_option_div);
+    } else {
+      let element = med_table[i - 1];
+      let med_table_option_div = document.createElement("div");
+      med_table_option_div.classList.add("med_table_option_div");
+      med_table_option_div.setAttribute("med_table", element.uid);
+      med_table_option_div.innerHTML = element.ctname;
+      med_table_option_div.addEventListener("click", () => {
+        med_table_content.innerHTML = med_table_option_div.innerHTML;
+        current_med_table = element;
+        if(last_current_med_table == current_med_table) {
+          close_med_table_list();
+          return
+        } else {
+          console.log(current_med_table);
+          let temp_logic = get_func_logic();
+          get_all_select_option_logic(temp_logic);
+          last_current_med_table = current_med_table;
+          close_med_table_list();
+        }
+      });
+  
+      med_table_option_container.appendChild(med_table_option_div);
+    } 
+  }
 
   let cart_select_container = document.querySelector(".cart_select_container");
   let med_table_select_container = document.querySelector(".med_table_select_container");
@@ -608,6 +655,7 @@ function set_func_select_logic() {
 }
 // 調劑作業
 async function allocate_func() {
+  Set_main_div_enable(true);
   let cart_select_container = document.querySelector(".cart_select_container");
   let med_table_select_container = document.querySelector(".med_table_select_container");
 
@@ -619,15 +667,14 @@ async function allocate_func() {
   cart_content.addEventListener("click", open_cart_list);
   med_table_content.addEventListener("click", open_med_table_list);
   if(current_cart == "" && current_med_table == "") {
+    Set_main_div_enable(false);
     return;
-  } else if(current_cart != "" && current_med_table == "") {
-    console.log("這時候清單生成（無法操作）");
-    return;
-  } else if(current_cart != "" && current_med_table != "") {
-    console.log("清單對應解鎖調劑台");
+  } else if(current_cart == "" && current_med_table != "") {
+    Set_main_div_enable(false);
     return;
   } else {
-    console.log("啥事沒有");
+    allocate_diplay_logic();
+    Set_main_div_enable(false);
     return;
   }
 }
@@ -687,6 +734,7 @@ function div_event_click_cir_able(div) {
   if(div.classList.contains("select_disable")) div.classList.remove("select_disable");
   set_circle_able_arrow(div.children[1]);
 }
+
 function div_event_click_tri_able(div) {
   if(div.classList.contains("select_disable")) div.classList.remove("select_disable");
   set_tir_arrow(div.children[1]);
@@ -727,4 +775,8 @@ function set_tir_arrow(div) {
 function func_display_init() {
   let function_display_container = document.querySelector(".function_display_container");
   function_display_container.innerHTML = "";
+}
+async function popup_login_finished()
+{
+  console.log(`[${arguments.callee.name}]`);
 }

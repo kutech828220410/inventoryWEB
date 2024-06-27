@@ -293,6 +293,7 @@ async function get_search_result() {
     }
     // 根據操作或開方時間請求資料
     let temp_post_data = get_trans_form_post_data();
+    console.log(temp_post_data);
     let temp_data;
     if (select_date_kind.value == "operate") {
         temp_data = await get_datas_by_op_time_st_end_transactions(temp_post_data);
@@ -384,12 +385,15 @@ function get_trans_form_post_data() {
     // console.log(end_time);
     // console.log(serverNameStr);
     // console.log(serverTypeStr);
+
+    let temp_start_time = ppds_start_input.value.replace("T", " ");
+    let temp_end_time = ppds_end_input.value.replace("T", " ");
   
     let post_data = {
         Data: {},
         ValueAry: [   
-            `${ppds_start_input.value}`,
-            `${ppds_end_input.value}`,
+            `${temp_start_time}:00`,
+            `${temp_end_time}:00`,
             `${serverNameStr}`,
             `${serverTypeStr}`]
     };
@@ -412,8 +416,12 @@ function set_main_div_time_line() {
     } else {
         time_line_type.innerHTML = "開方時間";
     }
-    time_line_st.innerHTML = ppds_start_input.value;
-    time_line_end.innerHTML = ppds_end_input.value;
+
+    let temp_start_time = ppds_start_input.value.replace("T", " ");
+    let temp_end_time = ppds_end_input.value.replace("T", " ");
+
+    time_line_st.innerHTML = temp_start_time;
+    time_line_end.innerHTML = temp_end_time;
 }
 
 function popup_search_select_div_close() {

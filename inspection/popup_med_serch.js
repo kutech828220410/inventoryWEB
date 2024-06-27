@@ -86,6 +86,21 @@ function popup_med_serch_content_init()
     radio_content_ENG_NAME_text.style.marginRight = "5px";
     content_serch_type_div.appendChild(radio_content_ENG_NAME_text);
 
+    const radio_content_SKDIACODE = document.createElement('input');
+    radio_content_SKDIACODE.type = "radio";
+    radio_content_SKDIACODE.id= 'radio_content_SKDIACODE';
+    radio_content_SKDIACODE.name = "serch_type";
+    radio_content_SKDIACODE.style.width = "20px";
+    radio_content_SKDIACODE.style.height = "20px";
+    radio_content_SKDIACODE.style.marginRight = "3px";
+    content_serch_type_div.appendChild(radio_content_SKDIACODE);
+   
+    const radio_content_SKDIACODE_text = document.createElement('div');
+    My_Div.Set_Text(radio_content_SKDIACODE_text ,"料號" , TextAlignEnum.CENTER , "16px", false,"標楷體","black");
+    radio_content_SKDIACODE_text.style.marginLeft = "5px";
+    radio_content_SKDIACODE_text.style.marginRight = "5px";
+    content_serch_type_div.appendChild(radio_content_SKDIACODE_text);
+
     const radio_content_DIANAME = document.createElement('input');
     radio_content_DIANAME.type = "radio";
     radio_content_DIANAME.id= 'radio_content_DIANAME';
@@ -221,11 +236,12 @@ function popup_med_serch_typeSerch(text)
     const radio_content_ENG_NAME = document.querySelector("#radio_content_ENG_NAME");
     const radio_content_DIANAME = document.querySelector("#radio_content_DIANAME");
     const radio_content_CHT_NAME = document.querySelector("#radio_content_CHT_NAME");
+    const radio_content_SKDIACODE = document.querySelector("#radio_content_SKDIACODE");
     console.log(`[${arguments.callee.name}]`,radio_content_ENG_NAME.checked );
     var med = null;
     if(radio_content_ENG_NAME.checked == true)
     {
-        med = popup_med_serch_medclass.filter(function(item)
+        med = list_data.filter(function(item)
         {
             return item.NAME.toUpperCase().includes(text.toUpperCase());
         });
@@ -234,7 +250,7 @@ function popup_med_serch_typeSerch(text)
     }
     else if(radio_content_DIANAME.checked == true)
     {
-        med = popup_med_serch_medclass.filter(function(item)
+        med = list_data.filter(function(item)
         {
             return item.DIANAME.toUpperCase().includes(text.toUpperCase());
         });
@@ -242,11 +258,25 @@ function popup_med_serch_typeSerch(text)
     }
     else if(radio_content_CHT_NAME.checked == true)
     {
-        med = popup_med_serch_medclass.filter(function(item)
+        med = list_data.filter(function(item)
         {
             return item.CHT_NAME.toUpperCase().includes(text.toUpperCase());
         });
         console.log("搜尋中文名結果",med);
+    }
+    else if(radio_content_SKDIACODE.checked == true)
+    {
+        med = list_data.filter(function(item)
+        {
+            return item["SKDIACODE"].toUpperCase().includes(text.toUpperCase());
+        });
+        if(med.length == 0) {
+            med = list_data.filter(function(item)
+            {
+                return item["CODE"].toUpperCase().includes(text.toUpperCase());
+            });
+        }
+        console.log("搜尋料號結果",med);
     }
     popup_med_serch_rows_div.length = 0;
     popup_med_serch_PageIndex = 0;
@@ -341,7 +371,11 @@ function popup_med_serch_get_row(medClass , index)
     });
     const row_text = document.createElement("div");
     My_Div.Init(row_text, `popup_med_serch_row_text${medClass.CODE}`,`popup_med_serch_row_text${medClass.CODE}`, '100%', '60px', '');
-    My_Div.Set_Text(row_text ,`${index}.${medClass.NAME}` , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","black");
+    if(medClass.SKDIACODE == "") {
+        My_Div.Set_Text(row_text ,`${medClass.CODE}\n${medClass.NAME}` , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","black");
+    } else {
+        My_Div.Set_Text(row_text ,`${medClass.SKDIACODE}\n${medClass.NAME}` , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","black");
+    }
     My_Div.Set_Block(row_text, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
     row_text.style.marginLeft = "5px";
 

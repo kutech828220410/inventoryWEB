@@ -440,83 +440,6 @@ function get_info_init() {
   
       main_div_table_display_container.appendChild(table_info_container);
     }
-
-    // array.forEach((element, index) => {
-    //   let table_info_container = document.createElement("div");
-    //   table_info_container.classList.add("table_info_container");
-  
-    //   for (let i = 0; i < th_data.length; i++) {
-    //     let td = document.createElement("p");
-    //     td.classList.add("table_td");
-    //     td.classList.add(`th_${i}`);
-    //     if(index%2 != 0) {
-    //       td.classList.add("bgc_gray");
-    //     }
-    //     switch (i) {
-    //       case 0:
-    //         td.innerHTML = index + 1;
-    //         break;
-    //       case 1:
-    //         td.innerHTML = element.ACTION;
-    //         break;
-    //       case 2:
-    //         td.innerHTML = element.MEDKND;
-    //         break;
-    //       case 3:
-    //         td.innerHTML = element.CODE;
-    //         break;
-    //       case 4:
-    //         td.innerHTML = element.NAME;
-    //         break;
-    //       case 5:
-    //         td.innerHTML = element.MED_BAG_NUM;
-    //         break;
-    //       case 6:
-    //         td.innerHTML = element.INV_QTY;
-    //         break;
-    //       case 7:
-    //         td.innerHTML = element.TXN_QTY;
-    //         break;
-    //       case 8:
-    //         td.innerHTML = element.EBQ_QTY;
-    //         break;
-    //       case 9:
-    //         td.innerHTML = element.PHY_QTY;
-    //         break;
-    //       case 10:
-    //         td.innerHTML = element.OP;
-    //         break;
-    //       case 11:
-    //         td.innerHTML = element.PAT;
-    //         break;
-    //       case 12:
-    //         td.innerHTML = element.MRN;
-    //         break;
-    //       case 13:
-    //         td.innerHTML = element.WARD_NAME;
-    //         break;
-    //       case 14:
-    //         td.innerHTML = element.OP_TIME;
-    //         break;
-    //       case 15:
-    //         td.innerHTML = element.RX_TIME;
-    //         break;
-    //       case 16:
-    //         td.innerHTML = element.RSN;
-    //         break;
-    //       case 17:
-    //         td.innerHTML = element.NOTE;
-    //         break;
-          
-    //       default:
-    //         break;
-    //     }
-        
-    //     table_info_container.appendChild(td);
-    //   };
-  
-    //   main_div_table_display_container.appendChild(table_info_container);
-    // });
   } else {
     main_div_table_display_container.innerHTML = `
       <div class="no_form_list_data">目前無交易紀錄</div>
@@ -625,7 +548,7 @@ function set_pagination_init() {
           pagination_pages_container.appendChild(pagination_page_container);
         }
       }
-    } else if (current_pagination > temp_pages - 7) {
+    } else if (current_pagination > temp_pages - 6) {
       for (let i = 1; i <= 9; i++) {
         if(i == 1) {
           // 第一頁
@@ -728,7 +651,6 @@ function set_pagination_init() {
   pagination_container.appendChild(pre_page_btn);
   pagination_container.appendChild(pagination_pages_container);
   pagination_container.appendChild(next_page_btn);
-
 }
 function get_init_post_data() {
   let time_line_st = document.querySelector(".time_line_st");
@@ -842,7 +764,6 @@ async function get_main_search_result() {
   let end_p = performance.now();
   console.log("out：", end_p - start_p);
 };
-
 function get_main_trans_form_post_data() {
   let md_start_date_input = document.querySelector("#md_start_date_input");
   let md_end_date_input = document.querySelector("#md_end_date_input");
@@ -864,11 +785,14 @@ function get_main_trans_form_post_data() {
   // console.log(serverNameStr);
   // console.log(serverTypeStr);
 
+  let temp_start_time = md_start_date_input.value.replace("T", " ");
+  let temp_end_time = md_end_date_input.value.replace("T", " ");
+
   let post_data = {
       Data: {},
       ValueAry: [   
-          `${md_start_date_input.value}`,
-          `${md_end_date_input.value}`,
+          `${temp_start_time}:00`,
+          `${temp_end_time}:00`,
           `${serverNameStr}`,
           `${serverTypeStr}`]
   };
@@ -890,6 +814,10 @@ function set_ez_main_div_time_line() {
   } else {
       time_line_type.innerHTML = "開方時間";
   }
-  time_line_st.innerHTML = md_start_date_input.value;
-  time_line_end.innerHTML = md_end_date_input.value;
+
+  let temp_start_time = md_start_date_input.value.replace("T", " ");
+  let temp_end_time = md_end_date_input.value.replace("T", " ");
+
+  time_line_st.innerHTML = temp_start_time;
+  time_line_end.innerHTML = temp_end_time;
 }

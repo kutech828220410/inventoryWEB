@@ -1,0 +1,190 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.header {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 80px;
+}
+.main_div {
+    margin-bottom: 60px;
+}
+.no_info_data_div {
+    padding: 36px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 32px;
+    color: #e73f3f;
+}
+.h_title {
+    font-size: 24px;
+    font-weight: 600;
+}
+.header_user {
+    padding-left: 24px;
+}
+
+.header_btn_container {
+    display: flex;
+    margin-right: 40px;
+}
+
+.btn {
+  margin: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 16px;
+  border: 1px solid black;
+  color: #F6F7F7;
+  padding: 6px 32px;
+  border-radius: 5px;
+  transition: all 0.2s ease-out;
+  background-color: black;
+}
+.btn:hover {
+  background-color: #6B6B63;
+  transition: all 0.2s ease-out;
+}
+.unable_btn {
+    cursor: not-allowed;
+    background-color: #b8b8b8;
+    border: 1px solid #b8b8b8;
+    color: #000;
+}
+.unable_btn:hover {
+    background-color: #b8b8b8;
+    transition: all 0.2s ease-out;
+}
+
+.upload_img_container {
+    margin: 4px auto;
+    display: flex;
+    justify-content: center;
+}
+
+#pic_input {
+    display: none;
+}
+.take_pic_label {
+    padding: 6px 48px;
+    font-size: 20px;
+    font-weight: 800;
+}
+.notice_container {
+    margin: 8px auto 12px;
+    display: flex;
+    justify-content: center;
+}
+.notice_content {
+    width: 600px;
+    text-align: center;
+    font-weight: 600;
+    color: black;
+    line-height: 32px;
+    letter-spacing: 1px;
+}
+
+.display_container {
+    box-sizing: content-box;
+    position: relative;
+    width: 600px;
+    height: 800px;
+    margin: auto;
+    border: 2px solid #000;
+}
+.display_container > img {
+    display: block;
+    width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    object-position: left;
+}
+.location_point {
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    position: absolute;
+    transform: translate(-50% -50%);
+    border-radius: 50%;
+}
+.l_0 {
+    top: -10px;
+    left: -10px;
+}
+
+.l_1 {
+    bottom: -10px;
+    left: -10px;
+}
+.l_2 {
+    bottom: -10px;
+    right: 35px;
+}
+.l_3 {
+    top: -10px;
+    right: 35px;
+}
+.upload_btn {
+    font-size: 20px;
+    font-weight: 800;
+    width: 120px;
+    display: flex;
+    justify-content: center;
+    margin: 16px auto 0px;
+    padding: 8px;
+}
+
+.under-line {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    color: #000000;
+    background-color: #ffffff;
+    height: 30px;
+    line-height: 30px;
+    display: block;
+    z-index: 9;
+}
+
+@media screen and (max-width: 768px) {
+    /* 在寬度小於或等於 768px 的屏幕上應用這些樣式 */
+    .display_container {
+        width: 321px;
+        height: 428px;
+    }
+    .notice_content {
+        width: 321px;
+        font-size: 13px;
+        line-height: 20px;
+    }
+    .location_point {
+        width: 10px;
+        height: 10px;
+    }
+    .l_0 {
+        top: -5px;
+        left: -5px;
+    }
+    
+    .l_1 {
+        bottom: -5px;
+        left: -5px;
+    }
+    .l_2 {
+        bottom: -5px;
+        right: 14px;
+    }
+    .l_3 {
+        top: -5px;
+        right: 14px;
+    }
+}

@@ -1,5 +1,5 @@
 let current_pagination = 1;
-let pagination_num = 50;
+let pagination_num = 20;
 let med_order_list_form_data;
 window.onload = load;
 // window.addEventListener('resize', handleResize);
@@ -123,15 +123,25 @@ function get_main_div() {
     let main_div_search_container = document.createElement("div");
     main_div_search_container.classList.add("main_div_search_container");
 
+    let main_div_table_num_container = document.createElement
+    ("div");
+    main_div_table_num_container.classList.add("main_div_table_num_container");
+    main_div_table_num_container.innerHTML = "總筆數：";
+
     let main_div_table_th_container = document.createElement("div");
     main_div_table_th_container.classList.add("main_div_table_th_container");
 
     let main_div_table_display_container = document.createElement("div");
     main_div_table_display_container.classList.add("main_div_table_display_container");
 
+    let pagination_container = document.createElement("div");
+    pagination_container.classList.add("pagination_container");
+
     main_div.appendChild(main_div_search_container);
+    main_div.appendChild(main_div_table_num_container);
     main_div.appendChild(main_div_table_th_container);
     main_div.appendChild(main_div_table_display_container);
+    main_div.appendChild(pagination_container);
 
     body.appendChild(main_div);
 }
@@ -147,6 +157,9 @@ function Set_main_div_enable(value)
 }
 function get_search_container() {
   let main_div_search_container = document.querySelector(".main_div_search_container");
+
+  let search_all_condition_container = document.createElement("div");
+  search_all_condition_container.classList.add("search_all_condition_container");
 
   let search_date_container = document.createElement("div");
   search_date_container.classList.add("search_date_container");
@@ -299,6 +312,10 @@ function get_search_container() {
   search_condition_container.appendChild(sc_uncheckbox_container);
   search_condition_container.appendChild(sc_checkbox_container);
 
+  search_all_condition_container.appendChild(search_date_container);
+  search_all_condition_container.appendChild(search_input_container);
+  search_all_condition_container.appendChild(search_condition_container);
+
   let main_search_btn = document.createElement("div");
   main_search_btn.classList.add("main_search_btn");
   main_search_btn.classList.add("btn");
@@ -306,10 +323,7 @@ function get_search_container() {
   main_search_btn.addEventListener("click", async () => {
     get_main_search_result();
   });
-
-  main_div_search_container.appendChild(search_date_container);
-  main_div_search_container.appendChild(search_input_container);
-  main_div_search_container.appendChild(search_condition_container);
+  main_div_search_container.appendChild(search_all_condition_container);
   main_div_search_container.appendChild(main_search_btn);
 }
 
@@ -329,12 +343,19 @@ function get_list_table_container() {
 }
 
 async function get_main_search_result() {
+  showLoadingPopup();
   let sd_start_date_input = document.getElementById("sd_start_date_input");
   let sd_end_date_input = document.getElementById("sd_end_date_input");
   let si_select = document.getElementById("si_select");
   let si_input = document.getElementById("si_input");
   let sc_uncheckbox = document.getElementById("sc_uncheckbox");
   let sc_checkbox = document.getElementById("sc_checkbox");
+
+  if(!sc_uncheckbox.checked && !sc_checkbox.checked) {
+    alert("請選擇至少一項調劑狀態");
+    hideLoadingPopup();
+    return;
+  }
 
   let temp_data =   {
     "Data": {},
@@ -347,11 +368,347 @@ async function get_main_search_result() {
   let res_data = await get_orderT_by_rx_time_st_end(temp_data);
   let arr_data = res_data["Data"];
 
-  if(si_select.value == "all") {
+  if(si_select.value != "all") {
+    switch (si_select.value) {
+      case "med_bag_num":
+        arr_data = arr_data.filter((e) => {
+          return e["MED_BAG_NUM"].includes(si_input.value);
+        });
+        console.log(arr_data);
+        break;
+    
+      case "patcode":
+        arr_data = arr_data.filter((e) => {
+          return e["PATCODE"].includes(si_input.value);
+        });
+        console.log(arr_data);
+        break;
+    
+      case "patname":
+        arr_data = arr_data.filter((e) => {
+          return e["PATNAME"].includes(si_input.value);
+        });
+        console.log(arr_data);
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  if(sc_uncheckbox.checked && !sc_checkbox.checked) {
+    arr_data = arr_data.filter((e) => {
+      return e["STATE"] == "未過帳";
+    });
     console.log(arr_data);
+  } else if(!sc_uncheckbox.checked && sc_checkbox.checked) {
+    arr_data = arr_data.filter((e) => {
+      return e["STATE"] == "已過帳";
+    });
+    console.log(arr_data);
+  }
+  med_order_list_form_data = arr_data;
+  console.log(med_order_list_form_data);
+  
+  // 根據搜尋結果建構畫面展示
+  current_pagination = 1;
+  set_table_list_num();
+  set_search_result();
+  set_pagination_init();
+  hideLoadingPopup();
+}
+
+function set_table_list_num() {
+  let main_div_table_num_container = document.querySelector(".main_div_table_num_container");
+
+  main_div_table_num_container.innerHTML = `
+    總筆數：${med_order_list_form_data.length}
+  `;
+}
+async function set_search_result() {
+  let main_div_table_display_container = document.querySelector(".main_div_table_display_container");
+
+  let arr_th = ["","領藥號","姓名","病歷號","性別","年齡","天數","筆數","已調劑","處方時間"];
+
+  main_div_table_display_container.innerHTML = "";
+
+  if(med_order_list_form_data.length != 0) {
+    for (let index = pagination_num * (current_pagination - 1); index < pagination_num * current_pagination; index++) {
+      const element = med_order_list_form_data[index];
+
+      // 若資料少於當頁20筆提前中斷
+      if(element == undefined) return;
+
+      // 建立資料
+      let table_info_container = document.createElement("div");
+      table_info_container.classList.add("table_info_container");
+      for (let i = 0; i < arr_th.length; i++) {
+        let td = document.createElement("p");
+        td.classList.add("table_td");
+        td.classList.add(`td`);
+        td.classList.add(`td_${i}`);
+        if(index % 2 != 0) {
+          td.classList.add("bgc_gray");
+        }
+        switch (i) {
+          case 0:
+            td.innerHTML = index + 1;
+            break;
+          case 1:
+            td.innerHTML = element.MED_BAG_NUM;
+            break;
+          case 2:
+            td.innerHTML = element.PATNAME;
+            break;
+          case 3:
+            td.innerHTML = element.PATCODE;
+            break;
+          case 4:
+            if(element.SEX == "F") {
+              td.innerHTML = "女";
+            } else {
+              td.innerHTML = "男";
+            }
+            break;
+          case 5:
+            let ageString = element.AGE;
+            let age = parseInt(ageString, 10); 
+            td.innerHTML = age;
+            break;
+          case 6:
+            td.innerHTML = element.DAYS;
+            break;
+          case 7:
+            td.innerHTML = element.INV_QTY;
+            break;
+          case 8:
+            td.innerHTML = element.STATE;
+            break;
+          case 9:
+            td.innerHTML = element.ORD_START;
+            break;
+          
+          default:
+            break;
+        }
+        
+        table_info_container.appendChild(td);
+      };
+  
+      main_div_table_display_container.appendChild(table_info_container);
+      
+    }
+  } else {
+    main_div_table_display_container.innerHTML = `
+      <div class="no_data_form">查無醫令資料</div>
+    `;
   }
 
 }
-async function set_search_result(arr) {
-  
+
+function set_pagination_init() {
+  let pagination_container = document.querySelector(".pagination_container");
+  pagination_container.innerHTML = "";
+
+  let temp_data_num = med_order_list_form_data.length;
+  let temp_pages = temp_data_num / pagination_num;
+  temp_pages = Math.ceil(temp_pages);
+
+  let pre_page_btn = document.createElement("img");
+  pre_page_btn.classList.add("pre_page_btn");
+  pre_page_btn.src = '../image/left-arrow.png';
+  if(current_pagination == 1) pre_page_btn.classList.add("disable_page_btn");
+
+  pre_page_btn.addEventListener("click", () => {
+    if(current_pagination == 1) {
+      return;
+    } else {
+      current_pagination = current_pagination - 1;
+      set_pagination_init();
+      set_search_result();
+    }
+  });
+
+  let next_page_btn = document.createElement("img");
+  next_page_btn.classList.add('next_page_btn');
+  next_page_btn.src = '../image/left-arrow.png';
+  if(current_pagination == temp_pages) next_page_btn.classList.add("disable_page_btn");
+
+  next_page_btn.addEventListener("click", () => {
+    if(current_pagination == temp_pages) {
+      return;
+    } else {
+      current_pagination = current_pagination + 1;
+      set_pagination_init();
+      set_search_result();
+    }
+  });
+
+  let pagination_pages_container = document.createElement("div");
+  pagination_pages_container.classList.add("pagination_pages_container");
+
+  if(temp_pages < 13) {
+    for (let i = 1; i <= temp_pages; i++) {
+      let pagination_page_container = document.createElement("div");
+      pagination_page_container.classList.add("pagination_page");
+      pagination_page_container.setAttribute("tab_page", i);
+      pagination_page_container.innerHTML = i;
+
+      if(i == current_pagination) {
+        pagination_page_container.classList.add("current_pagination_page");
+      } else {
+        pagination_page_container.addEventListener("click", (e) => {
+          let temp_page = +e.target.getAttribute("tab_page");
+          current_pagination = temp_page;
+          set_pagination_init();
+          set_search_result();
+        });
+      };
+      pagination_pages_container.appendChild(pagination_page_container);
+    };
+  } else {
+    if(current_pagination < 7) {
+      for (let i = 1; i <= 9; i++) {
+        if(i <= 7) {
+          // 前七頁
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.setAttribute("tab_page", i);
+          pagination_page_container.innerHTML = i;
+    
+          if(i == current_pagination) {
+            pagination_page_container.classList.add("current_pagination_page");
+          } else {
+            pagination_page_container.addEventListener("click", (e) => {
+              let temp_page = +e.target.getAttribute("tab_page");
+              current_pagination = temp_page;
+              set_pagination_init();
+              set_search_result();
+            });
+          };
+          pagination_pages_container.appendChild(pagination_page_container);
+        } else if(i == 8) {
+          // 中間頁數
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.innerHTML = "...";
+          pagination_pages_container.appendChild(pagination_page_container);
+        } else {
+          // 最後一頁
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.setAttribute("tab_page", temp_pages);
+          pagination_page_container.innerHTML = temp_pages;
+          pagination_page_container.addEventListener("click", (e) => {
+            let temp_page = +e.target.getAttribute("tab_page");
+            current_pagination = temp_page;
+            set_pagination_init();
+            set_search_result();
+          });
+          pagination_pages_container.appendChild(pagination_page_container);
+        }
+      }
+    } else if (current_pagination > temp_pages - 6) {
+      for (let i = 1; i <= 9; i++) {
+        if(i == 1) {
+          // 第一頁
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.setAttribute("tab_page", i);
+          pagination_page_container.innerHTML = i;
+    
+          pagination_page_container.addEventListener("click", (e) => {
+            let temp_page = +e.target.getAttribute("tab_page");
+            current_pagination = temp_page;
+            set_pagination_init();
+            set_search_result();
+          });
+          pagination_pages_container.appendChild(pagination_page_container);
+        } else if(i == 2) {
+          // 中間頁數
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.innerHTML = "...";
+          pagination_pages_container.appendChild(pagination_page_container);
+        } else {
+          // 最後一頁
+          let temp_num_page = i - 9;
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.setAttribute("tab_page", temp_pages + temp_num_page);
+          pagination_page_container.innerHTML = temp_pages + temp_num_page;
+
+          if(temp_pages + temp_num_page == current_pagination) {
+            pagination_page_container.classList.add("current_pagination_page");
+          } else {
+            pagination_page_container.addEventListener("click", (e) => {
+              let temp_page = +e.target.getAttribute("tab_page");
+              current_pagination = temp_page;
+              set_pagination_init();
+              set_search_result();
+            });
+          };
+          pagination_pages_container.appendChild(pagination_page_container);
+        }
+      }
+    } else {
+      for (let i = 1; i <= 9; i++) {
+        if(i == 1) {
+          // 第一頁
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.setAttribute("tab_page", i);
+          pagination_page_container.innerHTML = i;
+          pagination_page_container.addEventListener("click", (e) => {
+            let temp_page = +e.target.getAttribute("tab_page");
+            current_pagination = temp_page;
+            set_pagination_init();
+            set_search_result();
+          });
+          pagination_pages_container.appendChild(pagination_page_container);
+        } else if(i == 2 || i == 8) {
+          // 中間頁數...
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.innerHTML = "...";
+          pagination_pages_container.appendChild(pagination_page_container);
+        } else if(i > 2 && i < 8) {
+          // 中間頁數
+          let temp_num_page = i - 5;
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.setAttribute("tab_page", current_pagination + temp_num_page);
+          pagination_page_container.innerHTML = current_pagination + temp_num_page;
+    
+          if(current_pagination + temp_num_page == current_pagination) {
+            pagination_page_container.classList.add("current_pagination_page");
+          } else {
+            pagination_page_container.addEventListener("click", (e) => {
+              let temp_page = +e.target.getAttribute("tab_page");
+              current_pagination = temp_page;
+              set_pagination_init();
+              set_search_result();
+            });
+          };
+          pagination_pages_container.appendChild(pagination_page_container);
+        } else {
+          let pagination_page_container = document.createElement("div");
+          pagination_page_container.classList.add("pagination_page");
+          pagination_page_container.setAttribute("tab_page", temp_pages);
+          pagination_page_container.innerHTML = temp_pages;
+          pagination_page_container.addEventListener("click", (e) => {
+            let temp_page = +e.target.getAttribute("tab_page");
+            current_pagination = temp_page;
+            set_pagination_init();
+            set_search_result();
+          });
+          pagination_pages_container.appendChild(pagination_page_container);
+        }
+      }
+    }
+  }
+
+  pagination_container.appendChild(pre_page_btn);
+  pagination_container.appendChild(pagination_pages_container);
+  pagination_container.appendChild(next_page_btn);
 }

@@ -25,7 +25,7 @@ function show_popup_input(Med , page_Initial)
 }
 function hide_popup_input()
 {
-     popup_input_div.Set_Visible(false);
+    popup_input_div.Set_Visible(false);
 }
 
 function next_page_popup_input() 
@@ -44,6 +44,15 @@ function previous_page_popup_input()
 async function confirm_popup_input()
 {
     const BarCode_input = document.querySelector('#BarCode_input_popup_input');
+    // console.log("測試" + BarCode_input.value);
+    if (/^[a-zA-Z0-9]+$/.test(BarCode_input.value)) {
+        console.log("有效輸入：" + BarCode_input.value);
+    } else if (BarCode_input.value == "") {
+        return
+    } else {
+        alert("請確認輸入法");
+        return;
+    }
     if(!BarCode_input.value) return;
     const response = await serch_by_BarCode(BarCode_input.value);
     console.log("response",response);
@@ -349,10 +358,10 @@ function get_underline_popup_input()
            confirm_popup_input();
         }
     });
-    BarCode_input.addEventListener("blur", function(event)
-    {
-           confirm_popup_input();
-    });
+    // BarCode_input.addEventListener("blur", function(event)
+    // {
+    //        confirm_popup_input();
+    // });
     BarCode_input_div.appendChild(BarCode_input);
 
     underline_div.appendChild(BarCode_input_div);
@@ -370,7 +379,6 @@ function get_row_popup_input(BarCode)
         const block1 = get_block1_popup_input(BarCode);
         row.appendChild(block1);
     }
-  
 
     row.style.margin = "5px 5px 5px 5px";
     row.style.border  = '1px solid';
@@ -395,42 +403,43 @@ function get_block1_popup_input(Barcode)
     My_Div.Set_Text(block1_barcodenum, `${Barcode}`, TextAlignEnum.CENTER, "12px", true,"微軟正黑體","black" );
     block1_barcodenum.style.letterSpacing = "0.2em";
     
-
     var barcodeCanvas = document.createElement("img");
-    if(Barcode != "")
-    {
-        if(!isDesktop) 
-        {
-            barcodeCanvas = document.createElement("img");
-            barcodeCanvas.style.width = "140px";
-            barcodeCanvas.style.height= "70px";
-            barcodeCanvas.id = `barcodeCanvas`;
-            barcodeCanvas.className = `barcodeCanvas`;
-            JsBarcode(barcodeCanvas, Barcode, {
-              format: "code128",
-              width: "1",
-              height: "1",
-              displayValue: false,
-              margin: 0,
-            });
-        }
-        if(isDesktop) 
-        {
-            barcodeCanvas = document.createElement("canvas");
-            barcodeCanvas.style.width = "140px";
-            barcodeCanvas.style.height= "70px";
-            barcodeCanvas.id = `barcodeCanvas`;
-            barcodeCanvas.className = `barcodeCanvas`;
-            JsBarcode(barcodeCanvas, Barcode, {
-              format: "code128",
-              width: "1",
-              height: "1",
-              displayValue: false,
-              margin: 0,
-            });
-        }
+    if(/^[a-zA-Z0-9]+$/.test(Barcode)) {
+        if(Barcode != "")
+            {
+                if(!isDesktop) 
+                {
+                    barcodeCanvas = document.createElement("img");
+                    barcodeCanvas.style.width = "140px";
+                    barcodeCanvas.style.height= "70px";
+                    barcodeCanvas.id = `barcodeCanvas`;
+                    barcodeCanvas.className = `barcodeCanvas`;
+                    JsBarcode(barcodeCanvas, Barcode, {
+                      format: "code128",
+                      width: "1",
+                      height: "1",
+                      displayValue: false,
+                      margin: 0,
+                    });
+                }
+                if(isDesktop) 
+                {
+                    barcodeCanvas = document.createElement("canvas");
+                    barcodeCanvas.style.width = "140px";
+                    barcodeCanvas.style.height= "70px";
+                    barcodeCanvas.id = `barcodeCanvas`;
+                    barcodeCanvas.className = `barcodeCanvas`;
+                    JsBarcode(barcodeCanvas, Barcode, {
+                      format: "code128",
+                      width: "1",
+                      height: "1",
+                      displayValue: false,
+                      margin: 0,
+                    });
+                }
+            }
     }
-  
+   
     block1_barcode_div.appendChild(barcodeCanvas);
     block1_barcode_div.appendChild(block1_barcodenum);
     var trashBox_SVG = Get_trashBox_SVG("50px", "50px", "80%","100%","red","");

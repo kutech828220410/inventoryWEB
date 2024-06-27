@@ -20,6 +20,7 @@ var State = "-----------";
 let data = [];
 let allrows = [];
 let medicine_page = [];
+let list_data;
 Window.load = load;
 var Header_state;
 setInterval(function() 
@@ -145,6 +146,7 @@ async function init()
     // console.log(temp_med_data);
     data = await creat_get_by_IC_SN(IC_SN);
     console.log("驗收單資料" , data);
+    list_data = data["Data"][0]["Contents"];
     State = StateType.等待條碼刷入;
 
     get_select_by_pon();

@@ -454,8 +454,8 @@ async function set_med_balance_form_data() {
     let post_data = {
         Data: {},
         ValueAry: [   
-            `${start_datetime}`,
-            `${end_datetime}`,
+            `${start_datetime}:00`,
+            `${end_datetime}:00`,
             `${serverNameStr}`,
             `${serverTypeStr}`]
     };
