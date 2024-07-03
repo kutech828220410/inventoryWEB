@@ -145,12 +145,12 @@ function set_search_condition_container() {
     let pps_input_condition = document.createElement("select");
     pps_input_condition.id = "pps_input_condition";
     pps_input_condition.innerHTML = `
-        <option value="all">全部</option>
-        <option value="code">藥碼</option>
-        <option value="name">藥名</option>
-        <option value="cht_name">中文名</option>
+    <option value="code">藥碼</option>
+    <option value="name">藥名</option>
+    <option value="cht_name">中文名</option>
     `;
-
+    // <option value="all">全部</option>
+    
     let pps_input = document.createElement("input");
     pps_input.id = "pps_input";
     pps_input.maxLength = "32";

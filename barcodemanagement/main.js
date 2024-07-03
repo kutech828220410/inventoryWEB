@@ -137,7 +137,7 @@ function get_header()
   const header_div = document.createElement('div');
   My_Div.Init(header_div, 'header_div','header_div', '100%', '70px', '');
   My_Div.Set_Block(header_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
-  My_Div.Set_position(header_div ,PositionEnum.FIXED ,0,0);
+  // My_Div.Set_position(header_div ,PositionEnum.FIXED ,0,0);
   // header_div.style.background = "linear-gradient(90deg, rgba(186, 185, 208, 1) 0%, rgba(235, 235, 235, 1) 100%)";
   header_div.style.overflowX = "hidden";
  
@@ -202,7 +202,7 @@ function get_header()
   const herader_view_div = document.createElement('div');
   My_Div.Init(herader_view_div, 'herader_view_div','herader_view_div', '100%', '40px', '');
   My_Div.Set_Block(herader_view_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
-  My_Div.Set_position(herader_view_div ,PositionEnum.FIXED ,0,70);
+  // My_Div.Set_position(herader_view_div ,PositionEnum.FIXED ,0,70);
   herader_view_div.style.backgroundColor = "#6B6B63";
   herader_view_div.style.color = "#F6F7F7";
   herader_view_div.style.overflowX = "hidden";
@@ -254,11 +254,13 @@ function get_main() {
     console.log("isDesktop");
     My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
   }
-  My_Div.Set_position(main_div ,PositionEnum.FIXED ,0 ,112);
+  // My_Div.Set_position(main_div ,PositionEnum.FIXED ,0 ,112);
 
-  main_div.style.marginBottom = "30px";
+  main_div.style.marginBottom = "80px";
+  main_div.style.padding = "10px";
+  main_div.style.boxSizing = "border-box";
   // main_div.style.overflowX = "";
-  main_div.style.overflow = "scroll";
+  // main_div.style.overflow = "scroll";
 
   return main_div;
 }

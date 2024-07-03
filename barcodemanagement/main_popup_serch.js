@@ -30,10 +30,14 @@ function show_popup_serch()
 
     popup_serch_div.Set_Visible(true);  
     updateDivHeight(popup_serch_div._popup_div , 10);
+    let body = document.querySelector("body");
+    body.style.overflow = "hidden";
 }
 
 function hide_popup_serch()
 {
+    let body = document.querySelector("body");
+    body.style.overflow = "auto";
     popup_serch_div.Set_Visible(false);
 }
 

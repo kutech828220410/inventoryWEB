@@ -40,7 +40,7 @@ function popup_login_title_init()
 {
     const title_text = document.createElement('div');
     My_Div.Init(title_text, 'popup_login_title','popup_login_title', '100%', '40px', 'green');
-    My_Div.Set_Text(title_text ,"使用者登入" , TextAlignEnum.CENTER , "24px", true,"微軟正黑體","white");
+    My_Div.Set_Text(title_text ,"盤點操作" , TextAlignEnum.CENTER , "24px", true,"微軟正黑體","white");
     title_text.style.borderRadius = "5px";
     title_text.style.marginBottom = "10px";
     return title_text;
@@ -93,7 +93,7 @@ function popup_login_underline_init()
 
     const popup_login_content_submit_button = document.createElement('button');
     My_Div.Init(popup_login_content_submit_button, 'link_btn','popup_login_content_submit_button', '95%', '60px','gray');
-    My_Div.Set_Text(popup_login_content_submit_button ,"確認" , TextAlignEnum.CENTER , "24px", true,"微軟正黑體","white");
+    My_Div.Set_Text(popup_login_content_submit_button ,"登入" , TextAlignEnum.CENTER , "24px", true,"微軟正黑體","white");
 
     // popup_login_content_submit_button.type = "submit";
     popup_login_content_submit_button.borderRadius = "10px";

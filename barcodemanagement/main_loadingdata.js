@@ -46,10 +46,9 @@ function Set_rowTotalHeight()
     if((temp % NumOfRow) != 0) num++;
     const main_div = document.querySelector('#main_div');
     const height = `${(num * rowHeight) + 100}`;
-    main_div.style.height = `${height}px`;
+    // main_div.style.height = `${height}px`;
 
 
-    if(height > screenHeight) main_div.style.height = "110%";    
 }
 
 function row_div_onclick(event)
@@ -87,7 +86,7 @@ function Replace_data_by_Med(data , Med)
 function creat_row_div(_index , Med) 
 {
     const row_div = document.createElement("div");
-    My_Div.Init(row_div, 'row_div',`row_div${_index}`, '100%', `${rowHeight}px`, '');
+    My_Div.Init(row_div, 'row_div',`row_div${_index}`, '', ``, '');
     My_Div.Set_Block(row_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.TOP);
 
     row_div.setAttribute("GUID", `${Med.GUID}`);
@@ -103,18 +102,21 @@ function creat_row_div(_index , Med)
     row_div.style.margin = "1px";
     row_div.style.padding = "4px";
     row_div.style.borderRadius = "2px";
+    row_div.style.boxSizing = "border-box";
+    row_div.style.width = "300px";
+
     const Block1_div = get_block1_div(_index, Med);
     row_div.appendChild(Block1_div);
     if(device == DeviceType.MOBILE) 
     {
-        row_div.style.width = "100%";
+        // row_div.style.width = "100%";
         NumOfRow = 1;
     }
     if(device == DeviceType.COMPUTER)
     {
         const temp = Math.floor(screenWidth / 300);
         const row_width = screenWidth / temp - 20;
-        row_div.style.width = `${row_width}px`;
+        // row_div.style.width = `${row_width}px`;
         NumOfRow = temp;
     } 
     
@@ -127,16 +129,17 @@ function creat_row_div(_index , Med)
     row_div.addEventListener("mouseover", function() 
     {
        row_div.style.border = "5px solid #1b05c7";
-       row_div.style.padding = "0px";
+    //    row_div.style.padding = "0px";
        row_div.style.borderRadius = "5px";
     });
     row_div.addEventListener("mouseout", function()
     {
         row_div.style.border = "1px solid black";
-        row_div.style.padding = "4px";
+        // row_div.style.padding = "4px";
         row_div.style.borderRadius = "2px";
-
     });
+
+    edit_herader_view_QTY();
 
     return row_div;
 }
@@ -150,9 +153,10 @@ function get_block1_div(_index, item)
 
     //藥品資訊
     const drugInfo_div = document.createElement("div");
-    My_Div.Init(drugInfo_div, 'drugInfo_div',`drugInfo_div${_index}`, '130px', '100%', '');
+    My_Div.Init(drugInfo_div, 'drugInfo_div',`drugInfo_div${_index}`, '140px', '100%', '');
     My_Div.Set_Block(drugInfo_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.LEFT);
     Block1_div.appendChild(drugInfo_div);
+    drugInfo_div.style.marginRight = "4px";
 
 
     //藥碼

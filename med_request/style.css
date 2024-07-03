@@ -59,11 +59,21 @@
   transition: all 0.2s ease-out;
 }
 
-.main_date_display {
-    margin: 20px 0px 8px;
-    text-align: right;
+.main_head_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.main_fast_search_input {
+    width: 300px;
+    border: 1px solid #000;
+    text-align: center;
+    padding: 6px 4px;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
+    border-radius: 5px;
+    display: block;
+    margin: 12px auto 4px;
 }
 
 .main_list_container {
@@ -93,7 +103,7 @@
 
 .med_card_items_title {
     margin-top: 8px;
-    height: 36px;
+    min-height: 36px;
     padding-left: 32px;
     font-size: 18px;
     display: flex;
@@ -145,12 +155,12 @@
     justify-content: start;
 }
 .unit_div {
+    position: relative;
     letter-spacing: 2px;
     border-radius: 5px;
     margin: 12px;
     padding: 6px;
     display: flex;
-    align-items: center;
     justify-content: center;
     min-width: 280px;
     background-color: #000;
@@ -173,6 +183,23 @@
     background-color: #878787;
     color: #dfdfdf;
 }
+.urgency_notice {
+    width: 20px;
+    height: 20px;
+    display: block;
+    position: absolute;
+    top: -10px;
+    right: -5px;
+    transform: translate(-50, -50);
+}
+.mc_unit_all_btn {
+    background-color: #3b2723;
+    height: 36px;
+    width: 110px;
+    margin: 0px;
+    margin-left: 16px;
+    font-weight: 400;
+}
 
 .under-line {
     position: fixed;
@@ -193,6 +220,10 @@
     .main_div {
         padding: 0px 5px;
     }
+
+    .main_fast_search_input {
+        margin-top: 8px;
+    }
     .med_card {
         padding: 5px;
     }
@@ -203,9 +234,10 @@
         width: 100px;
     }
     .med_card_items_title {
-        height: 28px;
+        min-height: 28px;
         padding-left: 12px;
         font-size: 14px;
+        flex-wrap: wrap;
     }
     .mcit_title {
         padding-left: 8px;
@@ -223,5 +255,10 @@
     }
     .header_btn_container {
         margin-right: 8px;
+    }
+    .mc_unit_all_btn {
+        width: 140px;
+        margin-left: 0px;
+        margin: 8px 0px 12px;
     }
 }

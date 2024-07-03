@@ -43,6 +43,10 @@ async function load()
   set_main_diplay();
   set_main_list_display();
   Set_main_div_enable(false);
+
+  // test display
+  set_unit_state_btn("true");
+  set_ppuc_med_sub_container(fake_data[0]["RES_UNIT"][1]["Sub_Content"]);
 }
 
 function get_header(test_user_data) {
@@ -100,12 +104,43 @@ function Set_main_div_enable(value)
 }
 
 function set_main_diplay() {
+
+  let main_div = document.getElementById("main_div");
+
+  let main_fast_search_input = document.createElement("input");
+  main_fast_search_input.classList.add("main_fast_search_input");
+  main_fast_search_input.id = "main_fast_search_input";
+  main_fast_search_input.maxLength = 30;
+  main_fast_search_input.type = "text";
+  main_fast_search_input.name = "main_fast_search_input";
+  main_fast_search_input.placeholder = "請輸入條碼/藥碼/料號";
+
+  let main_head_container = set_main_head_container();
+
+  let main_list_container = document.createElement("div");
+  main_list_container.classList.add("main_list_container");
+
+  main_div.appendChild(main_fast_search_input);
+  main_div.appendChild(main_head_container);
+  main_div.appendChild(main_list_container);
+}
+function main_list_container_init() {
+  let main_list_container = document.querySelector(".main_list_container");
+  main_list_container.innerHTML = "";
+}
+function set_main_head_container() {
+  let main_head_container = document.createElement("div");
+  main_head_container.classList.add("main_head_container");
+
+  let all_med_res_btn = document.createElement("div");
+  all_med_res_btn.classList.add("btn");
+  all_med_res_btn.classList.add("all_med_res_btn");
+  all_med_res_btn.innerHTML = "全部撥發";
+
   let today = new Date();
   let year = today.getFullYear();
   let month = today.getMonth() + 1;
   let day = today.getDate();
-
-  let main_div = document.getElementById("main_div");
 
   let main_date_display = document.createElement("div");
   main_date_display.classList.add("main_date_display");
@@ -114,12 +149,10 @@ function set_main_diplay() {
   let main_list_container = document.createElement("div");
   main_list_container.classList.add("main_list_container");
 
-  main_div.appendChild(main_date_display);
-  main_div.appendChild(main_list_container);
-}
-function main_list_container_init() {
-  let main_list_container = document.querySelector(".main_list_container");
-  main_list_container.innerHTML = "";
+  main_head_container.appendChild(all_med_res_btn);
+  main_head_container.appendChild(main_date_display);
+
+  return main_head_container;
 }
 function set_main_list_display() {
   main_list_container_init();
@@ -185,6 +218,14 @@ function set_main_list_display() {
       if(temp_unit_qty_sum == e.REQ_QTY) {
         unit_div.classList.add("unit_done");
       } else {
+        if(e.urgency == "urgent") {
+          let urgency_notice = document.createElement("img");
+          urgency_notice.classList.add("urgency_notice");
+          urgency_notice.src = "../image/notice_mark.png";
+
+          unit_div.appendChild(urgency_notice);
+        }
+
         unit_div.addEventListener("click", (e) => {
           console.log(e.target.getAttribute("guid"));
         })
@@ -260,8 +301,15 @@ function set_main_list_display() {
     mcit_notice_container.appendChild(notice_not_container);
     mcit_notice_container.appendChild(notice_fin_container);
 
+    let mc_unit_all_btn = document.createElement("div");
+    mc_unit_all_btn.classList.add("mc_unit_all_btn");
+    mc_unit_all_btn.classList.add("btn");
+    mc_unit_all_btn.innerHTML = "撥發";
+    mc_unit_all_btn.setAttribute("GUID", element.GUID);
+    
     med_card_items_title.appendChild(mcit_container);
     med_card_items_title.appendChild(mcit_notice_container);
+    med_card_items_title.appendChild(mc_unit_all_btn);
     
     med_card.appendChild(med_card_info_container);
     med_card.appendChild(med_card_items_title);
