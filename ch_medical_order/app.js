@@ -1,5 +1,5 @@
 let current_pagination = 1;
-let pagination_num = 20;
+let pagination_num = 40;
 let med_order_list_form_data;
 window.onload = load;
 // window.addEventListener('resize', handleResize);
@@ -194,12 +194,12 @@ function get_search_container() {
   let month = String(previousMonthDate.getMonth() + 1).padStart(2, '0');
   let day = String(previousMonthDate.getDate()).padStart(2, '0');
 
-  let formattedDate = `${year}-${month}-${day}T08:00`;
+  let formattedDate = `${year}-${month}-${day}T00:00`;
 
   year = currentDate.getFullYear();
   month = String(currentDate.getMonth() + 1).padStart(2, '0');
   day = String(currentDate.getDate()).padStart(2, '0');
-  let currentDate_value = `${year}-${month}-${day}T08:00`;
+  let currentDate_value = `${year}-${month}-${day}T23:59`;
 
   let sd_start_date_input = document.createElement("input");
   sd_start_date_input.id = "sd_start_date_input";
@@ -360,12 +360,13 @@ async function get_main_search_result() {
   let temp_data =   {
     "Data": {},
     "ValueAry" : [
-      sd_start_date_input.value,
-      sd_end_date_input.value
+      `${sd_start_date_input.value}:00`,
+      `${sd_end_date_input.value}:00`
     ]
   };
   
   let res_data = await get_orderT_by_rx_time_st_end(temp_data);
+  console.log(res_data);
   let arr_data = res_data["Data"];
 
   if(si_select.value != "all") {
@@ -482,7 +483,11 @@ async function set_search_result() {
             td.innerHTML = element.INV_QTY;
             break;
           case 8:
-            td.innerHTML = element.STATE;
+            if(element.STATE == "未過帳") {
+              td.innerHTML = "未調劑";
+            } else {
+              td.innerHTML = "已調劑";
+            }
             break;
           case 9:
             td.innerHTML = element.ORD_START;

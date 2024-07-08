@@ -80,6 +80,14 @@ function mainDiplay(med_data, medicine_page) {
     pp_barcode_input.classList.add('pp_barcode_input');
     pp_barcode_input.placeholder = "請輸入藥碼、藥名或掃描國際條碼";
 
+    const display_med_img_container = document.createElement("div");
+    display_med_img_container.classList.add("display_med_img_container");
+
+    const display_med_img = document.createElement("img");
+    display_med_img.classList.add("display_med_img");
+
+    display_med_img_container.appendChild(display_med_img);
+
     const med_input_display_container = document.createElement("div");
     med_input_display_container.classList.add("med_input_display_container");
     med_input_display_container.innerHTML = `        
@@ -91,6 +99,9 @@ function mainDiplay(med_data, medicine_page) {
         </div>
         <div class="med_display_ctname">中文名 : 
             <span class="ctname_span"></span>
+        </div>
+        <div class="med_display_storage_location">儲位位置 : 
+            <span class="storage_location"></span>
         </div>
     `;
 
@@ -110,6 +121,7 @@ function mainDiplay(med_data, medicine_page) {
     main.appendChild(pk_title);
     main.appendChild(radio_container);
     main.appendChild(pp_barcode_input);
+    main.appendChild(display_med_img_container);
     main.appendChild(med_input_display_container);
     main.appendChild(pick_light_all_off_btn);
     main.appendChild(picking_list_container);
@@ -178,6 +190,14 @@ function display_search_med_by_name (med, med_data) {
     search_med_display_container.classList.add("search_med_display_container")
     search_med_display_container.id = med.CODE;
 
+    let med_img = document.createElement("img");
+    med_img.classList.add("med_img");
+    med_img.src = `${med.MED_PIC_URL}`;
+    med_img.alt = `med image`;
+
+    let med_content = document.createElement("div");
+    med_content.classList.add("med_content");
+
     let search_med_name = document.createElement("div")
     search_med_name.classList.add("search_med_name")
     search_med_name.innerHTML = med.NAME;
@@ -186,8 +206,11 @@ function display_search_med_by_name (med, med_data) {
     search_med_ctname.classList.add("search_med_ctname")
     search_med_ctname.innerHTML = med.CHT_NAME
 
-    search_med_display_container.appendChild(search_med_name)
-    search_med_display_container.appendChild(search_med_ctname)
+    med_content.appendChild(search_med_name)
+    med_content.appendChild(search_med_ctname)
+
+    search_med_display_container.appendChild(med_img);
+    search_med_display_container.appendChild(med_content);
 
     search_med_display_container.addEventListener("click", async ()=> {
         await set_light_on(search_med_display_container.id);
@@ -197,19 +220,30 @@ function display_search_med_by_name (med, med_data) {
     return search_med_display_container
 }
 
-function set_med_display(barcode, med_data) {
-    let med_code = document.querySelector('.med_display_code')
-    let med_name = document.querySelector('.med_display_engname')
-    let med_ctname = document.querySelector('.med_display_ctname')
+async function set_med_display(barcode, med_data) {
+    let med_code = document.querySelector('.med_display_code');
+    let med_name = document.querySelector('.med_display_engname');
+    let med_ctname = document.querySelector('.med_display_ctname');
+    let storage_location = document.querySelector('.storage_location');
+    let display_med_img = document.querySelector(".display_med_img");
+    let temp_pic_data = await get_med_pic_by_code(med_data[`${barcode}`].CODE);
+
+    let med_pic = temp_pic_data.Data;
 
     if(med_data[`${barcode}`]) {
         med_code.innerHTML = `藥碼: ${med_data[`${barcode}`].CODE}`
         med_name.innerHTML = `英文: ${med_data[`${barcode}`].NAME}`
         med_ctname.innerHTML = `中文: ${med_data[`${barcode}`].CHT_NAME}`
+        storage_location.innerHTML = `${med_data[`${barcode}`].STORAGE_NOTE}`
+        display_med_img.src = `${med_pic.pic_base64}`;
+        display_med_img.alt = `med image`;
     } else {
         med_code.innerHTML = `藥碼: 查無此藥`
         med_name.innerHTML = `英文: 查無此藥`
         med_ctname.innerHTML = `中文: 查無此藥`
+        storage_location.innerHTML = `查無此藥`
+        display_med_img.src = ``;
+        display_med_img.alt = `no result`;
     }
 
 }
@@ -218,6 +252,8 @@ async function set_light_on(barcode) {
     selectedColor = document.querySelector('input[name="color"]:checked').value;
 
     let data_str = barcode;
+
+    // "10103,0,255,0,60"
 
     for (let i = 0; i < select_rgb[`${selectedColor}`].length; i++) {
         data_str += `,${select_rgb[`${selectedColor}`][i]}`;
@@ -232,7 +268,7 @@ async function set_light_on(barcode) {
         "ServerName": "DS01",
         "ServerType": "藥庫",
         "TimeTaken": ""
-  });
+    });
     
     await fetch(`${api_ip}api/OutTakeMed/light_on`, {
         method: "POST",
@@ -254,16 +290,16 @@ async function set_light_on(barcode) {
       }).then(res => {
         console.log(res);
     });
-  }
-  async function set_light_off(barcode) {
+}
+async function set_light_off(barcode) {
     let data_str = barcode;
     // 加入黑色燈條件滅燈
     data_str += `,0,0,0,0`;
-    
+
     await fetch(`${api_ip}api/OutTakeMed/light_on`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+            "Content-Type": "application/json",
         },
         body: JSON.stringify({
                 "Data": {},
@@ -272,12 +308,39 @@ async function set_light_on(barcode) {
                 "ServerName": "DS01",
                 "ServerType": "藥庫",
                 "TimeTaken": ""
-          }),
-      }).catch(e => {
+            }),
+        }).catch(e => {
         console.log(e);
-      }).then(res => {
+        }).then(res => {
         return res.json()
-      }).then(res => {
+        }).then(res => {
         console.log(res);
     });
-  }
+}
+async function get_med_pic_by_code(code) {
+    let start_p = performance.now();
+    let data = {
+        "Data": {},
+        "ValueAry" : [code]
+    };
+    console.log("進入api取得資料");
+    console.log(`${api_ip}api/medPic/get_by_code`);
+    let temp_data = await fetch(`${api_ip}api/medPic/get_by_code`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then((response) => {
+        console.log("取得資料ＪＳＯＮ格式");
+        // console.log(response.json());
+        return response.json();
+    });
+    let end_p = performance.now();
+    console.log(end_p - start_p);
+
+    console.log(temp_data);
+
+    return temp_data;
+}

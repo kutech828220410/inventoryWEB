@@ -1,3 +1,19 @@
+@font-face {
+    font-family: 'Noto Sans TC';
+    src: url('../font/Noto_Sans_TC/static/NotoSansTC-Regular.ttf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Noto Sans TC", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
 .main {
     margin: auto;
     text-align: center;
@@ -27,6 +43,7 @@
     border-radius: 16px;
 }
 .pick_light_all_off_btn {
+    display: none;
     width: 160px;
     height: 40px;
     border-radius: 5px;
@@ -79,6 +96,31 @@
     transition: all 0.3s ease-out;
     cursor: pointer;
     min-height: 56px;
+    display: flex;
+}
+.med_img {
+    display: block;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    object-position: center;
+    margin-right: 8px;
+}
+.display_med_img_container {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #6B6B63;
+    margin: auto;
+    height: 300px;
+    width: 300px;
+    margin-bottom: 10px;
+}
+.display_med_img {
+    display: block;
+    width: 280px;
+    height: 280px;
+    object-fit: cover;
+    object-position: center;
 }
 .search_med_display_container:hover {
     background-color: #bdbdbd;

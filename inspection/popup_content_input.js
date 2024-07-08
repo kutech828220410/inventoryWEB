@@ -194,6 +194,9 @@ function edit_title_popup_input(Content)
     const med_end_qty_for_count = document.querySelector(".med_end_qty_for_count");
     med_end_qty_for_count.innerText = `${Content.START_QTY}`;
 
+    let title_storage_btn = document.querySelector(".title_storage_btn");
+    title_storage_btn.setAttribute("CODE", Content.CODE);
+
     // let END_QTY_input_popup_input = document.querySelector('.END_QTY_input_popup_input')
     // console.log(END_QTY_input_popup_input);
     
@@ -250,6 +253,26 @@ function get_title_popup_input()
     My_Div.Init(title_text_div, 'title_text_div_popup_input','title_text_div_popup_input', '100%', '', '');
     My_Div.Set_Block(title_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
     title_text_div.style.borderBottom = '1px solid black';
+    title_text_div.style.position = 'relative';
+
+    const title_storage_btn = document.createElement("div");
+    title_storage_btn.classList.add("title_storage_btn");
+    title_storage_btn.innerHTML = "儲位";
+    title_storage_btn.setAttribute("CODE", "");
+    title_storage_btn.style.padding = "6px 12px";
+    title_storage_btn.style.position = "absolute";
+    title_storage_btn.style.top = "5px";
+    title_storage_btn.style.left = "0px";
+    title_storage_btn.style.cursor = "pointer";
+    title_storage_btn.style.borderRadius = "5px";
+    title_storage_btn.style.backgroundColor = "#000000";
+    title_storage_btn.style.color = "#ffffff";
+    title_storage_btn.style.textAlign = "center";
+    title_text_div.appendChild(title_storage_btn);
+    title_storage_btn.addEventListener("click", (e) => {
+        let code = e.target.getAttribute("CODE");
+        set_popup_storage_info(code);
+    });
 
     const title_text = document.createElement('div');
     My_Div.Init(title_text, 'title_text_popup_input','title_text_popup_input', '250px', '40px', '');
@@ -258,7 +281,6 @@ function get_title_popup_input()
     title_text.style.borderRadius = "5px";
     title_text.style.marginLeft = "110px";
     title_text_div.appendChild(title_text);
-
 
     const undo_div = document.createElement('div');
     My_Div.Init(undo_div, 'undo_div_popup_input','undo_div_popup_input', '70%', '40px', '');
@@ -828,17 +850,17 @@ function calculateExpression(expression) {
   
     // 对数组中的所有数字求和
     return stack.reduce((total, num) => total + num, 0);
-  }
+}
 
-  function serch_start_date_input_Y_Click()
-  {
-      const serch_start_date_input = document.querySelector(".deadline_input");
-  }
-  function serch_start_date_input_N_Click()
-  {
-      const serch_start_date_input = document.querySelector(".deadline_input");
-      serch_start_date_input.value = "";
-  }
+function serch_start_date_input_Y_Click()
+{
+    const serch_start_date_input = document.querySelector(".deadline_input");
+}
+function serch_start_date_input_N_Click()
+{
+    const serch_start_date_input = document.querySelector(".deadline_input");
+    serch_start_date_input.value = "";
+}
 //   $(function()
 //   {
 //     let currentDate = new Date();

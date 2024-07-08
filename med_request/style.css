@@ -75,11 +75,42 @@
     display: block;
     margin: 12px auto 4px;
 }
+.main_radio_state_container {
+    width: 300px;
+    height: 34px;
+    margin: 8px auto;
+    display: flex;
+    justify-content: space-between;
+}
+.main_radio_state_container input[type="radio"] {
+    display: none;
+}
+.radio_label {
+    border-radius: 4px;
+    padding: 4px;
+    width: 80px;
+    text-align: center;
+    background-color: #d7d7d7;
+    transition: all 0.2s ease-out;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+.radio_label:hover {
+    background-color: #989898;
+    transition: all 0.2s ease-out;
+}
+.main_radio_state_container input[type="radio"]:checked + label{
+    background-color: #5e5e5e;
+    /* transform: scale(1.1); */
+    transition: all 0.2s ease-out;
+    color: #ffffff;
+}
 
 .main_list_container {
     width: 100%;
 }
-.med_card {
+.med_card,
+.main_list_card_container {
     border: 1px solid #000000;
     border-radius: 5px;
     min-height: 100px;
@@ -103,6 +134,12 @@
 
 .med_card_items_title {
     margin-top: 8px;
+    min-height: 36px;
+    padding-left: 32px;
+    font-size: 18px;
+    display: flex;
+}
+.table_card_items_title {
     min-height: 36px;
     padding-left: 32px;
     font-size: 18px;
@@ -174,15 +211,6 @@
     color: #dfdfdf;
     transition: all 0.2s;
 }
-.unit_done {
-    background-color: #878787;
-    color: #dfdfdf;
-    cursor: not-allowed;
-}
-.unit_done:hover {
-    background-color: #878787;
-    color: #dfdfdf;
-}
 .urgency_notice {
     width: 20px;
     height: 20px;
@@ -192,13 +220,53 @@
     right: -5px;
     transform: translate(-50, -50);
 }
-.mc_unit_all_btn {
+.mc_unit_all_btn,
+.mcu_light_btn {
     background-color: #3b2723;
     height: 36px;
-    width: 110px;
+    min-width: 110px;
     margin: 0px;
     margin-left: 16px;
     font-weight: 400;
+}
+.mcu_light_btn {
+    background-color: #1c470b;
+}
+
+.table_med_display_container {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #000;
+    color: #ffffff;
+    margin: 8px 0px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.table_med_display_container:hover {
+    background-color: #4a4a4a;
+    color: #dfdfdf;
+    transition: all 0.2s;
+}
+.already_set {
+    background-color: #878787;
+    color: #000000;
+}
+.unit_done {
+    background-color: #878787;
+    color: #dfdfdf;
+}
+.unit_done:hover {
+    background-color: #878787;
+    color: #dfdfdf;
+}
+.tmd_content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    line-height: 28px;
+}
+.tmd_content_span {
+    margin-right: 18px;
 }
 
 .under-line {
@@ -239,6 +307,12 @@
         font-size: 14px;
         flex-wrap: wrap;
     }
+    .table_card_items_title {
+        min-height: 28px;
+        padding-left: 8px;
+        font-size: 18px;
+        flex-wrap: wrap;
+    }
     .mcit_title {
         padding-left: 8px;
     }
@@ -256,9 +330,10 @@
     .header_btn_container {
         margin-right: 8px;
     }
-    .mc_unit_all_btn {
+    .mc_unit_all_btn,
+    .mcu_light_btn {
         width: 140px;
         margin-left: 0px;
-        margin: 8px 0px 12px;
+        margin: 8px 12px 12px;
     }
 }

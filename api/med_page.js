@@ -39,7 +39,7 @@ async function serch_by_BarCode(barcode , _medicine_page)
     "DbName" : "dbvm",
     "TimeTaken": ""
   };
-  console.log("_medicine_page",_medicine_page);
+  // console.log("_medicine_page",_medicine_page);
   var foundObject =[];
   if(barcode != "")
   {

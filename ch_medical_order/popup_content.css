@@ -1,0 +1,32 @@
+.popup_cht_med_content_div {
+    width: 660px;
+}
+.ppcmc_header_container {
+    width: 100%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.ppcmc_h_title {
+    width: 160px;
+    text-align: center;
+    padding: 4px;
+    font-size: 20px;
+    font-weight: 600;
+    background-color: gray;
+    color: #fff;
+    border-radius: 5px;
+}
+.ppcmc_h_close_btn {
+    position: absolute;
+    cursor: pointer;
+    display: block;
+    width: 36px;
+    top: 0px;
+    right: 0px;
+}
+.pps_footer_container {
+    justify-content: space-between;
+}

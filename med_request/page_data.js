@@ -1,3 +1,16 @@
+let medicine_page = [];
+const ServerName = "";
+const ServerType = "網頁";
+const TableName = "medicine_page";
+let temp_search_condition = {
+  date: "",
+  req_unit: "all",
+  type: "code",
+  content: "",
+};
+let post_result_data = [];
+let code_mode_data = [];
+let unit_mode_data = [];
 let fake_data = [
     {
       GUID: "ggagag-gew1235a",
@@ -67,9 +80,56 @@ let fake_data = [
       ]
     }
 ];
+let fake_table_data = [
+  {
+    "GUID": "",
+    "UNIT_NAME": "單位名稱",
+    "Sub_Content": [
+      {
+          "GUID": "asdfasdfa-13af113",
+          "CODE": "藥碼",
+          "NAME": "藥名",
+          "CHT_NAME": "中文名",
+          "PAKAGE": "藥品單位",
+          "PAKAGE_NUM": "包裝數量",
+          "UNIT_NAME": "單位名稱",
+          "REQ_QTY": "請領量",
+          "REAL_QTY": "實領量",
+          "STATE": false,
+          "URGENCY": "急件判斷",
+          "QTY_CHECKED": "實發量確認",
+      },
+      {
+        "GUID": "asdfasdfa-13af113",
+        "CODE": "藥碼",
+        "NAME": "藥名",
+        "CHT_NAME": "中文名",
+        "PAKAGE": "藥品單位",
+        "PAKAGE_NUM": "包裝數量",
+        "UNIT_NAME": "單位名稱",
+        "REQ_QTY": "請領量",
+        "REAL_QTY": "實領量",
+        "STATE": true,
+        "URGENCY": "急件判斷",
+        "QTY_CHECKED": "實發量確認",
+      },
+      {
+        "GUID": "asdfasdfa-13af113",
+        "CODE": "藥碼",
+        "NAME": "藥名",
+        "CHT_NAME": "中文名",
+        "PAKAGE": "藥品單位",
+        "PAKAGE_NUM": "包裝數量",
+        "UNIT_NAME": "單位名稱",
+        "REQ_QTY": "請領量",
+        "REAL_QTY": "實領量",
+        "STATE": "核發狀態",
+        "URGENCY": "急件判斷",
+        "QTY_CHECKED": "實發量確認",
+      },
+    ],
+  },
+];
 
-let display_mode;
-let temp_search_condition;
 let med_list_guid;
-let med_list_unit_guid;
-let ppuc_page = 0;
+let temp_actual_qty;

@@ -9,6 +9,10 @@
     display: flex;
     justify-content: center;
 }
+.prc_footer_container {
+    justify-content: space-between;
+    margin-top: 12px;
+}
 .prc_h_title {
     padding: 4px 48px;
     text-align: center;
@@ -26,4 +30,25 @@
     width: 36px;
     top: 0px;
     right: 0px;
+}
+.prc_content_div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.prc_label {
+    width: 80px;
+    text-align: center;
+    border-radius: 5px;
+    border: 1px solid #000;
+    margin: 8px 12px 8px 0px;
+    padding: 2px 4px;
+    background-color: #d7d7d7;
+}
+.prc_content_div > input {
+    padding: 4px;
+    border-radius: 5px;
+    border: 1px solid #000;
+    font-size: 16px;
+    flex-grow: 1;
 }

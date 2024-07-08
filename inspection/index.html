@@ -8,6 +8,7 @@
   <meta http-equiv="expires" content="0">
   <title>驗收操作頁面</title>
   <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="../../UI/popup_UI/med_storage/popup_storage.css">
   <link rel="icon" href="../favicon.ico" >
   <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="192x192">
   <link rel="icon" type="image/png" sizes="192x192" href="android-touch-icon.png">
@@ -32,6 +33,7 @@
           loadScript("popup_creatSelect.js");
           loadScript("popup_med_serch.js");
           loadScript("popup_select_by_pon.js");
+          loadScript("../../UI/popup_UI/med_storage/popup_storage.js");
           loadScript("index.js");
           loadScript("jsonFunc.js");
           loadScript("../../api/med_page.js");
@@ -65,6 +67,9 @@
           popup_med_serch_div.LoadEvent.push(popup_med_serch_Load);
           popup_med_serch_div.ClosedEvent.push(popup_med_serch_Closed);
           popup_med_serch_finishedEvent.push(popup_med_serch_finished);
+
+          get_popup_storage();
+          popup_storage_div.Set_Visible(false);
           
 
           const Loadingpopup = GetLoadingpopup();

@@ -322,7 +322,6 @@ async function serch_CODE_input_enter(barcode)
         return;
       }
     }
-   
 }
 function get_header()
 {

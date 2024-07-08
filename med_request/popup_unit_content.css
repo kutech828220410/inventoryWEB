@@ -100,3 +100,20 @@
     margin-bottom: 4px;
     align-items: center;
 }
+.disable_btn {
+    cursor: not-allowed;
+    background-color: #6B6B63;
+}
+.pp_calculate_input_display {
+    display: none;
+    font-size: 20px;
+    font-weight: 600;
+    min-width: 100px;
+    margin: 0px 8px 0px 4px;
+    border-radius: 5px;
+    padding: 4px;
+    text-align: center;
+    background-color: #d1d1d1;
+    color: #000000;
+    flex-grow: 1;
+}

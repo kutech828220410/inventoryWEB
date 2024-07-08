@@ -1,12 +1,12 @@
 let popup_search_select_div;
 
-function get_popup_search_select()
+async function get_popup_search_select()
 {
     popup_search_select_div = new Basic_popup_Div('popup_search_select_div','popup_search_select_div','','');
     popup_search_select_div._popup_div.style.border = '10px solid white';
 
     let header = get_ppsearch_header();
-    let main = get_ppsearch_main();
+    let main = await get_ppsearch_main();
     let footer = get_ppsearch_footer();
 
     popup_search_select_div.AddControl(header);
@@ -35,13 +35,13 @@ function get_ppsearch_header() {
 
     return pps_header_container;
 }
-function get_ppsearch_main() {
+async function get_ppsearch_main() {
     let pps_main_container = document.createElement("div");
     pps_main_container.classList.add("pps_main_container");
 
     let search_mode_select_container = set_search_mode_select_container();
     let search_input_container = set_search_input_container();
-    let search_condition_container = set_search_condition_container();
+    let search_condition_container = await set_search_condition_container();
 
     pps_main_container.appendChild(search_mode_select_container);
     pps_main_container.appendChild(search_input_container);
@@ -57,7 +57,55 @@ function get_ppsearch_footer() {
     pps_btn.id = "pps_btn";
     pps_btn.classList.add("btn");
     pps_btn.innerHTML = "搜尋";
+    pps_btn.addEventListener("click", () => {
+        let pps_date_input = document.querySelector("#pps_date_input");
+        let pps_input_condition = document.querySelector("#pps_input_condition");
+        let pps_input = document.querySelector("#pps_input");
+        let pps_select = document.querySelector("#pps_select");
 
+        temp_search_condition.date = pps_date_input.value;
+        temp_search_condition.req_unit = pps_select.value;
+        temp_search_condition.type = pps_input_condition.value;
+        temp_search_condition.content = pps_input.value;
+
+        console.log(temp_search_condition);
+        set_list_result_and_filter();
+        popup_search_select_div_close();
+    });
+
+    let reset_search_condition_btn = document.createElement("div");
+    reset_search_condition_btn.id = "reset_search_condition_btn";
+    reset_search_condition_btn.classList.add("btn");
+    reset_search_condition_btn.innerHTML = "重設條件";
+    reset_search_condition_btn.addEventListener("click", () => {
+        let pps_date_input = document.querySelector("#pps_date_input");
+        let pps_input_condition = document.querySelector("#pps_input_condition");
+        let pps_input = document.querySelector("#pps_input");
+        let pps_select = document.querySelector("#pps_select");
+
+        let today = new Date();
+        let yyyy = today.getFullYear();
+        let mm = today.getMonth() + 1;
+        let dd = today.getDate();
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+
+        pps_date_input.value = `${yyyy}-${mm}-${dd}`;
+        pps_input_condition.value = "code";
+        pps_input.value = "";
+        pps_select.value = "all";
+
+        temp_search_condition.date = `${yyyy}-${mm}-${dd}`;
+        temp_search_condition.req_unit = "all";
+        temp_search_condition.type = "code";
+        temp_search_condition.content = "";
+    });
+
+    pps_footer_container.appendChild(reset_search_condition_btn);
     pps_footer_container.appendChild(pps_btn);
 
     return pps_footer_container;
@@ -135,7 +183,7 @@ function set_search_input_container() {
     return search_input_container;
 }
 
-function set_search_condition_container() {
+async function set_search_condition_container() {
     let pps_condition_container = document.createElement("div");
     pps_condition_container.classList.add("pps_condition_container");
 
@@ -166,13 +214,17 @@ function set_search_condition_container() {
     pps_select_label.classList.add("pps_select_label");
     pps_select_label.innerHTML = `請領單位`;
 
+    let pharmacy_table_data = await get_serversetting_by_type();
+
+    let temp_table_data = pharmacy_table_data["Data"];
+    console.log(temp_table_data);
+
     let pps_select = document.createElement("select");
     pps_select.id = "pps_select";
-    pps_select.innerHTML = `
-        <option value="abc">test01</option >
-        <option value="abcd">test02</option >
-        <option value="abcde">test03</option >
-    `;
+    pps_select.innerHTML = `<option value="all">全部</option>`;
+    temp_table_data.forEach(element => {
+        pps_select.innerHTML += `<option value="${element.name}">${element.name}</option>`
+    });
 
     pps_select_content_container.appendChild(pps_select_label);
     pps_select_content_container.appendChild(pps_select);
@@ -181,4 +233,29 @@ function set_search_condition_container() {
     pps_condition_container.appendChild(pps_select_content_container);
 
     return pps_condition_container;
+}
+
+async function get_serversetting_by_type() {
+    const newUrl = api_ip.replace(":4435", ":4433");
+    let temp_data = await fetch(`${newUrl}api/ServerSetting/get_serversetting_by_type`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            Data: 
+            {
+                
+            },
+            ValueAry : 
+            [
+                "調劑台"
+            ]
+        }),
+    })
+    .then((response) => {
+        return response.json();
+    })
+
+    return temp_data;
 }

@@ -5,6 +5,23 @@ body {
   height: 100%;
   min-height: 100vh;
 }
+.btn {
+  margin: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 18px;
+  border: 1px solid black;
+  color: #F6F7F7;
+  padding: 4px 32px;
+  border-radius: 5px;
+  transition: all 0.2s ease-out;
+  background-color: black;
+  text-align: center;
+}
+.btn:hover {
+  background-color: #6B6B63;
+  transition: all 0.2s ease-out;
+}
 html, body {
   touch-action: manipulation;
 }

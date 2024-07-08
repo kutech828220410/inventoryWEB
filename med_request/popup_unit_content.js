@@ -1,7 +1,6 @@
 let popup_unit_content_div;
 
-function get_popup_unit_content()
-{
+function get_popup_unit_content() {
     popup_unit_content_div = new Basic_popup_Div('popup_unit_content_div','popup_unit_content_div','','');
     popup_unit_content_div._popup_div.style.border = '10px solid white';
 
@@ -70,16 +69,32 @@ function popup_unit_content_div_close() {
 function popup_unit_content_div_open() {
     popup_unit_content_div.Set_Visible(true);
 }
-
 function set_unit_state_btn(str) {
     let ppuc_state_container = document.querySelector(".ppuc_state_container");
     ppuc_state_container.innerHTML = "";
 
-    if(str == "true") {
+    if(str == "等待過帳") {
         let ppuc_h_unit_state = document.createElement("div");
         ppuc_h_unit_state.classList.add("btn");
         ppuc_h_unit_state.classList.add("ppuc_h_unit_state_btn");
         ppuc_h_unit_state.innerHTML = "核發";
+        ppuc_h_unit_state.addEventListener("click", async (e) => {
+            let pp_calculate_input = document.querySelector(".pp_calculate_input").value;
+            if(+temp_actual_qty != +pp_calculate_input) {
+                alert("實發量有異動，請先確認實發量是否修改，或重新開啟視窗");
+                return;
+            }
+
+            if(confirm("是否核發")) {
+                console.log(e.target.getAttribute("GUID"));
+                await update_status_posted(e.target.getAttribute("GUID"));
+                await set_list_result_and_filter();
+                set_ppuc_med_info(med_list_guid);
+                popup_unit_content_div_close();
+            } else {
+                return;
+            }
+        })
 
         ppuc_state_container.appendChild(ppuc_h_unit_state);
     } else {       
@@ -90,7 +105,6 @@ function set_unit_state_btn(str) {
         ppuc_state_container.appendChild(ppuc_h_unit_state);
     }
 }
-
 function set_ppuc_med_info_container() {
     let ppuc_med_info_container = document.createElement("div");
     ppuc_med_info_container.classList.add("ppuc_med_info_container");
@@ -185,7 +199,6 @@ function set_ppuc_med_info_container() {
 
     return ppuc_med_info_container;
 }
-
 function set_ppuc_med_sub_container(arr) {
     console.log(arr);
     let ppuc_med_sub_container = document.querySelector(".ppuc_med_sub_container");
@@ -216,7 +229,7 @@ function set_ppuc_med_sub_container(arr) {
     ppuc_sc_input.classList.add("ppuc_sc_input");
     ppuc_sc_input.name = "ppuc_sc_input";
     ppuc_sc_input.id = "ppuc_sc_input";
-    ppuc_sc_input.innerHTML = `${data.QTY}`
+    ppuc_sc_input.innerHTML = `${data.QTY}`;
 
     ppuc_sub_content_div.appendChild(ppuc_sc_text_container);
     ppuc_sub_content_div.appendChild(ppuc_sc_input);
@@ -226,6 +239,9 @@ function set_ppuc_med_sub_container(arr) {
 function set_calculate_input_div() {
     let calculate_input_div = document.createElement("div");
     calculate_input_div.classList.add("pp_calculate_input_div");
+
+    let pp_calculate_input_display = document.createElement("div");
+    pp_calculate_input_display.classList.add("pp_calculate_input_display");
 
     let pp_calculate_input = document.createElement("input");
     pp_calculate_input.classList.add("pp_calculate_input");
@@ -245,9 +261,30 @@ function set_calculate_input_div() {
     let pp_calculate_confirm_btn = document.createElement("div");
     pp_calculate_confirm_btn.classList.add("pp_calculate_confirm_btn");
     pp_calculate_confirm_btn.classList.add("btn");
-    pp_calculate_confirm_btn.innerHTML = "送出";
+    pp_calculate_confirm_btn.innerHTML = "修改";
+    pp_calculate_confirm_btn.addEventListener("click", async (e) => {
+        if(e.target.classList.contains("disable_btn")) {
+            console.log("object");
+            return;
+        }
+        let pp_calculate_input = document.querySelector(".pp_calculate_input").value;
+        if(isNaN(+pp_calculate_input)) {
+            alert("請輸入算式後按'=' 或 輸入數量");
+            return;
+        }
+        console.log(pp_calculate_input);
+        if(+temp_actual_qty == +pp_calculate_input) {
+            return;
+        } else {
+            temp_actual_qty = +pp_calculate_input;
+            await update_actual_quantity(med_list_guid, +pp_calculate_input);
+            await set_list_result_and_filter();
+            set_ppuc_med_info(med_list_guid);
+        }
+    });
 
     calculate_input_div.appendChild(pp_calculate_input);
+    calculate_input_div.appendChild(pp_calculate_input_display);
     calculate_input_div.appendChild(pp_calculate_confirm_btn);
 
     return calculate_input_div;
@@ -411,8 +448,7 @@ function set_calculate_div() {
 
     return calculate_div;
 }
-function calculate_input(char)
-{
+function calculate_input(char) {
     let pp_calculate_input = document.querySelector(".pp_calculate_input");
     let text = pp_calculate_input.value;
     if(text.length == 0)
@@ -473,4 +509,57 @@ function calculateExpression(expression) {
   
     // 对数组中的所有数字求和
     return stack.reduce((total, num) => total + num, 0);
+}
+function set_ppuc_med_info(temp_guid) {
+
+    let ppuc_h_title = document.querySelector(".ppuc_h_title"); // 調劑台title
+    let ppuc_code = document.querySelector("#ppuc_code"); // 藥碼
+    let ppuc_unit = document.querySelector("#ppuc_unit"); // 包裝單位
+    let ppuc_skdiacode = document.querySelector("#ppuc_skdiacode"); // 料號
+    let ppuc_pak_num = document.querySelector("#ppuc_pak_num"); // 包裝數量
+    let ppuc_sys_qty = document.querySelector("#ppuc_sys_qty"); // 實發量
+    let ppuc_req_qty = document.querySelector("#ppuc_req_qty"); // 請領量
+    let ppucmi_name = document.querySelector("#ppucmi_name"); // 藥名
+    let ppucmi_cht_name = document.querySelector("#ppucmi_cht_name"); // 中文名
+    let pp_calculate_confirm_btn = document.querySelector(".pp_calculate_confirm_btn"); // 時發亮input
+    
+    let pp_calculate_input = document.querySelector(".pp_calculate_input"); // 時發亮input
+    let pp_calculate_input_display = document.querySelector(".pp_calculate_input_display");
+    
+
+    console.log(temp_guid);
+    post_result_data.forEach(element => {
+        if(element.GUID == temp_guid) {
+            console.log(element);
+            if(element.state == "等待過帳") {
+                pp_calculate_input_display.style.display = "none";
+                pp_calculate_input.style.display = "block";
+                set_unit_state_btn(element.state);
+                let ppuc_h_unit_state_btn = document.querySelector(".ppuc_h_unit_state_btn"); // 核發按鈕
+                ppuc_h_unit_state_btn.setAttribute("GUID", element.GUID);
+                pp_calculate_confirm_btn.classList.remove("disable_btn");
+            } else {
+                pp_calculate_input_display.style.display = "block";
+                pp_calculate_input.style.display = "none";
+                pp_calculate_confirm_btn.classList.add("disable_btn");
+                set_unit_state_btn(element.state);
+            }
+
+            ppuc_h_title.innerHTML = element.requestingUnit;
+            ppuc_code.innerHTML = element.code;
+            ppuc_unit.innerHTML = element.packageUnit;
+            ppuc_skdiacode.innerHTML = element.SKDIACODE;
+            ppuc_pak_num.innerHTML = element.packageQuantity;
+            ppuc_sys_qty.innerHTML = element.actualQuantity;
+            ppuc_req_qty.innerHTML = element.requestedQuantity;
+            ppucmi_name.innerHTML = element.name
+            ppucmi_cht_name.innerHTML = element.cht_name;
+            pp_calculate_input.value = +element.actualQuantity;
+            pp_calculate_input_display.innerHTML = element.actualQuantity;
+
+            med_list_guid = temp_guid;
+            temp_actual_qty = +element.actualQuantity;
+        }
+    });
+    
 }

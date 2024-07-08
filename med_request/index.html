@@ -10,6 +10,7 @@
   <!-- <link rel="stylesheet" href="main.css"> -->
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="popup_search.css">
+  <link rel="stylesheet" href="../../UI/popup_UI/med_storage/popup_storage.css">
   <link rel="stylesheet" href="popup_unit_content.css">
   <script src="../../Function/Basic.js?v=1.14"></script>
   <script>
@@ -24,9 +25,12 @@
           loadScript("../../session_check.js");
           loadScript("../../session.js");
           loadScript("../../Function/WebApiFunc.js");
+          loadScript("../../api/materialRequisition.js");
+          loadScript("../../api/med_page.js");
           loadScript("page_data.js");
           loadScript("app.js");
           loadScript("popup_search.js");
+          loadScript("../../UI/popup_UI/med_storage/popup_storage.js");
           loadScript("popup_unit_content.js");
           loadScript("../../UI/navBar.js");
         })();
@@ -36,8 +40,6 @@
 <body>
   
       <script>
-
-          
           // document.body.style.position = 'absolute';
           // const header_div = get_header();
           // document.body.appendChild(header_div);
@@ -54,47 +56,63 @@
           get_popup_search_select();
           popup_search_select_div.Set_Visible(false);
 
+          get_popup_storage();
+          popup_storage_div.Set_Visible(false);
+
           get_popup_unit_content();
-          popup_unit_content_div.Set_Visible(true);
+          popup_unit_content_div.Set_Visible(false);
       </script>
    
   <div class="under-line">
     <B> Copyright ©2024 鴻森智能科技 </B>
   </div>
   
-  <script>
-  var barcode_value = '';
-    // 監聽頁面的keydown事件
-  window.addEventListener('keydown', function(event) 
+<script>
+  BarcodeKeyinEvent = BarcodeKeyin;
+  async function BarcodeKeyin(parsedCode)
   {
-    // 判斷按下的按鍵是否是Tab鍵或Enter鍵
-    console.log(event.key);
-    if (event.key === 'Tab' || event.key === 'Enter') {
-    // 防止頁面重新載入
-        event.preventDefault();
-        const parsedCode = parseBarcode(barcode_value);
-        
-        // 取得輸入框的值
-        barcode_value = '';
-        // 解析藍牙掃描器返回的數據
-        if(parsedCode != '')
-        {
-   
-        }         
-    }
-    else
-    {
-        const isValid = /^[a-zA-Z0-9]+$/.test(event.key);
-        const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
-        const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);
-        
+    let main_fast_search_input = document.querySelector(".main_fast_search_input");
+    if(document.activeElement == main_fast_search_input) return;
 
-        if (isValid && (!isControlKey||isNumPadlKey)) {
-            // 將解析後的條碼值設定為輸入框的值
-            barcode_value += event.key;
-        } 
+    const response = await serch_by_BarCode(parsedCode ,medicine_page.Data);
+    console.log("serch_by_BarCode",response)
+    if(response.Data.length == 0) {
+        main_fast_search_input.value = ''
+        return;
     }
-});
+
+    console.log(response.Data[0].CODE);
+
+    let today = new Date();
+    let yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1;
+    let dd = today.getDate();
+    if (mm < 10) {
+        mm = '0' + mm;
+    }
+    if (dd < 10) {
+        dd = '0' + dd;
+    }
+
+    let code = response.Data[0].CODE;
+
+    console.log("barcode：" + main_fast_search_input.value);
+    console.log("Barcode search result：" + code);
+
+    if(code == undefined) return;
+
+    temp_search_condition.date = `${yyyy}-${mm}-${dd}`;
+    temp_search_condition.req_unit = "all";
+    temp_search_condition.type = "code";
+    temp_search_condition.content = code;
+
+    main_fast_search_input.value = "";
+
+    console.log(temp_search_condition);
+    set_list_result_and_filter();
+
+    main_fast_search_input.value = '';
+  }
 
 // 解析帶有分隔符的字符串
 function parseBarcode(scannedCode) 
