@@ -1,4 +1,4 @@
 {
-    "version": "1.0.20240708-1",
-    "update_content": "調整藥品圖面輸出格式類型"
+    "version": "1.0.20240708-2",
+    "update_content": "藥品圖片Api新增附檔欄位"
 }
