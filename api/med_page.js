@@ -72,3 +72,43 @@ async function serch_by_BarCode(barcode , _medicine_page)
   console.log(`Post_data [${arguments.callee.name}]`,post_data);
   return post_data;
 }
+
+async function get_med_pic_by_code(code) {
+  let start_p = performance.now();
+  let data = {
+      "Data": {},
+      "ValueAry" : [code]
+  };
+  console.log("進入api取得資料");
+  console.log(`${api_ip}api/medPic/get_by_code`);
+  let temp_data = await fetch(`${api_ip}api/medPic/get_by_code`, {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+  })
+  .then((response) => {
+      console.log("取得資料ＪＳＯＮ格式");
+      // console.log(response.json());
+      return response.json();
+  });
+  let end_p = performance.now();
+  console.log(end_p - start_p);
+
+  if(temp_data.Code != -200) {
+    let jpeg_default = "data:image/jpeg;base64,";
+    let png_default = "data:image/png;base64,";
+
+    if(temp_data["Data"].pic_base64 != "") {
+      if(temp_data["Data"].pic_base64.includes(jpeg_default) || temp_data["Data"].pic_base64.includes(png_default)) {
+      } else {
+          temp_data["Data"].pic_base64 = jpeg_default + temp_data["Data"].pic_base64;
+      };
+    }
+  }
+  
+  console.log(temp_data);
+
+  return temp_data;
+}

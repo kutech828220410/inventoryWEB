@@ -38,11 +38,6 @@ body {
 .submit_div2 {
   flex: 1;
 }
-
-
-
-
-
 .header_contorls
  {
 
@@ -60,6 +55,18 @@ body {
   border-radius: 5px;
   border: 2px solid #dadada;
   margin-top: 2px;
+}
+.get_scanner_err_info_btn {
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  padding: 0px 16px;
+  border-radius: 5px;
+  border: 1px solid black;
+  background-color: dimgray;
+  color: #fff;
+  height: 56px;
+  justify-content: center;
 }
 
 

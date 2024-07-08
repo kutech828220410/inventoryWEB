@@ -159,9 +159,9 @@ async function set_popup_storage_info(code) {
     ppsi_position_content.innerHTML = `${med_data.STORAGE_NOTE}`;
 
     if(temp_pic_data.Code == 200) {
-        ppsi_med_img.src = `${med_pic.pic_base64}`;
+        ppsi_med_img.src = med_pic.pic_base64;
     } else {
-        ppsi_med_img.src = ``;
+        ppsi_med_img.src = "../../image/no_pic.png";
     }
 
     ppsi_code.innerHTML = `藥碼：${med_data.CODE}`;
@@ -206,7 +206,6 @@ async function get_med_clouds_by_codes(code) {
 
     return temp_data;
 }
-
 async function set_light_on(code) {
     if(!code) {
         console.log("找不到藥碼");
@@ -303,8 +302,18 @@ async function get_med_pic_by_code(code) {
     });
     let end_p = performance.now();
     console.log(end_p - start_p);
-
+  
+    if(temp_data.Code != -200) {
+      let jpeg_default = "data:image/jpeg;base64,";
+      let png_default = "data:image/png;base64,";
+    
+        if(temp_data["Data"].pic_base64.includes(jpeg_default) || temp_data["Data"].pic_base64.includes(png_default)) {
+        } else {
+            temp_data["Data"].pic_base64 = jpeg_default + temp_data["Data"].pic_base64;
+        };
+    }
+    
     console.log(temp_data);
-
+  
     return temp_data;
 }

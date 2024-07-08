@@ -178,7 +178,15 @@ function get_header()
   header_contorls_allsvg.style.marginRight = "3px";
   header_contorls_allsvg.style.borderRadius = "3px";
   header_contorls_allsvg.onclick = allsvg_Click;
-  // header_contorls_div.appendChild(header_contorls_allsvg);  
+  // header_contorls_div.appendChild(header_contorls_allsvg);
+
+  let get_scanner_err_info_btn = document.createElement("div");
+  get_scanner_err_info_btn.classList.add("get_scanner_err_info_btn");
+  get_scanner_err_info_btn.innerHTML = "輸入問題";
+  get_scanner_err_info_btn.addEventListener("click", () => {
+
+  });
+  header_contorls_div.appendChild(get_scanner_err_info_btn);
 
   const header_contorls_findsvg = Get_find_in_page_SVG("100%", "100%", "70%","100%","rgb(246, 247, 247)","");
   My_Div.Init(header_contorls_findsvg, 'header_contorls_findsvg','header_contorls_findsvg', '60px', '80%', '');

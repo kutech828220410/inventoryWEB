@@ -208,17 +208,30 @@ function search_med_result_func() {
     }
 }
 
-function get_search_result_display(arr) {
+async function get_search_result_display(arr) {
     main_all_display_init();
     let mm_all_display_container = document.querySelector(".mm_all_display_container");
 
-    arr.forEach((element) => {     
+    await arr.forEach(async (element) => {     
         let med_item_card_container = document.createElement("div");
         med_item_card_container.classList.add("med_item_card_container");
+
+        console.log(element.CODE);
+
+        let temp_pic_data = await get_med_pic_by_code(element.CODE);
+        let med_pic_data = temp_pic_data.Data;
+        let temp_src;
+
+        console.log(temp_pic_data);
+        if(temp_pic_data.Code != -200) {
+            temp_src = med_pic_data.pic_base64;
+        } else {
+            temp_src = "../image/no_pic.png";
+        }
     
         med_item_card_container.innerHTML = `
             <div class="med_item_img_container">
-                <img src="https://fakeimg.pl/300x200/200" />
+                <img src=${temp_src} />
             </div>
             <div class="med_item_content_container">
                 <div class="med_item_name_content">
@@ -288,11 +301,11 @@ async function search_by_code(value) {
                 alert("查無此藥");
             } else {
                 console.log(temp_arr);
-                get_search_result_display(temp_arr);
+                await get_search_result_display(temp_arr);
             }
         } else {
             console.log(temp_arr);
-            get_search_result_display(temp_arr);
+            await get_search_result_display(temp_arr);
         }
     }
     hideLoadingPopup();
@@ -309,7 +322,7 @@ async function search_by_name(value) {
             alert("查無此藥");
         } else {
             console.log(temp_arr);
-            get_search_result_display(temp_arr);
+            await get_search_result_display(temp_arr);
         }
     }
     hideLoadingPopup();
@@ -329,7 +342,7 @@ async function search_by_ctname(value) {
             alert("查無此藥");
         } else {
             console.log(temp_arr);
-            get_search_result_display(temp_arr);
+            await get_search_result_display(temp_arr);
         }
     }
     hideLoadingPopup();
@@ -347,7 +360,7 @@ async function search_by_dianame(value) {
             alert("查無此藥");
         } else {
             console.log(temp_arr);
-            get_search_result_display(temp_arr);
+            await get_search_result_display(temp_arr);
         }
     }
     hideLoadingPopup();
@@ -365,7 +378,7 @@ async function search_by_drugkind(value) {
             alert("查無此藥");
         } else {
             console.log(temp_arr);
-            get_search_result_display(temp_arr);
+            await get_search_result_display(temp_arr);
         }
     }
     hideLoadingPopup();
@@ -379,7 +392,7 @@ async function search_by_h_price() {
         alert("查無此藥");
     } else {
         console.log(temp_arr);
-        get_search_result_display(temp_arr);
+        await get_search_result_display(temp_arr);
     }
     hideLoadingPopup();
 };
@@ -405,7 +418,7 @@ async function search_by_med_group() {
         alert("查無此藥");
     } else {
         console.log(temp_arr);
-        get_search_result_display(temp_arr);
+        await get_search_result_display(temp_arr);
     }
     hideLoadingPopup();
 };
