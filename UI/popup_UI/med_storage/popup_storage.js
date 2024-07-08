@@ -145,7 +145,6 @@ async function set_popup_storage_info(code) {
     let med_pic = temp_pic_data.Data;
     let med_data = temp_data.Data[0];
     console.log(med_data);
-    console.log(med_pic);
 
     let ppsi_position_content = document.querySelector(".ppsi_position_content");
     let ppsi_med_img = document.querySelector(".ppsi_med_img");
@@ -280,66 +279,3 @@ async function set_light_off(code) {
         console.log(res);
     });
 }
-async function get_med_pic_by_code(code) {
-    let start_p = performance.now();
-    let data = {
-        "Data": {},
-        "ValueAry" : [code]
-    };
-    console.log("進入api取得資料");
-    console.log(`${api_ip}api/medPic/get_by_code`);
-    let temp_data = await fetch(`${api_ip}api/medPic/get_by_code`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-    })
-    .then((response) => {
-        console.log("取得資料ＪＳＯＮ格式");
-        // console.log(response.json());
-        return response.json();
-    });
-    let end_p = performance.now();
-    console.log(end_p - start_p); 
-  
-    console.log(temp_data);
-  
-    if(temp_data.Code != -200) {
-      console.log("code 200");
-      let jpeg_default = "data:image/jpeg;base64,";
-      let png_default = "data:image/png;base64,";
-  
-      if(temp_data["Data"].pic_base64 != "") {
-        if(temp_data["Data"].pic_base64.includes(jpeg_default) || temp_data["Data"].pic_base64.includes(png_default)) {
-          
-        } else {
-          if(temp_data["Data"].extension != "") {
-            switch (temp_data["Data"].extension) {
-              case "jpg":
-                temp_data["Data"].pic_base64 = jpeg_default + temp_data["Data"].pic_base64;
-              break;
-  
-              case "jpeg":
-                temp_data["Data"].pic_base64 = jpeg_default + temp_data["Data"].pic_base64;
-              break;
-  
-              case "png":
-                temp_data["Data"].pic_base64 = png_default + temp_data["Data"].pic_base64;
-              break;
-          
-              default:
-              break;
-            }
-          } else {
-            console.log("沒有定義類型");
-            temp_data["Data"].pic_base64 = jpeg_default + temp_data["Data"].pic_base64;
-          }
-        };
-      }
-    }
-  
-    console.log(temp_data);
-  
-    return temp_data;
-  }

@@ -107,22 +107,27 @@ async function get_med_pic_by_code(code) {
       if(temp_data["Data"].pic_base64.includes(jpeg_default) || temp_data["Data"].pic_base64.includes(png_default)) {
         
       } else {
-        if(temp_data["Data"].extension != "") {
-          switch (temp_data["Data"].extension) {
-            case "jpg":
-              temp_data["Data"].pic_base64 = jpeg_default + temp_data["Data"].pic_base64;
-            break;
-
-            case "jpeg":
-              temp_data["Data"].pic_base64 = jpeg_default + temp_data["Data"].pic_base64;
-            break;
-
-            case "png":
-              temp_data["Data"].pic_base64 = png_default + temp_data["Data"].pic_base64;
-            break;
-        
-            default:
-            break;
+        if(temp_data["Data"].extension != undefined) {
+          if(temp_data["Data"].extension != "") {
+            switch (temp_data["Data"].extension) {
+              case "jpg":
+                temp_data["Data"].pic_base64 = jpeg_default + temp_data["Data"].pic_base64;
+              break;
+  
+              case "jpeg":
+                temp_data["Data"].pic_base64 = jpeg_default + temp_data["Data"].pic_base64;
+              break;
+  
+              case "png":
+                temp_data["Data"].pic_base64 = png_default + temp_data["Data"].pic_base64;
+              break;
+          
+              default:
+              break;
+            }
+          } else {
+            console.log("沒有定義類型");
+            temp_data["Data"].pic_base64 = jpeg_default + temp_data["Data"].pic_base64;
           }
         } else {
           console.log("沒有定義類型");
