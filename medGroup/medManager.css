@@ -37,10 +37,11 @@
     margin: auto;
     max-width: 1200px;
     margin-top: 20px;
+    margin-bottom: 100px;
 }
 
 .mm_display_container {
-    width: 540px;
+    width: 700px;
     margin: auto;
     display: flex;
     justify-content: center;
@@ -60,7 +61,7 @@
 .mm_all_display_container {
     width: 100%;
     margin-top: 16px;
-    margin-bottom: 100px;
+    margin-bottom: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -207,6 +208,24 @@
 
 .kind_set_style {
   margin-left: 6px;
+}
+
+.med_type_checkbox_container {
+    display: flex;
+    align-items: center;
+}
+.med_type_checkbox_container > label {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    border: 1px solid #000000;
+    padding: 4px 16px 4px 4px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#west_med,
+#cht_med {
+    margin: 0px 12px 0px 6px;
 }
 
 .mm_all_display_header_container {
@@ -522,6 +541,55 @@
 #popup_double_review:disabled {
 } */
 
+.pagination_container {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pre_page_btn,
+.next_page_btn {
+    width: 32px;
+    height: 32px;
+    display: block;
+    object-fit: cover;
+    padding: 9px;
+    cursor: pointer;
+}
+.next_page_btn {
+    transform: rotate(180deg);
+}
+.disable_page_btn {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.pagination_pages_container {
+    margin: 0px 16px;
+    display: flex;
+}
+.pagination_page {
+    display: flex;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    line-height: 12px;
+    padding: 6px;
+    margin: 0px 16px;
+    border-radius: 50%;
+    transition: 0.2s all ease;
+    background-color: transparent;
+    cursor: pointer;
+}
+.pagination_page:hover {
+    background-color: #d0d0d0;
+    transition: 0.2s all ease;
+}
+.current_pagination_page {
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
 @media screen and (max-width: 1200px) {
     .mm_med_info_display_container {
         margin: 0px auto 16px;
@@ -540,7 +608,7 @@
     }
     .mm_all_display_container {
         width: 100%;
-        margin: 20px auto 100px;
+        margin: 20px auto 20px;
     }
     .mm_med_diplay_notice {
         width: 95%;
@@ -551,8 +619,30 @@
     }
 }
 @media screen and (max-width: 550px) {
+    .pre_page_btn,
+    .next_page_btn {
+        width: 24px;
+        height: 24px;
+        padding: 4px;
+        cursor: pointer;
+    }
+    .pagination_pages_container {
+        margin: 0px 8px;
+    }
+    .pagination_page {
+        width: 16px;
+        height: 16px;
+        margin: 0px 8px;
+        padding: 0px;
+    }
     .mm_display_container {
+        flex-direction: column;
         width: 340px;
+    }
+    #search_med_select_method,
+    .search_input_container {
+        width: 100%;
+        margin-bottom: 8px;
     }
     .serch_box_med_item_div {
         flex-wrap: nowrap !important;

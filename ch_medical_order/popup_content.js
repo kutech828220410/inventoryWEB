@@ -102,6 +102,24 @@ function set_pp_med_list_table_container() {
 }
 function set_pp_med_table(array) {
     let table_header_data = ["", "藥名", "應調", "實調", "天", "單位", "備註"];
+
+    let pppi_patient_name = document.querySelector(".pppi_patient_name");
+    let pppi_patient_gender = document.querySelector(".pppi_patient_gender");
+    let pppi_patient_PATCODE = document.querySelector(".pppi_patient_PATCODE");
+    let pppi_patient_age = document.querySelector(".pppi_patient_age");
+    let pppi_patient_ORD_START = document.querySelector(".pppi_patient_ORD_START");
+
+    pppi_patient_name.innerHTML = array[0].PATNAME;
+    if(array[0].SEX == "M") {
+        pppi_patient_gender.innerHTML = `(男)`;
+    } else {
+        pppi_patient_gender.innerHTML = `(女)`;
+    }
+    pppi_patient_PATCODE.innerHTML = array[0].PATCODE;
+    pppi_patient_age.innerHTML = array[0].AGE;
+    pppi_patient_ORD_START.innerHTML = array[0].ORD_START;
+
+
     let pp_med_list_table_container = document.querySelector(".pp_med_list_table_container");
     pp_med_list_table_container.innerHTML = "";
 
@@ -114,14 +132,42 @@ function set_pp_med_table(array) {
     table_header_data.forEach((element, index) => {
         let ppm_table_th = document.createElement("th");
         ppm_table_th.classList.add(`col${index + 1}`);
+        ppm_table_th.classList.add(`ppm_table_th`);
         ppm_table_th.innerHTML = element;
         ppm_table_header_container.appendChild(ppm_table_th);
     });
 
     pp_med_table.appendChild(ppm_table_header_container);
 
+    array.forEach((item, y) => {
+        let ppm_content_container = document.createElement("tr");
+        ppm_content_container.classList.add("ppm_content_container");
+
+        if(y%2 != 0) {
+            ppm_content_container.innerHTML = `
+                <td class="ppm_table_td td_col_1 col_1">${y + 1}</td>
+                <td class="ppm_table_td td_col_2 col_2">${item.NAME}</td>
+                <td class="ppm_table_td td_col_3 col_3">${item.TXN_QTY}</td>
+                <td class="ppm_table_td td_col_4 col_4">${item.DISP_QTY}</td>
+                <td class="ppm_table_td td_col_5 col_5">${item.DAYS}</td>
+                <td class="ppm_table_td td_col_6 col_6">${item.DUNIT}</td>
+                <td class="ppm_table_td td_col_7 col_7">${item.NOTE}</td>
+            `;
+        } else {
+            ppm_content_container.innerHTML = `
+                <td class="ppm_table_td bgc_gray td_col_1 col_1">${y + 1}</td>
+                <td class="ppm_table_td bgc_gray td_col_2 col_2">${item.NAME}</td>
+                <td class="ppm_table_td bgc_gray td_col_3 col_3">${item.TXN_QTY}</td>
+                <td class="ppm_table_td bgc_gray td_col_4 col_4">${item.DISP_QTY}</td>
+                <td class="ppm_table_td bgc_gray td_col_5 col_5">${item.DAYS}</td>
+                <td class="ppm_table_td bgc_gray td_col_6 col_6">${item.DUNIT}</td>
+                <td class="ppm_table_td bgc_gray td_col_7 col_7">${item.NOTE}</td>
+            `;
+        }
 
 
+        pp_med_table.appendChild(ppm_content_container);
+    });
 
     pp_med_list_table_container.appendChild(pp_med_table);
 }

@@ -444,6 +444,18 @@ async function set_search_result() {
       // 建立資料
       let table_info_container = document.createElement("div");
       table_info_container.classList.add("table_info_container");
+      table_info_container.setAttribute("PRI_KEY", element.PRI_KEY);
+      table_info_container.addEventListener("click", async () => {
+        Set_main_div_enable(true);
+        let post_prt_key = table_info_container.getAttribute("PRI_KEY");
+        let res_data = await get_by_pri_key(post_prt_key);
+        console.log(res_data);
+        let temp_array = res_data["Data"];
+        set_pp_med_table(temp_array);
+        popup_cht_med_content_div_open();
+        Set_main_div_enable(false);
+      })
+
       for (let i = 0; i < arr_th.length; i++) {
         let td = document.createElement("p");
         td.classList.add("table_td");
