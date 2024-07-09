@@ -30,3 +30,34 @@
 .pps_footer_container {
     justify-content: space-between;
 }
+.pp_patient_info_container {
+    padding: 8px 24px 12px;
+}
+.pppi_div {
+    display: flex;
+    align-items: center;
+}
+.pppi_div > span {
+    letter-spacing: 0.5rem;
+    line-height: 28px;
+    display: block;
+    margin-right: 16px;
+}
+.pppi_patient_label {
+    margin-right: 0px !important;
+    width: 96px;
+}
+.pp_med_table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #000;
+}
+.col1 { width: 5%; }
+.col2 { width: 35%; }
+.col3 { width: 10%; }
+.col4 { width: 10%; }
+.col5 { width: 10%; }
+.col6 { width: 10%; }
+.col7 { width: 15%; }

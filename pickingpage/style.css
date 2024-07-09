@@ -111,14 +111,12 @@
     border-radius: 5px;
     background-color: #6B6B63;
     margin: auto;
-    height: 300px;
-    width: 300px;
+    width: 320px;
     margin-bottom: 10px;
 }
 .display_med_img {
     display: block;
-    width: 280px;
-    height: 280px;
+    width: 300px;
     object-fit: cover;
     object-position: center;
 }

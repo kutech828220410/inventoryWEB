@@ -56,6 +56,7 @@ async function load()
   get_search_container();
   get_list_table_container();
   Set_main_div_enable(false);
+  set_pp_med_table([]);
 }
 
 function get_header(test_user_data) {

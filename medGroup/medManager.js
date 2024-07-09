@@ -90,6 +90,7 @@ function mm_main_init() {
 
     mm_display_container.innerHTML = `
         <select name="search_med_select_method" id="search_med_select_method">
+            <option value="all">全部藥品</option>
             <option value="code">藥碼</option>
             <option value="name">藥名</option>
             <option value="cht_name">中文名</option>
@@ -98,6 +99,8 @@ function mm_main_init() {
             <option value="drugkind">管制級別</option>
             <option value="h_price">高價藥品</option>
             <option value="med_group">藥品群組</option>
+            <option value="west_med">西藥</option>
+            <option value="cht_med">中藥</option>
         </select>
         <div class="search_input_container">
             <input type="text" id="search_med_input" />
@@ -205,6 +208,15 @@ function search_med_result_func() {
         case "med_group":
             search_by_med_group();
             break;
+        case "all":
+            search_all_med();
+            break;
+        case "west_med":
+            search_by_west_med();
+            break;
+        case "cht_med":
+            search_by_cht_med();
+            break;
     }
 }
 
@@ -222,7 +234,7 @@ async function get_search_result_display(arr) {
         let med_pic_data = temp_pic_data.Data;
         let temp_src;
 
-        console.log(temp_pic_data);
+        // console.log(temp_pic_data);
         if(temp_pic_data.Code != -200) {
             temp_src = med_pic_data.pic_base64;
         } else {
@@ -268,7 +280,6 @@ async function get_search_result_display(arr) {
 
     });
 };
-
 function text_switch(text) {
     if(text == "") {
         return "無";
@@ -327,7 +338,6 @@ async function search_by_name(value) {
     }
     hideLoadingPopup();
 };
-
 async function search_by_ctname(value) {
     showLoadingPopup();
     
@@ -422,6 +432,41 @@ async function search_by_med_group() {
     }
     hideLoadingPopup();
 };
+async function search_all_med() {
+    showLoadingPopup();
+    let med_data = await get_medicine_cloud();
+
+    console.log(med_data["Data"]);
+
+    let temp_arr = med_data["Data"];
+    
+    await get_search_result_display(temp_arr);
+
+    hideLoadingPopup();
+};
+async function search_by_west_med() {
+    showLoadingPopup();
+    let med_data = await get_medicine_cloud();
+
+    console.log(med_data["Data"]);
+    let temp_arr = med_data["Data"].filter(e => e["TYPE"] == "西藥");
+    console.log(temp_arr);
+    await get_search_result_display(temp_arr);
+
+    hideLoadingPopup();
+};
+async function search_by_cht_med() {
+    showLoadingPopup();
+    let med_data = await get_medicine_cloud();
+
+    console.log(med_data["Data"]);
+    let temp_arr = med_data["Data"].filter(e => e["TYPE"] == "中藥");
+    console.log(temp_arr);
+    await get_search_result_display(temp_arr);
+
+    hideLoadingPopup();
+};
+
 
 // 自定義設定功能資料
 async function get_medConfig_data() {

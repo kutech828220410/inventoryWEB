@@ -40,8 +40,10 @@ function get_ppcmc_main() {
     ppcmc_main_container.classList.add("ppcmc_main_container");
 
     let pp_patient_info_container = set_pp_patient_info_container();
+    let pp_med_list_table_container = set_pp_med_list_table_container();
 
     ppcmc_main_container.appendChild(pp_patient_info_container);
+    ppcmc_main_container.appendChild(pp_med_list_table_container);
 
     return ppcmc_main_container;
 }
@@ -64,21 +66,62 @@ function set_pp_patient_info_container() {
     let pppi_p_name_div = document.createElement("div");
     pppi_p_name_div.classList.add("pppi_div");
     pppi_p_name_div.id = "pppi_p_name_div";
-    pppi_p_name_div.innerHTML = "病人姓名(性別) 病歷號";
+    pppi_p_name_div.innerHTML = `
+        <span class="pppi_patient_name">病人姓名</span>
+        <span class="pppi_patient_gender">(性別)</span>
+        <span class="pppi_patient_PATCODE">病歷號</span>
+    `;
 
     let pppi_p_age_div = document.createElement("div");
     pppi_p_age_div.classList.add("pppi_div");
     pppi_p_age_div.id = "pppi_p_age_div";
-    pppi_p_age_div.innerHTML = "年齡：1000歲";
+    pppi_p_age_div.innerHTML = `
+        <span class="pppi_patient_label">年齡</span>：
+        <span class="pppi_patient_age">100歲</span>
+    `;
 
     let pppi_p_date_div = document.createElement("div");
     pppi_p_date_div.classList.add("pppi_div");
     pppi_p_date_div.id = "pppi_p_date_div";
-    pppi_p_date_div.innerHTML = "處方日期：20202020204";
+    pppi_p_date_div.innerHTML = `
+        <span class="pppi_patient_label">處方日期</span>：
+        <span class="pppi_patient_ORD_START">開方時間</span>
+    `;
 
     pp_patient_info_container.appendChild(pppi_p_name_div);
     pp_patient_info_container.appendChild(pppi_p_age_div);
     pp_patient_info_container.appendChild(pppi_p_date_div);
 
     return pp_patient_info_container;
+}
+function set_pp_med_list_table_container() {
+    let pp_med_list_table_container = document.createElement("div");
+    pp_med_list_table_container.classList.add("pp_med_list_table_container");
+
+    return pp_med_list_table_container;
+}
+function set_pp_med_table(array) {
+    let table_header_data = ["", "藥名", "應調", "實調", "天", "單位", "備註"];
+    let pp_med_list_table_container = document.querySelector(".pp_med_list_table_container");
+    pp_med_list_table_container.innerHTML = "";
+
+    let pp_med_table = document.createElement("table");
+    pp_med_table.classList.add("pp_med_table");
+
+    let ppm_table_header_container = document.createElement("tr");
+    ppm_table_header_container.classList.add("ppm_table_header_container");
+
+    table_header_data.forEach((element, index) => {
+        let ppm_table_th = document.createElement("th");
+        ppm_table_th.classList.add(`col${index + 1}`);
+        ppm_table_th.innerHTML = element;
+        ppm_table_header_container.appendChild(ppm_table_th);
+    });
+
+    pp_med_table.appendChild(ppm_table_header_container);
+
+
+
+
+    pp_med_list_table_container.appendChild(pp_med_table);
 }
