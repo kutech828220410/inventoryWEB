@@ -227,7 +227,7 @@ function nav_bar_create(html_page, user_data) {
 
     homepage_btn.addEventListener("click", () => 
     {
-            location.href = "../../frontpage_new/";
+            location.href = "../../frontpage/";
         // window.alert("登出摟")
     })
 
@@ -289,10 +289,10 @@ function nav_bar_create(html_page, user_data) {
         nav_bar_container.style.left = "-300px"
         nav_bar_tigger_container.style.opacity = 1
     })
-    nav_bar_tigger_container.addEventListener("click", () => {
-        nav_bar_container.style.left = "0px"
-        nav_bar_tigger_container.style.opacity = 0
-    })
+    // nav_bar_tigger_container.addEventListener("click", () => {
+    //     nav_bar_container.style.left = "0px"
+    //     nav_bar_tigger_container.style.opacity = 0
+    // })
 
     if (html_page == "frontpage_new") {
         nav_bar_tigger_container.style.border = "1px solid #ffffff"
@@ -307,8 +307,23 @@ function nav_bar_create(html_page, user_data) {
     nav_bar_container.appendChild(nav_bar_content_container)
     nav_bar_container.appendChild(nav_bar_close_button)
 
+    nav_bar_tigger_container.innerHTML = "";
+    let homepage_logo = document.createElement("img");
+    homepage_logo.classList.add("homepage_logo");
+    homepage_logo.src = "../../image/homepage.png";
+    homepage_logo.alt = "front page icon";
+    homepage_logo.style.width = "100%";
+    homepage_logo.style.height = "100%";
+    homepage_logo.style.display = "block";
+    
+    nav_bar_tigger_container.addEventListener("click", () => {
+        location.href = "../../frontpage/";
+    })
+
+    nav_bar_tigger_container.appendChild(homepage_logo);
+
     document.body.appendChild(nav_bar_tigger_container)
-    document.body.appendChild(nav_bar_container)
+    // document.body.appendChild(nav_bar_container)
 
     // 分頁展示
     const nav_bar_content = document.createElement('div');

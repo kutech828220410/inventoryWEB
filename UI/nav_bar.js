@@ -62,16 +62,16 @@ let html_pages = [
                         icon_big_url: "../../image/icon/inspection_big_icon.png"
                     },
                     {
-                        html_name: "pickingpage",
-                        html_ctName: "上架",
-                        html_url: "../../pickingpage",
+                        html_name: "med_request",
+                        html_ctName: "藥品申領",
+                        html_url: "../../med_request",
                         icon_url: "../../image/icon/assortment.png",
                         icon_big_url: "../../image/icon/picking_big_icon.png"
                     },
                     {
-                        html_name: "requisitions_upload",
-                        html_ctName: "單據辨識",
-                        html_url: "../../requisitions_upload",
+                        html_name: "pickingpage",
+                        html_ctName: "上架",
+                        html_url: "../../pickingpage",
                         icon_url: "../../image/icon/assortment.png",
                         icon_big_url: "../../image/icon/picking_big_icon.png"
                     }
@@ -120,14 +120,7 @@ let html_pages = [
                         html_url: "../../ch_medical_order",
                         icon_url: "../../image/icon/compliance.png",
                         icon_big_url: "../../image/icon/controlled_big_icon.png"
-                    },
-                    {
-                        html_name: "consumption_report",
-                        html_ctName: "交易紀錄",
-                        html_url: "../../consumption",
-                        icon_url: "../../image/icon/transaction.png",
-                        icon_big_url: "../../image/icon/traded_big_icon.png"
-                    },
+                    }
                 ]
             }
         ],
