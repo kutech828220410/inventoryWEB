@@ -1,10 +1,20 @@
+@font-face {
+  font-family: 'Noto Sans TC';
+  src: url('../font/Noto_Sans_TC/static/NotoSansTC-Regular.ttf') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 
 * {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  padding: 0px;
-  margin: 0px;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
+  font-family: "Noto Sans TC", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
+
 body {
   width: 100%;
 }

@@ -1,0 +1,177 @@
+.d_carts_list_contaienr {
+    margin: 0px -40px;
+    display: grid;
+    /* grid-template-rows: 20% 20% 20% 20% 20%; */
+    grid-template-columns: 20% 20% 20% 20% 20%;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.d_cart_container {
+    width: 200px;
+    height: 160px;
+    cursor: pointer;
+    box-shadow: 2px 2px 8px 2px #0000003e;
+    margin: 32px 20px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    background-color: var(--able-select);
+    border-radius: 10px;
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    line-height: 160px;
+}
+.d_cart_done {
+    cursor: not-allowed;
+    background-color: var(--deliver-color);
+}
+
+.d_carts_notice_contaienr {
+    margin-top: 24px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.d_carts_notice_color {
+    border: 1px solid #555555;
+    border-radius: 6px;
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    margin-right: 16px;
+    background-color: var(--deliver-color);
+}
+.p_bed_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.pb_name_display {
+    font-size: 20px;
+    font-weight: 600;
+}
+.pb_btn_container {
+    display: flex;
+    width: 400px;
+    justify-content: space-between;
+}
+.pb_list_btn {
+    position: relative;
+}
+.pb_list_notice {
+    top: -10px;
+    right: -8px;
+    display: block;
+    position: absolute;
+    width: 20px;
+}
+.display_none {
+    display: none;
+}
+
+.p_bed_info_container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.p_bed_simple_container,
+.p_bed_detailed_container {
+    width: 48%;
+    padding: 16px;
+    border-radius: 5px;
+    background-color: rgb(236, 236, 236);
+}
+.p_bed_med_container {
+    width: 100%;
+}
+.pbm_header_container {
+    margin-top: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    position: relative;
+    width: 100%;
+}
+.pbmh_light_on_btn {
+    border-radius: 5px;
+    padding: 6px 32px;
+    background-color: rgb(46, 132, 0);
+    transition: all 0.2s;
+    cursor: pointer;
+    color: #ffffff;
+    margin-right: 20px;
+}
+.pbmh_light_on_btn:hover {
+    color: black;
+    background-color: #7fe747;
+    transition: all 0.2s;
+}
+.pbmh_pre_btn {
+    position: absolute;
+    left: 0px;
+}
+.pbmh_checked_trigger_label {
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    padding: 6px 24px;
+    margin-right: 24px;
+    background-color: #b5b5b5;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.pbmh_checked_trigger_label:hover {
+    transition: all 0.2s;
+    background-color: #8b8b8b;
+}
+#pbmh_checked_trigger {
+    margin-right: 12px;
+}
+
+.pbm_main_container {
+    margin-top: 12px;
+    min-height: 200px;
+    border-radius: 12px;
+    background-color: rgb(236, 236, 236);
+    padding: 10px;
+}
+.med_card_container {
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #000000;
+    padding: 10px;
+}
+.med_card_container:last-child {
+    margin-bottom: 0px;
+}
+.med_card_title_container {
+    display: flex;
+    justify-content: space-between;
+}
+.med_card_info_container {
+    display: flex;
+    flex-wrap: wrap;
+}
+.med_name_card_container {
+    display: flex;
+}
+.med_card_code,
+.med_card_name,
+.med_card_cht_name,
+.med_card_qty,
+.med_card_unit {
+    margin-right: 24px;
+}
+
+@media screen and (max-width: 1200px) {
+    .p_bed_simple_container,
+    .p_bed_detailed_container {
+        padding: 8px;
+    }
+}

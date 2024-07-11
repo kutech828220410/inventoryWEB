@@ -3,7 +3,7 @@ var popup_med_serch_value = null;
 var popup_med_serch_finishedEvent = [];
 var popup_med_serch_medclass = null;
 var popup_med_serch_rows_div = [];
-var popup_med_serch_NumOfPageRows = 6;
+var popup_med_serch_NumOfPageRows = 5;
 var popup_med_serch_PageIndex = 0;
 var popup_med_serch_MaxfPage = 0;
 async function popup_med_serch_load()
@@ -26,7 +26,7 @@ async function popup_med_serch_closed()
    {
        if( popup_med_serch_rows_div[i].getAttribute("checked") == "true")
        {
-           popup_med_serch_value = popup_med_serch_rows_div[i].getAttribute("CODE");
+           popup_med_serch_value = popup_med_serch_rows_div[i].getAttribute("GUID");
            break;
        }
    }
@@ -246,7 +246,7 @@ function popup_med_serch_typeSerch(text)
             return item.NAME.toUpperCase().includes(text.toUpperCase());
         });
 
-        console.log("搜尋英文名結果",med);
+        console.log("搜尋英文名結果", med);
     }
     else if(radio_content_DIANAME.checked == true)
     {
@@ -334,7 +334,7 @@ function popup_med_serch_get_row(medClass , index)
     row_div.setAttribute("GUID",medClass.GUID);
     row_div.setAttribute("CODE",medClass.CODE);
     row_div.setAttribute("checked",false);
-    My_Div.Init(row_div, `popup_med_serch_row_div${medClass.CODE}`,`popup_med_serch_row_div${medClass.CODE}`, '100%', '60px', '#8ad0ec');
+    My_Div.Init(row_div, `popup_med_serch_row_div${medClass.CODE}`,`popup_med_serch_row_div${medClass.CODE}`, '100%', '70px', '#8ad0ec');
     My_Div.Set_Block(row_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
     row_div.style.flexWrap = "wrap";
     row_div.style.borderTop = "1px solid white";
@@ -370,11 +370,11 @@ function popup_med_serch_get_row(medClass , index)
         await popup_med_serch_div.Close();
     });
     const row_text = document.createElement("div");
-    My_Div.Init(row_text, `popup_med_serch_row_text${medClass.CODE}`,`popup_med_serch_row_text${medClass.CODE}`, '100%', '60px', '');
+    My_Div.Init(row_text, `popup_med_serch_row_text${medClass.CODE}`,`popup_med_serch_row_text${medClass.CODE}`, '100%', '70px', '');
     if(medClass.SKDIACODE == "") {
-        My_Div.Set_Text(row_text ,`${medClass.CODE}\n${medClass.NAME}` , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","black");
+        My_Div.Set_Text(row_text ,`${medClass.CODE}\n${medClass.PON}\n${medClass.NAME}` , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","black");
     } else {
-        My_Div.Set_Text(row_text ,`${medClass.SKDIACODE}\n${medClass.NAME}` , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","black");
+        My_Div.Set_Text(row_text ,`${medClass.SKDIACODE}\n${medClass.PON}\n${medClass.NAME}` , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","black");
     }
     My_Div.Set_Block(row_text, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
     row_text.style.marginLeft = "5px";

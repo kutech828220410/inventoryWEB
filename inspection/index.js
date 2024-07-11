@@ -72,12 +72,12 @@ async function popup_login_finished()
    console.log(`[${arguments.callee.name}]`);
    popup_creatSelect_div.Show();
 }
-async function popup_med_serch_finished(CODE)
+async function popup_med_serch_finished(GUID)
 {
-   console.log(`[${arguments.callee.name}]` , CODE);
+   console.log(`[${arguments.callee.name}]` , GUID);
    const Content = data.Data[0].Contents.filter(function(content)
    {
-     return content.CODE == CODE;
+     return content.GUID == GUID;
    });
    if(Content.length > 0)
    {

@@ -98,6 +98,7 @@ function set_prc_content_container() {
     let prc_code_content = document.createElement("div");
     prc_code_content.classList.add("prc_content");
     prc_code_content.id = "prc_code_content";
+    prc_code_content.innerHTML = "ODEF1";
 
     prc_code_div.appendChild(prc_code_label);
     prc_code_div.appendChild(prc_code_content);
@@ -112,6 +113,7 @@ function set_prc_content_container() {
     let prc_name_content = document.createElement("div");
     prc_name_content.classList.add("prc_content");
     prc_name_content.id = "prc_name_content";
+    prc_name_content.innerHTML = "Odefsey 25mg 30 FC.tab./bt1";
 
     prc_name_div.appendChild(prc_name_label);
     prc_name_div.appendChild(prc_name_content);
@@ -126,6 +128,7 @@ function set_prc_content_container() {
     let prc_cht_name_content = document.createElement("div");
     prc_cht_name_content.classList.add("prc_content");
     prc_cht_name_content.id = "prc_cht_name_content";
+    prc_cht_name_content.innerHTML = "安以斯膜衣錠 30粒/瓶";
 
     prc_cht_name_div.appendChild(prc_cht_name_label);
     prc_cht_name_div.appendChild(prc_cht_name_content);
@@ -141,6 +144,7 @@ function set_prc_content_container() {
     let prc_deadtime_input = document.createElement("input");
     prc_deadtime_input.id = "prc_deadtime_input";
     prc_deadtime_input.name = "prc_deadtime_input";
+    prc_deadtime_input.value = "2026.02.28";
 
     prc_deadtime_div.appendChild(prc_deadtime_label);
     prc_deadtime_div.appendChild(prc_deadtime_input);
@@ -156,6 +160,7 @@ function set_prc_content_container() {
     let prc_qty_input = document.createElement("input");
     prc_qty_input.id = "prc_qty_input";
     prc_qty_input.name = "prc_qty_input";
+    prc_qty_input.value = "3";
 
     prc_qty_div.appendChild(prc_qty_label);
     prc_qty_div.appendChild(prc_qty_input);
@@ -171,6 +176,7 @@ function set_prc_content_container() {
     let prc_batch_num_input = document.createElement("input");
     prc_batch_num_input.id = "prc_batch_num_input";
     prc_batch_num_input.name = "prc_batch_num_input";
+    prc_batch_num_input.value = "7314801P.B";
 
     prc_batch_num_div.appendChild(prc_batch_num_label);
     prc_batch_num_div.appendChild(prc_batch_num_input);
@@ -186,6 +192,7 @@ function set_prc_content_container() {
     let prc_list_num_input = document.createElement("input");
     prc_list_num_input.id = "prc_list_num_input";
     prc_list_num_input.name = "prc_list_num_input";
+    prc_list_num_input.value = "1130606002-39";
 
     prc_list_num_div.appendChild(prc_list_num_label);
     prc_list_num_div.appendChild(prc_list_num_input);

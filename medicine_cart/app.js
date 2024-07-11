@@ -45,6 +45,9 @@ async function load()
   get_no_selected_func();
   select_list_controller();
   Set_main_div_enable(false);
+
+  // 開發顯示
+  allocate_display_init();
 }
 
 function get_header(test_user_data) {
@@ -776,7 +779,6 @@ function func_display_init() {
   let function_display_container = document.querySelector(".function_display_container");
   function_display_container.innerHTML = "";
 }
-async function popup_login_finished()
-{
+async function popup_login_finished() {
   console.log(`[${arguments.callee.name}]`);
 }
