@@ -152,7 +152,8 @@ function mainDiplay(med_data, medicine_page) {
                 }
 
                 for (let i = 0; i < temp_medicine_page.length; i++) {
-                    picking_list_container.appendChild(display_search_med_by_name(temp_medicine_page[i], med_data))
+                    let temp_div = await display_search_med_by_name(temp_medicine_page[i], med_data)
+                    picking_list_container.appendChild(temp_div)
                 }
                 text.value = '';
                 return;
@@ -185,14 +186,20 @@ function mainDiplay(med_data, medicine_page) {
     }
 }
 
-function display_search_med_by_name (med, med_data) {
+async function display_search_med_by_name (med, med_data) {
+    console.log(med);
+    console.log(med_data);
+    let temp_pic_data = await get_med_pic_by_code(med.CODE);
+
+    let med_pic = temp_pic_data.Data;
+
     let search_med_display_container = document.createElement("div")
     search_med_display_container.classList.add("search_med_display_container")
     search_med_display_container.id = med.CODE;
 
     let med_img = document.createElement("img");
     med_img.classList.add("med_img");
-    med_img.src = `${med.MED_PIC_URL}`;
+    med_img.src = `${med_pic.pic_base64}`;
     med_img.alt = `med image`;
 
     let med_content = document.createElement("div");

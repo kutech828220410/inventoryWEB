@@ -122,7 +122,8 @@ async function download_cdmis_datas_excel(data)
     //       "調劑台,調劑台"
     //     ]
     //   }
-    console.log(`${api_ip}api/transactions/download_cdmis_datas_excel`);
+    // console.log(`${api_ip}api/transactions/download_cdmis_datas_excel`);
+    console.log(data);
     try {
         const response = await fetch(`${api_ip}api/transactions/download_cdmis_datas_excel`, {
         method: 'POST',
