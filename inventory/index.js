@@ -305,6 +305,7 @@ async function serch_CODE_input_enter(barcode)
     const response = await serch_by_BarCode(barcode, medicine_page.Data);
     console.log("serch_by_BarCode",response)
     if(medicine_page == undefined) return;
+    if(response == undefined) return;
     if(response.Data.length == 0) 
     {
       alert("查無此藥品");

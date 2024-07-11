@@ -75,8 +75,30 @@ function popup_login_content_init()
     popup_login_content_pwd_input.inputMode = "latin";
     popup_login_content_pwd_input.onfocus = function()
     {
-       this.select();       
+       this.select();
     };
+
+    popup_login_content_user_input.addEventListener("keydown", async (e) => {
+        if (e.key === 'Tab') {
+            console.log("asdf");
+            e.preventDefault();
+            e.target.blur();
+            popup_login_content_pwd_input.focus();
+        }
+        if (e.key === 'Enter') {
+            return popup_login_content_submit_button_click("");
+        }
+    });
+    popup_login_content_pwd_input.addEventListener("keydown", async (e) => {
+        if (e.key === 'Tab') {
+            e.preventDefault();
+            e.target.blur();
+            popup_login_content_user_input.focus();
+        }
+        if (e.key === 'Enter') {
+            return popup_login_content_submit_button_click("");
+        }
+    });
 
     content.appendChild(popup_login_content_user_input);
     content.appendChild(popup_login_content_pwd_input);
@@ -121,7 +143,9 @@ function popup_login_underline_init()
 
 async function popup_login_content_submit_button_click(event) 
 {
-    event.preventDefault(); // 阻止表单的自动提交
+    if(event != "") {
+        event.preventDefault(); // 阻止表单的自动提交
+    }
 
     // 取得使用者輸入的帳號和密碼
     const user = document.querySelector("#popup_login_content_user_input").value;
@@ -134,10 +158,13 @@ async function popup_login_content_submit_button_click(event)
         alert("請輸入帳號和密碼！");
         return false; // 防止表單提交
     }
-    loginBtn.disabled = true;
-    loginBtn.textContent = "登入中...";
 
     const session_login = await login(user, password);
+    if(session_login == undefined) {
+        return false;
+    }
+    loginBtn.disabled = true;
+    loginBtn.textContent = "登入中...";
     await update_session(user, session_login.Data.GUuser);
     console.log(session_login);
     loginBtn.disabled = false;

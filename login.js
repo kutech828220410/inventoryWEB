@@ -14,12 +14,39 @@ async function load()
     console.log("API01",API01);
     console.log("API02",API02);
     check_ip(API01[0].server,API02[0].server);
-  
+    auto_input_account();
+}
+function auto_input_account() {
+    let input_id = document.querySelector("#account");
+    let input_pwd = document.querySelector("#password");
+
+    input_id.addEventListener("keydown", async (e) => {
+        if (e.key === 'Tab') {
+            e.preventDefault();
+            e.target.blur();
+            input_pwd.focus();
+        }
+        if (e.key === 'Enter') {
+            return verifyUser("");
+        }
+    });
+    input_pwd.addEventListener("keydown", async (e) => {
+        if (e.key === 'Tab') {
+            e.preventDefault();
+            e.target.blur();
+            input_id.focus();
+        }
+        if (e.key === 'Enter') {
+            return verifyUser("");
+        }
+    });
 }
 
-async function verifyUser(event) 
+async function verifyUser(event)
 {
-    event.preventDefault(); // 阻止表单的自动提交
+    if(event != "") {
+        event.preventDefault(); // 阻止表单的自动提交
+    }
 
     // 取得使用者輸入的帳號和密碼
     ID = document.getElementsByName("account")[0].value;
@@ -30,12 +57,17 @@ async function verifyUser(event)
         alert("請輸入帳號和密碼！");
         return false; // 防止表單提交
     }
+
+    session_login = await login(ID, password);
+
+    if(session_login == undefined) {
+        return false;
+    }
+
     var loginBtn = document.getElementById("login-btn");
     loginBtn.disabled = true;
     loginBtn.textContent = "登入中...";
 
-
-    session_login = await login(ID, password);
     await update_session(ID, session_login.Data.GUID);
     console.log(session_login);
 
@@ -70,6 +102,7 @@ async function verifyUser(event)
     }
     return false; // 防止表單提交
 }
+
 async function showConfirm()
 {
     await logout(ID);
