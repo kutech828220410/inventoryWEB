@@ -394,8 +394,8 @@ async function set_post_data_download_excel() {
         Data: {},
         ValueAry: [
             `${code}`,
-            `${start_datetime}`,
-            `${end_datetime}`,
+            `${start_datetime}:00`,
+            `${end_datetime}:00`,
             `${serverNameStr}`,
             `${serverTypeStr}`]
     };

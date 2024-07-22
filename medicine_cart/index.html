@@ -9,7 +9,11 @@
   <title>次世代藥局管理系統</title>
   <!-- <link rel="stylesheet" href="main.css"> -->
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../UI/style/navBar.css">
   <link rel="stylesheet" href="allocate.css">
+  <link rel="stylesheet" href="popup_dc_new.css">
+  <link rel="stylesheet" href="popup_bed_list.css">
+  <link rel="stylesheet" href="popup_med_list.css">
   <script src="../../Function/Basic.js?v=1.14"></script>
 
   <script>
@@ -33,19 +37,30 @@
           loadScript("allocate.js");
           loadScript("review.js");
           loadScript("../../UI/navBar.js");
-          
+          loadScript("popup_dc_new.js");
+          loadScript("popup_bed_list.js");
+          loadScript("popup_med_list.js");
         })();
 
   </script>
 </head>
 <body>
+  <script>
+    get_popup_dc_new();
+    popup_dc_new_div.Set_Visible(false);
+
+    get_popup_bed_list();
+    popup_bed_list_div.Set_Visible(false);
+
+    get_popup_med_list();
+    popup_med_list_div.Set_Visible(true);
+  </script>
 
   <div class="under-line">
     <B> Copyright ©2024 鴻森智能科技 </B>
   </div>
   
-  <script>
-
+<script>
     
   (async function() {
     
@@ -100,15 +115,15 @@
             barcode_value += event.key;
         } 
     }
-});
+  });
 
-// 解析帶有分隔符的字符串
-function parseBarcode(scannedCode) 
-{
-  const delimiter = /[\n\r]/g;
-  const matches = scannedCode.split(delimiter);
-  return matches[0];
-}
+  // 解析帶有分隔符的字符串
+  function parseBarcode(scannedCode) 
+  {
+    const delimiter = /[\n\r]/g;
+    const matches = scannedCode.split(delimiter);
+    return matches[0];
+  }
 
 </script>
   

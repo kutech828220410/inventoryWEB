@@ -4,7 +4,7 @@ var rowHeight = 60;
 window.onresize = function() 
 {
     const device = checkDeviceType();
-    const screenWidth = getScreenWidth();   
+    const screenWidth = getScreenWidth();
       
     if(device == DeviceType.MOBILE) 
     { 
@@ -96,6 +96,7 @@ function creat_row_div(_index , Med)
     row_div.setAttribute("CHT_NAME", `${Med.CHT_NAME}`);
     row_div.setAttribute("BARCODE1", `${Med.BARCODE1}`);
     row_div.setAttribute("BARCODE2", `${Med.BARCODE2}`);
+    row_div.setAttribute("TYPE", `${Med.TYPE}`);
 
     row_div.style.backgroundColor = (Med.BARCODE.length == 0)? "white" : "#baf157";
     row_div.style.border = "1px solid gray";

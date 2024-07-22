@@ -10,7 +10,7 @@ let fake_data = [
         Dispensing: "針劑"
     },
     {
-        code: "2DIPTY",
+        code: "DIPTY",
         name: "Diphenhydramine*台裕*",
         cht_name: "",
         qty: "8",
@@ -19,7 +19,7 @@ let fake_data = [
         Dispensing: "口服"
     },
     {
-        code: "2DIPTY",
+        code: "2DITY",
         name: "Diphenhydramine*台裕*",
         cht_name: "",
         qty: "8",
@@ -33,18 +33,20 @@ function allocate_diplay_logic() {
     if(last_current_cart == "") {
         console.log("調劑功能畫面初生成");
         patient_bed_index = 0;
-        allocate_display_init();
+        last_patient_bed_index = -1;
     } else if(current_cart != last_current_cart && last_current_cart != "") {
         console.log("調劑功能畫面init，藥車切換");
         patient_bed_index = 0;
-        allocate_display_init();
+        last_patient_bed_index = -1;
     }
 
     // 根據選取的調劑台解鎖藥品
     if(current_med_table != "") {
         console.log("切換調劑台");
+        allocate_display_init();
     } else {
         console.log("未選調劑台");
+        allocate_display_init();
     }
 
     return;
@@ -91,6 +93,10 @@ function get_p_bed_header() {
     pb_list_btn.classList.add("btn");
     pb_list_btn.classList.add("pb_list_btn");
     pb_list_btn.innerHTML = "病床清單";
+    pb_list_btn.addEventListener("click", () => {
+        set_pp_bed_list_info();
+        popup_bed_list_div_open();
+    })
     
     let pb_list_notice = document.createElement("img");
     pb_list_notice.classList.add("pb_list_notice");
@@ -103,11 +109,20 @@ function get_p_bed_header() {
     med_cart_sum_list_btn.classList.add("btn");
     med_cart_sum_list_btn.classList.add("med_cart_sum_list_btn");
     med_cart_sum_list_btn.innerHTML = "藥品總量";
+    med_cart_sum_list_btn.addEventListener("click", () => {
+        set_pp_med_list_display();
+        popup_med_list_div_open();
+    });
 
     let dc_new_btn = document.createElement("div");
     dc_new_btn.classList.add("btn");
     dc_new_btn.classList.add("dc_new_btn");
     dc_new_btn.innerHTML = "DC / NEW";
+    dc_new_btn.addEventListener("click", () => {
+        cart_bed_length = fake_dc_new_data["p_bed"].length;
+        set_dc_new_info_table();
+        popup_dc_new_div_open();
+    });
 
     pb_btn_container.appendChild(dc_new_btn);
     pb_btn_container.appendChild(med_cart_sum_list_btn);
@@ -144,9 +159,11 @@ function set_p_bed_med_container() {
 
     let pbm_header_container = set_pbm_header_container();
     let pbm_main_container = set_pbm_main_container();
+    let pbm_footer_container = set_pbm_footer_container();
 
     p_bed_med_container.appendChild(pbm_header_container);
     p_bed_med_container.appendChild(pbm_main_container);
+    p_bed_med_container.appendChild(pbm_footer_container);
 
     return p_bed_med_container;
 }
@@ -180,9 +197,15 @@ function set_pbm_header_container() {
     pbmh_next_btn.classList.add("btn");
     pbmh_next_btn.innerHTML = "下一床";
 
+    let pbmh_checked_submit_btn = document.createElement("div");
+    pbmh_checked_submit_btn.classList.add("pbmh_checked_submit_btn");
+    pbmh_checked_submit_btn.classList.add("btn");
+    pbmh_checked_submit_btn.innerHTML = "完成";
+
     pbm_header_container.appendChild(pbmh_pre_btn);
-    pbm_header_container.appendChild(pbmh_checked_trigger_label);
     pbm_header_container.appendChild(pbmh_light_on_btn);
+    pbm_header_container.appendChild(pbmh_checked_trigger_label);
+    pbm_header_container.appendChild(pbmh_checked_submit_btn);
     pbm_header_container.appendChild(pbmh_next_btn);
 
     return pbm_header_container;
@@ -197,6 +220,32 @@ function set_pbm_main_container() {
 
         let med_card_title_container = document.createElement("div");
         med_card_title_container.classList.add("med_card_title_container");
+
+        let med_card_checkbox_label = document.createElement("label");
+        med_card_checkbox_label.classList.add("med_card_checkbox_label");
+        med_card_checkbox_label.setAttribute("for", `${element.code}`);
+
+        let med_card_checkbox = document.createElement("input");
+        med_card_checkbox.classList.add("med_card_checkbox");
+        med_card_checkbox.id = `${element.code}`;
+        med_card_checkbox.type = "checkbox";
+        if(current_med_table == "") {
+            med_card_checkbox.disabled = true;
+            med_card_container.classList.add("card_disable");
+        } else {
+            if(current_med_table == "all") {
+                med_card_checkbox.disabled = false;
+            } else {
+                if(current_med_table.ctname == element.Dispensing) {
+                    med_card_checkbox.disabled = false;
+                } else {
+                    med_card_checkbox.disabled = true;
+                    med_card_container.classList.add("card_disable");
+                }
+            }
+        }
+
+        med_card_checkbox_label.appendChild(med_card_checkbox);
 
         let med_card_main_display_container = document.createElement("div");
         med_card_main_display_container.classList.add("med_card_main_display_container");
@@ -245,12 +294,59 @@ function set_pbm_main_container() {
         med_card_main_display_container.appendChild(med_card_info_container);
         med_card_main_display_container.appendChild(med_name_card_container);
 
-        med_card_title_container.appendChild(med_card_main_display_container);
+        let med_card_open_tigger = document.createElement("img");
+        med_card_open_tigger.classList.add("med_card_open_tigger");
+        med_card_open_tigger.src = "../image/left-arrow.png";
 
-        med_card_container.appendChild(med_card_title_container)
+        med_card_title_container.appendChild(med_card_checkbox_label);
+        med_card_title_container.appendChild(med_card_main_display_container);
+        med_card_title_container.appendChild(med_card_open_tigger);
+
+        med_card_container.appendChild(med_card_title_container);
+        
+        let med_more_info_container = document.createElement("div");
+        med_more_info_container.classList.add("med_more_info_container");
+        
+        med_card_container.appendChild(med_more_info_container);
 
         pbm_main_container.appendChild(med_card_container);
     });
 
     return pbm_main_container;
+}
+function set_pbm_footer_container() {
+    let pbm_footer_container = document.createElement("div");
+    pbm_footer_container.classList.add('pbm_footer_container');
+
+    let pbmh_pre_btn = document.createElement("div");
+    pbmh_pre_btn.classList.add("pbmh_pre_btn");
+    pbmh_pre_btn.classList.add("btn");
+    pbmh_pre_btn.innerHTML = "上一床";
+
+    let pbmf_submit_btn = document.createElement("div");
+    pbmf_submit_btn.classList.add("pbmf_submit_btn");
+    pbmf_submit_btn.classList.add("btn");
+    pbmf_submit_btn.innerHTML = "確認初盤";
+
+    let pbmh_checked_submit_btn = document.createElement("div");
+    pbmh_checked_submit_btn.classList.add("pbmh_checked_submit_btn");
+    pbmh_checked_submit_btn.classList.add("btn");
+    pbmh_checked_submit_btn.innerHTML = "完成";
+
+    let pbmh_light_on_btn = document.createElement("div");
+    pbmh_light_on_btn.classList.add("pbmh_light_on_btn");
+    pbmh_light_on_btn.innerHTML = "亮燈";
+
+    let pbmh_next_btn = document.createElement("div");
+    pbmh_next_btn.classList.add("pbmh_next_btn");
+    pbmh_next_btn.classList.add("btn");
+    pbmh_next_btn.innerHTML = "下一床";
+
+    pbm_footer_container.appendChild(pbmh_pre_btn);
+    pbm_footer_container.appendChild(pbmh_light_on_btn);
+    pbm_footer_container.appendChild(pbmf_submit_btn);
+    pbm_footer_container.appendChild(pbmh_checked_submit_btn);
+    pbm_footer_container.appendChild(pbmh_next_btn);
+
+    return pbm_footer_container;
 }

@@ -44,7 +44,7 @@ async function load()
   get_popup_pharmacy_select();
   popup_pharmacy_select_div.Set_Visible(true);
 
-  nav_bar_create("drugs_report", test_user_data)
+  nav_bar_create("drugs_report", test_user_data);
   page_init();
   hideLoadingPopup();
 }

@@ -57,7 +57,7 @@ function get_ppstorage_footer() {
     ppstorage_light_on_btn.addEventListener("click", (e) => {
         let code = e.target.getAttribute("CODE");
         console.log(code);
-        set_light_off(code);
+        set_light_on(code);
     });
 
     let ppstorage_light_off_btn = document.createElement("div");
@@ -66,7 +66,7 @@ function get_ppstorage_footer() {
     ppstorage_light_off_btn.innerHTML = "滅燈";
     ppstorage_light_off_btn.addEventListener("click", (e) => {
         let code = e.target.getAttribute("CODE");
-        set_light_on(code);
+        set_light_off(code);
     });
 
     ppstorage_footer_container.appendChild(ppstorage_light_off_btn);

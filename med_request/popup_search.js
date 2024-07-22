@@ -214,17 +214,17 @@ async function set_search_condition_container() {
     pps_select_label.classList.add("pps_select_label");
     pps_select_label.innerHTML = `請領單位`;
 
-    let pharmacy_table_data = await get_serversetting_by_type();
+    // let pharmacy_table_data = await get_serversetting_by_type();
 
-    let temp_table_data = pharmacy_table_data["Data"];
-    console.log(temp_table_data);
+    // let temp_table_data = pharmacy_table_data["Data"];
+    // console.log(temp_table_data);
 
     let pps_select = document.createElement("select");
     pps_select.id = "pps_select";
-    pps_select.innerHTML = `<option value="all">全部</option>`;
-    temp_table_data.forEach(element => {
-        pps_select.innerHTML += `<option value="${element.name}">${element.name}</option>`
-    });
+    // pps_select.innerHTML = `<option value="all">全部</option>`;
+    // temp_table_data.forEach(element => {
+    //     pps_select.innerHTML += `<option value="${element.name}">${element.name}</option>`
+    // });
 
     pps_select_content_container.appendChild(pps_select_label);
     pps_select_content_container.appendChild(pps_select);
@@ -236,8 +236,8 @@ async function set_search_condition_container() {
 }
 
 async function get_serversetting_by_type() {
-    const newUrl = api_ip.replace(":4435", ":4433");
-    let temp_data = await fetch(`${newUrl}api/ServerSetting/get_serversetting_by_type`, {
+    // const newUrl = api_ip.replace(":4435", ":4433");
+    let temp_data = await fetch(`${api_ip}api/ServerSetting/get_serversetting_by_type`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -258,4 +258,17 @@ async function get_serversetting_by_type() {
     })
 
     return temp_data;
+}
+
+async function set_select_pharmacy_option() {
+    let pharmacy_table_data = await get_serversetting_by_type();
+
+    let temp_table_data = pharmacy_table_data["Data"];
+    console.log(temp_table_data);
+
+    let pps_select = document.querySelector("#pps_select");
+    pps_select.innerHTML = `<option value="all">全部</option>`;
+    temp_table_data.forEach(element => {
+        pps_select.innerHTML += `<option value="${element.name}">${element.name}</option>`
+    });
 }

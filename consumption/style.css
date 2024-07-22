@@ -96,6 +96,9 @@
     margin: 20px auto;
     align-items: center;
     justify-content: center;
+    border-radius: 5px;
+    padding: 12px;
+    border: 1px solid #000000;
 }
 .main_date_container {
     width: 290px;

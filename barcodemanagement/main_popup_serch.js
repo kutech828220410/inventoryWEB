@@ -12,7 +12,6 @@ function get_popup_serch()
     popup_serch_div.AddControl(serch_box_div);
     popup_serch_div.AddControl(underline);
 
-
     return popup_serch_div;
 }
 
@@ -49,16 +48,46 @@ function confirm_popup_serch()
 {
     try
     {
+        let west_med = document.querySelector("#west_med");
+        let east_med = document.querySelector("#east_med");
         const serch_CODE_input = document.querySelector('#serch_CODE_input_popup_serch');
         const serch_SKDIACODE_input = document.querySelector('#serch_SKDIACODE_input_popup_serch');
         const serch_NAME_input = document.querySelector('#serch_NAME_input_popup_serch');
         const serch_CHT_NAME_input = document.querySelector('#serch_CHT_NAME_input_popup_serch');
         if(!serch_CODE_input.value && !serch_SKDIACODE_input.value && !serch_NAME_input.value && !serch_CHT_NAME_input.value)
         {
+            let temp_value = "";
+            console.log(east_med.checked);
+            console.log(west_med.checked);
             for(var i = 0; i < allrows.length ; i++)
             {
-                allrows[i].style.display = "inline-block";
-                allrows[i].style.visibility = "visible";
+                temp_value = allrows[i].getAttribute("TYPE");
+
+                if(west_med.checked && east_med.checked) {
+                    allrows[i].style.display = "inline-block";
+                    allrows[i].style.visibility = "visible";
+                } else if(!west_med.checked && east_med.checked) {
+                    if(temp_value == "中藥") {
+                        console.log("object");
+                        allrows[i].style.display = "inline-block";
+                        allrows[i].style.visibility = "visible";
+                    } else {
+                        allrows[i].style.display = "none";
+                        allrows[i].style.visibility = "hidden";
+                    }
+                } else if(west_med.checked && !east_med.checked) {
+                    if(temp_value != "中藥") {
+                        console.log("object");
+                        allrows[i].style.display = "inline-block";
+                        allrows[i].style.visibility = "visible";
+                    } else {
+                        allrows[i].style.display = "none";
+                        allrows[i].style.visibility = "hidden";
+                    }
+                } else {
+                    alert("請選擇中/西藥至少一種");
+                    return;
+                }
             }
             return;
         }
@@ -89,6 +118,8 @@ function confirm_popup_serch()
 }
 function popup_serch_ByStartWith()
 {
+    let west_med = document.querySelector("#west_med");
+    let east_med = document.querySelector("#east_med");
     const serch_CODE_input = document.querySelector('#serch_CODE_input_popup_serch');
     const serch_SKDIACODE_input = document.querySelector('#serch_SKDIACODE_input_popup_serch');
     const serch_NAME_input = document.querySelector('#serch_NAME_input_popup_serch');
@@ -119,30 +150,46 @@ function popup_serch_ByStartWith()
 
     if(serch_value0 == '') return;
 
+    if(!west_med.checked && !east_med.checked) {
+        alert("請選擇中/西藥至少一種");
+        return;
+    } 
+
+    console.log("這裡STAR");
     for(var i = 0; i < allrows.length ; i++)
     {
-        if(serch_CODE_input.value) serch_value1 = allrows[i].getAttribute("CODE").toUpperCase();  
+        let temp_type = allrows[i].getAttribute("TYPE");
+        if(serch_CODE_input.value) serch_value1 = allrows[i].getAttribute("CODE").toUpperCase();
         if(serch_SKDIACODE_input.value) serch_value1 = allrows[i].getAttribute("SKDIACODE").toUpperCase();  
         if(serch_NAME_input.value) serch_value1 = allrows[i].getAttribute("NAME").toUpperCase();  
-        if(serch_CHT_NAME_input.value) serch_value1 = allrows[i].getAttribute("CHT_NAME").toUpperCase();  
-       
-        var serch_value1 = serch_value1.substring(0, serch_value0.length);
+        if(serch_CHT_NAME_input.value) serch_value1 = allrows[i].getAttribute("CHT_NAME").toUpperCase();
 
-        if (serch_value0 == serch_value1)
+        allrows[i].style.display = "none";
+        allrows[i].style.visibility = "hidden";
+
+        if(serch_value1 == serch_value0) 
         {
-            allrows[i].style.display = "inline-block";
-            allrows[i].style.visibility = "visible";
+            if(west_med.checked && east_med.checked) {
+                allrows[i].style.display = "inline-block";
+                allrows[i].style.visibility = "visible";
+            } else if(!west_med.checked && east_med.checked) {
+                if(temp_type == "中藥") {
+                    allrows[i].style.display = "inline-block";
+                    allrows[i].style.visibility = "visible";
+                }
+            } else if(west_med.checked && !east_med.checked) {
+                if(temp_type != "中藥") {
+                    allrows[i].style.display = "inline-block";
+                    allrows[i].style.visibility = "visible";
+                }
+            }
         }
-        else 
-        {
-            allrows[i].style.display = "none";
-            allrows[i].style.visibility = "hidden";
-        }
-        
     }
 }
 function popup_serch_ByLike()
 {
+    let west_med = document.querySelector("#west_med");
+    let east_med = document.querySelector("#east_med");
     const serch_CODE_input = document.querySelector('#serch_CODE_input_popup_serch');
     const serch_SKDIACODE_input = document.querySelector('#serch_SKDIACODE_input_popup_serch');
     const serch_NAME_input = document.querySelector('#serch_NAME_input_popup_serch');
@@ -171,28 +218,48 @@ function popup_serch_ByLike()
         serch_value0.toUpperCase();
     }
     if(serch_value0 == '') return;
+
+    if(!west_med.checked && !east_med.checked) {
+        alert("請選擇中/西藥至少一種");
+        return;
+    }
+
+    console.log("這裡BYLOKE");
    
     for(var i = 0; i < allrows.length ; i++)
     {
-        if(serch_CODE_input.value) serch_value1 = allrows[i].getAttribute("CODE").toUpperCase();  
+        let temp_type = allrows[i].getAttribute("TYPE");
+        if(serch_CODE_input.value) serch_value1 = allrows[i].getAttribute("CODE").toUpperCase();
         if(serch_SKDIACODE_input.value) serch_value1 = allrows[i].getAttribute("SKDIACODE").toUpperCase();  
         if(serch_NAME_input.value) serch_value1 = allrows[i].getAttribute("NAME").toUpperCase();  
-        if(serch_CHT_NAME_input.value) serch_value1 = allrows[i].getAttribute("CHT_NAME").toUpperCase();  
-        if (serch_value1.indexOf(serch_value0) !== -1)
+        if(serch_CHT_NAME_input.value) serch_value1 = allrows[i].getAttribute("CHT_NAME").toUpperCase();
+
+        allrows[i].style.display = "none";
+        allrows[i].style.visibility = "hidden";
+
+        if(serch_value1 == serch_value0) 
         {
-            allrows[i].style.display = "inline-block";
-            allrows[i].style.visibility = "visible";
+            if(west_med.checked && east_med.checked) {
+                allrows[i].style.display = "inline-block";
+                allrows[i].style.visibility = "visible";
+            } else if(!west_med.checked && east_med.checked) {
+                if(temp_type == "中藥") {
+                    allrows[i].style.display = "inline-block";
+                    allrows[i].style.visibility = "visible";
+                }
+            } else if(west_med.checked && !east_med.checked) {
+                if(temp_type != "中藥") {
+                    allrows[i].style.display = "inline-block";
+                    allrows[i].style.visibility = "visible";
+                }
+            }
         }
-        else 
-        {
-            allrows[i].style.display = "none";
-            allrows[i].style.visibility = "hidden";
-        }
-        
     }
 }
 function popup_serch_ByNormal()
 {
+    let west_med = document.querySelector("#west_med");
+    let east_med = document.querySelector("#east_med");
     const serch_CODE_input = document.querySelector('#serch_CODE_input_popup_serch');
     const serch_SKDIACODE_input = document.querySelector('#serch_SKDIACODE_input_popup_serch');
     const serch_NAME_input = document.querySelector('#serch_NAME_input_popup_serch');
@@ -222,21 +289,40 @@ function popup_serch_ByNormal()
     }
     if(serch_value0 == '') return;
 
+    if(!west_med.checked && !east_med.checked) {
+        alert("請選擇中/西藥至少一種");
+        return;
+    }
+
+    console.log("這裡NORMAL");
+
     for(var i = 0; i < allrows.length ; i++)
     {
-        if(serch_CODE_input.value) serch_value1 = allrows[i].getAttribute("CODE").toUpperCase();  
+        let temp_type = allrows[i].getAttribute("TYPE");
+        if(serch_CODE_input.value) serch_value1 = allrows[i].getAttribute("CODE").toUpperCase();
         if(serch_SKDIACODE_input.value) serch_value1 = allrows[i].getAttribute("SKDIACODE").toUpperCase();  
         if(serch_NAME_input.value) serch_value1 = allrows[i].getAttribute("NAME").toUpperCase();  
-        if(serch_CHT_NAME_input.value) serch_value1 = allrows[i].getAttribute("CHT_NAME").toUpperCase();  
+        if(serch_CHT_NAME_input.value) serch_value1 = allrows[i].getAttribute("CHT_NAME").toUpperCase();
+
+        allrows[i].style.display = "none";
+        allrows[i].style.visibility = "hidden";
+
         if(serch_value1 == serch_value0) 
         {
-            allrows[i].style.display = "inline-block";
-            allrows[i].style.visibility = "visible";
-        }
-        else 
-        {
-            allrows[i].style.display = "none";
-            allrows[i].style.visibility = "hidden";
+            if(west_med.checked && east_med.checked) {
+                allrows[i].style.display = "inline-block";
+                allrows[i].style.visibility = "visible";
+            } else if(!west_med.checked && east_med.checked) {
+                if(temp_type == "中藥") {
+                    allrows[i].style.display = "inline-block";
+                    allrows[i].style.visibility = "visible";
+                }
+            } else if(west_med.checked && !east_med.checked) {
+                if(temp_type != "中藥") {
+                    allrows[i].style.display = "inline-block";
+                    allrows[i].style.visibility = "visible";
+                }
+            }
         }
     }
 }
@@ -359,6 +445,49 @@ function get_serch_box_popup_serch()
     serch_CHT_NAME_div.appendChild(serch_CHT_NAME_text);
     serch_CHT_NAME_div.appendChild(serch_CHT_NAME_input);
 
+    let serch_MED_TYPE_div = document.createElement("div");
+    serch_MED_TYPE_div.classList.add("serch_MED_TYPE_div");
+
+    let search_WEST_MED_div = document.createElement("div");
+    search_WEST_MED_div.classList.add("search_WEST_MED_div");
+
+    let search_west_med_checkbox = document.createElement("input");
+    search_west_med_checkbox.classList.add("search_med_checkbox");
+    search_west_med_checkbox.id = "west_med";
+    search_west_med_checkbox.name = "west_med";
+    search_west_med_checkbox.type = "checkbox";
+    search_west_med_checkbox.checked = true;
+
+    let search_west_med_label = document.createElement("label");
+    search_west_med_label.classList.add("search_med_label");
+    search_west_med_label.setAttribute("for", "west_med");
+    search_west_med_label.innerHTML = "西藥";
+    
+    search_WEST_MED_div.appendChild(search_west_med_checkbox);
+    search_WEST_MED_div.appendChild(search_west_med_label);
+
+    let search_EAST_MED_div = document.createElement("div");
+    search_EAST_MED_div.classList.add("search_WEST_MED_div");
+    
+    let search_east_med_checkbox = document.createElement("input");
+    search_east_med_checkbox.classList.add("search_med_checkbox");
+    search_east_med_checkbox.id = "east_med";
+    search_east_med_checkbox.name = "east_med";
+    search_east_med_checkbox.type = "checkbox";
+    search_east_med_checkbox.checked = true;
+
+    let search_east_med_label = document.createElement("label");
+    search_east_med_label.classList.add("search_med_label");
+    search_east_med_label.setAttribute("for", "east_med");
+    search_east_med_label.innerHTML = "中藥";
+
+    search_EAST_MED_div.appendChild(search_east_med_checkbox);
+    search_EAST_MED_div.appendChild(search_east_med_label);
+
+    serch_MED_TYPE_div.appendChild(search_EAST_MED_div);
+    serch_MED_TYPE_div.appendChild(search_WEST_MED_div);
+
+    serch_box_div.append(serch_MED_TYPE_div);
     serch_box_div.append(serch_CODE_div);
     serch_box_div.append(serch_SKDIACODE_div);
     serch_box_div.append(serch_NAME_div);

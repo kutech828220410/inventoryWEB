@@ -49,8 +49,6 @@ async function load()
     page_Init(data);
  
     Set_main_div_enable(false);
-
-
 }
 function page_Init(data) 
 {
@@ -229,6 +227,28 @@ function get_header()
   My_Div.Set_Text(herader_view_QTY_text ,"0/0" , TextAlignEnum.LEFT , "14px", true,"微軟正黑體","");
   herader_view_QTY_text.style.marginLeft = "5px";
   herader_view_div.appendChild(herader_view_QTY_text);
+  
+  // let header_type_checkbox_container = document.createElement("div");
+  // header_type_checkbox_container.classList.add("header_type_checkbox_container");
+
+  // let header_westMED_label = document.createElement("label");
+  // header_westMED_label.classList.add("header_checkbox_label");
+  // header_westMED_label.setAttribute("for", "header_westMED_checkbox");
+  // header_westMED_label.innerHTML = `
+  //   <input class="header_checkbox_input" type="checkbox" name="header_westMED_checkbox" id="header_westMED_checkbox" checked>西藥
+  // `;
+
+  // let header_ch_MED_label = document.createElement("label");
+  // header_ch_MED_label.classList.add("header_checkbox_label");
+  // header_ch_MED_label.setAttribute("for", "header_ch_MED_checkbox");
+  // header_ch_MED_label.innerHTML = `
+  //   <input class="header_checkbox_input" type="checkbox" name="header_ch_MED_checkbox" id="header_ch_MED_checkbox" checked>中藥
+  // `;
+
+  // header_type_checkbox_container.appendChild(header_westMED_label);
+  // header_type_checkbox_container.appendChild(header_ch_MED_label);
+
+  // herader_view_div.appendChild(header_type_checkbox_container);
 
   header_div.appendChild(header_title_user_div);
   header_div.appendChild(header_contorls_div);

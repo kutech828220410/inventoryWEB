@@ -4,15 +4,13 @@ let med_order_list_form_data;
 window.onload = load;
 // window.addEventListener('resize', handleResize);
 
-function handleResize() 
-{
+function handleResize() {
    //Set_popup_find_position();
 }
-async function load()
-{
+async function load() {
   check_session_off();
   var serverName = "";
-//   ServerName = serverName;
+  //   ServerName = serverName;
   ServerType = "網頁";
   TableName = "medicine_page";
   APIServer = await LoadAPIServer();
@@ -58,7 +56,6 @@ async function load()
   Set_main_div_enable(false);
   // set_pp_med_table([]);
 }
-
 function get_header(test_user_data) {
     let body = document.querySelector("body");
     const header = document.createElement("div");
@@ -146,8 +143,7 @@ function get_main_div() {
 
     body.appendChild(main_div);
 }
-function Set_main_div_enable(value) 
-{
+function Set_main_div_enable(value) {
     const main_div = document.querySelector('#main_div');
     if (value) {
       showLoadingPopup();
@@ -327,7 +323,6 @@ function get_search_container() {
   main_div_search_container.appendChild(search_all_condition_container);
   main_div_search_container.appendChild(main_search_btn);
 }
-
 function get_list_table_container() {
   let main_div_table_th_container = document.querySelector(".main_div_table_th_container");
   main_div_table_th_container.innerHTML = "";
@@ -342,7 +337,6 @@ function get_list_table_container() {
     main_div_table_th_container.appendChild(th);
   });
 }
-
 async function get_main_search_result() {
   showLoadingPopup();
   let sd_start_date_input = document.getElementById("sd_start_date_input");
@@ -419,7 +413,6 @@ async function get_main_search_result() {
   set_pagination_init();
   hideLoadingPopup();
 }
-
 function set_table_list_num() {
   let main_div_table_num_container = document.querySelector(".main_div_table_num_container");
 
@@ -523,7 +516,6 @@ async function set_search_result() {
   }
 
 }
-
 function set_pagination_init() {
   let pagination_container = document.querySelector(".pagination_container");
   pagination_container.innerHTML = "";

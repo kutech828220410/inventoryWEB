@@ -378,7 +378,7 @@ async function search_by_code(value) {
                 let cht_med = document.querySelector("#cht_med");
                 if(west_med.checked && !cht_med.checked) {
                     // 西藥
-                    temp_arr = temp_arr.filter(e => e["TYPE"] == "西藥");
+                    temp_arr = temp_arr.filter(e => e["TYPE"] != "中藥");
                 } else if(!west_med.checked && cht_med.checked) {
                     // 中藥
                     temp_arr = temp_arr.filter(e => e["TYPE"] == "中藥");
@@ -415,7 +415,7 @@ async function search_by_name(value) {
             let cht_med = document.querySelector("#cht_med");
             if(west_med.checked && !cht_med.checked) {
                 // 西藥
-                temp_arr = temp_arr.filter(e => e["TYPE"] == "西藥");
+                temp_arr = temp_arr.filter(e => e["TYPE"] != "中藥");
             } else if(!west_med.checked && cht_med.checked) {
                 // 中藥
                 temp_arr = temp_arr.filter(e => e["TYPE"] == "中藥");
@@ -448,7 +448,7 @@ async function search_by_ctname(value) {
             let cht_med = document.querySelector("#cht_med");
             if(west_med.checked && !cht_med.checked) {
                 // 西藥
-                temp_arr = temp_arr.filter(e => e["TYPE"] == "西藥");
+                temp_arr = temp_arr.filter(e => e["TYPE"] != "中藥");
             } else if(!west_med.checked && cht_med.checked) {
                 // 中藥
                 temp_arr = temp_arr.filter(e => e["TYPE"] == "中藥");
@@ -480,7 +480,7 @@ async function search_by_dianame(value) {
             let cht_med = document.querySelector("#cht_med");
             if(west_med.checked && !cht_med.checked) {
                 // 西藥
-                temp_arr = temp_arr.filter(e => e["TYPE"] == "西藥");
+                temp_arr = temp_arr.filter(e => e["TYPE"] != "中藥");
             } else if(!west_med.checked && cht_med.checked) {
                 // 中藥
                 temp_arr = temp_arr.filter(e => e["TYPE"] == "中藥");
@@ -512,7 +512,7 @@ async function search_by_drugkind(value) {
             let cht_med = document.querySelector("#cht_med");
             if(west_med.checked && !cht_med.checked) {
                 // 西藥
-                temp_arr = temp_arr.filter(e => e["TYPE"] == "西藥");
+                temp_arr = temp_arr.filter(e => e["TYPE"] != "中藥");
             } else if(!west_med.checked && cht_med.checked) {
                 // 中藥
                 temp_arr = temp_arr.filter(e => e["TYPE"] == "中藥");
@@ -540,7 +540,7 @@ async function search_by_h_price() {
         let cht_med = document.querySelector("#cht_med");
         if(west_med.checked && !cht_med.checked) {
             // 西藥
-            temp_arr = temp_arr.filter(e => e["TYPE"] == "西藥");
+            temp_arr = temp_arr.filter(e => e["TYPE"] != "中藥");
         } else if(!west_med.checked && cht_med.checked) {
             // 中藥
             temp_arr = temp_arr.filter(e => e["TYPE"] == "中藥");
@@ -580,7 +580,7 @@ async function search_by_med_group() {
         let cht_med = document.querySelector("#cht_med");
         if(west_med.checked && !cht_med.checked) {
             // 西藥
-            temp_arr = temp_arr.filter(e => e["TYPE"] == "西藥");
+            temp_arr = temp_arr.filter(e => e["TYPE"] != "中藥");
         } else if(!west_med.checked && cht_med.checked) {
             // 中藥
             temp_arr = temp_arr.filter(e => e["TYPE"] == "中藥");
@@ -607,7 +607,7 @@ async function search_all_med() {
     let cht_med = document.querySelector("#cht_med");
     if(west_med.checked && !cht_med.checked) {
         // 西藥
-        temp_arr = temp_arr.filter(e => e["TYPE"] == "西藥");
+        temp_arr = temp_arr.filter(e => e["TYPE"] != "中藥");
     } else if(!west_med.checked && cht_med.checked) {
         // 中藥
         temp_arr = temp_arr.filter(e => e["TYPE"] == "中藥");

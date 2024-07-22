@@ -61,6 +61,8 @@ async function load() {
   };
   // window.addEventListener("keydown", barcode_keydown_event);
 
+  await set_select_pharmacy_option();
+
   Set_main_div_enable(false);
 }
 function get_header(test_user_data) {
@@ -490,7 +492,7 @@ function set_main_list_table_display() {
   
     let mcit_title = document.createElement("div");
     mcit_title.classList.add("mcit_title");
-    mcit_title.innerHTML = element.UNIT_NAME;
+    mcit_title.innerHTML = element.requestingUnit;
   
     let mcit_line = document.createElement("div");
     mcit_line.classList.add("mcit_line");
@@ -719,6 +721,10 @@ async function set_list_result_and_filter() {
   } else {
     
   }
+
+  let main_date_display = document.querySelector(".main_date_display");
+  main_date_display.innerHTML = `日期：${temp_search_condition.date}`;
+
   console.log(code_mode_data);
 
   swtich_display_mode();

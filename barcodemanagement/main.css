@@ -69,7 +69,22 @@ body {
   justify-content: center;
 }
 
-
+.serch_MED_TYPE_div {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+.search_WEST_MED_div {
+  margin-bottom: 12px;
+  padding: 4px 16px;
+  border-radius: 5px;
+  border: 1px solid #000000;
+}
+.search_med_label {
+  padding-left: 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
 
 .under-line {
   position: fixed;

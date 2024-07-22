@@ -108,6 +108,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #000;
 }
 
 .search_date_container,
@@ -117,6 +120,7 @@
     flex-direction: column;
     align-items: center;
     margin: 0px 12px;
+    height: 112px;
 }
 
 .main_search_btn {
@@ -124,7 +128,7 @@
     font-size: 24px;
     font-weight: 600;
     height: 48px;
-    width: 640px;
+    width: 678px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -158,11 +162,14 @@
     margin: 8px 0px;
 }
 .date_label {
+    display: flex;
+    align-items: center;
     margin: 0px 8px;
     width: 42px;
 }
 .date_input {
     flex-grow: 1;
+    height: 29px;
     margin-right: 8px;
 }
 
@@ -195,7 +202,11 @@
     top: 1px;
 }
 .sc_label {
+    display: flex;
+    align-items: center;
     margin-left: 8px;
+    height: 29px;
+    padding-bottom: 1px;
 }
 .main_div_table_num_container {
     margin: 24px auto 6px;

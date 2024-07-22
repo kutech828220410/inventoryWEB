@@ -24,7 +24,6 @@ let light_color_list = [
         rgb: "0,0,0"
     }
 ];
-
 let light_color_object = {
     green: "40,255,40",
     blue: "40,40,255",
@@ -118,3 +117,4 @@ let last_current_med_table = "";
 let popup_last_cart_mark = "";
 
 let patient_bed_index = 0;
+let last_patient_bed_index = -1;

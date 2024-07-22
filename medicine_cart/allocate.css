@@ -98,6 +98,14 @@
     position: relative;
     width: 100%;
 }
+.pbm_footer_container {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    position: relative;
+    width: 100%;
+}
 .pbmh_light_on_btn {
     border-radius: 5px;
     padding: 6px 32px;
@@ -106,6 +114,9 @@
     cursor: pointer;
     color: #ffffff;
     margin-right: 20px;
+}
+.pbmf_submit_btn {
+    margin-right: 24px;
 }
 .pbmh_light_on_btn:hover {
     color: black;
@@ -116,11 +127,14 @@
     position: absolute;
     left: 0px;
 }
+.pbmh_checked_submit_btn {
+    margin-right: 24px;
+}
 .pbmh_checked_trigger_label {
     display: flex;
     align-items: center;
     border-radius: 5px;
-    padding: 6px 24px;
+    padding: 6px 16px;
     margin-right: 24px;
     background-color: #b5b5b5;
     cursor: pointer;
@@ -145,18 +159,66 @@
     margin-bottom: 10px;
     border-radius: 5px;
     border: 1px solid #000000;
-    padding: 10px;
+    background-color: #efefef;
 }
 .med_card_container:last-child {
     margin-bottom: 0px;
 }
-.med_card_title_container {
-    display: flex;
-    justify-content: space-between;
+.card_disable {
+    background-color: #acacac;
 }
+.med_card_title_container {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+.med_card_checkbox_label {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px 5px 5px;
+    cursor: pointer;
+}
+.med_card_checkbox {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 25px; /* 調整寬度 */
+    height: 25px; /* 調整高度 */
+    border: 2px solid #000; /* 邊框顏色和大小 */
+    border-radius: 3px; /* 邊框圓角 */
+    position: relative;
+    cursor: pointer;
+}
+.med_card_checkbox:checked {
+    background-color: #4CAF50; /* 背景顏色 */
+    border-color: #4CAF50; /* 邊框顏色 */
+}
+.med_card_checkbox:checked::before {
+    content: '✔';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 18px; /* 調整勾勾的大小 */
+}
+/* 禁用狀態的樣式 */
+.med_card_checkbox:disabled {
+    background-color: #ddd; /* 禁用狀態的背景顏色 */
+    border-color: #aaa; /* 禁用狀態的邊框顏色 */
+    cursor: not-allowed; /* 禁用狀態的鼠標樣式 */
+}
+
+.med_card_checkbox:disabled:checked::before {
+    color: #aaa; /* 禁用狀態的勾勾顏色 */
+}
+
 .med_card_info_container {
     display: flex;
     flex-wrap: wrap;
+}
+.med_card_main_display_container {
+    flex-grow: 1;
 }
 .med_name_card_container {
     display: flex;
@@ -167,6 +229,13 @@
 .med_card_qty,
 .med_card_unit {
     margin-right: 24px;
+}
+.med_card_open_tigger {
+    padding: 10px;
+    display: block;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 1200px) {

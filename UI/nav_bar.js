@@ -70,7 +70,7 @@ let html_pages = [
                     },
                     {
                         html_name: "pickingpage",
-                        html_ctName: "上架",
+                        html_ctName: "揀貨",
                         html_url: "../../pickingpage",
                         icon_url: "../../image/icon/assortment.png",
                         icon_big_url: "../../image/icon/picking_big_icon.png"
@@ -126,7 +126,7 @@ let html_pages = [
         ],
     }
 ];
-function nav_bar_create(html_page, user_data) {
+function nav_bar_create(user_data) {
     // 導覽列環境設定
     document.body.style.position = "relative";
 
