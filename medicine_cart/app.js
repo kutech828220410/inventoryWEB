@@ -21,7 +21,7 @@ async function load()
   const API02 = serch_APIServer(serverName,"調劑台","API02");
   console.log("API01",API01);
   console.log("API02",API02);
-  check_ip(API01[0].server,API02[0].server);
+  await check_ip(API01[0].server,API02[0].server);
   // permissions = await GetApipermissions();
   // console.log(permissions);
 
@@ -41,13 +41,15 @@ async function load()
   get_header(test_user_data);
   get_main_div();
   get_main_ui();
-  get_function_menu();
+  await get_function_menu();
   get_no_selected_func();
   select_list_controller();
   Set_main_div_enable(false);
 
   // 開發顯示
-  allocate_display_init();
+  // allocate_display_init();
+  // display_revise_func();
+  // set_review_display_list();
 }
 
 function get_header(test_user_data) {
@@ -151,7 +153,7 @@ function get_main_ui() {
   main_div.appendChild(function_display_container);
 }
 
-function get_function_menu() {
+async function get_function_menu() {
   let function_menu_container = document.querySelector(".function_menu_container");
 
   let hos_block_select_container = document.createElement("div");
@@ -171,11 +173,14 @@ function get_function_menu() {
   let hos_block_option_container = document.createElement("div");
   hos_block_option_container.classList.add("hos_block_option_container");
 
+  let temp_phar_data = await med_cart_all_get_phar();
+  pharmacy_list = temp_phar_data.Data;
+
   pharmacy_list.forEach(element => {
     let pharmacy_option_div = document.createElement("div");
     pharmacy_option_div.classList.add("pharmacy_option_div");
-    pharmacy_option_div.setAttribute("pharmacy", element.uid);
-    pharmacy_option_div.innerHTML = element.ctname;
+    pharmacy_option_div.setAttribute("pharmacy", element.phar);
+    pharmacy_option_div.innerHTML = element.phar_name;
     pharmacy_option_div.addEventListener("click", () => {
       hos_block_content.innerHTML = pharmacy_option_div.innerHTML;
       current_pharmacy = element;
@@ -503,6 +508,13 @@ function Set_main_div_enable(value) {
 }
 
 function get_func_logic() {
+  // console.log(current_cart);
+  // console.log(current_med_table);
+  // if(current_func != "" && current_func == "allocate" && current_cart == "" && current_med_table == "") return 100;
+  // if(current_func != "" && current_func != last_current_func) return 200;
+  // if(current_func != "" && current_func == last_current_func) return 400;
+  // if(current_func != "") return 400;
+
   if(current_pharmacy != "" && last_current_pharmacy != current_pharmacy) return 100;
   if(current_pharmacy != "" && current_func != "") return 200;
   if(current_pharmacy == "" && current_func != "") return 400;
@@ -512,15 +524,17 @@ function get_func_logic() {
 // 200 功能畫面配對
 // 400 啥事都不會發生
 async function get_all_select_option_logic(num) {
-  let hos_block_select_container = document.querySelector(".hos_block_select_container");
-  let func_select_container = document.querySelector(".func_select_container");
-  let cart_select_container = document.querySelector(".cart_select_container");
-  let med_table_select_container = document.querySelector(".med_table_select_container");
+  // let hos_block_select_container = document.querySelector(".hos_block_select_container");
+  // let func_select_container = document.querySelector(".func_select_container");
+  // let cart_select_container = document.querySelector(".cart_select_container");
+  // let med_table_select_container = document.querySelector(".med_table_select_container");
 
-  let pharmacy_block_content = document.querySelector(".hos_block_content");
-  let func_content = document.querySelector(".func_content");
-  let cart_content = document.querySelector(".cart_content");
-  let med_table_content = document.querySelector(".med_table_content");
+  // let pharmacy_block_content = document.querySelector(".hos_block_content");
+  // let func_content = document.querySelector(".func_content");
+  // let cart_content = document.querySelector(".cart_content");
+  // let med_table_content = document.querySelector(".med_table_content");
+
+  console.log(num);
 
   switch (num) {
     case 100:
@@ -544,13 +558,17 @@ async function get_cart_list_and_med_table() {
   current_func = "";
   last_current_func = "";
 
+  let temp_cart_list = await get_all_med_cart_by_phar(current_pharmacy.phar);
+  cart_list = temp_cart_list.Data;
+  console.log(cart_list);
+
   let cart_option_container = document.querySelector(".cart_option_container");
   cart_option_container.innerHTML = "";
   cart_list.forEach(element => {
     let cart_option_div = document.createElement("div");
     cart_option_div.classList.add("cart_option_div");
-    cart_option_div.setAttribute("cart", element.uid);
-    cart_option_div.innerHTML = element.ctname;
+    cart_option_div.setAttribute("cart", element.GUID);
+    cart_option_div.innerHTML = element.hnursta;
     cart_option_div.addEventListener("click", () => {
       cart_content.innerHTML = cart_option_div.innerHTML;
       current_cart = element;
@@ -703,6 +721,7 @@ async function review_func() {
     return;
   } else {
     console.log("生成覆核清單");
+    display_revise_func();
     return;
   }
 }

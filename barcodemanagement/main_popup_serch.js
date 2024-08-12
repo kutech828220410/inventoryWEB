@@ -57,8 +57,8 @@ function confirm_popup_serch()
         if(!serch_CODE_input.value && !serch_SKDIACODE_input.value && !serch_NAME_input.value && !serch_CHT_NAME_input.value)
         {
             let temp_value = "";
-            console.log(east_med.checked);
-            console.log(west_med.checked);
+            // console.log(east_med.checked);
+            // console.log(west_med.checked);
             for(var i = 0; i < allrows.length ; i++)
             {
                 temp_value = allrows[i].getAttribute("TYPE");
@@ -66,24 +66,27 @@ function confirm_popup_serch()
                 if(west_med.checked && east_med.checked) {
                     allrows[i].style.display = "inline-block";
                     allrows[i].style.visibility = "visible";
+                    hide_popup_serch();
                 } else if(!west_med.checked && east_med.checked) {
                     if(temp_value == "中藥") {
-                        console.log("object");
+                        // console.log("object");
                         allrows[i].style.display = "inline-block";
                         allrows[i].style.visibility = "visible";
                     } else {
                         allrows[i].style.display = "none";
                         allrows[i].style.visibility = "hidden";
                     }
+                    hide_popup_serch();
                 } else if(west_med.checked && !east_med.checked) {
                     if(temp_value != "中藥") {
-                        console.log("object");
+                        // console.log("object");
                         allrows[i].style.display = "inline-block";
                         allrows[i].style.visibility = "visible";
                     } else {
                         allrows[i].style.display = "none";
                         allrows[i].style.visibility = "hidden";
                     }
+                    hide_popup_serch();
                 } else {
                     alert("請選擇中/西藥至少一種");
                     return;
@@ -97,23 +100,26 @@ function confirm_popup_serch()
         if(ratio_button_byNormal_input.checked)
         {
             popup_serch_ByNormal();
+            hide_popup_serch();
             return;
         }
         if(ratio_button_bylike_input.checked)
         {
             popup_serch_ByLike();
+            hide_popup_serch();
             return;
         }
         if(ratio_button_bystartWith_input.checked)
         {
             popup_serch_ByStartWith();
+            hide_popup_serch();
             return;
         }
     }
     catch (e) {}
     finally
     {
-        hide_popup_serch();
+        // hide_popup_serch();
     }
 }
 function popup_serch_ByStartWith()

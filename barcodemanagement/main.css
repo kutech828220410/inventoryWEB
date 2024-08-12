@@ -60,13 +60,18 @@ body {
   margin-right: 8px;
   display: flex;
   align-items: center;
-  padding: 0px 16px;
   border-radius: 5px;
   border: 1px solid black;
   background-color: dimgray;
   color: #fff;
   height: 56px;
+  width: 56px;
   justify-content: center;
+  overflow: hidden;
+}
+.get_scanner_err_info_btn > img {
+  width: 140%;
+  object-fit: cover;
 }
 
 .serch_MED_TYPE_div {

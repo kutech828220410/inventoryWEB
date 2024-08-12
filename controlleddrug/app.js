@@ -142,12 +142,12 @@ function get_main_search_div() {
     let cd_main_search_select = document.createElement("select");
     cd_main_search_select.classList.add('cd_main_search_select');
     cd_main_search_select.innerHTML = `
-    <option value="all">全部</option>
-    <option value="drugkind">管制級別</option>
-    <option value="medgroup">藥品群組</option>
-    <option value="code">藥碼</option>
-    <option value="name">藥名</option>
-    <option value="ctname">中文名</option>
+      <option value="all">全部</option>
+      <option value="drugkind">管制級別</option>
+      <option value="medgroup">藥品群組</option>
+      <option value="code">藥碼</option>
+      <option value="name">藥名</option>
+      <option value="ctname">中文名</option>
     `;
 
     let cd_main_search_select_list = document.createElement("select");
@@ -285,21 +285,21 @@ async function get_search_med_data(select, input) {
     med_data = med_data.Data
     switch (select) {
       case "code":
-        temp_arr = med_data.filter(e => e["CODE"].includes(input));
+        temp_arr = med_data.filter(e => e["CODE"].toUpperCase().includes(input.toUpperCase()));
         if(temp_arr.length < 1) {
           alert('查無此藥');
         }
         return temp_arr;
     
       case "name":
-        temp_arr = med_data.filter(e => e["NAME"].includes(input));
+        temp_arr = med_data.filter(e => e["NAME"].toUpperCase().includes(input.toUpperCase()));
         if(temp_arr.length < 1) {
           alert('查無此藥');
         }
         return temp_arr;
     
       case "ctname":
-        temp_arr = med_data.filter(e => e["CHT_NAME"].includes(input));
+        temp_arr = med_data.filter(e => e["CHT_NAME"].toUpperCase().includes(input.toUpperCase()));
         if(temp_arr.length < 1) {
           alert('查無此藥');
         }
@@ -307,7 +307,7 @@ async function get_search_med_data(select, input) {
 
       case "medgroup":
         let temp_med_group_data = await groups_manage_get_data();
-        let temp_med_group = temp_med_group_data["Data"].filter(e => e["GUID"].includes(input));
+        let temp_med_group = temp_med_group_data["Data"].filter(e => e["GUID"].toUpperCase().includes(input.toUpperCase()));
         let match_arr = [];
         temp_med_group[0]["MedClasses"].forEach(element => {
           match_arr.push(element.CODE);
@@ -435,7 +435,7 @@ function get_search_med_result_display(array) {
       if(element.SKDIACODE == "") {
         cd_main_med_card_code.innerHTML = `藥碼:${element.CODE}`;
       } else {
-        cd_main_med_card_code.innerText = `藥碼:${element.CODE}&nbsp&nbsp&nbsp&nbsp料號:${element.SKDIACODE}`;
+        cd_main_med_card_code.innerHTML = `藥碼:${element.CODE}&nbsp&nbsp&nbsp&nbsp料號:${element.SKDIACODE}`;
       }
 
       cd_main_med_card_content_container.appendChild(cd_main_med_card_name);

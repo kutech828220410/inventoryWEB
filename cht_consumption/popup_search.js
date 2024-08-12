@@ -296,11 +296,11 @@ async function get_search_result() {
     console.log(temp_post_data);
     let temp_data;
     if (select_date_kind.value == "operate") {
-        temp_data = await get_datas_by_op_time_st_end_transactions(temp_post_data);
+        temp_data = await get_orderT_by_post_time_st_end(temp_post_data);
         // console.log(temp_data);
         data_information = temp_data["Data"];
     } else {
-        temp_data = await get_datas_by_rx_time_st_end_transactions(temp_post_data);
+        temp_data = await get_orderT_by_rx_time_st_end(temp_post_data);
         // console.log(temp_data);
         data_information = temp_data["Data"];
     }
@@ -330,19 +330,19 @@ async function get_search_result() {
         switch (select_patient_kind.value) {
             case "operator":
                 temp_data = data_information.filter((e) => {
-                    return e["OP"].toUpperCase().includes(select_patient_input.value.toUpperCase());
+                    return e["PHARER_NAME"].toUpperCase().includes(select_patient_input.value.toUpperCase());
                 });
                 data_information = temp_data;
                 break;
             case "patient_name":
                 temp_data = data_information.filter((e) => {
-                    return e["PAT"].toUpperCase().includes(select_patient_input.value.toUpperCase());
+                    return e["PATNAME"].toUpperCase().includes(select_patient_input.value.toUpperCase());
                 });
                 data_information = temp_data;
                 break;
             case "patient_number":
                 temp_data = data_information.filter((e) => {
-                    return e["MRN"].toUpperCase().includes(select_patient_input.value.toUpperCase());
+                    return e["PATCODE"].toUpperCase().includes(select_patient_input.value.toUpperCase());
                 });
                 data_information = temp_data;
                 break;
@@ -368,23 +368,8 @@ async function get_search_result() {
 function get_trans_form_post_data() {
     let ppds_start_input = document.querySelector("#ppds_start_input");
     let ppds_end_input = document.querySelector("#ppds_end_input");
-
-    let serverNameStr = "";
-    let serverTypeStr = "";
-  
-    temp_selected_arr.forEach(element => {
-        serverNameStr += element.serverName + ",";
-        serverTypeStr += element.serverType + ",";
-    });
-  
-    // Remove the trailing comma
-    serverNameStr = serverNameStr.slice(0, -1);
-    serverTypeStr = serverTypeStr.slice(0, -1);
-  
     // console.log(st_time);
     // console.log(end_time);
-    // console.log(serverNameStr);
-    // console.log(serverTypeStr);
 
     let temp_start_time = ppds_start_input.value.replace("T", " ");
     let temp_end_time = ppds_end_input.value.replace("T", " ");
@@ -393,9 +378,8 @@ function get_trans_form_post_data() {
         Data: {},
         ValueAry: [   
             `${temp_start_time}:00`,
-            `${temp_end_time}:00`,
-            `${serverNameStr}`,
-            `${serverTypeStr}`]
+            `${temp_end_time}:00`
+        ]
     };
 
     return post_data;

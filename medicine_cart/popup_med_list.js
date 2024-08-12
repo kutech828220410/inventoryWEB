@@ -16,11 +16,11 @@ let fake_med_list_data = {
                 {
                     bed_name: "C069-1",
                     qty: 1,
-                    status: false
+                    status: true
                 },
                 {
                     bed_name: "C069-1",
-                    qty: 1,
+                    qty: 2,
                     status: true
                 },
                 {
@@ -144,7 +144,7 @@ function get_pp_med_list_header() {
     ppml_search_btn.classList.add("btn");
     ppml_search_btn.innerHTML = `搜尋`;
     ppml_search_btn.addEventListener("click", () => {
-
+        popup_med_list_search_div_open();
     });
 
     let ppml_h_close_btn = document.createElement("img");
@@ -189,6 +189,10 @@ function set_pp_med_list_display() {
     fake_med_list_data["med_list"].forEach(element => {
         let ppml_card_container = document.createElement("div");
         ppml_card_container.classList.add("ppml_card_container");
+        ppml_card_container.setAttribute("code", element.code);
+        ppml_card_container.setAttribute("name", element.name);
+        ppml_card_container.setAttribute("cht_name", element.cht_name);
+        ppml_card_container.setAttribute("skdiacode", element.SKDIACODE);
 
         let ppml_card_info_container = document.createElement("div");
         ppml_card_info_container.classList.add("ppml_card_info_container");
@@ -223,6 +227,10 @@ function set_pp_med_list_display() {
         ppml_light_on_btn.classList.add("btn");
         ppml_light_on_btn.setAttribute("code", element.code);
         ppml_light_on_btn.innerHTML = "亮燈";
+        ppml_light_on_btn.addEventListener("click", () => {
+            set_light_table(element.code, element.name, element.cht_name);
+            popup_light_table_select_div_open();
+        })
 
         ppml_light_btn_container.appendChild(ppml_light_on_btn)
 
@@ -234,12 +242,34 @@ function set_pp_med_list_display() {
         let ppml_hr = document.createElement("div");
         ppml_hr.classList.add("ppml_hr");
 
-        array.forEach(element => {
-            
+        let ppml_bed_list_container = document.createElement("div");
+        ppml_bed_list_container.classList.add("ppml_bed_list_container");
+
+        let total_qty = 0;
+        let done_qty = 0;
+
+        element["bed_list"].forEach(item => {
+            let ppml_bed_card = document.createElement("div");
+            ppml_bed_card.classList.add("ppml_bed_card");
+            ppml_bed_card.innerHTML = item.bed_name;
+            total_qty += item.qty;
+
+            if(item.status) {
+                ppml_bed_card.classList.add("ppml_bed_done");
+                done_qty += item.qty;
+            }
+
+            ppml_bed_list_container.appendChild(ppml_bed_card);
         });
+
+        ppml_ci_2_div.innerHTML = `
+            <div class="ppml_ci_content">已調配 / 總量</div>
+            <div class="ppml_ci_qty">${done_qty} / ${total_qty}</div>
+        `;
 
         ppml_card_container.appendChild(ppml_card_info_container);
         ppml_card_container.appendChild(ppml_hr);
+        ppml_card_container.appendChild(ppml_bed_list_container);
 
         ppml_main_container.appendChild(ppml_card_container);
     });

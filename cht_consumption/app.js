@@ -52,9 +52,6 @@ async function load()
   let temp_search_med_data;
   let temp_sort_med_data;
 
-  get_popup_pharmacy_select();
-  popup_pharmacy_select_div.Set_Visible(true);
-
   nav_bar_create("consumption_report", test_user_data);
   get_header(test_user_data);
   get_select_block_bar_container();
@@ -76,7 +73,7 @@ function get_header(test_user_data) {
 
     let h_title = document.createElement("div");
     h_title.classList = 'h_title';
-    h_title.innerHTML = "西藥交易紀錄";
+    h_title.innerHTML = "中藥交易紀錄";
 
     let header_user = document.createElement("div");
     header_user.classList.add("header_user");
@@ -88,13 +85,13 @@ function get_header(test_user_data) {
     let header_btn_container = document.createElement("div");
     header_btn_container.classList = "header_btn_container";
 
-    let block_change_popup_btn = document.createElement("div");
-    block_change_popup_btn.classList.add('btn');
-    block_change_popup_btn.classList.add('block_change_popup_btn');
-    block_change_popup_btn.innerHTML = "選區";
-    block_change_popup_btn.addEventListener("click", () => {
-      popup_pharmacy_select_div_open();
-    });
+    // let block_change_popup_btn = document.createElement("div");
+    // block_change_popup_btn.classList.add('btn');
+    // block_change_popup_btn.classList.add('block_change_popup_btn');
+    // block_change_popup_btn.innerHTML = "選區";
+    // block_change_popup_btn.addEventListener("click", () => {
+    //   popup_pharmacy_select_div_open();
+    // });
 
     let search_popup_btn = document.createElement("div");
     search_popup_btn.classList.add('btn');
@@ -118,7 +115,7 @@ function get_header(test_user_data) {
       Set_main_div_enable(false);
     });
 
-    header_btn_container.appendChild(block_change_popup_btn);
+    // header_btn_container.appendChild(block_change_popup_btn);
     header_btn_container.appendChild(search_popup_btn);
     header_btn_container.appendChild(download_excel_trans_log_btn);
 
@@ -335,7 +332,7 @@ function get_select_block_func(arr) {
   });
 }
 function get_main_div_table_th_init() {
-  let th_data = ["","動作","診別","庫別", "藥品碼","藥品名稱","領藥號","庫存量","交易量","結存量","盤點量","操作人","病人姓名","病歷號","病房號","操作時間","開方時間","收支原因",'備註'];
+  let th_data = ["", "藥品碼","藥品名稱","領藥號","交易量","操作人","病人姓名","病歷號","操作時間","開方時間"];
   let main_div_table_th_container = document.querySelector(".main_div_table_th_container");
 
   th_data.forEach((element, index) => {
@@ -348,7 +345,7 @@ function get_main_div_table_th_init() {
   });
 }
 function get_info_init() {
-  let th_data = ["","動作","診別","庫別","藥品碼","藥品名稱","領藥號","庫存量","交易量","結存量","盤點量","操作人","病人姓名","病歷號","病房號","操作時間","開方時間","收支原因",'備註'];
+  let th_data = ["", "藥品碼","藥品名稱","領藥號","交易量","操作人","病人姓名","病歷號","操作時間","開方時間"];
 
   console.log(data_information);
 
@@ -378,58 +375,31 @@ function get_info_init() {
             td.innerHTML = index + 1;
             break;
           case 1:
-            td.innerHTML = element.ACTION;
-            break;
-          case 2:
-            td.innerHTML = element.MEDKND;
-            break;
-          case 3:
-            td.innerHTML = element.STOREHOUSE;
-            break;
-          case 4:
             td.innerHTML = element.CODE;
             break;
-          case 5:
+          case 2:
             td.innerHTML = element.NAME;
             break;
-          case 6:
+          case 3:
             td.innerHTML = element.MED_BAG_NUM;
             break;
-          case 7:
-            td.innerHTML = element.INV_QTY;
-            break;
-          case 8:
+          case 4:
             td.innerHTML = element.TXN_QTY;
             break;
+          case 5:
+            td.innerHTML = element.PHARER_NAME;
+            break;
+          case 6:
+            td.innerHTML = element.PATNAME;
+            break;
+          case 7:
+            td.innerHTML = element.PATCODE;
+            break;
+          case 8:
+            td.innerHTML = element.POST_TIME;
+            break;
           case 9:
-            td.innerHTML = element.EBQ_QTY;
-            break;
-          case 10:
-            td.innerHTML = element.PHY_QTY;
-            break;
-          case 11:
-            td.innerHTML = element.OP;
-            break;
-          case 12:
-            td.innerHTML = element.PAT;
-            break;
-          case 13:
-            td.innerHTML = element.MRN;
-            break;
-          case 14:
-            td.innerHTML = element.WARD_NAME;
-            break;
-          case 15:
-            td.innerHTML = element.OP_TIME;
-            break;
-          case 16:
-            td.innerHTML = element.RX_TIME;
-            break;
-          case 17:
-            td.innerHTML = element.RSN;
-            break;
-          case 18:
-            td.innerHTML = element.NOTE;
+            td.innerHTML = element.ORD_START;
             break;
           
           default:
@@ -726,11 +696,11 @@ async function get_main_search_result() {
   let temp_post_data = get_main_trans_form_post_data();
   let temp_data;
   if (md_select.value == "operate") {
-      temp_data = await get_datas_by_op_time_st_end_transactions(temp_post_data);
+      temp_data = await get_orderT_by_post_time_st_end(temp_post_data);
       console.log(temp_data);
       data_information = temp_data["Data"];
   } else {
-      temp_data = await get_datas_by_rx_time_st_end_transactions(temp_post_data);
+      temp_data = await get_orderT_by_rx_time_st_end(temp_post_data);
       // console.log(temp_data);
       data_information = temp_data["Data"];
   }
@@ -769,23 +739,6 @@ function get_main_trans_form_post_data() {
   let md_start_date_input = document.querySelector("#md_start_date_input");
   let md_end_date_input = document.querySelector("#md_end_date_input");
 
-  let serverNameStr = "";
-  let serverTypeStr = "";
-
-  temp_selected_arr.forEach(element => {
-      serverNameStr += element.serverName + ",";
-      serverTypeStr += element.serverType + ",";
-  });
-
-  // Remove the trailing comma
-  serverNameStr = serverNameStr.slice(0, -1);
-  serverTypeStr = serverTypeStr.slice(0, -1);
-
-  // console.log(st_time);
-  // console.log(end_time);
-  // console.log(serverNameStr);
-  // console.log(serverTypeStr);
-
   let temp_start_time = md_start_date_input.value.replace("T", " ");
   let temp_end_time = md_end_date_input.value.replace("T", " ");
 
@@ -794,8 +747,7 @@ function get_main_trans_form_post_data() {
       ValueAry: [   
           `${temp_start_time}:00`,
           `${temp_end_time}:00`,
-          `${serverNameStr}`,
-          `${serverTypeStr}`]
+        ]
   };
 
   return post_data;

@@ -1,0 +1,45 @@
+.review_search_container {
+    display: flex;
+}
+#rs_date_input,
+#rs_op_select,
+#rs_time_select {
+    margin: 12px 32px 24px;
+    width: 200px;
+    margin-bottom: 20px;
+    padding: 4px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 600;
+    display: block;
+    text-align: center;
+}
+.patient_bed_card {
+    width: 660px;
+    margin-bottom: 32px;
+    text-align: center;
+    border-collapse: collapse;
+    background-color: #f0f0f0;
+    box-shadow: 1px 1px 4px 0px #00000061;
+}
+.patient_bed_card th {
+    background-color: #9e9e9e;
+}
+.patient_bed_card th, 
+.patient_bed_card td {
+    border: 1px solid black;
+    padding: 4px;
+}
+.review_table_title {
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+}
+.review_td_1,
+.review_td_2 {
+    text-align: left;
+}
+.review_tr_bgc {
+    background-color: #c4c4c4;
+}

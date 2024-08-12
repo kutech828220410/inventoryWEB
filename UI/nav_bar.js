@@ -66,7 +66,7 @@ let html_pages = [
                         html_ctName: "藥品申領",
                         html_url: "../../med_request",
                         icon_url: "../../image/icon/assortment.png",
-                        icon_big_url: "../../image/icon/picking_big_icon.png"
+                        icon_big_url: "../../image/list.png"
                     },
                     {
                         html_name: "pickingpage",
@@ -120,7 +120,14 @@ let html_pages = [
                         html_url: "../../ch_medical_order",
                         icon_url: "../../image/icon/compliance.png",
                         icon_big_url: "../../image/icon/controlled_big_icon.png"
-                    }
+                    },
+                    {
+                        html_name: "cht_consumption_report",
+                        html_ctName: "中藥交易",
+                        html_url: "../../cht_consumption",
+                        icon_url: "../../image/icon/transaction.png",
+                        icon_big_url: "../../image/icon/traded_big_icon.png"
+                    },
                 ]
             }
         ],

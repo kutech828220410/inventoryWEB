@@ -214,6 +214,29 @@ async function get_orderT_by_rx_time_st_end(data) {
 
     return temp_data;
 }
+async function get_orderT_by_post_time_st_end(data) {
+    console.log("中藥醫令查詢(時間區間) api請求");
+    let temp_data = await fetch(`${api_ip}api/orderT/get_by_post_time_st_end`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then((response) => {
+        console.log("取得資料");
+        return response.json();
+    })
+
+    // [
+    //     "起始時間",
+    //     "結束時間",
+    //     "口服1,口服2",
+    //     "調劑台,調劑台"
+    // ]
+
+    return temp_data;
+}
 async function get_by_pri_key(PRI_KEY) {
     console.log("根據私鑰取得中藥醫令");
     let data =   {
