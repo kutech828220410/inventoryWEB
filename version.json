@@ -1,4 +1,4 @@
 {
-    "version": "1.17.20240821",
-    "update_content": "新增頁面權限判定"
+    "version": "1.17.20240821-1",
+    "update_content": "頁面權限api例外"
 }

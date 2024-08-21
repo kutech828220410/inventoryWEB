@@ -15,20 +15,24 @@ let web_list = [
 async function get_permissions_arr() {
     let temp_arr = [];
     let permissions_data = await et_web_peremeter();
-    permissions_data = permissions_data.Data;
+    if(permissions_data == "error") {
+        return permissions_data
+    } else {
+        permissions_data = permissions_data.Data;
+        
+        permissions_data.forEach(element => {
+            if(element.value == "False") {
+                let temp_str = swtich_logic_func(element.content);
+                temp_arr.push(temp_str);
+            }
+        });
     
-    permissions_data.forEach(element => {
-        if(element.value == "False") {
-            let temp_str = swtich_logic_func(element.content);
-            temp_arr.push(temp_str);
-        }
-    });
-
-    temp_arr.push("staff_management");
+        temp_arr.push("staff_management");
+        
+        console.log(temp_arr);
     
-    console.log(temp_arr);
-
-    return temp_arr;
+        return temp_arr;
+    }
 }
 function swtich_logic_func(str) {
     // 模塊轉換
@@ -96,61 +100,66 @@ function front_page_display_logic(str, arr) {
     return boolean;
 }
 async function get_web_peremeter_name() {
-    let data =   {
-        Data: {},
-        ValueAry : []
-    };
-    let start_p = performance.now();
-    console.log("進入api取得資料");
-    console.log(data);
-    console.log(`${api_ip}api/ServerSetting/get_web_peremeter_name`);
-    let temp_data = await fetch(`${api_ip}api/ServerSetting/get_web_peremeter_name`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-    })
-    .then((response) => {
-        console.log("取得資料ＪＳＯＮ格式");
-        return response.json();
-    });
-    // [
-    //     "起始時間",
-    //     "結束時間",
-    //     "口服1,口服2",
-    //     "調劑台,調劑台"
-    // ]
-    let end_p = performance.now();
-    console.log(end_p - start_p);
-
-    return temp_data;
+    try {
+        let data =   {
+            Data: {},
+            ValueAry : []
+        };
+        let start_p = performance.now();
+        console.log("進入api取得資料");
+        console.log(data);
+        console.log(`${api_ip}api/ServerSetting/get_web_peremeter_name`);
+        // 這邊偷偷調整權限全開，破壞fetch的url就可以
+        let temp_data = await fetch(`${api_ip}api/ServerSetting/get_web_peremeter_name`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+        .then((response) => {
+            console.log("取得資料ＪＳＯＮ格式");
+            return response.json();
+        });
+    
+        let end_p = performance.now();
+        console.log(end_p - start_p);
+    
+        return temp_data;
+    } catch (error) {
+        console.log(error);
+        return "error";
+    }
 }
 async function et_web_peremeter() {
     let data = await get_web_peremeter_name();
-    data = data.Data;
-    data =   {
-        Data: {},
-        ValueAry : data
+    if(data == "error") {
+        return data;
+    } else {
+        data = data.Data;
+        data =   {
+            Data: {},
+            ValueAry : data
+        }
+        let start_p = performance.now();
+        console.log("進入api取得資料");
+        console.log(data);
+        console.log(`${api_ip}api/ServerSetting/et_web_peremeter`);
+        let temp_data = await fetch(`${api_ip}api/ServerSetting/et_web_peremeter`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+        .then((response) => {
+            console.log("取得資料ＪＳＯＮ格式");
+            return response.json();
+        });
+        let end_p = performance.now();
+        console.log(end_p - start_p);
+        console.log(temp_data);
+    
+        return temp_data;
     }
-    let start_p = performance.now();
-    console.log("進入api取得資料");
-    console.log(data);
-    console.log(`${api_ip}api/ServerSetting/et_web_peremeter`);
-    let temp_data = await fetch(`${api_ip}api/ServerSetting/et_web_peremeter`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-    })
-    .then((response) => {
-        console.log("取得資料ＪＳＯＮ格式");
-        return response.json();
-    });
-    let end_p = performance.now();
-    console.log(end_p - start_p);
-    console.log(temp_data);
-
-    return temp_data;
 }

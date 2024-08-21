@@ -16,6 +16,7 @@ async function load()
     console.log("inventory_url",inventory_url);
 
     let permissions_arr = await get_permissions_arr();
+    console.log(permissions_arr);
 
     var loggedID = sessionStorage.getItem('loggedID');  
     var loggedName = sessionStorage.getItem('loggedName');  
@@ -52,21 +53,28 @@ function get_page_section(object, arr) {
   
     let pages_icon_container = document.createElement("div");
     pages_icon_container.classList.add("pages_icon_container");
-  
-    object['branch'][0]["pages"].forEach(element => {
-      let temp_div = get_page_icon(element, arr);
-      if(front_page_display_logic(element.html_name, arr)) {
-        pages_icon_container.appendChild(temp_div);
-      }
-    });
 
-    // 將禁止頁面放置後方
-    object['branch'][0]["pages"].forEach(element => {
-      let temp_div = get_page_icon(element, arr);
-      if(!front_page_display_logic(element.html_name, arr)) {
-        pages_icon_container.appendChild(temp_div);
-      }
-    });
+    if(arr == "error") {
+        object['branch'][0]["pages"].forEach(element => {
+          let temp_div = get_page_icon(element, arr);
+          pages_icon_container.appendChild(temp_div);
+        });
+    } else {      
+        object['branch'][0]["pages"].forEach(element => {
+          let temp_div = get_page_icon(element, arr);
+          if(front_page_display_logic(element.html_name, arr)) {
+            pages_icon_container.appendChild(temp_div);
+          }
+        });
+    
+        // 將禁止頁面放置後方
+        object['branch'][0]["pages"].forEach(element => {
+          let temp_div = get_page_icon(element, arr);
+          if(!front_page_display_logic(element.html_name, arr)) {
+            pages_icon_container.appendChild(temp_div);
+          }
+        });
+    }
   
     section_div.appendChild(h2);
     section_div.appendChild(h3);
@@ -107,21 +115,28 @@ function get_page_section(object, arr) {
       card_div.appendChild(filp_btn);
       card_div.appendChild(h2);
       card_div.appendChild(h3);
-    
-      element["pages"].forEach(element => {
-        let temp_div = get_page_icon(element, arr);
-        if(front_page_display_logic(element.html_name, arr)) {
-          pages_icon_container.appendChild(temp_div);
-        }
-      });
 
-      // 將禁止頁面放置後方
-      element["pages"].forEach(element => {
-        let temp_div = get_page_icon(element, arr);
-        if(!front_page_display_logic(element.html_name, arr)) {
+      if(arr == "error") {
+        element["pages"].forEach(element => {
+          let temp_div = get_page_icon(element, arr);
           pages_icon_container.appendChild(temp_div);
-        }
-      });
+        });
+      } else {
+        element["pages"].forEach(element => {
+          let temp_div = get_page_icon(element, arr);
+          if(front_page_display_logic(element.html_name, arr)) {
+            pages_icon_container.appendChild(temp_div);
+          }
+        });
+  
+        // 將禁止頁面放置後方
+        element["pages"].forEach(element => {
+          let temp_div = get_page_icon(element, arr);
+          if(!front_page_display_logic(element.html_name, arr)) {
+            pages_icon_container.appendChild(temp_div);
+          }
+        });
+      }
 
       card_div.appendChild(pages_icon_container);
 
@@ -135,15 +150,21 @@ function get_page_section(object, arr) {
 function get_page_icon(object, arr) {
   let page_card = document.createElement("div");
   page_card.classList.add('page_card');
-  if(!front_page_display_logic(object.html_name, arr)) {
-    page_card.classList.add('web_icon_disable');
-    page_card.addEventListener("click", () => {
-      alert("尚未啟用該功能");
-    })
-  } else {
+  if(arr == "error") {
     page_card.addEventListener("click", () => {
       window.location.href = object.html_url;
     })
+  } else {
+    if(!front_page_display_logic(object.html_name, arr)) {
+      page_card.classList.add('web_icon_disable');
+      page_card.addEventListener("click", () => {
+        alert("尚未啟用該功能");
+      })
+    } else {
+      page_card.addEventListener("click", () => {
+        window.location.href = object.html_url;
+      })
+    }
   }
 
   let page_card_img = document.createElement("img");
