@@ -28,13 +28,16 @@ async function load()
   console.log("API02",API02);
   check_ip(API01[0].server,API02[0].server);
   permissions = await GetApipermissions();
-  console.log(permissions);
-
+  
   let permissions_arr = await get_permissions_arr();
-  if(!permissions_arr.includes("inventory")) {
-      alert('權限未開放');
-      window.location.href = '../../frontpage';
-  };
+  if(permissions_arr == "error") {
+    console.log("權限全開");
+  } else {
+    if(!permissions_arr.includes("inventory")) {
+        alert('權限未開放');
+        window.location.href = '../../frontpage';
+    };
+  }
 
   let rowNum = 1;
   const Loadingpopup = GetLoadingpopup();

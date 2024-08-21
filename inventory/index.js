@@ -164,10 +164,14 @@ async function init()
     console.log("inventory_url",inventory_url);
 
     let permissions_arr = await get_permissions_arr();
-    if(!permissions_arr.includes("inventory")) {
-        alert('權限未開放');
-        window.location.href = '../../frontpage';
-    };
+    if(permissions_arr == "error") {
+      console.log("權限全開");
+    } else {
+      if(!permissions_arr.includes("inventory")) {
+          alert('權限未開放');
+          window.location.href = '../../frontpage';
+      };
+    }
 
     current_IC_SN = sessionStorage.getItem('IC_SN');
     

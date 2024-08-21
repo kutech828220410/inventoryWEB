@@ -31,10 +31,14 @@ async function load()
 
   
   let permissions_arr = await get_permissions_arr();
-  if(!permissions_arr.includes("inspection")) {
-      alert('權限未開放');
-      window.location.href = '../../frontpage';
-  };
+  if(permissions_arr == "error") {
+    console.log("權限全開");
+  } else {
+    if(!permissions_arr.includes("inspection")) {
+        alert('權限未開放');
+        window.location.href = '../../frontpage';
+    };
+  }
 
   let rowNum = 1;
   const Loadingpopup = GetLoadingpopup();
