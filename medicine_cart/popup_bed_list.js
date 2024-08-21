@@ -1,89 +1,4 @@
 let popup_bed_list_div;
-let fake_bed_list_data = {
-    cart_name: "C069",
-    bed_list: [
-        {
-            name: "C069-1",
-            status: false,
-        },
-        {
-            name: "C069-1",
-            status: false,
-        },
-        {
-            name: "C069-1",
-            status: true,
-        },
-        {
-            name: "C069-1",
-            status: true,
-        },
-        {
-            name: "C069-1",
-            status: false,
-        },
-        {
-            name: "C069-1",
-            status: true,
-        },
-        {
-            name: "C069-1",
-            status: true,
-        },
-        {
-            name: "C069-1",
-            status: true,
-        },
-        {
-            name: "C069-1",
-            status: true,
-        },
-        {
-            name: "C069-1",
-            status: false,
-        },
-        {
-            name: "C069-1",
-            status: true,
-        },
-        {
-            name: "C069-1",
-            status: true,
-        },
-        {
-            name: "C069-1",
-            status: true,
-        },
-        {
-            name: "C069-1",
-            status: false,
-        },
-        {
-            name: "C069-1",
-            status: false,
-        },
-        {
-            name: "C069-1",
-            status: true,
-        },
-        {
-            name: "C069-1",
-            status: false,
-        },
-        {
-            name: "C069-1",
-            status: true,
-        },
-        {
-            name: "C069-1",
-            status: true,
-        },
-        {
-            name: "C069-1",
-            status: false,
-        }
-    ]
-}
 
 function get_popup_bed_list() {
     popup_bed_list_div = new Basic_popup_Div('popup_bed_list_div','popup_bed_list_div','','');
@@ -144,25 +59,31 @@ function set_pp_bed_list_info() {
     ppbl_main_container.innerHTML = "";
 
     let ppbl_h_title_span = document.querySelector(".ppbl_h_title_span");
-    ppbl_h_title_span.innerHTML = fake_bed_list_data.cart_name;
+    ppbl_h_title_span.innerHTML = current_cart.hnursta;
 
-    fake_bed_list_data["bed_list"].forEach((element, index) => {
+    med_cart_beds_data.forEach((element, index) => {
         let pp_bed_card = document.createElement("div");
         pp_bed_card.classList.add("pp_bed_card");
         if(index == patient_bed_index) pp_bed_card.classList.add("pp_current_bed");
         if(index == last_patient_bed_index) pp_bed_card.classList.add("pp_last_selected_bed");
-        if(element.status) pp_bed_card.classList.add("pp_done_bed");
+        if(element.dispens_status != "") pp_bed_card.classList.add("pp_done_bed");
+        if(element.bed_status != "已佔床") pp_bed_card.classList.add("pp_nouse_bed");
 
-        pp_bed_card.innerHTML = element.name;
+        pp_bed_card.innerHTML = element.bednum;
+        // pp_bed_card.innerHTML = `${element.nurnum}-${element.bednum}`;
 
-        pp_bed_card.addEventListener("click", () => {
-            if(index == patient_bed_index) return;
-
-            last_patient_bed_index = patient_bed_index;
-            patient_bed_index = index;
-
-            popup_bed_list_div_close();
-        });
+        if(element.bed_status == "已佔床") {
+            pp_bed_card.addEventListener("click", () => {
+                if(index == patient_bed_index) return;
+    
+                last_patient_bed_index = patient_bed_index;
+                patient_bed_index = index;
+    
+                allocate_display_init();
+    
+                popup_bed_list_div_close();
+            });
+        }
 
         ppbl_main_container.appendChild(pp_bed_card);
     });

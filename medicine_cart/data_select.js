@@ -116,5 +116,7 @@ let last_current_med_table = "";
 
 let popup_last_cart_mark = "";
 
-let patient_bed_index = 0;
+let patient_bed_index = -1;
 let last_patient_bed_index = -1;
+let first_patient_bed_index;
+let final_patient_bed_index;

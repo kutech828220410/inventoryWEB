@@ -33,6 +33,12 @@ async function load()
     await check_ip(API01[0].server,API02[0].server);
     console.log("MED_page_url",MED_page_url);
 
+    let permissions_arr = await get_permissions_arr();
+    if(!permissions_arr.includes("barcodemanagement")) {
+        alert('權限未開放');
+        window.location.href = '../../frontpage';
+    };
+
     const Loadingpopup = GetLoadingpopup();
     document.body.appendChild(Loadingpopup);
     Set_main_div_enable(true);

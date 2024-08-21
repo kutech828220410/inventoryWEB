@@ -12,7 +12,7 @@
 .ppml_h_title {
     padding: 4px 48px;
     text-align: center;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
     margin-bottom: 12px;
     background-color: rgb(222, 222, 222);
@@ -35,10 +35,16 @@
     top: 0px;
     left: 0px;
 }
+.ppml_footer_container {
+    display: flex;
+    margin-top: 12px;
+    justify-content: space-between;
+}
 .ppml_search_btn {
-    position: absolute;
-    left: 0px;
-    top: 0px;
+    padding-bottom: 5px;
+    margin: 0px;
+}
+.ppml_display_all_btn {
     padding-bottom: 5px;
     margin: 0px;
 }
@@ -97,9 +103,8 @@
     margin-bottom: 8px;
 }
 .ppml_bed_list_container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
+    display: grid;
+    grid-template-columns: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
 }
 .ppml_bed_card {
     padding: 4px 12px;
@@ -110,6 +115,7 @@
     background-color: #888;
     cursor: pointer;
     color: #ffffff;
+    margin: 6px;
 }
 .ppml_bed_done {
     background-color: #C1EA69;

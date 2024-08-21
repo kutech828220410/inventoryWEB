@@ -33,6 +33,12 @@ async function load()
   permissions = await GetApipermissions();
   console.log(permissions);
 
+  let permissions_arr = await get_permissions_arr();
+  if(!permissions_arr.includes("cht_consumption_report")) {
+      alert('權限未開放');
+      window.location.href = '../../frontpage';
+  };
+
   let rowNum = 1;
   const currentDate = new Date();
   var date_end = DateTimeAddDays(currentDate, 1);
@@ -52,7 +58,7 @@ async function load()
   let temp_search_med_data;
   let temp_sort_med_data;
 
-  nav_bar_create("consumption_report", test_user_data);
+  nav_bar_create("cht_consumption_report", test_user_data);
   get_header(test_user_data);
   get_select_block_bar_container();
   get_main_div();

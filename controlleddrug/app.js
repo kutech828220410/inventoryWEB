@@ -29,6 +29,12 @@ async function load()
   permissions = await GetApipermissions();
   console.log(permissions);
 
+  let permissions_arr = await get_permissions_arr();
+  if(!permissions_arr.includes("drugs_report")) {
+      alert('權限未開放');
+      window.location.href = '../../frontpage';
+  };
+
   const currentDate = new Date();
   let date_end = DateTimeAddDays(currentDate, 1);
   let date_start = DateTimeAddDays(currentDate, -30);

@@ -15,6 +15,8 @@ async function load()
     await check_ip(API01[0].server,API02[0].server);
     console.log("inventory_url",inventory_url);
 
+    let permissions_arr = await get_permissions_arr();
+
     var loggedID = sessionStorage.getItem('loggedID');  
     var loggedName = sessionStorage.getItem('loggedName');  
     const test_user_data = {
@@ -24,21 +26,21 @@ async function load()
 
     set_web_info_icon();
     nav_bar_create("frontpage", test_user_data);
-    get_pages_container(html_pages);
+    get_pages_container(html_pages, permissions_arr);
 }
 
-function get_pages_container(array) {
+function get_pages_container(array, arr) {
     let main_container = document.querySelector(".container");
     main_container.innerHTML = '';
 
     array.forEach(element => {
-      let temp_div = get_page_section(element);
+      let temp_div = get_page_section(element, arr);
 
       main_container.appendChild(temp_div);
     });
 }
 
-function get_page_section(object) {
+function get_page_section(object, arr) {
   if(object["branch"].length < 2) {
     let section_div = document.createElement("div");
     section_div.classList.add('section_div');
@@ -52,9 +54,18 @@ function get_page_section(object) {
     pages_icon_container.classList.add("pages_icon_container");
   
     object['branch'][0]["pages"].forEach(element => {
-      let temp_div = get_page_icon(element);
-  
-      pages_icon_container.appendChild(temp_div);
+      let temp_div = get_page_icon(element, arr);
+      if(front_page_display_logic(element.html_name, arr)) {
+        pages_icon_container.appendChild(temp_div);
+      }
+    });
+
+    // 將禁止頁面放置後方
+    object['branch'][0]["pages"].forEach(element => {
+      let temp_div = get_page_icon(element, arr);
+      if(!front_page_display_logic(element.html_name, arr)) {
+        pages_icon_container.appendChild(temp_div);
+      }
     });
   
     section_div.appendChild(h2);
@@ -84,12 +95,6 @@ function get_page_section(object) {
     
       let pages_icon_container = document.createElement("div");
       pages_icon_container.classList.add("pages_icon_container");
-    
-      element["pages"].forEach(element => {
-        let temp_div = get_page_icon(element);
-    
-        pages_icon_container.appendChild(temp_div);
-      });
 
       let filp_btn = document.createElement("div");
       filp_btn.innerHTML = `${name_arr[index]}<img src="../image/fast-forward.png" alt="">`;
@@ -102,6 +107,22 @@ function get_page_section(object) {
       card_div.appendChild(filp_btn);
       card_div.appendChild(h2);
       card_div.appendChild(h3);
+    
+      element["pages"].forEach(element => {
+        let temp_div = get_page_icon(element, arr);
+        if(front_page_display_logic(element.html_name, arr)) {
+          pages_icon_container.appendChild(temp_div);
+        }
+      });
+
+      // 將禁止頁面放置後方
+      element["pages"].forEach(element => {
+        let temp_div = get_page_icon(element, arr);
+        if(!front_page_display_logic(element.html_name, arr)) {
+          pages_icon_container.appendChild(temp_div);
+        }
+      });
+
       card_div.appendChild(pages_icon_container);
 
       rotate_div.appendChild(card_div);
@@ -111,12 +132,19 @@ function get_page_section(object) {
   }
 }
 
-function get_page_icon(object) {
+function get_page_icon(object, arr) {
   let page_card = document.createElement("div");
   page_card.classList.add('page_card');
-  page_card.addEventListener("click", () => {
-    window.location.href = object.html_url;
-  })
+  if(!front_page_display_logic(object.html_name, arr)) {
+    page_card.classList.add('web_icon_disable');
+    page_card.addEventListener("click", () => {
+      alert("尚未啟用該功能");
+    })
+  } else {
+    page_card.addEventListener("click", () => {
+      window.location.href = object.html_url;
+    })
+  }
 
   let page_card_img = document.createElement("img");
   page_card_img.classList.add("page_card_img");
@@ -132,7 +160,7 @@ function get_page_icon(object) {
 
   page_card.appendChild(page_card_img);
   page_card.appendChild(page_card_title);
-//   page_card.appendChild(page_card_engtitle);
+  //   page_card.appendChild(page_card_engtitle);
 
   return page_card;
 }

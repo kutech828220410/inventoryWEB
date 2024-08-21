@@ -163,6 +163,12 @@ async function init()
     await check_ip(API01[0].server,API02[0].server);
     console.log("inventory_url",inventory_url);
 
+    let permissions_arr = await get_permissions_arr();
+    if(!permissions_arr.includes("inventory")) {
+        alert('權限未開放');
+        window.location.href = '../../frontpage';
+    };
+
     current_IC_SN = sessionStorage.getItem('IC_SN');
     
     var IC_SN = sessionStorage.getItem('IC_SN');  

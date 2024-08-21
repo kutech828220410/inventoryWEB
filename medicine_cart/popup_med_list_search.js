@@ -43,9 +43,6 @@ function get_pp_med_list_search_main() {
     ppmls_type_select.innerHTML = `
         <option value="code">藥碼</option>
         <option value="name">藥名</option>
-        <option value="cht_name">中文名</option>
-        <option value="skdiacode">料號</option>
-        <option value="drugkind">管制級別</option>
         <option value="table">調劑台</option>
         <option value="drugtype">大瓶藥</option>
     `;

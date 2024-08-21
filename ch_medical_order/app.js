@@ -23,6 +23,12 @@ async function load() {
   permissions = await GetApipermissions();
   console.log(permissions);
 
+  let permissions_arr = await get_permissions_arr();
+  if(!permissions_arr.includes("ch_medical_order")) {
+      alert('權限未開放');
+      window.location.href = '../../frontpage';
+  };
+
   let rowNum = 1;
   const Loadingpopup = GetLoadingpopup();
   document.body.appendChild(Loadingpopup);
@@ -47,7 +53,7 @@ async function load() {
   // get_popup_pharmacy_select();
   // popup_pharmacy_select_div.Set_Visible(true);
 
-  nav_bar_create("med_balance", test_user_data);
+  nav_bar_create("ch_medical_order", test_user_data);
   get_header(test_user_data);
   get_select_block_bar_container();
   get_main_div();

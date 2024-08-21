@@ -20,6 +20,12 @@ async function load() {
   permissions = await GetApipermissions();
   console.log(permissions);
 
+  let permissions_arr = await get_permissions_arr();
+  if(!permissions_arr.includes("med_request")) {
+      alert('權限未開放');
+      window.location.href = '../../frontpage';
+  };
+
   let rowNum = 1;
   const Loadingpopup = GetLoadingpopup();
   document.body.appendChild(Loadingpopup);
@@ -315,7 +321,11 @@ function set_main_list_display() {
       unit_div.classList.add("unit_div");
       unit_div.setAttribute("GUID", e.GUID);
 
-      unit_div.innerHTML = `${e.requestingUnit}&nbsp;&nbsp;${e.actualQuantity} / ${e.requestedQuantity}`;
+      if(e.actualQuantity == "" || e.actualQuantity == undefined) {
+        unit_div.innerHTML = `${e.requestingUnit}&nbsp;&nbsp;0 / ${e.requestedQuantity}`;
+      } else {
+        unit_div.innerHTML = `${e.requestingUnit}&nbsp;&nbsp;${e.actualQuantity} / ${e.requestedQuantity}`;
+      }
 
       if(e.state == "已過帳") {
         unit_div.classList.add("unit_done");

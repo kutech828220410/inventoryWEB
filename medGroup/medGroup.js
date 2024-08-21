@@ -19,6 +19,12 @@ async function load()
     //     name: "王曉明",
     // }
 
+    let permissions_arr = await get_permissions_arr();
+    if(!permissions_arr.includes("medGroup")) {
+        alert('權限未開放');
+        window.location.href = '../frontpage';
+    };
+
     var loggedID = sessionStorage.getItem('loggedID');  
     var loggedName = sessionStorage.getItem('loggedName');  
     const test_user_data = {

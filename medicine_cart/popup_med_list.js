@@ -116,6 +116,7 @@ let fake_med_list_data = {
         },
     ]
 };
+let med_list_data;
 
 function get_popup_med_list() {
     popup_med_list_div = new Basic_popup_Div('popup_med_list_div','popup_med_list_div','','');
@@ -147,6 +148,16 @@ function get_pp_med_list_header() {
         popup_med_list_search_div_open();
     });
 
+    let ppml_display_all_btn = document.createElement("div");
+    ppml_display_all_btn.classList.add("ppml_display_all_btn");
+    ppml_display_all_btn.classList.add("btn");
+    ppml_display_all_btn.innerHTML = `全部`;
+    ppml_display_all_btn.addEventListener("click", async () => {
+        med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta);
+        med_list_data = med_list_data.Data;
+        await set_pp_med_list_display();
+    });
+
     let ppml_h_close_btn = document.createElement("img");
     ppml_h_close_btn.classList.add("ppml_h_close_btn");
     ppml_h_close_btn.src = "../image/close.png";
@@ -156,7 +167,6 @@ function get_pp_med_list_header() {
 
     ppml_header_container.appendChild(ppml_h_title);
     ppml_header_container.appendChild(ppml_h_close_btn);
-    ppml_header_container.appendChild(ppml_search_btn);
 
     return ppml_header_container;
 }
@@ -169,6 +179,27 @@ function get_pp_med_list_main() {
 function get_pp_med_list_footer() {
     let ppml_footer_container = document.createElement("div");
     ppml_footer_container.classList.add("ppml_footer_container");
+
+    let ppml_search_btn = document.createElement("div");
+    ppml_search_btn.classList.add("ppml_search_btn");
+    ppml_search_btn.classList.add("btn");
+    ppml_search_btn.innerHTML = `搜尋`;
+    ppml_search_btn.addEventListener("click", () => {
+        popup_med_list_search_div_open();
+    });
+
+    let ppml_display_all_btn = document.createElement("div");
+    ppml_display_all_btn.classList.add("ppml_display_all_btn");
+    ppml_display_all_btn.classList.add("btn");
+    ppml_display_all_btn.innerHTML = `全部顯示`;
+    ppml_display_all_btn.addEventListener("click", async () => {
+        med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta);
+        med_list_data = med_list_data.Data;
+        await set_pp_med_list_display();
+    });
+
+    ppml_footer_container.appendChild(ppml_search_btn);
+    ppml_footer_container.appendChild(ppml_display_all_btn);
 
     return ppml_footer_container;
 }
@@ -184,9 +215,9 @@ function set_pp_med_list_display() {
     ppml_main_container.innerHTML = "";
 
     let ppml_h_title_span = document.querySelector(".ppml_h_title_span");
-    ppml_h_title_span.innerHTML = fake_med_list_data.cart_name;
+    ppml_h_title_span.innerHTML = current_cart.hnursta;
 
-    fake_med_list_data["med_list"].forEach(element => {
+    med_list_data.forEach(element => {
         let ppml_card_container = document.createElement("div");
         ppml_card_container.classList.add("ppml_card_container");
         ppml_card_container.setAttribute("code", element.code);
@@ -216,7 +247,7 @@ function set_pp_med_list_display() {
         ppml_ci_3_div.classList.add("ppml_ci_3_div");
         ppml_ci_3_div.innerHTML = `
         <div class="ppml_ci_content">單位</div>
-        <div class="ppml_ci_qty">${element.unit}</div>
+        <div class="ppml_ci_qty">${element.dunit}</div>
         `;
 
         let ppml_light_btn_container = document.createElement("div");
@@ -251,12 +282,28 @@ function set_pp_med_list_display() {
         element["bed_list"].forEach(item => {
             let ppml_bed_card = document.createElement("div");
             ppml_bed_card.classList.add("ppml_bed_card");
-            ppml_bed_card.innerHTML = item.bed_name;
-            total_qty += item.qty;
+            ppml_bed_card.innerHTML = item.bednum;
 
-            if(item.status) {
+            total_qty += +item.lqnty;
+
+            if(item.dispens_status == "Y") {
                 ppml_bed_card.classList.add("ppml_bed_done");
-                done_qty += item.qty;
+                done_qty += +item.lqnty;
+            } else {
+                ppml_bed_card.addEventListener("click", () => {
+                    Set_main_div_enable(true);
+                    for (let index = 0; index < med_cart_beds_data.length; index++) {
+                        const element = med_cart_beds_data[index];
+                        if(element.bednum == item.bednum) {
+                            last_patient_bed_index = patient_bed_index;
+                            patient_bed_index = index;
+                            allocate_display_init();
+                            popup_med_list_div_close();
+                            Set_main_div_enable(false);
+                            break;
+                        }
+                    }
+                });
             }
 
             ppml_bed_list_container.appendChild(ppml_bed_card);

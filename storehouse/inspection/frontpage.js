@@ -29,6 +29,13 @@ async function load()
   permissions = await GetApipermissions();
   console.log(permissions);
 
+  
+  let permissions_arr = await get_permissions_arr();
+  if(!permissions_arr.includes("inspection")) {
+      alert('權限未開放');
+      window.location.href = '../../frontpage';
+  };
+
   let rowNum = 1;
   const Loadingpopup = GetLoadingpopup();
   document.body.appendChild(Loadingpopup);

@@ -6,13 +6,10 @@
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="pragma" content="no-cache">
   <meta http-equiv="expires" content="0">
-  <title>藥品請領</title>
+  <title>批次入庫</title>
   <!-- <link rel="stylesheet" href="main.css"> -->
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="../UI/style/navBar.css">
-  <link rel="stylesheet" href="popup_search.css">
-  <link rel="stylesheet" href="../../UI/popup_UI/med_storage/popup_storage.css">
-  <link rel="stylesheet" href="popup_unit_content.css">
   <script src="../../Function/Basic.js?v=1.14"></script>
   <script>
     (async function() 
@@ -26,15 +23,10 @@
           loadScript("../../session_check.js");
           loadScript("../../session.js");
           loadScript("../../Function/WebApiFunc.js");
-          loadScript("../../api/materialRequisition.js");
           loadScript("../../api/med_page.js");
           loadScript("page_data.js");
           loadScript("app.js");
-          loadScript("popup_search.js");
-          loadScript("../../UI/popup_UI/med_storage/popup_storage.js");
-          loadScript("popup_unit_content.js");
           loadScript("../../UI/navBar.js");
-          loadScript("../../api/web_permissions.js");
         })();
 
   </script>
@@ -54,15 +46,6 @@
           // const popup_find_div = get_popup_serch();
           // document.body.appendChild(popup_find_div.div);
           // popup_find_div.Set_Visible(false);
-
-          get_popup_search_select();
-          popup_search_select_div.Set_Visible(false);
-
-          get_popup_storage();
-          popup_storage_div.Set_Visible(false);
-
-          get_popup_unit_content();
-          popup_unit_content_div.Set_Visible(false);
       </script>
    
   <div class="under-line">
