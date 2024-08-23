@@ -326,9 +326,9 @@ function set_main_list_display() {
       unit_div.setAttribute("GUID", e.GUID);
 
       if(e.actualQuantity == "" || e.actualQuantity == undefined) {
-        unit_div.innerHTML = `${e.requestingUnit}&nbsp;&nbsp;0 / ${e.requestedQuantity}`;
+        unit_div.innerHTML = `<div>修改</div><div>${e.requestingUnit}&nbsp;&nbsp;0 / ${e.requestedQuantity}</div>`;
       } else {
-        unit_div.innerHTML = `${e.requestingUnit}&nbsp;&nbsp;${e.actualQuantity} / ${e.requestedQuantity}`;
+        unit_div.innerHTML = `<div>修改</div><div>${e.requestingUnit}&nbsp;&nbsp;${e.actualQuantity} / ${e.requestedQuantity}</div>`;
       }
 
       if(e.state == "已過帳") {

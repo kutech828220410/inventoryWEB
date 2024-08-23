@@ -68,6 +68,7 @@ function set_pp_bed_list_info() {
         if(index == last_patient_bed_index) pp_bed_card.classList.add("pp_last_selected_bed");
         if(element.dispens_status != "") pp_bed_card.classList.add("pp_done_bed");
         if(element.bed_status != "已佔床") pp_bed_card.classList.add("pp_nouse_bed");
+        console.log(element);
 
         pp_bed_card.innerHTML = element.bednum;
         // pp_bed_card.innerHTML = `${element.nurnum}-${element.bednum}`;

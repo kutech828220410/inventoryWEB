@@ -126,6 +126,13 @@
 .mh_select_btn {
     width: 142px;
 }
+
+.main_batch_list_container {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 800;
+}
+
 .batch_card {
     font-size: 18px;
     width: 100%;
@@ -135,15 +142,23 @@
     display: flex;
     background-color: #dcdcdc;
     align-items: center;
+    margin-bottom: 16px;
 }
 .card_info_container {
     flex-grow: 1;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
 }
 .card_info_container div {
-    padding-right: 30px;
-    margin: 4px 0px;
+    margin: 4px 20px 4px 0px;
+}
+.ci_code {
+    min-width: 100px;
+}
+.ci_name {
+    min-width: 240px;
+    text-align: left;
 }
 .card_delete_btn {
     min-width: 140px;

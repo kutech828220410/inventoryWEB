@@ -215,7 +215,7 @@ async function get_function_menu() {
 
   let func_arrow = document.createElement("div");
   func_arrow.classList.add("arrow");
-  func_arrow.classList.add("tri_arrow");
+  // func_arrow.classList.add("tri_arrow");
 
   let func_option_container = document.createElement("div");
   func_option_container.classList.add("func_option_container");
@@ -562,6 +562,10 @@ async function get_cart_list_and_med_table() {
   cart_list = temp_cart_list.Data;
   console.log(cart_list);
 
+  let temp_table_list = await get_serversetting_by_department_type(current_pharmacy.phar_name);
+  med_table = temp_table_list.Data;
+  console.log(med_table);
+
   let cart_option_container = document.querySelector(".cart_option_container");
   cart_option_container.innerHTML = "";
   cart_list.forEach(element => {
@@ -569,20 +573,24 @@ async function get_cart_list_and_med_table() {
     cart_option_div.classList.add("cart_option_div");
     cart_option_div.setAttribute("cart", element.GUID);
     cart_option_div.innerHTML = element.hnursta;
-    cart_option_div.addEventListener("click", () => {
-      cart_content.innerHTML = cart_option_div.innerHTML;
-      current_cart = element;
-      if(last_current_cart == current_cart) {
-        close_cart_list();
-        return;
-      } else {
-        console.log(current_cart);
-        let temp_logic = get_func_logic();
-        get_all_select_option_logic(temp_logic);
-        close_cart_list();
-        last_current_cart = current_cart;
-      }
-    });
+    if(element.hand_status == "已交車") {
+      cart_option_div.classList.add("cart_option_div_done");
+    } else {
+      cart_option_div.addEventListener("click", () => {
+        cart_content.innerHTML = cart_option_div.innerHTML;
+        current_cart = element;
+        if(last_current_cart == current_cart) {
+          close_cart_list();
+          return;
+        } else {
+          console.log(current_cart);
+          let temp_logic = get_func_logic();
+          get_all_select_option_logic(temp_logic);
+          close_cart_list();
+          last_current_cart = current_cart;
+        }
+      });
+    }
 
     cart_option_container.appendChild(cart_option_div);
   });
@@ -615,8 +623,8 @@ async function get_cart_list_and_med_table() {
       let element = med_table[i - 1];
       let med_table_option_div = document.createElement("div");
       med_table_option_div.classList.add("med_table_option_div");
-      med_table_option_div.setAttribute("med_table", element.uid);
-      med_table_option_div.innerHTML = element.ctname;
+      med_table_option_div.setAttribute("med_table", element.GUID);
+      med_table_option_div.innerHTML = element.name;
       med_table_option_div.addEventListener("click", () => {
         med_table_content.innerHTML = med_table_option_div.innerHTML;
         current_med_table = element;
@@ -679,11 +687,14 @@ async function allocate_func() {
   Set_main_div_enable(true);
   let cart_select_container = document.querySelector(".cart_select_container");
   let med_table_select_container = document.querySelector(".med_table_select_container");
+  let func_select_container = document.querySelector(".func_select_container");
 
   let cart_content = document.querySelector(".cart_content");
   let med_table_content = document.querySelector(".med_table_content");
+
   div_event_click_tri_able(cart_select_container);
   div_event_click_cir_able(med_table_select_container);
+  div_event_click_tri_able(func_select_container);
 
   cart_content.addEventListener("click", open_cart_list);
   med_table_content.addEventListener("click", open_med_table_list);
@@ -703,12 +714,14 @@ async function allocate_func() {
 async function review_func() {
   let cart_select_container = document.querySelector(".cart_select_container");
   let med_table_select_container = document.querySelector(".med_table_select_container");
+  let func_select_container = document.querySelector(".func_select_container");
 
   let cart_content = document.querySelector(".cart_content");
   let med_table_content = document.querySelector(".med_table_content");
 
   div_event_click_cir_able(cart_select_container);
   div_event_click_cir_disable(med_table_select_container);
+  div_event_click_tri_able(func_select_container);
 
   cart_content.addEventListener("click", open_cart_list);
   med_table_content.removeEventListener("click", open_med_table_list);
@@ -727,14 +740,16 @@ async function review_func() {
 }
 // 交車作業
 async function deliver_func() {
+  let func_select_container = document.querySelector(".func_select_container");
   let cart_select_container = document.querySelector(".cart_select_container");
   let med_table_select_container = document.querySelector(".med_table_select_container");
+  
+  div_event_click_cir_disable(cart_select_container);
+  div_event_click_cir_disable(med_table_select_container);
+  div_event_click_cir_able(func_select_container);
 
   let cart_content = document.querySelector(".cart_content");
   let med_table_content = document.querySelector(".med_table_content");
-
-  div_event_click_cir_disable(cart_select_container);
-  div_event_click_cir_disable(med_table_select_container);
 
   cart_content.removeEventListener("click", open_cart_list);
   med_table_content.removeEventListener("click", open_med_table_list);
@@ -748,6 +763,9 @@ async function deliver_func() {
   last_current_med_table = "";
 
   console.log("生成交車清單");
+  deliver_cart_data = await get_all_med_cart_by_phar(current_pharmacy.phar);
+  deliver_cart_data = deliver_cart_data.Data;
+  console.log(deliver_cart_data);
   display_deliver_func();
 }
 
@@ -800,4 +818,39 @@ function func_display_init() {
 }
 async function popup_login_finished() {
   console.log(`[${arguments.callee.name}]`);
+}
+
+async function reset_cart_list_container() {
+  let temp_cart_list = await get_all_med_cart_by_phar(current_pharmacy.phar);
+  cart_list = temp_cart_list.Data;
+  console.log(cart_list);
+
+  let cart_option_container = document.querySelector(".cart_option_container");
+  cart_option_container.innerHTML = "";
+  cart_list.forEach(element => {
+    let cart_option_div = document.createElement("div");
+    cart_option_div.classList.add("cart_option_div");
+    cart_option_div.setAttribute("cart", element.GUID);
+    cart_option_div.innerHTML = element.hnursta;
+    if(element.hand_status == "已交車") {
+      cart_option_div.classList.add("cart_option_div_done");
+    } else {
+      cart_option_div.addEventListener("click", () => {
+        cart_content.innerHTML = cart_option_div.innerHTML;
+        current_cart = element;
+        if(last_current_cart == current_cart) {
+          close_cart_list();
+          return;
+        } else {
+          console.log(current_cart);
+          let temp_logic = get_func_logic();
+          get_all_select_option_logic(temp_logic);
+          close_cart_list();
+          last_current_cart = current_cart;
+        }
+      });
+    }
+
+    cart_option_container.appendChild(cart_option_div);
+  });
 }

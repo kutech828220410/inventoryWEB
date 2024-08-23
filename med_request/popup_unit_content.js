@@ -64,9 +64,11 @@ function get_pp_unit_content_footer() {
     return ppuc_footer_container;
 }
 function popup_unit_content_div_close() {
+    first_key_in = true;
     popup_unit_content_div.Set_Visible(false);
 }
 function popup_unit_content_div_open() {
+    first_key_in = true;
     popup_unit_content_div.Set_Visible(true);
 }
 function set_unit_state_btn(str) {
@@ -280,6 +282,7 @@ function set_calculate_input_div() {
             await update_actual_quantity(med_list_guid, +pp_calculate_input);
             await set_list_result_and_filter();
             set_ppuc_med_info(med_list_guid);
+            popup_unit_content_div_close();
         }
     });
 
@@ -450,6 +453,10 @@ function set_calculate_div() {
 }
 function calculate_input(char) {
     let pp_calculate_input = document.querySelector(".pp_calculate_input");
+    if(first_key_in) {
+        pp_calculate_input.value = "";
+        first_key_in = false;
+    }
     let text = pp_calculate_input.value;
     if(text.length == 0)
     {

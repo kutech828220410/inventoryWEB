@@ -196,9 +196,9 @@
     letter-spacing: 2px;
     border-radius: 5px;
     margin: 12px;
-    padding: 6px;
+    padding: 6px 20px;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     min-width: 280px;
     background-color: #000;
     color: #ffffff;

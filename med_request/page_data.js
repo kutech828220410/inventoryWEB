@@ -2,6 +2,7 @@ let medicine_page = [];
 const ServerName = "";
 const ServerType = "網頁";
 const TableName = "medicine_page";
+let first_key_in = true;
 let temp_search_condition = {
   date: "",
   req_unit: "all",

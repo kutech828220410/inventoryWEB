@@ -67,7 +67,7 @@ async function allocate_display_init() {
             }
         }
 
-        current_p_bed_data = await get_patient_by_bedNum(current_pharmacy.phar, current_cart.hnursta, med_cart_beds_data[patient_bed_index].bednum);
+        current_p_bed_data = await get_patient_GUID(med_cart_beds_data[patient_bed_index].GUID);
         current_p_bed_data = current_p_bed_data.Data;
 
         console.log(current_p_bed_data);
@@ -384,17 +384,40 @@ function set_pbm_header_container() {
     pbmh_light_on_btn.classList.add("pbmh_light_on_btn");
     pbmh_light_on_btn.innerHTML = "亮燈";
 
-    let pbmh_checked_trigger_label = document.createElement("label");
+    let pbmh_checked_trigger_label = document.createElement("div");
     pbmh_checked_trigger_label.classList.add("pbmh_checked_trigger_label");
-    pbmh_checked_trigger_label.setAttribute("for", "pbmh_checked_trigger");
+    pbmh_checked_trigger_label.classList.add("btn");
+    pbmh_checked_trigger_label.setAttribute("checked", false);
+    pbmh_checked_trigger_label.innerHTML = "全選";
+    pbmh_checked_trigger_label.addEventListener("click", (e) => {
+        let tirgger = e.target.getAttribute("checked");
+        let med_card_checkbox = document.querySelectorAll(".med_card_checkbox");
+        if(tirgger == "false") {
+            // 點選後全選
+            med_card_checkbox.forEach(element => {
+                if(!element.disabled) {
+                    element.checked = true;
+                    e.target.innerHTML = "取消全選";
+                    e.target.setAttribute("checked", true);
+                }
+            });
+        } else {
+            med_card_checkbox.forEach(element => {
+                if(!element.disabled) {
+                    element.checked = false;
+                    e.target.innerHTML = "全選";
+                    e.target.setAttribute("checked", false);
+                }
+            });
+        }
+    });
 
-    let pbmh_checked_trigger = document.createElement("input");
-    pbmh_checked_trigger.id = "pbmh_checked_trigger";
-    pbmh_checked_trigger.type = "checkbox";
-    pbmh_checked_trigger.name = "pbmh_checked_trigger";
+    // let pbmh_checked_trigger = document.createElement("input");
+    // pbmh_checked_trigger.id = "pbmh_checked_trigger";
+    // pbmh_checked_trigger.type = "checkbox";
+    // pbmh_checked_trigger.name = "pbmh_checked_trigger";
 
-    pbmh_checked_trigger_label.appendChild(pbmh_checked_trigger);
-    pbmh_checked_trigger_label.innerHTML += "全選";
+    // pbmh_checked_trigger_label.appendChild(pbmh_checked_trigger);
 
     let pbmh_next_btn = document.createElement("div");
     pbmh_next_btn.classList.add("pbmh_next_btn");
@@ -451,6 +474,7 @@ function set_pbm_main_container() {
         let med_card_checkbox = document.createElement("input");
         med_card_checkbox.classList.add("med_card_checkbox");
         med_card_checkbox.id = `${element.GUID}`;
+        if(element.dispens_status == "Y") med_card_checkbox.checked = true;
         med_card_checkbox.type = "checkbox";
         if(current_med_table == "") {
             med_card_checkbox.disabled = true;
@@ -459,7 +483,7 @@ function set_pbm_main_container() {
             if(current_med_table == "all") {
                 med_card_checkbox.disabled = false;
             } else {
-                if(current_med_table.ctname == element.Dispensing) {
+                if(current_med_table.name == element.Dispensing) {
                     med_card_checkbox.disabled = false;
                 } else {
                     med_card_checkbox.disabled = true;
@@ -588,7 +612,8 @@ function set_pbm_footer_container() {
 
     return pbm_footer_container;
 }
-function pre_bed_func() {
+async function pre_bed_func() {
+    await set_post_data_to_check_dispense();
     let temp_p_bed_index = patient_bed_index;
     first_patient_bed_index;
     final_patient_bed_index;
@@ -600,7 +625,8 @@ function pre_bed_func() {
     patient_bed_index = temp_p_bed_index;
     allocate_display_init();
 }
-function next_bed_func() {
+async function next_bed_func() {
+    await set_post_data_to_check_dispense();
     let temp_p_bed_index = patient_bed_index;
     first_patient_bed_index;
     final_patient_bed_index;
@@ -611,4 +637,27 @@ function next_bed_func() {
     last_patient_bed_index = patient_bed_index;
     patient_bed_index = temp_p_bed_index;
     allocate_display_init();
+}
+
+async function set_post_data_to_check_dispense() {
+    let med_card_checkbox = document.querySelectorAll(".med_card_checkbox");
+    let bed_guid = current_p_bed_data.GUID;
+    let med_arr = [];
+    let post_data = {
+        Value: bed_guid,
+        ValueAry: []
+    }
+
+    med_card_checkbox.forEach(element => {
+        if(!element.disabled && element.checked) {
+            med_arr.push(element.id);
+        };
+    });
+
+    if(med_arr.length < 1) return;
+
+    post_data.ValueAry[0] = med_arr.join(";");
+    console.log(post_data);
+    api_med_cart_check_dispense(post_data);
+    // console.log(med_arr);
 }

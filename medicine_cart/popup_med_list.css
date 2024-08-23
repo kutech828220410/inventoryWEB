@@ -51,6 +51,7 @@
 .ppml_main_container {
     overflow-y: auto;
     max-height: 480px;
+    min-height: 480px;
     padding-right: 6px;
 }
 /* 滾動條的寬度 */

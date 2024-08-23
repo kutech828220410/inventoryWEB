@@ -102,6 +102,7 @@ function get_pp_med_list_search_footer() {
     ppmls_search_btn.classList.add('ppmls_search_btn');
     ppmls_search_btn.classList.add("btn");
     ppmls_search_btn.innerHTML = "搜尋";
+    ppmls_search_btn.onclick = med_list_search_result;
 
     ppmls_footer_container.appendChild(ppmls_search_btn);
 
@@ -112,4 +113,42 @@ function popup_med_list_search_div_close() {
 }
 function popup_med_list_search_div_open() {
     popup_med_list_search_div.Set_Visible(true);
+}
+async function med_list_search_result() {
+    med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta);
+    med_list_data = med_list_data.Data;
+    let ppmls_type_select = document.querySelector(".ppmls_type_select");
+
+    let ppmls_input = document.querySelector(".ppmls_input");
+    let ppmls_select = document.querySelector(".ppmls_select");
+
+    switch (ppmls_type_select.value) {
+        case "code":
+            console.log(ppmls_type_select.value);
+            console.log(ppmls_input.value);
+            if(ppmls_input.value == "") return;
+            med_list_data = med_list_data.filter((item) => {
+                return item["code"].toUpperCase().includes(ppmls_input.value.toUpperCase());
+            });
+            break;
+        case "name":
+            console.log(ppmls_type_select.value);
+            console.log(ppmls_input.value);
+            if(ppmls_input.value == "") return;
+            med_list_data = med_list_data.filter((item) => {
+                return item["name"].toUpperCase().includes(ppmls_input.value.toUpperCase());
+            });
+            break;
+        case "table":
+            
+            break;
+        case "drugtype":
+            
+            break;
+    
+        default:
+            break;
+    }
+
+    await set_pp_med_list_display();
 }

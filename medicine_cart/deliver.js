@@ -1,31 +1,5 @@
 // 交車作業生成
-let deliver_cart_data = [
-    {
-        uid: '33222',
-        ctname: 'C066',
-        deliver_status: false
-    },
-    {
-        uid: '33131',
-        ctname: 'C229',
-        deliver_status: false
-    },
-    {
-        uid: '32241',
-        ctname: 'C220',
-        deliver_status: true
-    },
-    {
-        uid: '322121',
-        ctname: 'C099',
-        deliver_status: false
-    },
-    {
-        uid: '322442',
-        ctname: 'C120',
-        deliver_status: true
-    },
-];
+let deliver_cart_data;
 
 function display_deliver_func() {
     func_display_init();
@@ -38,10 +12,10 @@ function display_deliver_func() {
     deliver_cart_data.forEach(element => {
         let d_cart_container = document.createElement("div");
         d_cart_container.classList.add("d_cart_container");
-        d_cart_container.setAttribute("UID", element.uid);
-        d_cart_container.innerHTML = element.ctname;
+        d_cart_container.setAttribute("GUID", element.GUID);
+        d_cart_container.innerHTML = element.hnursta;
 
-        if(element.deliver_status) {
+        if(element.hand_status == "已交車") {
             d_cart_container.classList.add("d_cart_done");
         } else {
             d_cart_container.addEventListener("click", d_cart_check);
@@ -62,5 +36,19 @@ function display_deliver_func() {
 }
 
 async function d_cart_check() {
-    console.log("檢測藥車DC/NEW是否完全完成");
+    let temp_nurnum = this.innerHTML;
+    if(confirm(`${current_pharmacy.phar} ${temp_nurnum} 是否交車？`)) {
+        let result = await med_cart_handover(current_pharmacy.phar, temp_nurnum);
+        result = result.Data;
+        if(result.hand_status == "") {
+            alert(result.note);
+        } else {
+            deliver_cart_data = await get_all_med_cart_by_phar(current_pharmacy.phar);
+            deliver_cart_data = deliver_cart_data.Data;
+            display_deliver_func();
+            reset_cart_list_container();
+        }
+        return;
+    }
+    return;
 }

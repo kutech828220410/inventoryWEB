@@ -41,7 +41,7 @@ let html_pages = [
                         html_url: "../../staff_management",
                         icon_url: "../../image/icon/staff_icon.png",
                         icon_big_url: "../../image/icon/staff_big_icon.png"
-                    },
+                    }
                 ]
             },
         ],
@@ -74,6 +74,13 @@ let html_pages = [
                         html_url: "../../pickingpage",
                         icon_url: "../../image/icon/assortment.png",
                         icon_big_url: "../../image/icon/picking_big_icon.png"
+                    },
+                    {
+                        html_name: "batch_storage",
+                        html_ctName: "批次入庫",
+                        html_url: "../../batch_storage",
+                        icon_url: "../../image/icon/batch_storage.png",
+                        icon_big_url: "../../image/icon/batch_storage.png"
                     }
                 ]
             }
