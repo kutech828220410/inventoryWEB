@@ -131,16 +131,8 @@ async function init()
     await check_ip(API01[0].server,API02[0].server);
     console.log("inventory_url",inventory_url);
     console.log("inspection_url",inspection_url);
-    
-    let permissions_arr = await get_permissions_arr();
-    if(permissions_arr == "error") {
-      console.log("權限全開");
-    } else {
-      if(!permissions_arr.includes("inspection")) {
-          alert('權限未開放');
-          window.location.href = '../../frontpage';
-      };
-    }
+
+    await page_check_permissions("inspection");
 
     current_IC_SN = sessionStorage.getItem('IC_SN');
     

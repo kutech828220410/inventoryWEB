@@ -74,13 +74,6 @@ let html_pages = [
                         html_url: "../../pickingpage",
                         icon_url: "../../image/icon/assortment.png",
                         icon_big_url: "../../image/icon/picking_big_icon.png"
-                    },
-                    {
-                        html_name: "batch_storage",
-                        html_ctName: "批次入庫",
-                        html_url: "../../batch_storage",
-                        icon_url: "../../image/icon/batch_storage.png",
-                        icon_big_url: "../../image/icon/batch_storage.png"
                     }
                 ]
             }
@@ -108,6 +101,13 @@ let html_pages = [
                         icon_url: "../../image/icon/transaction.png",
                         icon_big_url: "../../image/icon/traded_big_icon.png"
                     },
+                    {
+                        html_name: "batch_storage",
+                        html_ctName: "批次入庫",
+                        html_url: "../../batch_storage",
+                        icon_url: "../../image/icon/batch_storage.png",
+                        icon_big_url: "../../image/icon/batch_storage.png"
+                    }
                     // {
                     //     html_name: "medicine_cart",
                     //     html_ctName: "住院藥車調劑",

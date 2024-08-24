@@ -29,15 +29,7 @@ async function load()
   check_ip(API01[0].server,API02[0].server);
   permissions = await GetApipermissions();
   
-  let permissions_arr = await get_permissions_arr();
-  if(permissions_arr == "error") {
-    console.log("權限全開");
-  } else {
-    if(!permissions_arr.includes("inventory")) {
-        alert('權限未開放');
-        window.location.href = '../../frontpage';
-    };
-  }
+  await page_check_permissions("inventory");
 
   let rowNum = 1;
   const Loadingpopup = GetLoadingpopup();

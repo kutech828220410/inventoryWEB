@@ -15,19 +15,7 @@ async function load()
     await check_ip(API01[0].server,API02[0].server);
     console.log("inventory_url",inventory_url);
 
-    // const test_user_data = {
-    //     name: "王曉明",
-    // }
-
-    let permissions_arr = await get_permissions_arr();
-    if(permissions_arr == "error") {
-        console.log("權限全開");
-    } else {
-        if(!permissions_arr.includes("medGroup")) {
-            alert('權限未開放');
-            window.location.href = '../frontpage';
-        };
-    }
+    await page_check_permissions("medGroup");
     
     var loggedID = sessionStorage.getItem('loggedID');  
     var loggedName = sessionStorage.getItem('loggedName');  

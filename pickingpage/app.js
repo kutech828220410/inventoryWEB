@@ -27,19 +27,7 @@ async function load()
     });
     console.log(temp_group_all_data);
 
-    let permissions_arr = await get_permissions_arr();
-    if(permissions_arr == "error") {
-        console.log("權限全開");
-    } else {
-        if(!permissions_arr.includes("pickingpage")) {
-            alert('權限未開放');
-            window.location.href = '../../frontpage';
-        };
-    }
-
-    // const test_user_data = {
-    //     name: "王曉明",
-    // }
+    await page_check_permissions("pickingpage");
 
     var loggedID = sessionStorage.getItem('loggedID');  
     var loggedName = sessionStorage.getItem('loggedName');  

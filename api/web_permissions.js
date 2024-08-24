@@ -11,6 +11,7 @@ let web_list = [
     "consumption_report",
     "ch_medical_order",
     "cht_consumption_report",
+    "batch_storage"
 ]
 async function get_permissions_arr() {
     let temp_arr = [];
@@ -21,13 +22,11 @@ async function get_permissions_arr() {
         permissions_data = permissions_data.Data;
         
         permissions_data.forEach(element => {
-            if(element.value == "False") {
+            if(element.value == "True") {
                 let temp_str = swtich_logic_func(element.content);
                 temp_arr.push(temp_str);
             }
         });
-    
-        temp_arr.push("staff_management");
         
         console.log(temp_arr);
     
@@ -73,6 +72,9 @@ function swtich_logic_func(str) {
             break;
         case "中藥醫令模組不啟用":
             temp_str = "ch_medical_order";
+            break;
+        case "批次入庫模組不啟用":
+            temp_str = "batch_storage";
             break;
     
         default:
@@ -161,5 +163,16 @@ async function et_web_peremeter() {
         console.log(temp_data);
     
         return temp_data;
+    }
+}
+async function page_check_permissions(str) {
+    let permissions_arr = await get_permissions_arr();
+    if(permissions_arr == "error") {
+      console.log("權限全開");
+    } else {
+      if(permissions_arr.includes(str)) {
+          alert('權限未開放');
+          window.location.href = '../../frontpage';
+      };
     }
 }

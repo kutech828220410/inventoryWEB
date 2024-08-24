@@ -62,7 +62,7 @@ function get_page_section(object, arr) {
     } else {      
         object['branch'][0]["pages"].forEach(element => {
           let temp_div = get_page_icon(element, arr);
-          if(front_page_display_logic(element.html_name, arr)) {
+          if(!front_page_display_logic(element.html_name, arr)) {
             pages_icon_container.appendChild(temp_div);
           }
         });
@@ -70,7 +70,7 @@ function get_page_section(object, arr) {
         // 將禁止頁面放置後方
         object['branch'][0]["pages"].forEach(element => {
           let temp_div = get_page_icon(element, arr);
-          if(!front_page_display_logic(element.html_name, arr)) {
+          if(front_page_display_logic(element.html_name, arr)) {
             pages_icon_container.appendChild(temp_div);
           }
         });
@@ -124,7 +124,7 @@ function get_page_section(object, arr) {
       } else {
         element["pages"].forEach(element => {
           let temp_div = get_page_icon(element, arr);
-          if(front_page_display_logic(element.html_name, arr)) {
+          if(!front_page_display_logic(element.html_name, arr)) {
             pages_icon_container.appendChild(temp_div);
           }
         });
@@ -132,7 +132,7 @@ function get_page_section(object, arr) {
         // 將禁止頁面放置後方
         element["pages"].forEach(element => {
           let temp_div = get_page_icon(element, arr);
-          if(!front_page_display_logic(element.html_name, arr)) {
+          if(front_page_display_logic(element.html_name, arr)) {
             pages_icon_container.appendChild(temp_div);
           }
         });
@@ -155,7 +155,7 @@ function get_page_icon(object, arr) {
       window.location.href = object.html_url;
     })
   } else {
-    if(!front_page_display_logic(object.html_name, arr)) {
+    if(front_page_display_logic(object.html_name, arr)) {
       page_card.classList.add('web_icon_disable');
       page_card.addEventListener("click", () => {
         alert("尚未啟用該功能");
