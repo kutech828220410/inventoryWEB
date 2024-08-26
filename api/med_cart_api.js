@@ -176,6 +176,59 @@ async function api_med_cart_check_dispense(data) {
     })
 
     console.log(temp_data);
+    return temp_data
+}
+
+// 初盤紀錄log
+async function add_med_inventory_log(data) {
+    let temp_doman = transform_api_ip(api_ip);
+    let temp_data = await fetch(`${temp_doman}api/med_inventory/add_med_inventory_log`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then((response) => {
+        return response.json();
+    })
+
+    console.log(temp_data);
+}
+// 新增初盤紀錄
+async function add_med_inventory_time_track(data) {
+    let temp_doman = transform_api_ip(api_ip);
+    let temp_data = await fetch(`${temp_doman}api/med_inventory/add_med_inventory`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then((response) => {
+        return response.json();
+    })
+    if(temp_data.Code == 200) {
+        alert(`紀錄時間：${temp_data.Data[0].op_time}`);
+    }
+    console.log(temp_data);
+}
+// 根據藥局、護理站、日期給出操作人清單
+async function get_opid_by_time(data) {
+    let temp_doman = transform_api_ip(api_ip);
+    let temp_data = await fetch(`${temp_doman}api/med_inventory/get_opid_by_time`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then((response) => {
+        return response.json();
+    })
+    console.log(temp_data);
+
+    return temp_data
 }
 
 function transform_api_ip(ip) {

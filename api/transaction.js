@@ -291,22 +291,47 @@ async function batch_download_sample_excel()
     }
 }
 async function batch_excel_upload(file) {
-  console.log("post_data [excel_upload]",file);
-  try {
-    const response = await fetch(`${api_ip}api/batch_inventory_import/excel_upload`, {
-      method: 'POST',
-      body: file
-    });
-
-    if (response.ok) {
-      const result = await response.json();
-      console.log(result); // 处理返回的结果
+    let temp_url = serch_APIServer("Main", "網頁", "batch_inventory_import/excel_upload");
+    if(temp_url.length != 0) {   
+        console.log("post_data [excel_upload]",file);
+        let api_url = api_ip.replace(":4433", ":443/dbvm/batch_inventory_import/excel_upload");
+        console.log(temp_url);
+        console.log("batch上傳excel轉址",api_url);
+        try {
+            const response = await fetch(`${api_url}`, {
+            method: 'POST',
+            body: file
+            });
+    
+            if (response.ok) {
+            const result = await response.json();
+            console.log(result); // 处理返回的结果
+            return result;
+            } else {
+            console.error('请求失败');
+            }
+        } catch (error) {
+            console.error('请求出错', error);
+        }
     } else {
-      console.error('请求失败');
+        console.log("post_data [excel_upload]",file);
+        try {
+            const response = await fetch(`${api_ip}api/batch_inventory_import/excel_upload`, {
+            method: 'POST',
+            body: file
+            });
+    
+            if (response.ok) {
+            const result = await response.json();
+            console.log(result); // 处理返回的结果
+            return result;
+            } else {
+            console.error('请求失败');
+            }
+        } catch (error) {
+            console.error('请求出错', error);
+        }
     }
-  } catch (error) {
-    console.error('请求出错', error);
-  }
 }
 async function get_batch_list_get_by_CT_TIME(start_date, end_date) {
     let post_data = {
@@ -329,15 +354,22 @@ async function get_batch_list_get_by_CT_TIME(start_date, end_date) {
 }
 
 async function delete_batch_by_GUID(data) {
-    // {
-    //     "Data": [
-    //       { GUID: "xxxxx-xxxxx-xxxxx-xxxx" },
-    //       { GUID: "xxxxx-xxxxx-xxxxx-xxxx" },
-    //       { GUID: "xxxxx-xxxxx-xxxxx-xxxx" },
-    //     ]
-    //     "ValueAry" : []
-    //  }
     let temp_data = await fetch(`${api_ip}api/batch_inventory_import/delete_by_GUID`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    }).then((response) => {
+        console.log("取得資料");
+        return response.json();
+    })
+
+    return temp_data;
+}
+
+async function batch_inventory_import_add(data) {
+    let temp_data = await fetch(`${api_ip}api/batch_inventory_import/add`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

@@ -20,17 +20,22 @@ async function get_permissions_arr() {
         return permissions_data
     } else {
         permissions_data = permissions_data.Data;
+        console.log(permissions_data);
+        console.log(Array.isArray(permissions_data));
+        if(Array.isArray(permissions_data)) {
+            permissions_data.forEach(element => {
+                if(element.value == "True") {
+                    let temp_str = swtich_logic_func(element.content);
+                    temp_arr.push(temp_str);
+                }
+            });
+            
+            console.log(temp_arr);
         
-        permissions_data.forEach(element => {
-            if(element.value == "True") {
-                let temp_str = swtich_logic_func(element.content);
-                temp_arr.push(temp_str);
-            }
-        });
-        
-        console.log(temp_arr);
-    
-        return temp_arr;
+            return temp_arr;
+        } else {
+            return [];
+        }   
     }
 }
 function swtich_logic_func(str) {
@@ -103,7 +108,7 @@ function front_page_display_logic(str, arr) {
 }
 async function get_web_peremeter_name() {
     try {
-        let data =   {
+        let data = {
             Data: {},
             ValueAry : []
         };
@@ -126,6 +131,8 @@ async function get_web_peremeter_name() {
     
         let end_p = performance.now();
         console.log(end_p - start_p);
+
+        console.log(temp_data);
     
         return temp_data;
     } catch (error) {
@@ -135,11 +142,11 @@ async function get_web_peremeter_name() {
 }
 async function et_web_peremeter() {
     let data = await get_web_peremeter_name();
-    if(data == "error") {
+    if(data == "error" || data.Code == -200) {
         return data;
     } else {
         data = data.Data;
-        data =   {
+        data = {
             Data: {},
             ValueAry : data
         }

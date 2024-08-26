@@ -14,6 +14,7 @@ async function load() {
   console.log(ServerType, TableName, APIServer);
   const API01 = serch_APIServer(serverName,"調劑台","API01");
   const API02 = serch_APIServer(serverName,"調劑台","API02");
+  // console.log(temp_url);
   console.log("API01",API01);
   console.log("API02",API02);
   check_ip(API01[0].server,API02[0].server);
@@ -27,8 +28,8 @@ async function load() {
   document.body.appendChild(Loadingpopup);
   Set_main_div_enable(true);
 
-  // medicine_page = await get_medicine_cloud();
-  // console.log(medicine_page["Data"]);
+  medicine_page = await get_medicine_cloud();
+  console.log(medicine_page["Data"]);
 
   var loggedID = sessionStorage.getItem('loggedID');  
   var loggedName = sessionStorage.getItem('loggedName');  
@@ -43,6 +44,9 @@ async function load() {
   await set_main_div();
   await set_main_data_display();
   set_main_batch_list_container();
+
+  get_popup_add();
+  popup_add_div.Set_Visible(false);
 
   Set_main_div_enable(false);
 }
@@ -79,6 +83,16 @@ function get_header(test_user_data) {
 
     header_btn_container.appendChild(h_demo_download_btn);
 
+    let popup_add_btn = document.createElement("div");
+    popup_add_btn.classList.add("popup_add_btn");
+    popup_add_btn.classList.add("btn");
+    popup_add_btn.innerHTML = "新增";
+    popup_add_btn.addEventListener("click", () => {
+      popup_add_div_open();
+    });
+
+    header_btn_container.appendChild(popup_add_btn);
+
     let h_search_btn = document.createElement("div");
     h_search_btn.classList.add("h_search_btn");
     h_search_btn.classList.add("btn");
@@ -103,9 +117,13 @@ function get_header(test_user_data) {
           formData.append('CT_NAME', test_user_data.name);
 
           let return_data = await batch_excel_upload(formData);
-          search_condition_reset();
-          await set_search_result();
-          // console.log(return_data);
+          if(return_data.Code == 200) {
+              batch_data = return_data.Data;
+              set_main_batch_list_container();
+              alert(return_data.Result);
+          } else {
+              alert("上傳失敗，請聯絡工程師");
+          }
           batch_excel_upload_input.value = "";
       }
     });
@@ -151,8 +169,13 @@ async function set_main_search_container() {
   search_date_container.classList.add("search_date_container");
 
   let today = new Date();
-  let formattedDate = today.toISOString().split('T')[0] + 'T00:00';
-  let formattedDate2 = today.toISOString().split('T')[0] + 'T23:59';
+  let year = today.getFullYear();
+  let month = String(today.getMonth() + 1).padStart(2, '0'); // 確保月份是兩位數
+  let day = String(today.getDate()).padStart(2, '0');
+  let formattedDate = `${year}-${month}-${day}T00:00`;
+  let formattedDate2 = `${year}-${month}-${day}T23:59`;
+  console.log(formattedDate);
+  console.log(formattedDate2);
 
   let search_start_date_container = document.createElement("div");
   search_start_date_container.classList.add("search_start_date_container");
@@ -168,7 +191,7 @@ async function set_main_search_container() {
   search_start_date_input.name = "search_start_date_input";
   search_start_date_input.type = "datetime-local";
   search_start_date_input.min = "2000-01-01T00:00";
-  search_start_date_input.max = formattedDate;
+  search_start_date_input.max = formattedDate2;
   search_start_date_input.value = formattedDate;
 
   search_start_date_container.appendChild(search_start_date_label);

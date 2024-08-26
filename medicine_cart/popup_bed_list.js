@@ -50,7 +50,9 @@ function get_pp_bed_list_footer() {
 function popup_bed_list_div_close() {
     popup_bed_list_div.Set_Visible(false);
 }
-function popup_bed_list_div_open() {
+async function popup_bed_list_div_open() {
+    await allocate_display_init()
+    await set_pp_bed_list_info();
     popup_bed_list_div.Set_Visible(true);
 }
 

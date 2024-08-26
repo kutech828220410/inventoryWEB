@@ -70,6 +70,8 @@ async function allocate_display_init() {
         current_p_bed_data = await get_patient_GUID(med_cart_beds_data[patient_bed_index].GUID);
         current_p_bed_data = current_p_bed_data.Data;
 
+        console.log("current_p_bed_data");
+
         console.log(current_p_bed_data);
 
         let p_bed_header = get_p_bed_header();
@@ -435,6 +437,12 @@ function set_pbm_header_container() {
     pbmh_checked_submit_btn.classList.add("pbmh_checked_submit_btn");
     pbmh_checked_submit_btn.classList.add("btn");
     pbmh_checked_submit_btn.innerHTML = "完成";
+    pbmh_checked_submit_btn.addEventListener("click", async () => {
+        let return_data = await set_post_data_to_check_dispense();
+        if(return_data.Code == 200) {
+            alert(`第${current_p_bed_data.bednum}床，完成調劑`);
+        }
+    });
 
     pbm_header_container.appendChild(pbmh_pre_btn);
     pbm_header_container.appendChild(pbmh_light_on_btn);
@@ -582,11 +590,45 @@ function set_pbm_footer_container() {
     pbmf_submit_btn.classList.add("pbmf_submit_btn");
     pbmf_submit_btn.classList.add("btn");
     pbmf_submit_btn.innerHTML = "確認初盤";
+    pbmf_submit_btn.addEventListener("click", async () => {
+        let now = new Date();
+    
+        let year = now.getFullYear();
+        let month = String(now.getMonth() + 1).padStart(2, '0'); // 月份從 0 開始，所以要加 1
+        let day = String(now.getDate()).padStart(2, '0');
+    
+        let hours = String(now.getHours()).padStart(2, '0');
+        let minutes = String(now.getMinutes()).padStart(2, '0');
+        let seconds = String(now.getSeconds()).padStart(2, '0');
+    
+        let time_track = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        let loggedID = sessionStorage.getItem('loggedID'); 
+        let loggedName = sessionStorage.getItem('loggedName'); 
+        let post_data = {
+            Data:[
+                {
+                    pharm: current_cart.phar,
+                    nurnum: current_cart.hnursta,
+                    op_id: loggedID,
+                    op_name: loggedName,
+                    op_time: time_track
+                }
+            ]
+        }
+
+        await add_med_inventory_time_track(post_data);
+    });
 
     let pbmh_checked_submit_btn = document.createElement("div");
     pbmh_checked_submit_btn.classList.add("pbmh_checked_submit_btn");
     pbmh_checked_submit_btn.classList.add("btn");
     pbmh_checked_submit_btn.innerHTML = "完成";
+    pbmh_checked_submit_btn.addEventListener("click", async () => {
+        let return_data = await set_post_data_to_check_dispense();
+        if(return_data.Code == 200) {
+            alert(`第${current_p_bed_data.bednum}床，完成調劑`);
+        }
+    })
 
     let pbmh_light_on_btn = document.createElement("div");
     pbmh_light_on_btn.classList.add("pbmh_light_on_btn");
@@ -642,22 +684,45 @@ async function next_bed_func() {
 async function set_post_data_to_check_dispense() {
     let med_card_checkbox = document.querySelectorAll(".med_card_checkbox");
     let bed_guid = current_p_bed_data.GUID;
+    let loggedName = sessionStorage.getItem('loggedName'); 
+    let loggedID = sessionStorage.getItem('loggedID'); 
     let med_arr = [];
+    let med_log_arr = [];
+    let return_data;
     let post_data = {
         Value: bed_guid,
         ValueAry: []
     }
+    let post_data2 = {
+        Value: loggedID,
+        ValueAry: []
+    }
 
     med_card_checkbox.forEach(element => {
-        if(!element.disabled && element.checked) {
+        if(element.checked) {
             med_arr.push(element.id);
         };
+        if(!element.disabled && element.checked) {
+            med_log_arr.push(element.id);
+        }
     });
+    console.log(med_arr);
+    console.log(med_log_arr);
 
-    if(med_arr.length < 1) return;
+    if(med_arr.length > 0) {
+        post_data.ValueAry[0] = med_arr.join(";");
+        console.log(post_data);
+        return_data = await api_med_cart_check_dispense(post_data);
+        
+        console.log(med_arr);
+    }
+    if(med_log_arr.length > 0) {
+        post_data2.ValueAry[0] = med_log_arr.join(";");
+        console.log(post_data2);
+        await add_med_inventory_log(post_data2);
 
-    post_data.ValueAry[0] = med_arr.join(";");
-    console.log(post_data);
-    api_med_cart_check_dispense(post_data);
-    // console.log(med_arr);
-}
+        console.log(med_log_arr);
+    }
+
+    return return_data;
+};

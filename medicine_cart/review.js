@@ -1,4 +1,4 @@
-let fake_op_list = [
+let op_list = [
     {
         id: "123441",
         name: "安俞真"
@@ -20,7 +20,7 @@ let fake_op_list = [
         name: "孫協志"
     },
 ];
-let fake_time_list = [
+let time_list = [
     {
         time: "13:32",
     },
@@ -282,7 +282,7 @@ let fake_review_data = [
         ]
     },
 ]
-function display_revise_func() {
+async function display_revise_func() {
     func_display_init();
     let function_display_container = document.querySelector(".function_display_container");
 
@@ -312,20 +312,24 @@ function display_revise_func() {
         `
     });
 
+    let op_list_post_data = {
+        ValueAry:[current_cart.phar, current_cart.hnursta, today]
+    }
+    op_list = await get_opid_by_time(op_list_post_data);
+    op_list = op_list.Data;
+
     let rs_op_select = document.createElement("select");
     rs_op_select.id = "rs_op_select";
-    fake_op_list.forEach(element => {
+    rs_op_select.innerHTML = `<option value="">請選擇操作人</option>`;
+    op_list.forEach(element => {
         rs_op_select.innerHTML += `
-            <option value="${element.id}">${element.name}</option>
+            <option value="${element.op_id}">${element.op_name}</option>
         `;
     });
+
     let rs_time_select = document.createElement("select");
     rs_time_select.id = "rs_time_select";
-    fake_time_list.forEach(element => {
-        rs_time_select.innerHTML += `
-            <option value="${element.time}">${element.time}</option>
-        `;
-    });
+    rs_time_select.innerHTML = `<option value="">尚未選取操作人</option>`;
 
     review_search_container.appendChild(rs_date_input);
     review_search_container.appendChild(rs_op_select);
@@ -337,11 +341,11 @@ function display_revise_func() {
     function_display_container.appendChild(review_search_container);
     function_display_container.appendChild(review_search_result_container);
 }
-function set_review_display_list() {
+function set_review_display_list(array) {
     let review_search_result_container = document.querySelector(".review_search_result_container");
     review_search_result_container.innerHTML = "";
 
-    fake_review_data.forEach(element => {
+    array.forEach(element => {
         let patient_bed_card = document.createElement("table");
         patient_bed_card.classList.add("patient_bed_card");
         patient_bed_card.innerHTML = `
