@@ -91,7 +91,7 @@ function set_unit_state_btn(str) {
                 console.log(e.target.getAttribute("GUID"));
                 await update_status_posted(e.target.getAttribute("GUID"));
                 await set_list_result_and_filter();
-                set_ppuc_med_info(med_list_guid);
+                await set_ppuc_med_info(med_list_guid);
                 popup_unit_content_div_close();
             } else {
                 return;
@@ -281,7 +281,7 @@ function set_calculate_input_div() {
             temp_actual_qty = +pp_calculate_input;
             await update_actual_quantity(med_list_guid, +pp_calculate_input);
             await set_list_result_and_filter();
-            set_ppuc_med_info(med_list_guid);
+            await set_ppuc_med_info(med_list_guid);
             popup_unit_content_div_close();
         }
     });
@@ -517,7 +517,7 @@ function calculateExpression(expression) {
     // 对数组中的所有数字求和
     return stack.reduce((total, num) => total + num, 0);
 }
-function set_ppuc_med_info(temp_guid) {
+async function set_ppuc_med_info(temp_guid) {
 
     let ppuc_h_title = document.querySelector(".ppuc_h_title"); // 調劑台title
     let ppuc_code = document.querySelector("#ppuc_code"); // 藥碼

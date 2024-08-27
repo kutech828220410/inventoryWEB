@@ -6,14 +6,14 @@ function handleResize() {
 }
 async function load() {
   check_session_off();
-  var serverName = "";
+  var serverName = "Main";
   // ServerName = serverName;
   // ServerType = "網頁";
   // TableName = "medicine_page";
   APIServer = await LoadAPIServer();
   console.log(ServerType, TableName, APIServer);
-  const API01 = serch_APIServer(serverName,"調劑台","API01");
-  const API02 = serch_APIServer(serverName,"調劑台","API02");
+  const API01 = serch_APIServer(serverName,"網頁","API01");
+  const API02 = serch_APIServer(serverName,"網頁","API02");
   // console.log(temp_url);
   console.log("API01",API01);
   console.log("API02",API02);

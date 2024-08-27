@@ -73,6 +73,13 @@
 .td_2 {
     text-align: left;
 }
+.td_3 {
+    min-width: 70px;
+}
+.td_4,
+.td_5 {
+    min-width: 50px;
+}
 .ppdn_med_th_container {
     background-color: #989898;
 }

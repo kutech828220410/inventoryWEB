@@ -323,6 +323,33 @@
     color: rgb(229, 61, 61);
     font-weight: 600;
 }
+.med_card_big_bottle_icon {
+    text-align: center;
+    min-width: 48px;
+    max-height: 48px;
+    background-color: #8a8a8a;
+    opacity: 0.6;
+    transition: 0.2s all ease;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 4px 1px #00000067;
+    margin-right: 12px;
+}
+.med_card_big_bottle_icon > img {
+    display: block;
+    height: 40px;
+}
+.med_card_big_bottle_icon:hover {
+    box-shadow: 1px 1px 2px 1px #00000067;
+    transition: 0.2s all ease;
+}
+.med_card_bigB {
+    opacity: 1;
+    background-color: #c49527;
+    transition: 0.2s all ease;
+    cursor: auto;
+}
   
 
 @media screen and (max-width: 1200px) {

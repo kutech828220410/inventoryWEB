@@ -96,6 +96,15 @@ function get_header(test_user_data) {
     h_search_btn.innerHTML = "搜尋";
     h_search_btn.onclick = popup_search_select_div_open;
 
+    let h_download_btn = document.createElement("div");
+    h_download_btn.classList.add("h_download_btn");
+    h_download_btn.classList.add("btn");
+    h_download_btn.innerHTML = "下載";
+    h_download_btn.addEventListener("click", () => {
+      popup_excel_down_div_open();
+    });
+
+    header_btn_container.appendChild(h_download_btn);
     header_btn_container.appendChild(h_search_btn);
 
     header.appendChild(header_title_container);
@@ -204,7 +213,7 @@ function set_main_head_container() {
   let all_med_res_btn = document.createElement("div");
   all_med_res_btn.classList.add("btn");
   all_med_res_btn.classList.add("all_med_res_btn");
-  all_med_res_btn.innerHTML = "全部撥發";
+  all_med_res_btn.innerHTML = "全部核撥";
   all_med_res_btn.addEventListener("click",  async () => {
     Set_main_div_enable(true);
 
@@ -218,7 +227,7 @@ function set_main_head_container() {
       Set_main_div_enable(false);
       return;
     } else {
-      if(confirm(`全部藥品是否撥發？`)) {
+      if(confirm(`全部藥品是否核撥？`)) {
         temp_list.forEach(async element => {
           await update_status_posted(element.GUID);
           await set_list_result_and_filter();
@@ -326,10 +335,9 @@ function set_main_list_display() {
       if(e.state == "已過帳") {
         unit_div.classList.add("unit_done");
         temp_do_actualQuantity += +e.actualQuantity;
-        unit_div.addEventListener("click", (e) => {
-          // console.log(e.target.getAttribute("guid"));
-          let temp_guid = e.target.getAttribute("guid");
-          set_ppuc_med_info(temp_guid);
+        unit_div.addEventListener("click", async () => {
+          let temp_guid = unit_div.getAttribute("guid");
+          await set_ppuc_med_info(temp_guid);
           popup_unit_content_div_open();
         });
       } else {
@@ -341,10 +349,10 @@ function set_main_list_display() {
           unit_div.appendChild(urgency_notice);
         };
 
-        unit_div.addEventListener("click", (e) => {
+        unit_div.addEventListener("click", async () => {
           // console.log(e.target.getAttribute("guid"));
-          let temp_guid = e.target.getAttribute("guid");
-          set_ppuc_med_info(temp_guid);
+          let temp_guid = unit_div.getAttribute("guid");
+          await set_ppuc_med_info(temp_guid);
           popup_unit_content_div_open();
         });
       }
@@ -385,7 +393,7 @@ function set_main_list_display() {
 
     let notice_tip = document.createElement("div");
     notice_tip.classList.add("notice_tip");
-    notice_tip.innerHTML = "點擊進行撥發";
+    notice_tip.innerHTML = "點擊進行核撥";
 
     let notice_not_container = document.createElement("div");
     notice_not_container.classList.add("notice_container");
@@ -422,7 +430,7 @@ function set_main_list_display() {
     let mc_unit_all_btn = document.createElement("div");
     mc_unit_all_btn.classList.add("mc_unit_all_btn");
     mc_unit_all_btn.classList.add("btn");
-    mc_unit_all_btn.innerHTML = "撥發";
+    mc_unit_all_btn.innerHTML = "核撥";
     mc_unit_all_btn.setAttribute("CODE", element.CODE);
     mc_unit_all_btn.addEventListener("click", async (e) => {
       Set_main_div_enable(true);
@@ -440,7 +448,7 @@ function set_main_list_display() {
         Set_main_div_enable(false);
         return;
       } else {
-        if(confirm(`"${temp_list[0].name}" 是否全部撥發？`)) {
+        if(confirm(`"${temp_list[0].name}" 是否全部核撥？`)) {
           temp_list.forEach(async element => {
             await update_status_posted(element.GUID);
             await set_list_result_and_filter();
@@ -511,7 +519,7 @@ function set_main_list_table_display() {
   
     let notice_tip = document.createElement("div");
     notice_tip.classList.add("notice_tip");
-    notice_tip.innerHTML = "點擊進行撥發";
+    notice_tip.innerHTML = "點擊進行核撥";
   
     let notice_not_container = document.createElement("div");
     notice_not_container.classList.add("notice_container");
@@ -548,7 +556,7 @@ function set_main_list_table_display() {
     let mc_unit_all_btn = document.createElement("div");
     mc_unit_all_btn.classList.add("mc_unit_all_btn");
     mc_unit_all_btn.classList.add("btn");
-    mc_unit_all_btn.innerHTML = "撥發";
+    mc_unit_all_btn.innerHTML = "核撥";
     mc_unit_all_btn.setAttribute("GUID", element.GUID);
     
     table_card_items_title.appendChild(mcit_container);

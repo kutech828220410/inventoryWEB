@@ -150,8 +150,8 @@ function get_p_bed_header() {
     dc_new_btn.classList.add("dc_new_btn");
     dc_new_btn.innerHTML = "DC / NEW";
     dc_new_btn.addEventListener("click", () => {
-        cart_bed_length = fake_dc_new_data["p_bed"].length;
-        set_dc_new_info_table();
+        // cart_bed_length = fake_dc_new_data["p_bed"].length;
+        // set_dc_new_info_table();
         popup_dc_new_div_open();
     });
 
@@ -550,12 +550,22 @@ function set_pbm_main_container() {
         med_card_main_display_container.appendChild(med_card_info_container);
         med_card_main_display_container.appendChild(med_name_card_container);
 
+        let med_card_big_bottle_icon = document.createElement("div");
+        med_card_big_bottle_icon.classList.add("med_card_big_bottle_icon");
+        med_card_big_bottle_icon.innerHTML = `<img src="../image/plastic-bottle.png" alt="bottle icon">`;
+        if(element.cnt02 == "L") {
+            med_card_big_bottle_icon.classList.add("med_card_bigB");
+        } else {
+
+        };
+
         let med_card_open_tigger = document.createElement("img");
         med_card_open_tigger.classList.add("med_card_open_tigger");
         med_card_open_tigger.src = "../image/left-arrow.png";
 
         med_card_title_container.appendChild(med_card_checkbox_label);
         med_card_title_container.appendChild(med_card_main_display_container);
+        med_card_title_container.appendChild(med_card_big_bottle_icon);
         med_card_title_container.appendChild(med_card_open_tigger);
 
         med_card_container.appendChild(med_card_title_container);
@@ -602,20 +612,20 @@ function set_pbm_footer_container() {
         let seconds = String(now.getSeconds()).padStart(2, '0');
     
         let time_track = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-        let loggedID = sessionStorage.getItem('loggedID'); 
-        let loggedName = sessionStorage.getItem('loggedName'); 
+        let loggedID = sessionStorage.getItem('login_json'); 
+        loggedID = JSON.parse(loggedID);
         let post_data = {
             Data:[
                 {
                     pharm: current_cart.phar,
                     nurnum: current_cart.hnursta,
-                    op_id: loggedID,
-                    op_name: loggedName,
+                    op_id: loggedID.ID,
+                    op_name: loggedID.Name,
                     op_time: time_track
                 }
             ]
         }
-
+        console.log(post_data);
         await add_med_inventory_time_track(post_data);
     });
 
@@ -684,8 +694,8 @@ async function next_bed_func() {
 async function set_post_data_to_check_dispense() {
     let med_card_checkbox = document.querySelectorAll(".med_card_checkbox");
     let bed_guid = current_p_bed_data.GUID;
-    let loggedName = sessionStorage.getItem('loggedName'); 
-    let loggedID = sessionStorage.getItem('loggedID'); 
+    let loggedName = sessionStorage.getItem('login_json');
+    loggedName = JSON.parse(loggedName);
     let med_arr = [];
     let med_log_arr = [];
     let return_data;
@@ -694,7 +704,12 @@ async function set_post_data_to_check_dispense() {
         ValueAry: []
     }
     let post_data2 = {
-        Value: loggedID,
+        Data: [
+            {
+                op_id: loggedName.ID,
+                op_name: loggedName.Name
+            }
+        ],
         ValueAry: []
     }
 

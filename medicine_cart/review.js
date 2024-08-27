@@ -302,11 +302,21 @@ async function display_revise_func() {
     rs_date_input.type = "date";
     rs_date_input.value = today;
     rs_date_input.max = today;
-    rs_date_input.addEventListener("change", () => {
+    rs_date_input.addEventListener("change", async () => {
+        let op_list_post_data = {
+            ValueAry:[current_cart.phar, current_cart.hnursta, rs_date_input.value]
+        }
+        op_list = await get_opid_by_time(op_list_post_data);
+        op_list = op_list.Data;
         console.log("這邊給出操作人清單");
         rs_op_select.innerHTML = `
             <option value="">請選擇操作人</option>
         `;
+        op_list.forEach(element => {
+            rs_op_select.innerHTML += `
+                <option value="${element.op_id}">${element.op_name}</option>
+            `;
+        });
         rs_time_select.innerHTML = `
             <option value="">尚未選取操作人</option>
         `
@@ -326,10 +336,34 @@ async function display_revise_func() {
             <option value="${element.op_id}">${element.op_name}</option>
         `;
     });
+    rs_op_select.addEventListener("change", async () => {
+    
+        let loggedID = sessionStorage.getItem('login_json'); 
+        loggedID = JSON.parse(loggedID);
+        let time_list_post_data = {
+            Data: [
+                {
+                "pharm":current_cart.phar,
+                "nurnum":current_cart.hnursta,
+                "op_id": rs_op_select.value,
+                "op_time": today
+                }
+            ]
+        };
+        time_list = await get_time_by_op_id(time_list_post_data);
+        time_list = time_list.Data;
+        rs_time_select.innerHTML = `<option value="">選取操作時間</option>`;
+        time_list.forEach(element => {
+            rs_time_select.innerHTML += `<option value="${element.op_time}">${element.op_time}</option>`;
+        });
+    });
 
     let rs_time_select = document.createElement("select");
     rs_time_select.id = "rs_time_select";
     rs_time_select.innerHTML = `<option value="">尚未選取操作人</option>`;
+    rs_time_select.addEventListener("change", () => {
+        
+    });
 
     review_search_container.appendChild(rs_date_input);
     review_search_container.appendChild(rs_op_select);

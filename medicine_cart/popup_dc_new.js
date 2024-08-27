@@ -1,149 +1,6 @@
 let popup_dc_new_div;
-let dc_new_bed_index = 0;
-let cart_bed_length = 0;
-let fake_dc_new_data = {
-    cart_name: "C069",
-    p_bed: [
-        {
-            p_bed_name: "C069-1",
-            med_list: [
-                {
-                    code: "1PO100",
-                    name: "Posanol 波賽特*口服*",
-                    cht_name: "",
-                    QTY: 5,
-                    UNIT: "AMP",
-                    DC_NEW: "DC"
-                },
-                {
-                    code: "1PO100",
-                    name: "Posanol 波賽特*口服*",
-                    cht_name: "",
-                    QTY: 5,
-                    UNIT: "AMP",
-                    DC_NEW: "NEW"
-                },
-                {
-                    code: "1PO100",
-                    name: "Posanol 波賽特*口服*",
-                    cht_name: "",
-                    QTY: 5,
-                    UNIT: "AMP",
-                    DC_NEW: "NEW"
-                },
-                {
-                    code: "1PO100",
-                    name: "Posanol 波賽特*口服*",
-                    cht_name: "",
-                    QTY: 5,
-                    UNIT: "AMP",
-                    DC_NEW: "NEW"
-                },
-                {
-                    code: "1PO100",
-                    name: "Posanol 波賽特*口服*",
-                    cht_name: "",
-                    QTY: 5,
-                    UNIT: "AMP",
-                    DC_NEW: "NEW"
-                },
-                {
-                    code: "1PO100",
-                    name: "Posanol 波賽特*口服*",
-                    cht_name: "",
-                    QTY: 5,
-                    UNIT: "AMP",
-                    DC_NEW: "NEW"
-                },
-                {
-                    code: "1PO100",
-                    name: "Posanol 波賽特*口服*",
-                    cht_name: "",
-                    QTY: 5,
-                    UNIT: "AMP",
-                    DC_NEW: "NEW"
-                },
-                {
-                    code: "1PO100",
-                    name: "Posanol 波賽特*口服*",
-                    cht_name: "",
-                    QTY: 5,
-                    UNIT: "AMP",
-                    DC_NEW: "NEW"
-                },
-                {
-                    code: "1PO100",
-                    name: "Posanol 波賽特*口服*",
-                    cht_name: "",
-                    QTY: 5,
-                    UNIT: "AMP",
-                    DC_NEW: "NEW"
-                },
-                {
-                    code: "1PO100",
-                    name: "Posanol 波賽特*口服*",
-                    cht_name: "",
-                    QTY: 5,
-                    UNIT: "AMP",
-                    DC_NEW: "NEW"
-                },
-                {
-                    code: "1PO100",
-                    name: "Posanol 波賽特*口服*",
-                    cht_name: "",
-                    QTY: 5,
-                    UNIT: "AMP",
-                    DC_NEW: "NEW"
-                },
-                {
-                    code: "1PO100",
-                    name: "Posanol 波賽特*口服*",
-                    cht_name: "",
-                    QTY: 5,
-                    UNIT: "AMP",
-                    DC_NEW: "NEW"
-                },
-                {
-                    code: "1PO100",
-                    name: "Posanol 波賽特*口服*",
-                    cht_name: "",
-                    QTY: 5,
-                    UNIT: "AMP",
-                    DC_NEW: "NEW"
-                },
-                {
-                    code: "1PO100",
-                    name: "Posanol 波賽特*口服*",
-                    cht_name: "",
-                    QTY: 5,
-                    UNIT: "AMP",
-                    DC_NEW: "NEW"
-                },
-            ]
-        },
-        {
-            p_bed_name: "C069-2",
-            med_list: [
-                {
-                    code: "1PO100",
-                    name: "Posanol 波賽特*口服*",
-                    cht_name: "",
-                    QTY: 5,
-                    UNIT: "AMP",
-                    DC_NEW: "NEW"
-                },
-                {
-                    code: "1PO100",
-                    name: "Posanol 波賽特*口服*",
-                    cht_name: "",
-                    QTY: 5,
-                    UNIT: "AMP",
-                    DC_NEW: "DC"
-                },
-            ]
-        }
-    ]
-}
+let dc_new_p_bed_data;
+let temp_pp_dn_index = 0;
 
 function get_popup_dc_new() {
     popup_dc_new_div = new Basic_popup_Div('popup_dc_new_div','popup_dc_new_div','','');
@@ -200,19 +57,7 @@ function get_pp_dc_new_footer() {
     ppdn_pre_bed_btn.classList.add("btn");
     ppdn_pre_bed_btn.innerHTML = "上一床";
     ppdn_pre_bed_btn.addEventListener("click", () => {
-        if(dc_new_bed_index > 0) {
-            dc_new_bed_index -= 1;
-            console.log(dc_new_bed_index);
-            set_dc_new_info_table();
-            if(dc_new_bed_index == 0) {
-                ppdn_pre_bed_btn.classList.add("disable_btn");
-                ppdn_next_bed_btn.classList.remove("disable_btn");
-            } else {
-                ppdn_pre_bed_btn.classList.remove("disable_btn");
-            }
-        } else {
-            return;
-        }
+        pp_dc_new_pre();
     })
 
     let ppdn_next_bed_btn = document.createElement("div");
@@ -220,19 +65,7 @@ function get_pp_dc_new_footer() {
     ppdn_next_bed_btn.classList.add("btn");
     ppdn_next_bed_btn.innerHTML = "下一床";
     ppdn_next_bed_btn.addEventListener("click", () => {
-        if(dc_new_bed_index < cart_bed_length - 1) {
-            dc_new_bed_index += 1;
-            console.log(dc_new_bed_index);
-            set_dc_new_info_table();
-            if(dc_new_bed_index == cart_bed_length - 1) {
-                ppdn_next_bed_btn.classList.add("disable_btn");
-                ppdn_pre_bed_btn.classList.remove("disable_btn");
-            } else {
-                ppdn_next_bed_btn.classList.remove("disable_btn");
-            }
-        } else {
-            return;
-        }
+        pp_dc_new_next();
     })
 
     ppdn_footer_container.appendChild(ppdn_pre_bed_btn);
@@ -244,15 +77,13 @@ function popup_dc_new_div_close() {
     popup_dc_new_div.Set_Visible(false);
 }
 function popup_dc_new_div_open() {
+    open_dc_new_func();
     popup_dc_new_div.Set_Visible(true);
 }
 function set_dc_new_info_table() {
-    let bed_name = fake_dc_new_data["p_bed"][`${dc_new_bed_index}`]["p_bed_name"];
-    let med_array = fake_dc_new_data["p_bed"][`${dc_new_bed_index}`]["med_list"];
-    let table_th_arr = ["藥碼", "藥名", "中文名", "DC/NEW", "劑量", "單位"];
-
-    let ppdn_h_cart_name = document.querySelector(".ppdn_h_cart_name");
-    ppdn_h_cart_name.innerHTML = fake_dc_new_data.cart_name;
+    let bed_name = dc_new_p_bed_data[0].bednum;
+    let med_array = dc_new_p_bed_data[0].cpoe_change;
+    let table_th_arr = ["藥碼", "藥名", "（中）", "DC/NEW", "劑量", "單位"];
 
     let ppdn_main_container = document.querySelector(".ppdn_main_container");
     ppdn_main_container.innerHTML = "";
@@ -265,7 +96,7 @@ function set_dc_new_info_table() {
 
     let ppdn_p_bed_name = document.createElement("td");
     ppdn_p_bed_name.classList.add("ppdn_p_bed_name");
-    ppdn_p_bed_name.innerHTML = bed_name;
+    ppdn_p_bed_name.innerHTML = `${bed_name}`;
     ppdn_p_bed_name.colSpan = 6;
 
     ppdn_p_bed_name_container.appendChild(ppdn_p_bed_name);
@@ -285,57 +116,143 @@ function set_dc_new_info_table() {
 
     ppdn_main_table.appendChild(ppdn_med_th_container);
 
-    med_array.forEach((element, index) => {
-        let ppdn_med_td_container = document.createElement("tr");
-        ppdn_med_td_container.classList.add("ppdn_med_td_container");
-        if(index % 2 != 0) {
-            ppdn_med_td_container.classList.add("bgc_light");
-        }
+    if(med_array.length == 0) {
 
-        for (let i = 0; i < 6; i++) {
-            let ppdn_med_td = document.createElement("th");
-            ppdn_med_td.classList.add(`td_${i}`);
-            ppdn_med_td.classList.add("ppdn_med_td");
-
-            switch (i) {
-                case 0:
-                    // 藥碼
-                    ppdn_med_td.innerHTML = element.code;
-                    break;
-                case 1:
-                    // 藥名
-                    ppdn_med_td.innerHTML = element.name;
-                    break;
-                case 2:
-                    // 中文名
-                    if(element.cht_name == "") {
-                        ppdn_med_td.innerHTML = "無";
-                    } else {
-                        ppdn_med_td.innerHTML = element.cht_name;
-                    }
-                    break;
-                case 3:
-                    // dc or new
-                    ppdn_med_td.innerHTML = element.DC_NEW;
-                    break;
-                case 4:
-                    // 劑量
-                    ppdn_med_td.innerHTML = element.QTY;
-                    break;
-                case 5:
-                    // 單位
-                    ppdn_med_td.innerHTML = element.UNIT;
-                    break;
-            
-                default:
-                    break;
+    } else {
+        med_array.forEach((element, index) => {
+            let ppdn_med_td_container = document.createElement("tr");
+            ppdn_med_td_container.classList.add("ppdn_med_td_container");
+            if(index % 2 != 0) {
+                ppdn_med_td_container.classList.add("bgc_light");
             }
     
-            ppdn_med_td_container.appendChild(ppdn_med_td);
-        }
+            for (let i = 0; i < 6; i++) {
+                let ppdn_med_td = document.createElement("th");
+                ppdn_med_td.classList.add(`td_${i}`);
+                ppdn_med_td.classList.add("ppdn_med_td");
+    
+                switch (i) {
+                    case 0:
+                        // 藥碼
+                        ppdn_med_td.innerHTML = element.code;
+                        break;
+                    case 1:
+                        // 藥名
+                        ppdn_med_td.innerHTML = element.name;
+                        break;
+                    case 2:
+                        // 中文名
+                        if(element.cht_name == "") {
+                            ppdn_med_td.innerHTML = "無";
+                        } else {
+                            ppdn_med_td.innerHTML = element.cht_name;
+                        }
+                        break;
+                    case 3:
+                        // dc or new
+                        ppdn_med_td.innerHTML = element.status;
+                        break;
+                    case 4:
+                        // 劑量
+                        ppdn_med_td.innerHTML = element.qty;
+                        break;
+                    case 5:
+                        // 單位
+                        ppdn_med_td.innerHTML = element.dunit;
+                        break;
+                
+                    default:
+                        break;
+                }
+        
+                ppdn_med_td_container.appendChild(ppdn_med_td);
+            }
+    
+            ppdn_main_table.appendChild(ppdn_med_td_container);
+        });
+    }
 
-        ppdn_main_table.appendChild(ppdn_med_td_container);
-    });
 
     ppdn_main_container.appendChild(ppdn_main_table);
+}
+async function open_dc_new_func() {
+    let ppdn_h_cart_name = document.querySelector(".ppdn_h_cart_name");
+    ppdn_h_cart_name.innerHTML = current_cart.hnursta;
+    let post_data = {
+        ValueAry: [current_p_bed_data.GUID]
+    };
+    dc_new_p_bed_data = await get_medChange_by_GUID(post_data);
+    dc_new_p_bed_data = dc_new_p_bed_data.Data;
+    console.log("asdf");
+
+    for (let index = 0; index < med_cart_beds_data.length; index++) {
+        let element = med_cart_beds_data[index];
+        if(current_p_bed_data.GUID == element.GUID) {
+            temp_pp_dn_index = index;
+            break;
+        }
+    }
+
+    let ppdn_next_bed_btn = document.querySelector(".ppdn_next_bed_btn");
+    let ppdn_pre_bed_btn = document.querySelector(".ppdn_pre_bed_btn");
+    ppdn_pre_bed_btn.classList.remove("disable_btn");
+    ppdn_next_bed_btn.classList.remove("disable_btn");
+
+    if(final_patient_bed_index == temp_pp_dn_index) {
+        ppdn_next_bed_btn.classList.add("disable_btn");
+    } 
+    if(first_patient_bed_index == temp_pp_dn_index) {
+        ppdn_pre_bed_btn.classList.add("disable_btn");
+    }
+
+    set_dc_new_info_table();
+}
+async function pp_dc_new_next() {
+    let ppdn_next_bed_btn = document.querySelector(".ppdn_next_bed_btn");
+    let ppdn_pre_bed_btn = document.querySelector(".ppdn_pre_bed_btn");
+    if(ppdn_next_bed_btn.classList.contains("disable_btn")) return;
+
+    do {
+        temp_pp_dn_index++;
+    } while(med_cart_beds_data[temp_pp_dn_index]["bed_status"] != "已佔床");
+    let post_data = {
+        ValueAry: [med_cart_beds_data[temp_pp_dn_index].GUID]
+    };
+
+    dc_new_p_bed_data = await get_medChange_by_GUID(post_data);
+    dc_new_p_bed_data = dc_new_p_bed_data.Data;
+
+    if(final_patient_bed_index == temp_pp_dn_index) {
+        ppdn_next_bed_btn.classList.add("disable_btn");
+        ppdn_pre_bed_btn.classList.remove("disable_btn");
+    } else {
+        ppdn_next_bed_btn.classList.remove("disable_btn");
+        ppdn_pre_bed_btn.classList.remove("disable_btn");
+    }
+
+    set_dc_new_info_table();
+}
+async function pp_dc_new_pre() {
+    let ppdn_next_bed_btn = document.querySelector(".ppdn_next_bed_btn");
+    let ppdn_pre_bed_btn = document.querySelector(".ppdn_pre_bed_btn");
+    if(ppdn_pre_bed_btn.classList.contains("disable_btn")) return;
+
+    do {
+        temp_pp_dn_index--;
+    } while(med_cart_beds_data[temp_pp_dn_index]["bed_status"] != "已佔床");
+    let post_data = {
+        ValueAry: [med_cart_beds_data[temp_pp_dn_index].GUID]
+    };
+
+    dc_new_p_bed_data = await get_medChange_by_GUID(post_data);
+    dc_new_p_bed_data = dc_new_p_bed_data.Data;
+
+    if(first_patient_bed_index == temp_pp_dn_index) {
+        ppdn_next_bed_btn.classList.remove("disable_btn");
+        ppdn_pre_bed_btn.classList.add("disable_btn");
+    } else {
+        ppdn_next_bed_btn.classList.remove("disable_btn");
+    }
+
+    set_dc_new_info_table();
 }

@@ -291,7 +291,7 @@ async function batch_download_sample_excel()
     }
 }
 async function batch_excel_upload(file) {
-    let temp_url = serch_APIServer("Main", "網頁", "batch_inventory_import/excel_upload");
+    let temp_url = serch_APIServer("Main", "網頁", "batch_inventory_import_excel_upload");
     if(temp_url.length != 0) {   
         console.log("post_data [excel_upload]",file);
         let api_url = api_ip.replace(":4433", ":443/dbvm/batch_inventory_import/excel_upload");

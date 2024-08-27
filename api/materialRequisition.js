@@ -104,3 +104,62 @@ async function update_actual_quantity(GUID, a_qty) {
     console.log(temp_data);
     return;
 }
+async function download_excel_by_requestTime(data)
+{
+    let temp_url = serch_APIServer("Main", "網頁", "download_excel_by_requestTime");
+    if(temp_url.length != 0) { 
+        console.log("post_data [excel_upload]",file);
+        let api_url = api_ip.replace(":4433", ":443/dbvm/batch_inventory_import/excel_upload");
+        console.log(temp_url);
+        console.log("batch上傳excel轉址",api_url);  
+        try {
+            const response = await fetch(`${api_url}api/materialRequisition/download_excel_by_requestTime`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+            });
+    
+            if (!response.ok) {
+            throw new Error('Failed to fetch the Excel file.');
+            }
+    
+            const blob = await response.blob();
+            const _url = window.URL.createObjectURL(blob);
+    
+            // 创建下载链接
+            let downloadLink = document.createElement('a');
+            downloadLink.href = window.URL.createObjectURL(blob);
+            downloadLink.download = `${data.ValueAry[0]}-${data.ValueAry[1]}申領紀錄.xlsx`;
+            downloadLink.click();
+        } catch (error) {
+            console.error(error);
+        }
+    } else {
+        try {
+            const response = await fetch(`${api_ip}api/materialRequisition/download_excel_by_requestTime`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+            });
+    
+            if (!response.ok) {
+            throw new Error('Failed to fetch the Excel file.');
+            }
+    
+            const blob = await response.blob();
+            const _url = window.URL.createObjectURL(blob);
+    
+            // 创建下载链接
+            let downloadLink = document.createElement('a');
+            downloadLink.href = window.URL.createObjectURL(blob);
+            downloadLink.download = `${data.ValueAry[0]}-${data.ValueAry[1]}申領紀錄.xlsx`;
+            downloadLink.click();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+}

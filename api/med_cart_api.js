@@ -230,6 +230,40 @@ async function get_opid_by_time(data) {
 
     return temp_data
 }
+// 根據藥局、護理站、日期、操作人id給出時間清單
+async function get_time_by_op_id(data) {
+    let temp_doman = transform_api_ip(api_ip);
+    let temp_data = await fetch(`${temp_doman}api/med_inventory/get_time_by_op_id`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then((response) => {
+        return response.json();
+    })
+    console.log(temp_data);
+
+    return temp_data
+}
+// 根據病床GUID給出DC/NEW資料
+async function get_medChange_by_GUID(data) {
+    let temp_doman = transform_api_ip(api_ip);
+    let temp_data = await fetch(`${temp_doman}api/med_cart/get_medChange_by_GUID`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then((response) => {
+        return response.json();
+    })
+    console.log(temp_data);
+
+    return temp_data
+}
 
 function transform_api_ip(ip) {
     // 4433 => 4436
