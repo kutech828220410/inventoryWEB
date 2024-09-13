@@ -80,16 +80,14 @@ async function get_patient_by_bedNum(phar, med_cart, bed_num) {
     return temp_data;
 }
 // 取的病床資訊
-async function get_patient_GUID(p_GUID) {
+async function get_patient_GUID(data) {
     let temp_doman = transform_api_ip(api_ip);
     let temp_data = await fetch(`${temp_doman}api/med_cart/get_patient_by_GUID`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-            "ValueAry":[p_GUID]
-        }),
+        body: JSON.stringify(data),
     })
     .then((response) => {
         return response.json();
@@ -101,7 +99,7 @@ async function get_patient_GUID(p_GUID) {
 }
 
 // 取得藥品總量
-async function get_all_med_qty(phar, med_cart) {
+async function get_all_med_qty(phar, med_cart, table) {
     let temp_doman = transform_api_ip(api_ip);
     let temp_data = await fetch(`${temp_doman}api/med_cart/get_med_qty`, {
         method: "POST",
@@ -109,7 +107,8 @@ async function get_all_med_qty(phar, med_cart) {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            "ValueAry":[phar, med_cart]
+            Value: table,
+            ValueAry:[phar, med_cart]
         }),
     })
     .then((response) => {
@@ -264,9 +263,78 @@ async function get_medChange_by_GUID(data) {
 
     return temp_data
 }
+// 根據處方GUID變更大瓶點滴狀態
+async function update_large_in_med_cpoe(data) {
+    let temp_doman = transform_api_ip(api_ip);
+    let temp_data = await fetch(`${temp_doman}api/med_cart/update_large_in_med_cpoe`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then((response) => {
+        return response.json();
+    })
+    console.log(temp_data);
+
+    return temp_data
+}
+// 取得初盤紀錄log
+async function get_logtime_by_opid(data) {
+    let temp_doman = transform_api_ip(api_ip);
+    let temp_data = await fetch(`${temp_doman}api/med_inventory/get_logtime_by_opid`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then((response) => {
+        return response.json();
+    })
+    console.log(temp_data);
+
+    return temp_data
+}
+// 亮滅燈api
+async function light_on_by_code(data) {
+    let temp_doman = transform_api_ip(api_ip);
+    let temp_data = await fetch(`${temp_doman}api/device/light_on_by_code`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then((response) => {
+        return response.json();
+    })
+    console.log(temp_data);
+
+    return temp_data
+}
+// 以藥碼及該藥局所有調劑台確認是否存在
+async function get_dispens_by_code(data) {
+    let temp_doman = transform_api_ip(api_ip);
+    let temp_data = await fetch(`${temp_doman}api/med_cart/get_dispens_by_code`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then((response) => {
+        return response.json();
+    })
+    console.log(temp_data);
+
+    return temp_data
+}
 
 function transform_api_ip(ip) {
     // 4433 => 4436
     let newStr = ip.replace(":4433", ":4436");
+    // let newStr = ip
     return newStr;
 }

@@ -63,7 +63,7 @@ let html_pages = [
                     },
                     {
                         html_name: "med_request",
-                        html_ctName: "藥品申領",
+                        html_ctName: "申領核撥",
                         html_url: "../../med_request",
                         icon_url: "../../image/icon/assortment.png",
                         icon_big_url: "../../image/list.png"
@@ -107,14 +107,14 @@ let html_pages = [
                         html_url: "../../batch_storage",
                         icon_url: "../../image/icon/batch_storage.png",
                         icon_big_url: "../../image/icon/batch_storage.png"
+                    },
+                    {
+                        html_name: "medicine_cart",
+                        html_ctName: "住院調劑",
+                        html_url: "../../medicine_cart",
+                        icon_url: "../../image/icon/drug_cart.png",
+                        icon_big_url: "../../image/icon/drug_cart_big_icon.png"
                     }
-                    // {
-                    //     html_name: "medicine_cart",
-                    //     html_ctName: "住院藥車調劑",
-                    //     html_url: "../../medicine_cart",
-                    //     icon_url: "../../image/icon/drug_cart.png",
-                    //     icon_big_url: "../../image/icon/drug_cart_big_icon.png"
-                    // }
                 ]
             },
             {

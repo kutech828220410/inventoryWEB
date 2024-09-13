@@ -43,3 +43,24 @@
 .review_tr_bgc {
     background-color: #c4c4c4;
 }
+@media screen and (max-width: 550px) {
+    .review_search_container {
+        width: 100%;
+        flex-direction: column;
+    }
+    #rs_date_input,
+    #rs_op_select,
+    #rs_time_select {
+        margin: 8px 0px;
+        width: 100%;
+    }
+    .review_search_result_container {
+        width: 100%;
+    }
+    .patient_bed_card {
+        font-size: 12px;
+        max-width: 100%;
+        width: 100%;
+        margin-bottom: 12px;
+    }
+}

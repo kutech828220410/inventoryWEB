@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="../UI/style/navBar.css">
   <link rel="stylesheet" href="popup_result_confirm.css">
+  <link rel="stylesheet" href="popup_code_compare.css">
   <script src="../../Function/Basic.js?v=1.14"></script>
 
   <script>
@@ -29,6 +30,7 @@
           loadScript("../../api/text_vision.js");
           loadScript("app.js");
           loadScript("popup_result_confirm.js");
+          loadScript("popup_code_compare.js");
           loadScript("../../UI/navBar.js");
         })();
 
@@ -39,7 +41,10 @@
       <script>
 
         get_popup_result_confirm();
-        popup_result_confirm_div.Set_Visible(true);
+        popup_result_confirm_div.Set_Visible(false);
+
+        get_popup_code_compare();
+        popup_code_compare_div.Set_Visible(false);
 
       </script>
    

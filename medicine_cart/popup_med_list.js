@@ -117,6 +117,7 @@ let fake_med_list_data = {
     ]
 };
 let med_list_data;
+let first_open = true;
 
 function get_popup_med_list() {
     popup_med_list_div = new Basic_popup_Div('popup_med_list_div','popup_med_list_div','','');
@@ -153,7 +154,7 @@ function get_pp_med_list_header() {
     ppml_display_all_btn.classList.add("btn");
     ppml_display_all_btn.innerHTML = `全部`;
     ppml_display_all_btn.addEventListener("click", async () => {
-        med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta);
+        med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, "all");
         med_list_data = med_list_data.Data;
         await set_pp_med_list_display();
     });
@@ -193,7 +194,7 @@ function get_pp_med_list_footer() {
     ppml_display_all_btn.classList.add("btn");
     ppml_display_all_btn.innerHTML = `全部顯示`;
     ppml_display_all_btn.addEventListener("click", async () => {
-        med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta);
+        med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, "all");
         med_list_data = med_list_data.Data;
         await set_pp_med_list_display();
     });
@@ -210,7 +211,7 @@ function popup_med_list_div_open() {
     popup_med_list_div.Set_Visible(true);
 }
 
-function set_pp_med_list_display() {
+async function set_pp_med_list_display() {
     let ppml_main_container = document.querySelector(".ppml_main_container");
     ppml_main_container.innerHTML = "";
 
@@ -258,8 +259,8 @@ function set_pp_med_list_display() {
         ppml_light_on_btn.classList.add("btn");
         ppml_light_on_btn.setAttribute("code", element.code);
         ppml_light_on_btn.innerHTML = "亮燈";
-        ppml_light_on_btn.addEventListener("click", () => {
-            set_light_table(element.code, element.name, element.cht_name);
+        ppml_light_on_btn.addEventListener("click", async () => {
+            await set_light_table(element.code, element.name, element.cht_name);
             popup_light_table_select_div_open();
         })
 
@@ -282,7 +283,7 @@ function set_pp_med_list_display() {
         element["bed_list"].forEach(item => {
             let ppml_bed_card = document.createElement("div");
             ppml_bed_card.classList.add("ppml_bed_card");
-            ppml_bed_card.innerHTML = item.bednum;
+            ppml_bed_card.innerHTML = `${item.bednum}<div class="ppml_bed_card_qty">${+item.lqnty}</div>`;
 
             total_qty += +item.lqnty;
 

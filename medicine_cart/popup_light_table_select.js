@@ -87,10 +87,24 @@ function popup_light_table_select_div_open() {
     popup_light_table_select_div.Set_Visible(true);
 }
 
-function set_light_table(code, name, cht_name) {
+async function set_light_table(code, name, cht_name) {
     let pplts_code = document.querySelector(".pplts_code");
     let pplts_name = document.querySelector(".pplts_name");
     let pplts_cht_name = document.querySelector(".pplts_cht_name");
+
+    let temp_arr = [];
+    med_table.forEach(element => {
+        temp_arr.push(element.name);
+    });
+
+    let post_data = {
+        Value: code,
+        ValueAry:[temp_arr.join(";")]
+    };
+
+    console.log(post_data);
+    let return_data = await get_dispens_by_code(post_data);
+    return_data = return_data.Data;
 
     pplts_code.innerHTML = code;
     pplts_name.innerHTML = name;
@@ -99,11 +113,15 @@ function set_light_table(code, name, cht_name) {
     let pplts_table_info_container = document.querySelector(".pplts_table_info_container");
     pplts_table_info_container.innerHTML = "";
 
-    fake_table_data.forEach(element => {
+    return_data.forEach(element => {
         let light_on_table = document.createElement("div");
         light_on_table.classList.add("light_on_table");
         light_on_table.classList.add("btn");
-        light_on_table.innerHTML = element;
+        light_on_table.innerHTML = element.server_name;
+        light_on_table.setAttribute("code", code);
+        light_on_table.addEventListener("click", async () => {
+            await light_on_func(code, element.server_name, element.server_type);
+        });
 
         pplts_table_info_container.appendChild(light_on_table);
     });

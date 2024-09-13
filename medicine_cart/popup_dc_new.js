@@ -83,7 +83,7 @@ function popup_dc_new_div_open() {
 function set_dc_new_info_table() {
     let bed_name = dc_new_p_bed_data[0].bednum;
     let med_array = dc_new_p_bed_data[0].cpoe_change;
-    let table_th_arr = ["藥碼", "藥名", "（中）", "DC/NEW", "劑量", "單位"];
+    let table_th_arr = ["藥碼", "藥名", "（中）", "DC/NEW", "數量", "單位", "頻次", "更新時間"];
 
     let ppdn_main_container = document.querySelector(".ppdn_main_container");
     ppdn_main_container.innerHTML = "";
@@ -96,8 +96,8 @@ function set_dc_new_info_table() {
 
     let ppdn_p_bed_name = document.createElement("td");
     ppdn_p_bed_name.classList.add("ppdn_p_bed_name");
-    ppdn_p_bed_name.innerHTML = `${bed_name}`;
-    ppdn_p_bed_name.colSpan = 6;
+    ppdn_p_bed_name.innerHTML = `${current_cart.hnursta}-${bed_name}`;
+    ppdn_p_bed_name.colSpan = 8;
 
     ppdn_p_bed_name_container.appendChild(ppdn_p_bed_name);
     ppdn_main_table.appendChild(ppdn_p_bed_name_container);
@@ -126,7 +126,7 @@ function set_dc_new_info_table() {
                 ppdn_med_td_container.classList.add("bgc_light");
             }
     
-            for (let i = 0; i < 6; i++) {
+            for (let i = 0; i < 8; i++) {
                 let ppdn_med_td = document.createElement("th");
                 ppdn_med_td.classList.add(`td_${i}`);
                 ppdn_med_td.classList.add("ppdn_med_td");
@@ -159,6 +159,14 @@ function set_dc_new_info_table() {
                     case 5:
                         // 單位
                         ppdn_med_td.innerHTML = element.dunit;
+                        break;
+                    case 6:
+                        // 單位
+                        ppdn_med_td.innerHTML = element.freqn;
+                        break;
+                    case 7:
+                        // 單位
+                        ppdn_med_td.innerHTML = element.update_time;
                         break;
                 
                     default:

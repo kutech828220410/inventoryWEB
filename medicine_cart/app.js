@@ -25,6 +25,8 @@ async function load()
   // permissions = await GetApipermissions();
   // console.log(permissions);
 
+  await page_check_permissions("consumption_report");
+
   let rowNum = 1;
   const Loadingpopup = GetLoadingpopup();
   document.body.appendChild(Loadingpopup);
@@ -63,7 +65,7 @@ function get_header(test_user_data) {
 
     let h_title = document.createElement("div");
     h_title.classList = 'h_title';
-    h_title.innerHTML = "住院藥車調劑";
+    h_title.innerHTML = "住院調劑";
 
     let header_user = document.createElement("div");
     header_user.classList.add("header_user");
@@ -118,10 +120,12 @@ function get_header(test_user_data) {
     header_logout_btn.classList.add("header_logout_btn");
     header_logout_btn.classList.add("btn");
     header_logout_btn.innerText = "登出";
-    header_logout_btn.addEventListener("click", () => {
+    header_logout_btn.addEventListener("click", async () => {
       if (confirm("是否登出？")) {
         sessionStorage.removeItem("login_json");
         sessionStorage.removeItem("IC_SN");
+
+        await light_off_func();
 
         location.reload();
       }
@@ -313,23 +317,53 @@ function get_no_selected_func() {
 // 開啟亮燈顏色選單
 function open_light_color_list() {
   let light_color_select_container = document.querySelector(".light_color_select_container");
+  let temp_client_width = window.innerWidth;
 
-  if(!color_list_triiger) {
-    light_color_select_container.style.width = "250px";
-    light_color_select_container.style.boxShadow = "2px 2px 8px 2px #0000003e";
-    color_list_triiger = true;
+  if(temp_client_width > 550) {
+    if(!color_list_triiger) {
+      light_color_select_container.style.width = "250px";
+      light_color_select_container.style.height = "50px";
+      light_color_select_container.style.boxShadow = "2px 2px 8px 2px #0000003e";
+      color_list_triiger = true;
+    } else {
+      light_color_select_container.style.width = "0px";
+      light_color_select_container.style.height = "50px";
+      light_color_select_container.style.boxShadow = "none";
+      color_list_triiger = false;
+    }
   } else {
-    light_color_select_container.style.width = "0px";
-    light_color_select_container.style.boxShadow = "none";
-    color_list_triiger = false;
+    if(!color_list_triiger) {
+      light_color_select_container.style.height = "250px";
+      light_color_select_container.style.width = "50px";
+      light_color_select_container.style.boxShadow = "2px 2px 8px 2px #0000003e";
+      color_list_triiger = true;
+    } else {
+      light_color_select_container.style.height = "0px";
+      light_color_select_container.style.width = "50px";
+      light_color_select_container.style.boxShadow = "none";
+      color_list_triiger = false;
+    }
   }
+
 }
 // 關閉亮燈顏色選單
 function close_light_color_list() {
   let light_color_select_container = document.querySelector(".light_color_select_container");
-  light_color_select_container.style.width = "0px";
-  light_color_select_container.style.boxShadow = "none";
-  color_list_triiger = false;
+
+  let temp_client_width = window.innerWidth;
+
+  if(temp_client_width > 550) {
+    light_color_select_container.style.width = "0px";
+    light_color_select_container.style.height = "50px";
+    light_color_select_container.style.boxShadow = "none";
+    color_list_triiger = false;
+  } else {
+    light_color_select_container.style.width = "50px";
+    light_color_select_container.style.height = "0px";
+    light_color_select_container.style.boxShadow = "none";
+    color_list_triiger = false;
+  }
+
 }
 
 // 開啟藥局選單
@@ -575,22 +609,22 @@ async function get_cart_list_and_med_table() {
     cart_option_div.innerHTML = element.hnursta;
     if(element.hand_status == "已交車") {
       cart_option_div.classList.add("cart_option_div_done");
-    } else {
-      cart_option_div.addEventListener("click", () => {
-        cart_content.innerHTML = cart_option_div.innerHTML;
-        current_cart = element;
-        if(last_current_cart == current_cart) {
-          close_cart_list();
-          return;
-        } else {
-          console.log(current_cart);
-          let temp_logic = get_func_logic();
-          get_all_select_option_logic(temp_logic);
-          close_cart_list();
-          last_current_cart = current_cart;
-        }
-      });
     }
+    cart_option_div.addEventListener("click", () => {
+      cart_content.innerHTML = cart_option_div.innerHTML;
+      current_cart = element;
+      if(last_current_cart == current_cart) {
+        close_cart_list();
+        return;
+      } else {
+        console.log(current_cart);
+        let temp_logic = get_func_logic();
+        get_all_select_option_logic(temp_logic);
+        close_cart_list();
+        last_current_cart = current_cart;
+      }
+    });
+    
 
     cart_option_container.appendChild(cart_option_div);
   });
@@ -712,6 +746,7 @@ async function allocate_func() {
 }
 // 覆核作業
 async function review_func() {
+  await light_off_func();
   let cart_select_container = document.querySelector(".cart_select_container");
   let med_table_select_container = document.querySelector(".med_table_select_container");
   let func_select_container = document.querySelector(".func_select_container");
@@ -740,6 +775,7 @@ async function review_func() {
 }
 // 交車作業
 async function deliver_func() {
+  await light_off_func();
   let func_select_container = document.querySelector(".func_select_container");
   let cart_select_container = document.querySelector(".cart_select_container");
   let med_table_select_container = document.querySelector(".med_table_select_container");
@@ -825,6 +861,7 @@ async function reset_cart_list_container() {
   cart_list = temp_cart_list.Data;
   console.log(cart_list);
 
+  let cart_content = document.querySelector(".cart_content");
   let cart_option_container = document.querySelector(".cart_option_container");
   cart_option_container.innerHTML = "";
   cart_list.forEach(element => {

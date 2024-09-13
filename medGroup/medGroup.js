@@ -92,7 +92,7 @@ function current_function_trgger(div_array, target) {
 async function groups_manage_get_data(guid) {
     console.log("api_ip",api_ip);
     console.log(guid);
-    fetch(`${api_ip}api/medGroup/get_all_group`, {
+    await fetch(`${api_ip}api/medGroup/get_all_group`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -163,7 +163,7 @@ async function gm_display(all_g_data, guid) {
     gm_header_display_container.appendChild(group_delete_button)
     group_delete_button.addEventListener("click", () => {
         console.log(current_group_select.value);
-        group_delete_api(current_group_select.value)
+        group_delete_api(current_group_select.value);
     })
 
     // 展示群組容器
@@ -587,9 +587,9 @@ async function gm_content_show(guid, temp_group_all_data, append_div, all_g_data
     gm_content_group_save_button.innerHTML = "儲存"
     gm_content_group_save_button.addEventListener("click", () => {
         if(gm_content_group_save_button.classList[1] == "save_button_active") {
-            all_g_data["Data"].forEach(element => {
+            all_g_data["Data"].forEach(async element => {
                 if(element.GUID == guid) {
-                    group_med_save_func(guid, element.NAME, temp_selected_med)
+                    await group_med_save_func(guid, element.NAME, temp_selected_med)
                 }
             });
         } else {
@@ -620,16 +620,24 @@ function gm_content_med_display_func
     let temp_pages = Math.ceil(array.length / 10)
     let temp_set_array = new Set(temp_selected_med)
     container_display_init(gm_content_med_display_tbody)
-    gm_content_med_display_tbody.innerHTML += `
-        <tr>
-            <td colspan="5">
-                <div class="med_selected_all_or_not_container">
-                    <div class="all_selected">全部選取</div>
-                    <div class="all_not_selected">全部取消</div>
-                </div>
-            </td>
-        </tr>
-    `
+    // gm_content_med_display_tbody.innerHTML += `
+    //     <tr>
+    //         <td colspan="5">
+    //             <div class="med_selected_all_or_not_container">
+    //                 <div class="all_selected">全部選取</div>
+    //                 <div class="all_not_selected">全部取消</div>
+    //             </div>
+    //         </td>
+    //     </tr>
+    // `;
+//     <tr>
+//     <td colspan="5">
+//         <div class="med_selected_all_or_not_container">
+//             <div class="all_selected">全部選取</div>
+//             <div class="all_not_selected">全部取消</div>
+//         </div>
+//     </td>
+// </tr>
     if (array.length == 0) {
         return
     } else {
@@ -858,36 +866,41 @@ function gm_content_med_display_func
         })
     })
 
-    let all_selected = document.querySelector(".all_selected")
-    let all_not_selected = document.querySelector(".all_not_selected")
-    all_selected.addEventListener("click", () => {
-        check_box_code.forEach(element => {
-            element.checked = true
-            // if (temp_selected_med.indexOf(element.dataset.code) == -1) {
-            //     temp_selected_med.push(element.dataset.code)
-            //     temp_selected_med = temp_selected_med.sort()
-            // }
-            group_med_save_button_compare(group_original_temp_array, temp_selected_med)
-        });
-        array.forEach(element => {
-            if (temp_selected_med.indexOf(element) == -1) {
-                temp_selected_med.push(element)
-                temp_selected_med = temp_selected_med.sort()
-            }
-        });
-        group_med_save_button_compare(group_original_temp_array, temp_selected_med)
-    })
-    all_not_selected.addEventListener("click", () => {
-        check_box_code.forEach(element => {
-            element.checked = false
-        });
-        array.forEach(element => {
-            if (temp_selected_med.indexOf(element) !== -1) {
-                temp_selected_med.splice(temp_selected_med.indexOf(element), 1)
-            }
-            group_med_save_button_compare(group_original_temp_array, temp_selected_med)
-        });
-    })
+    // let all_selected = document.querySelector(".all_selected")
+    // let all_not_selected = document.querySelector(".all_not_selected")
+    // all_selected.addEventListener("click", () => {
+    //     check_box_code.forEach(element => {
+    //         element.checked = true
+    //         // if (temp_selected_med.indexOf(element.dataset.code) == -1) {
+    //         //     temp_selected_med.push(element.dataset.code)
+    //         //     temp_selected_med = temp_selected_med.sort()
+    //         // }
+    //         group_med_save_button_compare(group_original_temp_array, temp_selected_med);
+    //     });
+    //     array.forEach(element => {
+    //         console.log("array", element);
+    //         if (temp_selected_med.indexOf(element) == -1) {
+    //             temp_selected_med.push(element)
+    //             temp_selected_med = temp_selected_med.sort()
+    //         }
+    //     });
+    //     console.log(temp_selected_med);
+    //     med_selection_quantity_control(temp_selected_med);
+    //     group_med_save_button_compare(group_original_temp_array, temp_selected_med)
+    // })
+    // all_not_selected.addEventListener("click", () => {
+    //     check_box_code.forEach(element => {
+    //         element.checked = false
+    //     });
+    //     array.forEach(element => {
+    //         if (temp_selected_med.indexOf(element) !== -1) {
+    //             temp_selected_med.splice(temp_selected_med.indexOf(element), 1)
+    //         }
+    //         group_med_save_button_compare(group_original_temp_array, temp_selected_med)
+    //     });
+    //     console.log(temp_selected_med);
+    //     med_selection_quantity_control(temp_selected_med);
+    // })
 
     let pre_page = document.querySelector(".pre_page")
     let next_page = document.querySelector(".next_page")
@@ -1205,12 +1218,13 @@ function popup_group_create() {
 }
 
 // 修改群組api
-function group_med_save_func(guid, gName, array) {
+async function group_med_save_func(guid, gName, array) {
     let temp_arr_for_save = []
     array.forEach(element => {
         temp_arr_for_save.push({"CODE": element})
     });
-    fetch(`${api_ip}api/medGroup/add_group`, {
+    console.log("gName", gName);
+    await fetch(`${api_ip}api/medGroup/add_group`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -1237,7 +1251,7 @@ function group_med_save_func(guid, gName, array) {
             console.log(res);
             window.alert("儲存成功!!")
     });
-    groups_manage_get_data(guid)
+    await groups_manage_get_data(guid);
 }
 
 // 頁面功能畫面初始化

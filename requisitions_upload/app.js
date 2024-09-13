@@ -239,9 +239,61 @@ function set_upload_btn() {
   return upload_btn;
 }
 
-function set_analysis_result(data) {
-  if(data == undefined) {
+async function set_analysis_result(data) {
+  let info_data = data.Data[0];
+  if(data == undefined || data.Code == -200) {
     alert("Oops！資料發生不可預期的錯誤");
     return;
+  }
+  if(data.Result == "AI辨識未啟動") {
+    alert("請聯絡工程師確認軟體運行狀況");
+    return;
+  }
+
+  let dateTime = info_data.expirydate;
+  let dateOnly = dateTime.split(' ')[0];
+
+  let prc_code_content = document.querySelector("#prc_code_content");
+  let prc_name_content = document.querySelector("#prc_name_content");
+  let prc_cht_name_content = document.querySelector("#prc_cht_name_content");
+  let prc_deadtime_input = document.querySelector("#prc_deadtime_input");
+  let prc_qty_input = document.querySelector("#prc_qty_input");
+  let prc_batch_num_input = document.querySelector("#prc_batch_num_input");
+  let prc_list_num_input = document.querySelector("#prc_list_num_input");
+  let prc_cancel_btn = document.querySelector(".prc_cancel_btn");
+  let prc_double_confirm_btn = document.querySelector(".prc_double_confirm_btn");
+  
+  let pcc_code_input = document.querySelector("#pcc_code_input");
+  let pcc_name_content = document.querySelector("#pcc_name_content");
+  let pcc_cht_name_content = document.querySelector("#pcc_cht_name_content");
+  let pcc_code_compare_confirm_btn = document.querySelector(".pcc_code_compare_confirm_btn");
+  let pcc_h_close_btn = document.querySelector(".pcc_h_close_btn");
+  
+  prc_code_content.innerHTML = info_data.code;
+  prc_name_content.innerHTML = info_data.name;
+  prc_cht_name_content.innerHTML = info_data.cht_name;
+  prc_deadtime_input.value = dateOnly;
+  prc_qty_input.value = info_data.qty;
+  prc_batch_num_input.value = info_data.batch_num;
+  prc_list_num_input.value = info_data.po_num;
+  prc_cancel_btn.setAttribute("guid", info_data.GUID);
+  prc_double_confirm_btn.setAttribute("guid", info_data.GUID);
+  
+  pcc_name_content.innerHTML = info_data.name;
+  pcc_cht_name_content.innerHTML = info_data.cht_name;
+  pcc_code_compare_confirm_btn.setAttribute("guid", info_data.GUID);
+  pcc_h_close_btn.setAttribute("guid", info_data.GUID);
+  prc_cancel_btn.setAttribute("guid", info_data.GUID);
+
+  popup_result_confirm_div_open();
+
+  if(prc_deadtime_input.value == "") prc_deadtime_input.classList.add("border_red");
+  if(prc_qty_input.value == "") prc_qty_input.classList.add("border_red");
+  if(prc_batch_num_input.value == "") prc_batch_num_input.classList.add("border_red");
+  if(prc_list_num_input.value == "") prc_list_num_input.classList.add("border_red");
+
+  if(info_data.code == "") {
+    console.log("開啟code比對輸入");
+    popup_code_compare_div_open();
   }
 }

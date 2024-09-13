@@ -45,7 +45,7 @@ let func_list = [
     },
     {
         name: "review",
-        ctname: "初盤清單"
+        ctname: "覆核"
     },
     {
         name: "deliver",
@@ -120,3 +120,16 @@ let patient_bed_index = -1;
 let last_patient_bed_index = -1;
 let first_patient_bed_index;
 let final_patient_bed_index;
+let light_on_arr = {
+    ServerName: "",
+    ServerType: "",
+    ValueAry: []
+};
+let last_light_on_arr = {
+    ServerName: "",
+    ServerType: "",
+    ValueAry: []
+};
+// ValueAry => [ arr,  str,  str]
+// 顏色 => str = "0,255,0"
+// 秒數 => str = "60"  （單位：秒）

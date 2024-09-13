@@ -78,7 +78,7 @@ function get_header(test_user_data) {
 
     let h_title = document.createElement("div");
     h_title.classList = 'h_title';
-    h_title.innerHTML = "藥品申領";
+    h_title.innerHTML = "申領核撥";
 
     let header_user = document.createElement("div");
     header_user.classList.add("header_user");
@@ -280,7 +280,23 @@ function set_main_list_display() {
     return;
   }
 
+  code_mode_data.sort((a, b) => {
+    const hasUrgentA = a["RES_UNIT"].some(i => i.actionType === '緊急申領');
+    const hasUrgentB = b["RES_UNIT"].some(i => i.actionType === '緊急申領');
+  
+    if (hasUrgentA && !hasUrgentB) {
+      return -1;
+    } else if (!hasUrgentA && hasUrgentB) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+  
+  console.log(code_mode_data);
+
   code_mode_data.forEach(element => {
+
     let med_card = document.createElement("div");
     med_card.classList.add("med_card");
 

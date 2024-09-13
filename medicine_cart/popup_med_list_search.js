@@ -1,4 +1,5 @@
 let popup_med_list_search_div;
+med_table
 
 function get_popup_med_list_search() {
     popup_med_list_search_div = new Basic_popup_Div('popup_med_list_search_div','popup_med_list_search_div','','');
@@ -38,13 +39,14 @@ function get_pp_med_list_search_main() {
     let ppmls_main_container = document.createElement("div");
     ppmls_main_container.classList.add("ppmls_main_container");
 
+    let ppmls_table_select = document.createElement("select");
+    ppmls_table_select.classList.add("ppmls_table_select");
+
     let ppmls_type_select = document.createElement("select");
     ppmls_type_select.classList.add("ppmls_type_select");
     ppmls_type_select.innerHTML = `
         <option value="code">藥碼</option>
         <option value="name">藥名</option>
-        <option value="table">調劑台</option>
-        <option value="drugtype">大瓶藥</option>
     `;
     ppmls_type_select.addEventListener("change", (e) => {
         if(e.target.value == "table" || e.target.value == "drugkind") {
@@ -62,7 +64,7 @@ function get_pp_med_list_search_main() {
                         <option value="2">2</option>
                         <option value="3">3</option>
                         <option value="4">4</option>
-                    `
+                    `;
                     break;
             
                 default:
@@ -88,6 +90,7 @@ function get_pp_med_list_search_main() {
     let ppmls_select = document.createElement("select");
     ppmls_select.classList.add("ppmls_select");
 
+    ppmls_main_container.appendChild(ppmls_table_select);
     ppmls_main_container.appendChild(ppmls_type_select);
     ppmls_main_container.appendChild(ppmls_input);
     ppmls_main_container.appendChild(ppmls_select);
@@ -112,15 +115,26 @@ function popup_med_list_search_div_close() {
     popup_med_list_search_div.Set_Visible(false);
 }
 function popup_med_list_search_div_open() {
+    let ppmls_table_select = document.querySelector(".ppmls_table_select");
+    ppmls_table_select.innerHTML = `<option value="all">全部調劑台</option>`
+    med_table.forEach(element => {
+        ppmls_table_select.innerHTML += `
+            <option value="${element.name}">${element.name}</option>
+        `
+    });
+
     popup_med_list_search_div.Set_Visible(true);
 }
 async function med_list_search_result() {
-    med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta);
+    let ppmls_table_select = document.querySelector(".ppmls_table_select");
+    med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, ppmls_table_select.value);
     med_list_data = med_list_data.Data;
+    med_list_data = med_list_data.filter((item) => {
+        return item["dispens_name"] == "Y";
+    });
     let ppmls_type_select = document.querySelector(".ppmls_type_select");
 
     let ppmls_input = document.querySelector(".ppmls_input");
-    let ppmls_select = document.querySelector(".ppmls_select");
 
     switch (ppmls_type_select.value) {
         case "code":
@@ -139,16 +153,11 @@ async function med_list_search_result() {
                 return item["name"].toUpperCase().includes(ppmls_input.value.toUpperCase());
             });
             break;
-        case "table":
-            
-            break;
-        case "drugtype":
-            
-            break;
     
         default:
             break;
     }
 
     await set_pp_med_list_display();
+    await popup_med_list_search_div_close();
 }

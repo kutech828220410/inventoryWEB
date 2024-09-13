@@ -40,248 +40,7 @@ let time_list = [
         time: "13:32",
     },
 ]
-let fake_review_data = [
-    {
-        p_bed: "C069-1",
-        med_list: [
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-        ]
-    },
-    {
-        p_bed: "C069-1",
-        med_list: [
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-        ]
-    },
-    {
-        p_bed: "C069-1",
-        med_list: [
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-        ]
-    },
-    {
-        p_bed: "C069-1",
-        med_list: [
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-        ]
-    },
-    {
-        p_bed: "C069-1",
-        med_list: [
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-        ]
-    },
-    {
-        p_bed: "C069-1",
-        med_list: [
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-            {
-                code: "1PO100",
-                name: "Posanol 波賽特*口服*",
-                cht_name: "",
-                qty: 3,
-                unit: "VAL"
-            },
-        ]
-    },
-]
+let fake_review_data;
 async function display_revise_func() {
     func_display_init();
     let function_display_container = document.querySelector(".function_display_container");
@@ -337,7 +96,12 @@ async function display_revise_func() {
         `;
     });
     rs_op_select.addEventListener("change", async () => {
-    
+        if(rs_op_select.value == "") {
+            rs_time_select.innerHTML = `
+                <option value="">尚未選取操作人</option>
+            `;
+            return;
+        }
         let loggedID = sessionStorage.getItem('login_json'); 
         loggedID = JSON.parse(loggedID);
         let time_list_post_data = {
@@ -361,8 +125,21 @@ async function display_revise_func() {
     let rs_time_select = document.createElement("select");
     rs_time_select.id = "rs_time_select";
     rs_time_select.innerHTML = `<option value="">尚未選取操作人</option>`;
-    rs_time_select.addEventListener("change", () => {
-        
+    rs_time_select.addEventListener("change", async () => {
+        if(rs_time_select.value == "") return;
+        let post_data = {
+            Data: [
+                {
+                    "pharm":current_cart.phar,
+                    "nurnum":current_cart.hnursta,
+                    "op_id": rs_op_select.value,
+                    "op_time": `${today}T${rs_time_select.value}`
+                }
+            ]
+        }
+        fake_review_data = await get_logtime_by_opid(post_data);
+        fake_review_data = fake_review_data.Data;
+        set_review_display_list(fake_review_data);
     });
 
     review_search_container.appendChild(rs_date_input);
@@ -384,7 +161,7 @@ function set_review_display_list(array) {
         patient_bed_card.classList.add("patient_bed_card");
         patient_bed_card.innerHTML = `
             <tr>
-                <td colspan="5" class="review_table_title">${element.p_bed}</td>
+                <td colspan="5" class="review_table_title">${element.nurnum}-${element.bednum}</td>
             </tr>
             <tr>
                 <th>藥碼</th>
@@ -395,16 +172,16 @@ function set_review_display_list(array) {
             </tr>
         `;
 
-        element["med_list"].forEach((item, index) => {
+        element["dispense_med"].forEach((item, index) => {
             if(index % 2 != 0) {
-                if(item.cht_name != "") {
+                if(item.cht_name != "" || item.cht_name != undefined) {
                     patient_bed_card.innerHTML += `
                         <tr class="review_tr_bgc">
                             <td class="review_td_0">${item.code}</td>
                             <td class="review_td_1">${item.name}</td>
                             <td class="review_td_2">${item.cht_name}</td>
-                            <td class="review_td_3">${item.qty}</td>
-                            <td class="review_td_4">${item.unit}</td>
+                            <td class="review_td_3">${+item.qty}</td>
+                            <td class="review_td_4">${item.dunit}</td>
                         </tr>
                     `;
                 } else {
@@ -413,20 +190,20 @@ function set_review_display_list(array) {
                             <td class="review_td_0">${item.code}</td>
                             <td class="review_td_1">${item.name}</td>
                             <td class="">無</td>
-                            <td class="review_td_3">${item.qty}</td>
-                            <td class="review_td_4">${item.unit}</td>
+                            <td class="review_td_3">${+item.qty}</td>
+                            <td class="review_td_4">${item.dunit}</td>
                         </tr>
                     `;
                 }
             } else {
-                if(item.cht_name != "") {
+                if(item.cht_name != "" || item.cht_name != undefined) {
                     patient_bed_card.innerHTML += `
                         <tr>
                             <td class="review_td_0">${item.code}</td>
                             <td class="review_td_1">${item.name}</td>
                             <td class="review_td_2">${item.cht_name}</td>
-                            <td class="review_td_3">${item.qty}</td>
-                            <td class="review_td_4">${item.unit}</td>
+                            <td class="review_td_3">${+item.qty}</td>
+                            <td class="review_td_4">${item.dunit}</td>
                         </tr>
                     `;
                 } else {
@@ -435,8 +212,8 @@ function set_review_display_list(array) {
                             <td class="review_td_0">${item.code}</td>
                             <td class="review_td_1">${item.name}</td>
                             <td class="">無</td>
-                            <td class="review_td_3">${item.qty}</td>
-                            <td class="review_td_4">${item.unit}</td>
+                            <td class="review_td_3">${+item.qty}</td>
+                            <td class="review_td_4">${item.dunit}</td>
                         </tr>
                     `;
                 }

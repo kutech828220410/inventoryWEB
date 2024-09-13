@@ -93,22 +93,29 @@
 .p_bed_simple_container,
 .p_bed_detailed_container {
     width: 48%;
+    min-height: 180px;
     padding: 8px;
     border-radius: 5px;
     background-color: rgb(219, 219, 219);
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
     align-items: center;
 }
 .pbsc_info {
     padding: 0px 12px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    text-align: left;
 }
-.pbsc_doc {
-    padding-right: 8px;
+.grid_30_30_30 {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 28% 30% 41%;
+    justify-content: space-between;
+}
+.pbsc_doctor {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 49% 49%;
+    justify-content: space-between;
 }
 
 /* 給整個表格加上邊框線 */
@@ -185,8 +192,10 @@
 .pbmh_pre_btn_not_allow:hover {
     background-color: #d4d4d4;
 }
-.pbmh_checked_submit_btn {
-    margin-right: 24px;
+.pbmh_checked_submit_btn,
+.pbmh_next_btn {
+    margin-right: 0px;
+    padding: 6px 16px;
 }
 .pbmh_checked_trigger_label {
     align-items: center;
@@ -218,6 +227,8 @@
     border-radius: 5px;
     border: 1px solid #000000;
     background-color: #efefef;
+    overflow: hidden;
+    transition: all 0.3s;
 }
 .med_card_container:last-child {
     margin-bottom: 0px;
@@ -261,32 +272,53 @@
     font-size: 18px; /* 調整勾勾的大小 */
 }
 /* 禁用狀態的樣式 */
-.med_card_checkbox:disabled {
+.med_card_checkbox_disabled {
+    border: 2px solid #767676;
+}
+.med_card_checkbox_disabled:checked {
     background-color: #ddd; /* 禁用狀態的背景顏色 */
     border-color: #aaa; /* 禁用狀態的邊框顏色 */
     cursor: not-allowed; /* 禁用狀態的鼠標樣式 */
 }
 
-.med_card_checkbox:disabled:checked::before {
+.med_card_checkbox_disabled:checked::before {
     color: #aaa; /* 禁用狀態的勾勾顏色 */
 }
 
 .med_card_info_container {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 30% 30% 40%;
+    justify-content: space-between;
 }
 .med_card_main_display_container {
     flex-grow: 1;
 }
-.med_name_card_container {
-    /* display: flex; */
-}
+
 .med_card_code,
+.med_card_ordseq,
 .med_card_name,
 .med_card_cht_name,
-.med_card_qty,
-.med_card_unit {
-    margin-right: 24px;
+.med_card_unit,
+.med_card_dosage,
+.med_card_route,
+.med_card_freqn {
+    margin-right: 12px;
+    font-weight: 400;
+}
+
+.med_card_name,
+.med_card_qty{
+    font-size: 20px;
+    font-weight: 600;
+}
+.med_card_qty {
+    width: 80px;
+    min-width: 80px;
+    margin-right: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
 }
 .med_card_open_tigger {
     padding: 10px;
@@ -294,6 +326,12 @@
     width: 40px;
     height: 40px;
     cursor: pointer;
+    transition: all 0.2s ease-in;
+    transform: rotate(-90deg);
+}
+.med_card_open {
+    transform: rotate(90deg);
+    transition: all 0.2s ease-out;
 }
 .no_data_div {
     font-size: 24px;
@@ -346,11 +384,83 @@
 }
 .med_card_bigB {
     opacity: 1;
-    background-color: #c49527;
+    background-color: #f7b875;
     transition: 0.2s all ease;
     cursor: auto;
 }
-  
+.med_more_info_container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 8px 0px 12px 16px;
+}
+.med_detail_info_div {
+    cursor: pointer;
+    padding: 4px 24px;
+    margin: 0px 12px;
+    border-radius: 5px;
+    border: 1px solid #000;
+    box-shadow: 1px 1px 1px 1px #00000067;
+    transition: all 0.2s ease-out;
+    background-color: #464646;
+    color: white;
+}
+.med_card_other_phar {
+    font-weight: 600;
+    min-width: 200px;
+    margin-right: 16px;
+}
+.med_detail_info_div:hover {
+    box-shadow: 1px 1px 4px 1px #00000067;
+    transition: all 0.2s ease-in;
+}
+.med_cart_warnning_container {
+    display: flex;
+    align-items: center;
+    margin: 6px;
+}
+.med_name_card_container,
+.med_card_info_container,
+.med_cart_warnning_container {
+    margin-bottom: 2px;
+}
+.warnning_icon {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 600;
+    padding-bottom: 2px;
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    background-color: #f7b875;
+    color: #2d2d2d;
+    margin: 0px 8px;
+    box-shadow: 1px 1px 2px 1px #0000005f;
+}
+.not_allow_warnning_icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 14px;
+}
+.not_allow_warnning_icon::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 4px solid #ff0000;
+    border-radius: 50%;
+}
+.not_allow_warnning_icon::after {    
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    background-color: #ff0000d3;
+    transform: rotate(45deg);
+    border-radius: 2px;
+}
 
 @media screen and (max-width: 1200px) {
     .p_bed_simple_container,
@@ -368,5 +478,121 @@
     .d_carts_list_contaienr {
         /* grid-template-columns: 20% 20% 20% 20% 20%; */
         grid-template-columns: 33% 33% 33%;
+    }
+    .med_detail_info_div {
+        padding: 4px 12px;
+        box-shadow: 1px 1px 4px 1px #00000067;
+    }
+}
+@media screen and (max-width: 550px) {
+    .p_bed_header {
+        flex-direction: column;
+    }
+    .pb_btn_container {
+        width: 370px;
+    }
+    .pbic_top {
+        flex-direction: column;
+        margin-top: 12px;
+    }
+    .p_bed_simple_container {
+        width: 100%;
+        margin-bottom: 12px;
+    }
+    .p_bed_detailed_container {
+        width: 100%;
+    }
+    .pbm_header_container {
+        margin-top: 12px;
+        justify-content: space-between;
+    }
+    .pbmh_pre_btn,
+    .pbmh_light_on_btn,
+    .pbmh_checked_trigger_label,
+    .pbmh_checked_submit_btn,
+    .pbmh_next_btn {
+        font-size: 16px;
+        position: relative;
+        padding: 6px 12px;
+        height: 40px;
+    }
+    .pbmh_light_on_btn,
+    .pbmh_next_btn,
+    .pbmh_checked_trigger_label {
+        display: flex;
+        align-items: center;
+        margin-right: 0px;
+        margin: 4px;
+    }
+    .pbmh_checked_trigger_label {
+        width: auto;
+    }
+    .pbm_main_container {
+        padding: 0px;
+    }
+    .med_card_title_container {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        padding: 8px 0px 8px 8px;
+    }
+    .med_card_info_container {
+        grid-template-columns: 50% 50%;
+    }
+    .med_card_checkbox_label {
+        width: 15%;
+    }
+    .med_card_main_display_container {
+        width: 85%;
+    }
+    .med_card_big_bottle_icon {
+        margin-right: 0px;
+    }
+    .med_detail_info_div {
+        margin-top: 8px;
+    }
+    .med_more_info_container {
+        justify-content: space-between;
+    }
+    .d_carts_list_contaienr {
+        /* grid-template-columns: 20% 20% 20% 20% 20%; */
+        grid-template-columns: 50% 50%;
+    }
+    .pbm_footer_container {
+        position: relative;
+        justify-content: space-between;
+        margin-bottom: 50px;
+    }
+    .pbmf_submit_btn {
+        width: 100%;
+        position: absolute;
+        z-index: 10;
+        bottom: -50px;
+        left: 0px;
+        text-align: center;
+        padding: 6px;
+    }
+    .med_card_code,
+    .med_card_ordseq,
+    .med_card_name,
+    .med_card_cht_name,
+    .med_card_unit,
+    .med_card_dosage,
+    .med_card_route,
+    .med_card_freqn {
+        font-size: 14px;
+        font-weight: 400;
+    }
+    .med_card_name,
+    .med_card_qty,
+    .med_card_other_phar {
+        font-size: 16px;
+        font-weight: 600;
+    }
+    .med_card_other_phar {
+        margin-bottom: 4px;
+    }
+    .med_card_qty {
+        font-size: 20px;
+        flex-direction: row;
     }
 }

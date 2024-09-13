@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Noto Sans TC';
-    src: url('../font/Noto_Sans_TC/static/NotoSansTC-Regular.ttf') format('woff');
+    src: url('../font/Noto_Sans_TC/NotoSansTC-VariableFont_wght.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -11,7 +11,6 @@
     box-sizing: border-box;
     font-family: "Noto Sans TC", sans-serif;
     font-optical-sizing: auto;
-    font-weight: 400;
     font-style: normal;
 }
 
@@ -129,7 +128,7 @@
 .med_table_content {
     padding: 6px 16px;
     font-size: 18px;
-    font-weight: 400;
+    font-weight: 600;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -267,5 +266,50 @@
     }
     .d_carts_list_contaienr {
         grid-template-columns: 50% 50%;
+    }
+}
+@media screen and (max-width: 550px) {
+    .header {
+        padding: 12px 20px;
+    }
+    .light_color_select_container {
+        flex-direction: column;
+        top: 60px;
+        left: 0px;
+    }
+    .light_color_select_div {
+        margin-left: 12px;
+    }
+    .main_div {
+        margin-top: 10px;
+    }
+    .function_menu_container {
+        padding: 0px 20px;
+        margin-top: 0px;
+        flex-direction: column;
+    }
+    .select_container {
+        margin-bottom: 20px;
+    }
+    .display_content {
+        width: 100%;
+    }
+    .tri_arrow {
+        transform: rotate(90deg) translateX(-50%) translateY(-50%);
+        border-top: 25px solid transparent;
+        border-bottom: 25px solid transparent;
+        border-left: 15px solid var(--able-select);
+        left: 40%;
+        top: 30px;
+    }
+    .hos_block_option_container,
+    .func_option_container,
+    .cart_option_container,
+    .med_table_option_container {
+        width: 100%;
+    }
+    .function_display_container {
+        margin: 0px auto;
+        padding: 0px 20px;
     }
 }

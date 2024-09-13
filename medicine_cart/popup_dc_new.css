@@ -1,5 +1,5 @@
 .popup_dc_new_div {
-    width: 600px;
+    width: 1000px;
 }
 
 .ppdn_header_container {
@@ -59,7 +59,8 @@
     width: 100%;
 }
 .ppdn_p_bed_name {
-    font-size: 18px;
+    font-size: 24px;
+    font-weight: 600;
     text-align: center;
     background-color: #d7d7d7;
 }
@@ -85,4 +86,18 @@
 }
 .bgc_light {
     background-color: #d7d7d7;
+}
+@media screen and (max-width: 1200px) {
+    .popup_dc_new_div {
+        width: 600px;
+    }
+}
+@media screen and (max-width: 550px) {
+    .popup_dc_new_div {
+        width: 360px;
+    }
+    .ppdn_main_table {
+        width: 100%;
+        font-size: 12px;
+    }
 }

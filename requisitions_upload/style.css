@@ -165,6 +165,9 @@
     display: block;
     z-index: 9;
 }
+.border_red {
+    border: 2px solid #ff0000 !important;
+}
 
 @media screen and (max-width: 768px) {
     /* 在寬度小於或等於 768px 的屏幕上應用這些樣式 */

@@ -32,8 +32,8 @@
 }
 .pplts_table_info_container {
     display: grid;
-    justify-content: space-between;
-    grid-template-columns: 33% 33% 33%;
+    justify-content: space-evenly;
+    grid-template-columns: 48% 48%;
 }
 .light_on_table {
     display: flex;

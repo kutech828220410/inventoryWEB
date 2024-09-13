@@ -294,11 +294,11 @@ async function batch_excel_upload(file) {
     let temp_url = serch_APIServer("Main", "網頁", "batch_inventory_import_excel_upload");
     if(temp_url.length != 0) {   
         console.log("post_data [excel_upload]",file);
-        let api_url = api_ip.replace(":4433", ":443/dbvm/batch_inventory_import/excel_upload");
+        // let api_url = api_ip.replace(":4433", ":443/dbvm/batch_inventory_import/excel_upload");
         console.log(temp_url);
-        console.log("batch上傳excel轉址",api_url);
+        console.log("batch上傳excel轉址",temp_url[0].server);
         try {
-            const response = await fetch(`${api_url}`, {
+            const response = await fetch(`${temp_url[0].server}`, {
             method: 'POST',
             body: file
             });

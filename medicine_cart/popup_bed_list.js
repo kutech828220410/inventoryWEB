@@ -51,7 +51,9 @@ function popup_bed_list_div_close() {
     popup_bed_list_div.Set_Visible(false);
 }
 async function popup_bed_list_div_open() {
-    await allocate_display_init()
+    // await allocate_display_init();
+    med_cart_beds_data = await get_bed_list_by_cart(current_pharmacy.phar, current_cart.hnursta);
+    med_cart_beds_data = med_cart_beds_data.Data;
     await set_pp_bed_list_info();
     popup_bed_list_div.Set_Visible(true);
 }
@@ -88,6 +90,12 @@ function set_pp_bed_list_info() {
                 popup_bed_list_div_close();
             });
         }
+
+        let pp_bed_notice = document.createElement("img");
+        pp_bed_notice.classList.add("pp_bed_notice");
+        pp_bed_notice.src = "../image/notice_mark.png";
+
+        pp_bed_card.appendChild(pp_bed_notice);
 
         ppbl_main_container.appendChild(pp_bed_card);
     });

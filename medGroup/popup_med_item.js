@@ -294,6 +294,7 @@ function get_underline_med_item()
 
     let underline_new_modify_med_btn = document.createElement("div");
     underline_new_modify_med_btn.classList.add("underline_new_modify_med_btn");
+    underline_new_modify_med_btn.classList.add("btn");
     underline_new_modify_med_btn.innerHTML = "新增/修改";
     underline_new_modify_med_btn.addEventListener("click", async (e) => {
         Set_main_div_enable(true);
@@ -303,6 +304,7 @@ function get_underline_med_item()
 
     let underline_close_med_item_popup_btn = document.createElement("div");
     underline_close_med_item_popup_btn.classList.add('underline_close_med_item_popup_btn');
+    underline_close_med_item_popup_btn.classList.add('btn');
     underline_close_med_item_popup_btn.innerHTML = "關閉";
 
     underline_close_med_item_popup_btn.addEventListener("click", () => {
