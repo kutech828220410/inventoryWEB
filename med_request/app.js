@@ -281,8 +281,21 @@ function set_main_list_display() {
   }
 
   code_mode_data.sort((a, b) => {
-    const hasUrgentA = a["RES_UNIT"].some(i => i.actionType === '緊急申領');
-    const hasUrgentB = b["RES_UNIT"].some(i => i.actionType === '緊急申領');
+    let hasUrgentA = a["RES_UNIT"].some(i => i.actionType === '緊急申領');
+    let hasUrgentB = b["RES_UNIT"].some(i => i.actionType === '緊急申領');
+  
+    if (hasUrgentA && !hasUrgentB) {
+      return -1;
+    } else if (!hasUrgentA && hasUrgentB) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+
+  code_mode_data.sort((a, b) => {
+    let hasUrgentA = a["RES_UNIT"].some(i => i.state === '等待過帳');
+    let hasUrgentB = b["RES_UNIT"].some(i => i.state === '等待過帳');
   
     if (hasUrgentA && !hasUrgentB) {
       return -1;
@@ -309,8 +322,11 @@ function set_main_list_display() {
     
     let mci_name = document.createElement("div");
     mci_name.classList.add("mci_content");
+    mci_name.style.fontSize = "32px";
+    mci_name.style.fontWeight = "600";
+    mci_name.style.marginBottom = "12px";
     mci_name.innerHTML = `(英)：${element.NAME}`;
-
+    
     let mci_cht_name = document.createElement("div");
     mci_cht_name.classList.add("mci_content");
     mci_cht_name.innerHTML = `(中)：${element.CHT_NAME}`;
@@ -383,9 +399,9 @@ function set_main_list_display() {
     mci_detail.appendChild(mci_not_qty);
     mci_detail.appendChild(mci_total_qty);
 
-    med_card_info_container.appendChild(mci_code);
     med_card_info_container.appendChild(mci_name);
     med_card_info_container.appendChild(mci_cht_name);
+    med_card_info_container.appendChild(mci_code);
     med_card_info_container.appendChild(mci_detail);
 
     let med_card_items_title = document.createElement("div");

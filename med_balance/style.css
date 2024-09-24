@@ -1,7 +1,18 @@
+@font-face {
+    font-family: 'Noto Sans TC';
+    src: url('../font/Noto_Sans_TC/static/NotoSansTC-Regular.ttf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Noto Sans TC", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .header {
@@ -61,6 +72,16 @@
     border: 1px solid #6B6B63;
     margin: 60px auto 0px;
 
+}
+.med_group_select {
+    display: block;
+    padding: 4px 4px;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 4px;
+    border: 1px solid #000;
+    margin-left: 16px;
 }
 .cd_main_select_block_title {
     position: absolute;

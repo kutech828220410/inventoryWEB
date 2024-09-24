@@ -6,7 +6,7 @@ async function get_by_requestTime(str_date, end_date) {
         "ValueAry" : 
         [
            `${str_date} 00:00:00`,
-           `${end_date} 00:00:00`
+           `${end_date} 23:59:59`
         ]
       }
     let start_p = performance.now();

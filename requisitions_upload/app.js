@@ -1,6 +1,7 @@
 window.onload = load;
 // window.addEventListener('resize', handleResize);
 let base64_img = "";
+let medicine_page = [];
 
 function handleResize() 
 {
@@ -23,10 +24,15 @@ async function load()
   permissions = await GetApipermissions();
   console.log(permissions);
 
+  await page_check_permissions("requisitions_upload");
+
   let rowNum = 1;
   const Loadingpopup = GetLoadingpopup();
   document.body.appendChild(Loadingpopup);
   Set_main_div_enable(true);
+  medicine_page = await get_medicine_cloud();
+  medicine_page = medicine_page.Data;
+  console.log(medicine_page);
 
   var loggedID = sessionStorage.getItem('loggedID');  
   var loggedName = sessionStorage.getItem('loggedName');  
@@ -82,7 +88,7 @@ function get_main_div() {
     main_div.appendChild(upload_container);
     main_div.appendChild(notice_container);
     main_div.appendChild(display_img_container);
-    main_div.appendChild(upload_btn);
+    // main_div.appendChild(upload_btn);
 
     body.appendChild(main_div);
 }
@@ -106,10 +112,10 @@ function set_taking_pic_div() {
   pic_input.type = "file";
   pic_input.accept = "image/*";
   pic_input.setAttribute('capture', '');
-  pic_input.onchange = (e) => {
-    previewImage(e);
-    let upload_btn = document.querySelector(".upload_btn");
-    upload_btn.classList.remove("unable_btn");
+  pic_input.onchange = async (e) => {
+    await previewImage(e);
+    // let upload_btn = document.querySelector(".upload_btn");
+    // upload_btn.classList.remove("unable_btn");
   };
 
   let take_pic_label = document.createElement("label");
@@ -135,7 +141,7 @@ function set_notice_container() {
     請將單據照片的<span>左上方、右上方、左下方、右下方</span>對齊紅點
   `;
 
-  notice_container.appendChild(notice_content);
+  // notice_container.appendChild(notice_content);
 
   return notice_container;
 }
@@ -154,12 +160,12 @@ function set_display_container() {
     location_point.classList.add("location_point");
     location_point.classList.add(`l_${i}`);
 
-    display_container.appendChild(location_point);
+    // display_container.appendChild(location_point);
   }
 
   return display_container
 }
-function previewImage(event) {
+async function previewImage(event) {
   let file = event.target.files[0];
   // 確認input是否有上傳檔案
   if (!file) return;
@@ -167,7 +173,8 @@ function previewImage(event) {
   let img = new Image();
   img.src = URL.createObjectURL(file);
 
-  img.onload = () => {
+  img.onload = async () => {
+    Set_main_div_enable(true);
     let MAX_PIXELS = 3145728; // 3,145,728 pixels => 2048px x 1536px
     let canvas = document.createElement('canvas');
     let ctx = canvas.getContext('2d');
@@ -195,8 +202,9 @@ function previewImage(event) {
     base64_img = canvas.toDataURL('image/jpeg');
     let display_img = document.getElementById('display_img');
     display_img.src = base64_img;
+    await set_analysis_func();
+    Set_main_div_enable(false);
   };
-
 }
 function set_upload_btn() {
   let upload_btn = document.createElement("div");
@@ -237,6 +245,32 @@ function set_upload_btn() {
   });
 
   return upload_btn;
+}
+
+async function set_analysis_func() {
+  let loggedID = sessionStorage.getItem('loggedID');
+  let loggedName = sessionStorage.getItem('loggedName');
+  
+  if(!loggedID) {
+    alert("未登入使用者，請先登入後再進行操作");
+    return;
+  }
+
+  let post_data = {
+    Data: [
+      {
+        op_id: loggedID,
+        op_name: loggedName,
+        base64: base64_img
+      }
+    ]
+  };
+
+  console.log(post_data);
+  let responce = await upload_img_to_analysis(post_data);
+  console.log(responce);
+
+  await set_analysis_result(responce);
 }
 
 async function set_analysis_result(data) {

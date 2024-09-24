@@ -123,7 +123,6 @@ function set_storage_info_container() {
     ppsi_med_cht_name_div.classList.add("ppsi_med_cht_name_div");
     ppsi_med_cht_name_div.innerHTML = "(中)：afsdfasdfasdfasdf";
 
-
     storage_info_container.appendChild(ppsi_position_div);
     storage_info_container.appendChild(ppsi_position_desc_div);
     storage_info_container.appendChild(ppsi_med_img);

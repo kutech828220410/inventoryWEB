@@ -1,6 +1,7 @@
 let book_mark = 1;
 let page_num = 200;
 let med_balance_form_data;
+let med_group_data;
 window.onload = load;
 // window.addEventListener('resize', handleResize);
 
@@ -161,7 +162,7 @@ function Set_main_div_enable(value)
       hideLoadingPopup();
     }
 }
-function get_search_container() {
+async function get_search_container() {
   let main_div_search_container = document.querySelector(".main_div_search_container");
 
   let search_date_range_container = document.createElement("div");
@@ -222,18 +223,46 @@ function get_search_container() {
     if (form_data.Code == -200) {
       alert('資料讀取失敗');
     } else {
-      book_mark = 1;
-      med_balance_form_data = form_data["Data"];
-      get_info_init();
-      table_form_page_init();
+      if(med_group_select.value == "") {
+        book_mark = 1;
+        med_balance_form_data = form_data["Data"];
+        get_info_init();
+        table_form_page_init();
+      } else {
+        let temp_med_group = med_group_data.filter(e => e["GUID"].toUpperCase().includes(med_group_select.value.toUpperCase()));
+        let match_arr = [];
+        temp_med_group[0]["MedClasses"].forEach(element => {
+          match_arr.push(element.CODE);
+        });
+        console.log(match_arr);
+        book_mark = 1;
+        med_balance_form_data = form_data["Data"].filter(e => match_arr.includes(e["CODE"]));
+        get_info_init();
+        table_form_page_init();
+      }
     }
     Set_main_div_enable(false);
+  });
+
+  let med_group_select = document.createElement("select");
+  med_group_select.classList.add("med_group_select");
+  med_group_select.id = "med_group_select";
+
+  let temp_med_group_data = await groups_manage_get_data();
+  med_group_select.innerHTML = "";
+  med_group_data = temp_med_group_data.Data;
+  med_group_select.innerHTML = `<option value="">藥品群組</option>`
+  med_group_data.forEach(element => {
+    med_group_select.innerHTML += `
+      <option value="${element.GUID}">${element.NAME}</option>
+    `;
   });
 
   search_date_range_container.appendChild(search_date_label);
   search_date_range_container.appendChild(search_start_date);
   search_date_range_container.appendChild(search_date_range_div);
   search_date_range_container.appendChild(search_end_date);
+  search_date_range_container.appendChild(med_group_select);
   search_date_range_container.appendChild(search_date_range_btn);
 
   let download_excel_btn = document.createElement("div");
@@ -268,7 +297,7 @@ function get_info_init() {
   if (med_balance_form_data.length == 0) {
     let no_info_data_div = document.createElement("div");
     no_info_data_div.classList.add("no_info_data_div");
-    no_info_data_div.innerHTML = "該時間區間沒有任何紀錄";
+    no_info_data_div.innerHTML = "查無紀錄";
 
     main_div_table_display_container.appendChild(no_info_data_div);
   }
@@ -416,4 +445,21 @@ function table_form_page_init() {
 
   let pages_list_container = document.createElement("div");
   pages_list_container.classList.add('pages_list_container');
+}
+
+async function groups_manage_get_data() {
+  console.log("api_ip",api_ip);
+  let data = await fetch(`${api_ip}api/medGroup/get_all_group`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    }).catch(e => {
+      console.log(e);
+    }).then(res => {
+      return res.json()
+    });
+
+    return data
 }

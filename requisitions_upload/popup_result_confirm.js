@@ -57,6 +57,8 @@ function get_prc_footer() {
             console.log("這裡塞二次確認api");
 
             let prc_code_content = document.querySelector("#prc_code_content");
+            let prc_name_content = document.querySelector("#prc_name_content");
+            let prc_cht_name_content = document.querySelector("#prc_cht_name_content");
             let prc_deadtime_input = document.querySelector("#prc_deadtime_input");
             let prc_qty_input = document.querySelector("#prc_qty_input");
             let prc_batch_num_input = document.querySelector("#prc_batch_num_input");
@@ -70,7 +72,9 @@ function get_prc_footer() {
                         po_num: prc_list_num_input.value,
                         qty: prc_qty_input.value,
                         expirydate: prc_deadtime_input.value,
-                        code: prc_code_content.innerHTML
+                        code: prc_code_content.innerHTML,
+                        name: prc_name_content.innerHTML,
+                        cht_name: prc_cht_name_content.innerHTML
                     }
                 ]  
             };

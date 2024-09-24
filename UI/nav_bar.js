@@ -74,6 +74,13 @@ let html_pages = [
                         html_url: "../../pickingpage",
                         icon_url: "../../image/icon/assortment.png",
                         icon_big_url: "../../image/icon/picking_big_icon.png"
+                    },
+                    {
+                        html_name: "requisitions_upload",
+                        html_ctName: "單據辨識",
+                        html_url: "../../requisitions_upload",
+                        icon_url: "../../image/icon/assortment.png",
+                        icon_big_url: "../../image/icon/requisitions_upload.png"
                     }
                 ]
             }
