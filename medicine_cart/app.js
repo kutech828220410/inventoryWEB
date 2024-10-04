@@ -533,10 +533,12 @@ function select_list_controller() {
 
 function Set_main_div_enable(value) {
     if (value) {
+      console.log("=======================");
       showLoadingPopup();
 
     }
     else {
+      console.log("**********************");
       hideLoadingPopup();
     }
 }
@@ -569,13 +571,15 @@ async function get_all_select_option_logic(num) {
   // let med_table_content = document.querySelector(".med_table_content");
 
   console.log(num);
-
+  
   switch (num) {
     case 100:
       get_cart_list_and_med_table();
+      
       break;
     case 200:
       set_func_select_logic();
+      
       break;
     case 400:
       break;
@@ -701,15 +705,20 @@ async function get_cart_list_and_med_table() {
 
 // 功能選擇
 function set_func_select_logic() {
+  Set_main_div_enable(true);
+  
   switch (current_func) {
     case "allocate":
       allocate_func();
+      // Set_main_div_enable(false);
       break;
     case "review":
       review_func();
+      // Set_main_div_enable(false);
       break;
     case "deliver":
       deliver_func();
+      // Set_main_div_enable(false);
       break;
   
     default:
@@ -740,7 +749,6 @@ async function allocate_func() {
     return;
   } else {
     allocate_diplay_logic();
-    Set_main_div_enable(false);
     return;
   }
 }
@@ -766,10 +774,12 @@ async function review_func() {
   last_current_med_table = "";
 
   if(current_cart == "" && current_med_table == "") {
+    Set_main_div_enable(false);
     return;
   } else {
     console.log("生成覆核清單");
     display_revise_func();
+    Set_main_div_enable(false);
     return;
   }
 }
@@ -803,6 +813,7 @@ async function deliver_func() {
   deliver_cart_data = deliver_cart_data.Data;
   console.log(deliver_cart_data);
   display_deliver_func();
+  Set_main_div_enable(false);
 }
 
 // 設定可點選展開清單模式

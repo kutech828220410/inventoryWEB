@@ -17,6 +17,10 @@
   <link rel="stylesheet" href="popup_med_list.css">
   <link rel="stylesheet" href="popup_med_list_search.css">
   <link rel="stylesheet" href="popup_light_table_select.css">
+  <link rel="stylesheet" href="popup_med_pic.css">
+  <link rel="stylesheet" href="popup_prescription_info.css">
+  <link rel="stylesheet" href="popup_similar_drugs.css">
+  <link rel="stylesheet" href="popup_physician_notes.css">
   <script src="../../Function/Basic.js?v=1.14"></script>
 
   <script>
@@ -33,6 +37,7 @@
           loadScript("../../Function/WebApiFunc.js");
           loadScript("../../api/med_cart_api.js");
           loadScript("../../api/web_permissions.js");
+          loadScript("../../api/med_page.js");
           // loadScript("main_loadingdata.js");
           // loadScript("main_popup_serch.js");
           loadScript("popup_login.js");
@@ -47,6 +52,10 @@
           loadScript("popup_med_list.js");
           loadScript("popup_med_list_search.js");
           loadScript("popup_light_table_select.js");
+          loadScript("popup_prescription_info.js");
+          loadScript("popup_med_pic.js");
+          loadScript("popup_similar_drugs.js");
+          loadScript("popup_physician_notes.js");
         })();
 
   </script>
@@ -67,6 +76,18 @@
 
     get_popup_light_table_select();
     popup_light_table_select_div.Set_Visible(false);
+
+    get_popup_med_pic();
+    popup_med_pic_div.Set_Visible(false);
+
+    get_popup_prescription_info();
+    popup_prescription_info_div.Set_Visible(false);
+
+    get_popup_similar_drugs();
+    popup_similar_drugs_div.Set_Visible(false);
+
+    get_popup_physician_notes();
+    popup_physician_notes_div.Set_Visible(false);
   </script>
 
   <div class="under-line">

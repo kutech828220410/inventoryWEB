@@ -503,10 +503,21 @@ function set_main_list_display() {
       set_popup_storage_info(code);
       Set_main_div_enable(false);
     });
+
+    let check_undo = false;
+    for (let i = 0; i < element["RES_UNIT"].length; i++) {
+      const item = element["RES_UNIT"][i];
+      if(item.state != "已過帳") {
+        check_undo = true;
+        break;
+      }
+    }
     
     med_card_items_title.appendChild(mcit_container);
     med_card_items_title.appendChild(mcit_notice_container);
-    med_card_items_title.appendChild(mc_unit_all_btn);
+    if(check_undo) {
+      med_card_items_title.appendChild(mc_unit_all_btn);
+    }
     med_card_items_title.appendChild(mcu_light_btn);
     
     med_card.appendChild(med_card_info_container);

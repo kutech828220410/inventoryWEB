@@ -1,0 +1,55 @@
+.popup_med_pic_div {
+    width: 360px;
+}
+
+.ppmp_header_container {
+    width: 100%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+.ppmp_h_title {
+    padding: 4px 48px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    background-color: rgb(222, 222, 222);
+    color: #000000;
+    border-radius: 5px;
+}
+.ppmp_h_close_btn {
+    position: absolute;
+    cursor: pointer;
+    display: block;
+    width: 36px;
+    top: 0px;
+    right: 0px;
+}
+.ppmp_main_name {
+    padding: 0px 8px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 24px;
+}
+.ppmp_main_cht_name {
+    padding: 0px 8px;
+    line-height: 24px;
+}
+.ppmp_main_code {
+    padding: 0px 8px;
+    line-height: 24px;
+    margin-bottom: 12px;
+}
+.ppmp_footer_container {
+    display: flex;
+}
+.ppmp_main_img {
+    width: 100%;
+    object-fit: cover;
+    padding: 16px;
+}
+
+@media screen and (max-width: 550px) {
+}

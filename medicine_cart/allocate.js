@@ -6,37 +6,26 @@ let fake_icon_popup_data = [
     {
         short_name: "處方",
         name: "處方集",
-        info: {}
     },
     {
         short_name: "外觀",
         name: "藥品外觀",
-        info: {}
     },
     {
         short_name: "仿單",
         name: "藥品仿單",
-        info: {}
     },
     {
         short_name: "同類",
         name: "同類藥",
-        info: {}
     },
     {
         short_name: "規範",
         name: "健保規範",
-        info: {}
     },
     {
         short_name: "註解",
         name: "醫師註解",
-        info: {}
-    },
-    {
-        short_name: "白蛋白",
-        name: "白蛋白使用量",
-        info: {}
     },
 ];
 
@@ -773,7 +762,7 @@ function set_pbm_main_container() {
         } else {
             med_card_big_bottle_icon.addEventListener("click", async () => {
                 let post_data = {
-                    ValueAry:[element.GUID]
+                    ValueAry:[element.GUID, "L"]
                 };
                 if(confirm("該處方藥品是否標記為大瓶藥？")){
                     let return_data = await update_large_in_med_cpoe(post_data);
@@ -846,19 +835,81 @@ function set_pbm_main_container() {
         let med_more_info_container = document.createElement("div");
         med_more_info_container.classList.add("med_more_info_container");
 
-        fake_icon_popup_data.forEach(element => {
+        fake_icon_popup_data.forEach(item => {
             let med_detail_info_div = document.createElement("div");
             med_detail_info_div.classList.add("med_detail_info_div");
-            med_detail_info_div.innerHTML = element.short_name;
+            med_detail_info_div.innerHTML = item.short_name;
 
-            // switch (element.short_name) {
-            //     case value:
-                    
-            //         break;
+            switch (item.short_name) {
+                case "處方":
+                    med_detail_info_div.addEventListener("click", () => {
+                        if(element.med_info.length == 0) {
+                            set_ppp_info_func("");
+                            popup_prescription_info_div_open();
+                        } else {
+                            set_ppp_info_func(element.med_info[0]);
+                            popup_prescription_info_div_open();
+                        }
+                    })
+                    break;
+                case "外觀":
+                    med_detail_info_div.addEventListener("click", async () => {
+                        let name;
+                        let cht_name;
+                        let code;
+                        if(element.med_cloud.length == 0) {
+                            name = element.name;
+                            cht_name = "";
+                            code = element.code;
+                        } else {
+                            name = element.med_cloud[0].NAME; 
+                            cht_name = element.med_cloud[0].CHT_NAME;
+                            code = element.med_cloud[0].CODE;
+                        }
+                        await set_pp_med_pic_func(name, cht_name, code);
+                        popup_med_pic_div.Set_Visible(true);
+                    })
+                    break;
+                case "仿單":
+                    med_detail_info_div.addEventListener("click", () => {
+                        if(element.med_info.length == 0) {
+                            alert("無連接資料");
+                        } else {
+                            window.open(element.med_info[0].med_packeage, '_blank');
+                        }
+                    })
+                    break;
+                case "同類":
+                    med_detail_info_div.addEventListener("click", () => {
+                        if(element.med_info.length == 0) {
+                            set_ppsd_func("");
+                            popup_similar_drugs_div_open();
+                        } else {
+                            set_ppsd_func(element.med_info[0]);
+                            popup_similar_drugs_div_open();
+                        }
+                    })
+                    break;
+                case "規範":
+                    med_detail_info_div.addEventListener("click", () => {
+                        
+                    })
+                    break;
+                case "註解":
+                    med_detail_info_div.addEventListener("click", () => {
+                       if(element.med_info.length == 0) {
+                        set_pppns_func("");
+                        popup_physician_notes_div_open();
+                       } else {
+                           set_pppns_func(element.med_info[0].note);
+                           popup_physician_notes_div_open();
+                       }
+                    })
+                    break;
             
-            //     default:
-            //         break;
-            // }
+                default:
+                    break;
+            }
 
             med_more_info_container.appendChild(med_detail_info_div);
         });
@@ -971,6 +1022,7 @@ function set_pbm_footer_container() {
     return pbm_footer_container;
 }
 async function pre_bed_func() {
+    Set_main_div_enable(true);
     await set_post_data_to_check_dispense();
     let temp_p_bed_index = patient_bed_index;
     first_patient_bed_index;
@@ -984,6 +1036,7 @@ async function pre_bed_func() {
     allocate_display_init("on");
 }
 async function next_bed_func() {
+    Set_main_div_enable(true);
     await set_post_data_to_check_dispense();
     let temp_p_bed_index = patient_bed_index;
     first_patient_bed_index;

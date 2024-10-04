@@ -166,7 +166,7 @@ async function popup_login_content_submit_button_click(event)
 
     let user_name = sessionStorage.getItem("loggedName");
     let header_user = document.querySelector(".header_user");
-    header_user.innerHTML = `用戶：${user_name}`;
+    header_user.innerHTML = `使用者：${user_name}`;
     
     return true; // 防止表單提交
 }

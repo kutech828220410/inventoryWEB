@@ -128,11 +128,59 @@ function get_main() {
     cd_main_select_block_container.appendChild(cd_main_select_block_title);
     cd_main_select_block_container.appendChild(cd_main_select_block_content_container);
 
+    let cd_main_card_select_btn_container = document.createElement("div");
+    cd_main_card_select_btn_container.classList.add("cd_main_card_select_btn_container");
+
+    let cdmc_select_all_btn = document.createElement("div");
+    cdmc_select_all_btn.classList.add("cdmc_select_all_btn");
+    cdmc_select_all_btn.classList.add("btn");
+    cdmc_select_all_btn.innerHTML = "全部選取";
+    cdmc_select_all_btn.addEventListener("click", () => {
+      let cd_med_select_div = document.querySelectorAll(".cd_med_select_div");
+      cd_med_select_div.forEach(element => {
+        if(!element.classList.contains("cd_med_select_div_selected")) {
+          element.classList.add("cd_med_select_div_selected");
+
+          let code = element.getAttribute("code");
+          console.log(code);
+
+          med_select_array.push(code);
+          get_add_med_select_num();
+        }
+      });
+    });
+
+    let cdmc_select_none_btn = document.createElement("div");
+    cdmc_select_none_btn.classList.add("cdmc_select_none_btn");
+    cdmc_select_none_btn.classList.add("btn");
+    cdmc_select_none_btn.innerHTML = "取消全選";
+    cdmc_select_none_btn.addEventListener("click", () => {
+      let cd_med_select_div = document.querySelectorAll(".cd_med_select_div");
+      cd_med_select_div.forEach(element => {
+        if(element.classList.contains("cd_med_select_div_selected")) {
+          element.classList.remove("cd_med_select_div_selected");
+
+          let code = element.getAttribute("code");
+
+          let temp_index = med_select_array.indexOf(code);
+
+          if (temp_index !== -1) {
+            med_select_array.splice(temp_index, 1);
+            get_del_med_select_num();
+          }
+        }
+      });
+    });
+
+    cd_main_card_select_btn_container.appendChild(cdmc_select_none_btn);
+    cd_main_card_select_btn_container.appendChild(cdmc_select_all_btn);
+
     let cd_main_med_card_display_container = document.createElement("div");
     cd_main_med_card_display_container.classList.add("cd_main_med_card_display_container");
 
     cd_main_container.appendChild(cd_main_search_container);
     cd_main_container.appendChild(cd_main_select_block_container);
+    cd_main_container.appendChild(cd_main_card_select_btn_container);
     cd_main_container.appendChild(cd_main_med_card_display_container);
 
     return cd_main_container;
@@ -371,7 +419,9 @@ function get_search_med_result_display(array) {
 
       let cd_med_select_div = document.createElement("div");
       cd_med_select_div.classList.add("cd_med_select_div");
+      cd_med_select_div.setAttribute("code",element.CODE);
 
+      // console.log(med_select_array);
       if(med_select_array.includes(`${element.CODE}`)) {
         cd_med_select_div.classList.add("cd_med_select_div_selected");
       }

@@ -149,8 +149,13 @@ body {
   border: 1px solid #4e4e4d;
   margin: 6px;
 }
-.cd_main_med_card_display_container {
+.cd_main_card_select_btn_container {
   margin-top: 20px;
+  display: flex;
+  justify-content: end;
+}
+.cd_main_med_card_display_container {
+  margin-top: 8px;
   margin-bottom: 40px;
   display: flex;
   justify-content: center;
