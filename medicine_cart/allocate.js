@@ -2,6 +2,7 @@ let med_cart_beds_data;
 let current_p_bed_data;
 let last_p_bed_data;
 let med_log_arr = [];
+let med_double_check_arr = [];
 let fake_icon_popup_data = [
     {
         short_name: "處方",
@@ -64,6 +65,7 @@ async function allocate_display_init(light_on) {
     // console.log(current_p_bed_data);
     func_display_init();
     med_log_arr = [];
+    med_double_check_arr = [];
 
     let function_display_container = document.querySelector(".function_display_container");
 
@@ -186,7 +188,7 @@ function get_p_bed_header() {
     pb_list_notice.classList.add("display_none");
     for (let i = 0; i < med_cart_beds_data.length; i++) {
         const element = med_cart_beds_data[i];
-        if(element.dispens_status != "Y") {
+        if(element.change == "Y") {
             pb_list_notice.classList.remove("display_none");
             break;
         };
@@ -590,7 +592,9 @@ function set_pbm_header_container() {
     } 
 
     pbm_header_container.appendChild(pbmh_pre_btn);
-    pbm_header_container.appendChild(pbmh_light_on_btn);
+    if(current_func == "allocate") {
+        pbm_header_container.appendChild(pbmh_light_on_btn);
+    }
     pbm_header_container.appendChild(pbmh_checked_trigger_label);
     pbm_header_container.appendChild(pbmh_checked_submit_btn);
     pbm_header_container.appendChild(pbmh_next_btn);
@@ -627,44 +631,65 @@ function set_pbm_main_container() {
         let med_card_checkbox = document.createElement("input");
         med_card_checkbox.classList.add("med_card_checkbox");
         med_card_checkbox.id = `${element.GUID}`;
-        if(element.dispens_status == "Y") med_card_checkbox.checked = true;
         med_card_checkbox.type = "checkbox";
-        if(element.dispens_name != "Y") {
-            // med_card_checkbox.disabled = true;
-            med_card_checkbox.classList.add("med_card_checkbox_disabled");
-            med_card_container.classList.add("card_disable");
-            med_card_checkbox.addEventListener("click", () => {
-                med_card_checkbox.checked = !med_card_checkbox.checked;
-                alert("請選擇對應調劑台後，在進行調劑");
-            });
-        } else {
-            // med_card_checkbox.disabled = false;
-            med_card_checkbox.setAttribute("dispens_name", "Y");
-            med_card_checkbox.classList.remove("med_card_checkbox_disabled");
-            med_card_checkbox.addEventListener("click", () => {
-                if(med_card_checkbox.checked) {
-                    med_log_arr.push(element.GUID);
-                } else {
-                    let index = med_log_arr.indexOf(element.GUID);  // 找到 "orange" 的索引位置
-
-                    if (index !== -1) {
-                        med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+        if(current_func == "allocate") {
+            if(element.dispens_status == "Y") med_card_checkbox.checked = true;
+            if(element.dispens_name != "Y") {
+                // med_card_checkbox.disabled = true;
+                med_card_checkbox.classList.add("med_card_checkbox_disabled");
+                med_card_container.classList.add("card_disable");
+                med_card_checkbox.addEventListener("click", () => {
+                    med_card_checkbox.checked = !med_card_checkbox.checked;
+                    alert("請選擇對應調劑台後，在進行調劑");
+                });
+            } else {
+                // med_card_checkbox.disabled = false;
+                med_card_checkbox.setAttribute("dispens_name", "Y");
+                med_card_checkbox.classList.remove("med_card_checkbox_disabled");
+                med_card_checkbox.addEventListener("click", () => {
+                    if(med_card_checkbox.checked) {
+                        med_log_arr.push(element.GUID);
+                    } else {
+                        let index = med_log_arr.indexOf(element.GUID);  // 找到 "orange" 的索引位置
+    
+                        if (index !== -1) {
+                            med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                        }
+    
                     }
-
-                }
-                console.log(med_log_arr);
-            })
-            // if(current_med_table == "all") {
-            //     med_card_checkbox.disabled = false;
-            // } else {
-            //     if(current_med_table.name == element.Dispensing) {
-            //         med_card_checkbox.disabled = false;
-            //     } else {
-            //         med_card_checkbox.disabled = true;
-            //         med_card_container.classList.add("card_disable");
-            //     }
-            // }
+                    console.log(med_log_arr);
+                })
+            }
+        } else {
+            if(element.check_status == "Y") med_card_checkbox.checked = true;
+            if(element.dispens_status != "Y") {
+                // med_card_checkbox.disabled = true;
+                med_card_checkbox.classList.add("med_card_checkbox_disabled");
+                med_card_container.classList.add("card_disable");
+                med_card_checkbox.addEventListener("click", () => {
+                    med_card_checkbox.checked = !med_card_checkbox.checked;
+                    alert("尚未完成調劑，無法進行覆核");
+                });
+            } else {
+                // med_card_checkbox.disabled = false;
+                med_card_checkbox.setAttribute("dispens_name", "Y");
+                med_card_checkbox.classList.remove("med_card_checkbox_disabled");
+                med_card_checkbox.addEventListener("click", () => {
+                    if(med_card_checkbox.checked) {
+                        med_log_arr.push(element.GUID);
+                    } else {
+                        let index = med_log_arr.indexOf(element.GUID);  // 找到 "orange" 的索引位置
+    
+                        if (index !== -1) {
+                            med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                        }
+    
+                    }
+                    console.log(med_log_arr);
+                })
+            }  
         }
+
 
         med_card_checkbox_label.appendChild(med_card_checkbox);
 
@@ -892,7 +917,14 @@ function set_pbm_main_container() {
                     break;
                 case "規範":
                     med_detail_info_div.addEventListener("click", () => {
-                        
+                        if(element.med_info.length == 0) {
+                            set_ppir_func("");
+                            popup_insurance_regulations_div_open();
+                        } else {
+                            let temp_text = element.med_info[0].spec.replace(/\n/g, '<br><br>')
+                            set_ppir_func(temp_text);
+                            popup_insurance_regulations_div_open();
+                        }
                     })
                     break;
                 case "註解":
@@ -941,7 +973,11 @@ function set_pbm_footer_container() {
     let pbmf_submit_btn = document.createElement("div");
     pbmf_submit_btn.classList.add("pbmf_submit_btn");
     pbmf_submit_btn.classList.add("btn");
-    pbmf_submit_btn.innerHTML = "交付覆核";
+    if(current_func == "allocate") {
+        pbmf_submit_btn.innerHTML = "交付覆核";
+    } else {
+        pbmf_submit_btn.innerHTML = "覆核完成";
+    }
     pbmf_submit_btn.addEventListener("click", async () => {
         let now = new Date();
     
@@ -978,7 +1014,11 @@ function set_pbm_footer_container() {
     pbmh_checked_submit_btn.addEventListener("click", async () => {
         let return_data = await set_post_data_to_check_dispense();
         if(return_data.Code == 200) {
-            alert(`第${current_p_bed_data.bednum}床，完成調劑`);
+            if(current_func == "allocate") {
+                alert(`第${current_p_bed_data.bednum}床，完成調劑`);
+            } else {
+                alert(`第${current_p_bed_data.bednum}床，完成覆核`);
+            }
         }
     })
 
@@ -1014,8 +1054,10 @@ function set_pbm_footer_container() {
     } 
 
     pbm_footer_container.appendChild(pbmh_pre_btn);
-    pbm_footer_container.appendChild(pbmh_light_on_btn);
-    pbm_footer_container.appendChild(pbmf_submit_btn);
+    if(current_func == "allocate") {
+        pbm_footer_container.appendChild(pbmh_light_on_btn);
+        pbm_footer_container.appendChild(pbmf_submit_btn);
+    }
     pbm_footer_container.appendChild(pbmh_checked_submit_btn);
     pbm_footer_container.appendChild(pbmh_next_btn);
 
@@ -1068,7 +1110,8 @@ async function set_post_data_to_check_dispense() {
                 op_name: loggedName.Name
             }
         ],
-        ValueAry: []
+        ValueAry: [],
+        Value: ""
     }
 
     med_card_checkbox.forEach(element => {
@@ -1079,10 +1122,20 @@ async function set_post_data_to_check_dispense() {
     console.log(med_arr);
     console.log(med_log_arr);
 
+    if(current_func == "allocate") {
+        post_data2.Value = "調劑"
+    } else if(current_func == "review") {
+        post_data2.Value = "覆核"
+    }
+
     if(med_arr.length > 0) {
         post_data.ValueAry[0] = med_arr.join(";");
         console.log(post_data);
-        return_data = await api_med_cart_check_dispense(post_data);
+        if(current_func == "allocate") {
+            return_data = await api_med_cart_check_dispense(post_data);
+        } else {
+            return_data = await api_med_cart_double_check(post_data);
+        }
         
         console.log(med_arr);
     }

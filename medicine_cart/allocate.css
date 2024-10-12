@@ -57,7 +57,7 @@
 .pb_btn_container {
     display: flex;
     width: 400px;
-    justify-content: space-between;
+    justify-content: end;
 }
 .pb_list_btn {
     position: relative;

@@ -713,7 +713,8 @@ function set_func_select_logic() {
       // Set_main_div_enable(false);
       break;
     case "review":
-      review_func();
+      allocate_func();
+      // review_func();
       // Set_main_div_enable(false);
       break;
     case "deliver":
@@ -735,54 +736,78 @@ async function allocate_func() {
   let cart_content = document.querySelector(".cart_content");
   let med_table_content = document.querySelector(".med_table_content");
 
-  div_event_click_tri_able(cart_select_container);
-  div_event_click_cir_able(med_table_select_container);
-  div_event_click_tri_able(func_select_container);
+  
+  if(current_func == "allocate") {
+    div_event_click_tri_able(cart_select_container);
+    div_event_click_cir_able(med_table_select_container);
+    div_event_click_tri_able(func_select_container);
 
-  cart_content.addEventListener("click", open_cart_list);
-  med_table_content.addEventListener("click", open_med_table_list);
-  if(current_cart == "" && current_med_table == "") {
-    Set_main_div_enable(false);
-    return;
-  } else if(current_cart == "" && current_med_table != "") {
-    Set_main_div_enable(false);
-    return;
+    cart_content.addEventListener("click", open_cart_list);
+    med_table_content.addEventListener("click", open_med_table_list);
+    if(current_cart == "" && current_med_table == "") {
+      Set_main_div_enable(false);
+      return;
+    } else if(current_cart == "" && current_med_table != "") {
+      Set_main_div_enable(false);
+      return;
+    } else {
+      allocate_diplay_logic();
+      return;
+    }
   } else {
-    allocate_diplay_logic();
-    return;
+    div_event_click_cir_able(cart_select_container);
+    div_event_click_cir_disable(med_table_select_container);
+    div_event_click_tri_able(func_select_container);
+
+    cart_content.addEventListener("click", open_cart_list);
+    med_table_content.removeEventListener("click", open_med_table_list);
+
+    med_table_content.innerHTML = '調劑台';
+    current_med_table = "";
+    last_current_med_table = "";
+  
+    if(current_cart == "" && current_med_table == "") {
+      Set_main_div_enable(false);
+      return;
+    } else {
+      console.log("生成覆核清單");
+      allocate_diplay_logic();
+      // Set_main_div_enable(false);
+      return;
+    }
   }
 }
 // 覆核作業
-async function review_func() {
-  await light_off_func();
-  let cart_select_container = document.querySelector(".cart_select_container");
-  let med_table_select_container = document.querySelector(".med_table_select_container");
-  let func_select_container = document.querySelector(".func_select_container");
+// async function review_func() {
+//   await light_off_func();
+//   let cart_select_container = document.querySelector(".cart_select_container");
+//   let med_table_select_container = document.querySelector(".med_table_select_container");
+//   let func_select_container = document.querySelector(".func_select_container");
 
-  let cart_content = document.querySelector(".cart_content");
-  let med_table_content = document.querySelector(".med_table_content");
+//   let cart_content = document.querySelector(".cart_content");
+//   let med_table_content = document.querySelector(".med_table_content");
 
-  div_event_click_cir_able(cart_select_container);
-  div_event_click_cir_disable(med_table_select_container);
-  div_event_click_tri_able(func_select_container);
+//   div_event_click_cir_able(cart_select_container);
+//   div_event_click_cir_disable(med_table_select_container);
+//   div_event_click_tri_able(func_select_container);
 
-  cart_content.addEventListener("click", open_cart_list);
-  med_table_content.removeEventListener("click", open_med_table_list);
+//   cart_content.addEventListener("click", open_cart_list);
+//   med_table_content.removeEventListener("click", open_med_table_list);
 
-  med_table_content.innerHTML = '調劑台';
-  current_med_table = "";
-  last_current_med_table = "";
+//   med_table_content.innerHTML = '調劑台';
+//   current_med_table = "";
+//   last_current_med_table = "";
 
-  if(current_cart == "" && current_med_table == "") {
-    Set_main_div_enable(false);
-    return;
-  } else {
-    console.log("生成覆核清單");
-    display_revise_func();
-    Set_main_div_enable(false);
-    return;
-  }
-}
+//   if(current_cart == "" && current_med_table == "") {
+//     Set_main_div_enable(false);
+//     return;
+//   } else {
+//     console.log("生成覆核清單");
+//     display_revise_func();
+//     Set_main_div_enable(false);
+//     return;
+//   }
+// }
 // 交車作業
 async function deliver_func() {
   await light_off_func();

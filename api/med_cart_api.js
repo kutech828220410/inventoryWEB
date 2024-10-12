@@ -174,6 +174,25 @@ async function api_med_cart_check_dispense(data) {
         return response.json();
     })
 
+    console.log("調劑確認");
+    console.log(temp_data);
+    return temp_data
+}
+// 覆核狀態確認
+async function api_med_cart_double_check(data) {
+    let temp_doman = transform_api_ip(api_ip);
+    let temp_data = await fetch(`${temp_doman}api/med_cart/double_check`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then((response) => {
+        return response.json();
+    })
+
+    console.log("覆核確認");
     console.log(temp_data);
     return temp_data
 }

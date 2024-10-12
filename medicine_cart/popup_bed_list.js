@@ -95,7 +95,9 @@ function set_pp_bed_list_info() {
         pp_bed_notice.classList.add("pp_bed_notice");
         pp_bed_notice.src = "../image/notice_mark.png";
 
-        pp_bed_card.appendChild(pp_bed_notice);
+        if(element.change == "Y") {
+            pp_bed_card.appendChild(pp_bed_notice);
+        }
 
         ppbl_main_container.appendChild(pp_bed_card);
     });

@@ -140,8 +140,10 @@
   ChathubErrorEvent = ChathubError;
   function ChathubError()
   {
-    alert("連線斷開,重新整理");
-    location.reload()
+    // alert("連線斷開,重新整理");
+    // location.reload();
+    signalR_init(`${api_ip}chatHub`);
+    console.log("reconnect....");
   }
 
   BarcodeKeyinEvent = BarcodeKeyin;
