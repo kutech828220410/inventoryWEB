@@ -95,7 +95,7 @@ function set_pp_bed_list_info() {
         pp_bed_notice.classList.add("pp_bed_notice");
         pp_bed_notice.src = "../image/notice_mark.png";
 
-        if(element.change == "Y") {
+        if(element.cpoe_change_status == "Y") {
             pp_bed_card.appendChild(pp_bed_notice);
         }
 

@@ -393,7 +393,7 @@ function set_main_list_display() {
     });
 
     mci_not_qty.innerHTML = `未核發量：${temp_actualQuantity - temp_do_actualQuantity}`;
-    mci_total_qty.innerHTML = `請領總量：${temp_do_actualQuantity}`;
+    mci_total_qty.innerHTML = `已發總量：${temp_do_actualQuantity}`;
 
     mci_detail.appendChild(mci_package);
     mci_detail.appendChild(mci_not_qty);

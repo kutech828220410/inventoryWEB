@@ -386,7 +386,6 @@
     opacity: 1;
     background-color: #f7b875;
     transition: 0.2s all ease;
-    cursor: auto;
 }
 .med_more_info_container {
     display: flex;
@@ -460,6 +459,16 @@
     background-color: #ff0000d3;
     transform: rotate(45deg);
     border-radius: 2px;
+}
+.inve_log_card {
+    width: 330px;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 25% 25% 50%;
+    padding: 6px 0px;
+}
+.inve_log_info {
+    line-height: 20px;
 }
 
 @media screen and (max-width: 1200px) {

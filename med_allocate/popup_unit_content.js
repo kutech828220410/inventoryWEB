@@ -89,7 +89,13 @@ function set_unit_state_btn(str) {
 
             if(confirm("是否核發")) {
                 console.log(e.target.getAttribute("GUID"));
-                await update_status_posted(e.target.getAttribute("GUID"));
+
+                let guid = e.target.getAttribute("GUID");
+                let post_data = get_post_data_pre_post(guid);
+                post_data.state = `已過帳`;
+                console.log("post_data",post_data);
+                await dsd_update_by_guid(post_data);
+                // await update_status_posted(e.target.getAttribute("GUID"));
                 await set_list_result_and_filter();
                 await set_ppuc_med_info(med_list_guid);
                 popup_unit_content_div_close();
@@ -266,7 +272,6 @@ function set_calculate_input_div() {
     pp_calculate_confirm_btn.innerHTML = "修改";
     pp_calculate_confirm_btn.addEventListener("click", async (e) => {
         if(e.target.classList.contains("disable_btn")) {
-            console.log("object");
             return;
         }
         let pp_calculate_input = document.querySelector(".pp_calculate_input").value;
@@ -278,8 +283,13 @@ function set_calculate_input_div() {
         if(+temp_actual_qty == +pp_calculate_input) {
             return;
         } else {
+            let guid = pp_calculate_confirm_btn.getAttribute("guid");
+            let post_data = get_post_data_pre_post(guid);
             temp_actual_qty = +pp_calculate_input;
-            await update_actual_quantity(med_list_guid, +pp_calculate_input);
+            post_data.actualIssuedQuantity = `${temp_actual_qty}`;
+            console.log("post_data",post_data);
+            await dsd_update_by_guid(post_data);
+
             await set_list_result_and_filter();
             await set_ppuc_med_info(med_list_guid);
             popup_unit_content_div_close();
@@ -544,6 +554,7 @@ async function set_ppuc_med_info(temp_guid) {
                 set_unit_state_btn(element.state);
                 let ppuc_h_unit_state_btn = document.querySelector(".ppuc_h_unit_state_btn"); // 核發按鈕
                 ppuc_h_unit_state_btn.setAttribute("GUID", element.GUID);
+                pp_calculate_confirm_btn.setAttribute("GUID", element.GUID);
                 pp_calculate_confirm_btn.classList.remove("disable_btn");
             } else {
                 pp_calculate_input_display.style.display = "block";
@@ -572,5 +583,4 @@ async function set_ppuc_med_info(temp_guid) {
             temp_actual_qty = +element.actualIssuedQuantity;
         }
     });
-    
 }

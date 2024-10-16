@@ -229,9 +229,12 @@ function set_main_head_container() {
     } else {
       if(confirm(`全部藥品是否核撥？`)) {
         temp_list.forEach(async element => {
-          await update_status_posted(element.GUID);
-          await set_list_result_and_filter();
+          let temp_post_data = element;
+          temp_post_data.state = "已過帳";
+
+          await dsd_update_by_guid(temp_post_data);
         });
+        await set_list_result_and_filter();
       }
     }
 
@@ -397,7 +400,7 @@ function set_main_list_display() {
     });
 
     mci_not_qty.innerHTML = `未核發量：${temp_actualIssuedQuantity - temp_do_actualIssuedQuantity}`;
-    mci_total_qty.innerHTML = `請領總量：${temp_do_actualIssuedQuantity}`;
+    mci_total_qty.innerHTML = `已發總量：${temp_do_actualIssuedQuantity}`;
 
     mci_detail.appendChild(mci_package);
     mci_detail.appendChild(mci_not_qty);
@@ -486,10 +489,12 @@ function set_main_list_display() {
       } else {
         if(confirm(`"${temp_list[0].name}" 是否全部核撥？`)) {
           temp_list.forEach(async element => {
-            await update_status_posted(element.GUID);
-            await set_list_result_and_filter();
+            let temp_post_data = element;
+            temp_post_data.state = "已過帳";
+
+            await dsd_update_by_guid(temp_post_data);
           });
-  
+          await set_list_result_and_filter();
         }
       }
 
@@ -836,5 +841,13 @@ async function barcode_keydown_event(e) {
 
     console.log(temp_search_condition);
     set_list_result_and_filter();
+  }
+}
+
+function get_post_data_pre_post(guid) {
+  if(post_result_data.length == 0) return "none";
+  for (let i = 0; i < post_result_data.length; i++) {
+    const element = post_result_data[i];
+    if(element.GUID == guid) return element;
   }
 }

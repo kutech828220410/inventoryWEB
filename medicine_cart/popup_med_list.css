@@ -141,6 +141,11 @@
     background-color: #C1EA69;
     color: #000;
 }
+.ppml_bed_disalbe {
+    background-color: #3e3e3e;
+    color: #000;
+    cursor: not-allowed;
+}
 .display_none {
     display: none;
 }

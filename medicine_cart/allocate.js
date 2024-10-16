@@ -188,7 +188,7 @@ function get_p_bed_header() {
     pb_list_notice.classList.add("display_none");
     for (let i = 0; i < med_cart_beds_data.length; i++) {
         const element = med_cart_beds_data[i];
-        if(element.change == "Y") {
+        if(element.cpoe_change_status == "Y") {
             pb_list_notice.classList.remove("display_none");
             break;
         };
@@ -202,12 +202,11 @@ function get_p_bed_header() {
     med_cart_sum_list_btn.innerHTML = "藥品總量";
     med_cart_sum_list_btn.addEventListener("click", async () => {
         Set_main_div_enable(true);
-        if(first_open) {
-            med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, "all");
-            med_list_data = med_list_data.Data;
-            await set_pp_med_list_display();
-            first_open = !first_open;
-        }
+
+        med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, "all");
+        med_list_data = med_list_data.Data;
+        await set_pp_med_list_display();
+
         await popup_med_list_div_open();
         Set_main_div_enable(false);
     });
@@ -784,8 +783,23 @@ function set_pbm_main_container() {
         med_card_big_bottle_icon.setAttribute("GUID", element.GUID);
         if(element.large == "L") {
             med_card_big_bottle_icon.classList.add("med_card_bigB");
-        } else {
-            med_card_big_bottle_icon.addEventListener("click", async () => {
+        } 
+        med_card_big_bottle_icon.addEventListener("click", async () => {
+            if(med_card_big_bottle_icon.classList.contains("med_card_bigB")) {
+                let post_data = {
+                    ValueAry:[element.GUID, ""]
+                };
+                if(confirm("該處方藥品是否取消大瓶藥標記？")){
+                    let return_data = await update_large_in_med_cpoe(post_data);
+                    if(return_data.Code == 200) {
+                        med_card_big_bottle_icon.classList.remove("med_card_bigB");
+                    } else {
+                        alert("變更失敗請確認資料");
+                    }
+                } else {
+                    return;
+                }
+            } else {
                 let post_data = {
                     ValueAry:[element.GUID, "L"]
                 };
@@ -799,8 +813,8 @@ function set_pbm_main_container() {
                 } else {
                     return;
                 }
-            });
-        };
+            }
+        });
 
         let med_card_open_tigger = document.createElement("img");
         med_card_open_tigger.classList.add("med_card_open_tigger");
@@ -836,6 +850,10 @@ function set_pbm_main_container() {
         med_cart_warnning_grind.classList.add("not_allow_warnning_icon");
         med_cart_warnning_grind.innerHTML = "磨";
 
+        let med_cart_warnning_self = document.createElement("div");
+        med_cart_warnning_self.classList.add("warnning_icon");
+        med_cart_warnning_self.innerHTML = "自費";
+
         if(element.lkflag != "" && element.lkflag != undefined) {
             if(element.lkflag.includes("L")) med_cart_warnning_container.appendChild(med_cart_warnning_liver);
             if(element.lkflag.includes("K")) med_cart_warnning_container.appendChild(med_cart_warnning_kidney);
@@ -843,6 +861,7 @@ function set_pbm_main_container() {
 
         if(element.samedg == "Y") med_cart_warnning_container.appendChild(med_cart_warnning_repeat);
         if(element.udngt == "N") med_cart_warnning_container.appendChild(med_cart_warnning_grind);
+        if(element.self == "Y") med_cart_warnning_container.appendChild(med_cart_warnning_self);
 
         med_card_main_display_container.appendChild(med_cart_warnning_container);
 
@@ -945,8 +964,94 @@ function set_pbm_main_container() {
 
             med_more_info_container.appendChild(med_detail_info_div);
         });
+
+        let med_inve_log_container = document.createElement("div");
+        med_inve_log_container.classList.add("med_inve_log_container");
+
+        let temp_arr = [];
+
+        if(element.med_inve_log.length > 0) {
+            temp_arr = element.med_inve_log.filter((e) => {
+                return e.op_act == "調劑";
+            })
+        };
+
+        if(temp_arr.length > 0) {
+            let inve_log_card = document.createElement("div");
+            inve_log_card.classList.add("inve_log_card");
+
+            let inve_log_op_title = document.createElement("div");
+            inve_log_op_title.classList.add("inve_log_op_title");
+            inve_log_op_title.classList.add("inve_log_info");
+            inve_log_op_title.innerHTML = '操作人';
+
+            let inve_log_qty_title = document.createElement("div");
+            inve_log_qty_title.classList.add("inve_log_qty_title");
+            inve_log_qty_title.classList.add("inve_log_info");
+            inve_log_qty_title.innerHTML = `數量`;
+
+            let inve_log_unit_title = document.createElement("div");
+            inve_log_unit_title.classList.add("inve_log_unit_title");
+            inve_log_unit_title.classList.add("inve_log_info");
+            inve_log_unit_title.innerHTML = `單位`;
+
+            let inve_log_time_title = document.createElement("div");
+            inve_log_time_title.classList.add("inve_log_time_title");
+            inve_log_time_title.classList.add("inve_log_info");
+            inve_log_time_title.innerHTML = `時間`;
+
+            inve_log_card.appendChild(inve_log_op_title);
+            inve_log_card.appendChild(inve_log_qty_title);
+            // inve_log_card.appendChild(inve_log_unit_title);
+            inve_log_card.appendChild(inve_log_time_title);
+
+            med_inve_log_container.appendChild(inve_log_card);
+
+            element.med_inve_log.forEach(item => {
+                if(item.op_act == "調劑") {
+                    let inve_log_card = document.createElement("div");
+                    inve_log_card.classList.add("inve_log_card");
+        
+                    let inve_log_op = document.createElement("div");
+                    inve_log_op.classList.add("inve_log_op");
+                    inve_log_op.classList.add("inve_log_info");
+                    inve_log_op.innerHTML = `
+                        ${item.op_name}
+                    `;
+        
+                    let inve_log_qty = document.createElement("div");
+                    inve_log_qty.classList.add("inve_log_qty");
+                    inve_log_qty.classList.add("inve_log_info");
+                    inve_log_qty.innerHTML = `
+                        ${+item.qty}
+                    `;
+        
+                    let inve_log_unit = document.createElement("div");
+                    inve_log_unit.classList.add("inve_log_unit");
+                    inve_log_unit.classList.add("inve_log_info");
+                    inve_log_unit.innerHTML = `
+                        ${item.dunit}
+                    `;
+        
+                    let inve_log_time = document.createElement("div");
+                    inve_log_time.classList.add("inve_log_time");
+                    inve_log_time.classList.add("inve_log_info");
+                    inve_log_time.innerHTML = `
+                        ${item.op_time}
+                    `;
+    
+                    inve_log_card.appendChild(inve_log_op);
+                    inve_log_card.appendChild(inve_log_qty);
+                    // inve_log_card.appendChild(inve_log_unit);
+                    inve_log_card.appendChild(inve_log_time);
+        
+                    med_inve_log_container.appendChild(inve_log_card);
+                }
+            });
+        }
         
         med_card_container.appendChild(med_more_info_container);
+        med_card_container.appendChild(med_inve_log_container);
 
         pbm_main_container.appendChild(med_card_container);
     });
@@ -1130,15 +1235,17 @@ async function set_post_data_to_check_dispense() {
 
     if(med_arr.length > 0) {
         post_data.ValueAry[0] = med_arr.join(";");
-        console.log(post_data);
-        if(current_func == "allocate") {
-            return_data = await api_med_cart_check_dispense(post_data);
-        } else {
-            return_data = await api_med_cart_double_check(post_data);
-        }
-        
-        console.log(med_arr);
+    } else {
+        post_data.ValueAry[0] = "";
     }
+    console.log(post_data);
+    if(current_func == "allocate") {
+        return_data = await api_med_cart_check_dispense(post_data);
+    } else {
+        return_data = await api_med_cart_double_check(post_data);
+    }
+    console.log(med_arr);
+    
     if(med_log_arr.length > 0) {
         post_data2.ValueAry[0] = med_log_arr.join(";");
         console.log(post_data2);
@@ -1155,7 +1262,7 @@ function open_med_detail_info() {
     med_card_open_tigger.forEach(item => {
         let med_card_container = item.parentElement.parentElement;
         let temp_h = item.parentElement.clientHeight;
-        let temp_h2 = item.parentElement.parentElement.childNodes[1].clientHeight;
+        let temp_h2 = item.parentElement.parentElement.childNodes[1].clientHeight + item.parentElement.parentElement.childNodes[2].clientHeight;
         med_card_container.style.height = `${temp_h}px`;
 
         item.addEventListener("click", () => {

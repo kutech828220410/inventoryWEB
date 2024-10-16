@@ -62,18 +62,25 @@ let html_pages = [
                         icon_big_url: "../../image/icon/inspection_big_icon.png"
                     },
                     {
-                        html_name: "med_request",
-                        html_ctName: "申領核撥",
-                        html_url: "../../med_request",
-                        icon_url: "../../image/icon/assortment.png",
-                        icon_big_url: "../../image/list.png"
-                    },
-                    {
                         html_name: "pickingpage",
                         html_ctName: "揀貨",
                         html_url: "../../pickingpage",
                         icon_url: "../../image/icon/assortment.png",
                         icon_big_url: "../../image/icon/picking_big_icon.png"
+                    },
+                    {
+                        html_name: "med_request",
+                        html_ctName: "申領核撥",
+                        html_url: "../../med_request",
+                        icon_url: "../../image/icon/research.png",
+                        icon_big_url: "../../image/icon/research.png"
+                    },
+                    {
+                        html_name: "med_allocate",
+                        html_ctName: "撥補核撥",
+                        html_url: "../../med_allocate",
+                        icon_url: "../../image/icon/assortment.png",
+                        icon_big_url: "../../image/list.png"
                     },
                     {
                         html_name: "requisitions_upload",
