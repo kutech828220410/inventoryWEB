@@ -88,6 +88,7 @@ function Replace_data_by_content(creat , content)
 }
 function creat_row_div(_index , Contents) 
 {
+    // console.log("asdf");
     const row_div = document.createElement("div");
     row_div.setAttribute("GUID", `${Contents.GUID}`);
     row_div.setAttribute("CODE", `${Contents.CODE}`);

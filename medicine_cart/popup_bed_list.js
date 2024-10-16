@@ -70,7 +70,11 @@ function set_pp_bed_list_info() {
         pp_bed_card.classList.add("pp_bed_card");
         if(index == patient_bed_index) pp_bed_card.classList.add("pp_current_bed");
         if(index == last_patient_bed_index) pp_bed_card.classList.add("pp_last_selected_bed");
-        if(element.dispens_status != "") pp_bed_card.classList.add("pp_done_bed");
+        if(current_func == "allocate") {
+            if(element.dispens_status != "") pp_bed_card.classList.add("pp_done_bed");
+        } else {
+            if(element.check_status != "") pp_bed_card.classList.add("pp_done_bed");
+        }
         // if(element["cpoe"].length == 0) pp_bed_card.classList.add("pp_done_bed");
         if(element.bed_status != "已佔床") pp_bed_card.classList.add("pp_nouse_bed");
         // console.log(element);
@@ -79,14 +83,16 @@ function set_pp_bed_list_info() {
         // pp_bed_card.innerHTML = `${element.nurnum}-${element.bednum}`;
 
         if(element.bed_status == "已佔床") {
-            pp_bed_card.addEventListener("click", () => {
+            pp_bed_card.addEventListener("click", async () => {
                 if(index == patient_bed_index) return;
-    
+                Set_main_div_enable(true);
+                await set_post_data_to_check_dispense()
+
                 last_patient_bed_index = patient_bed_index;
                 patient_bed_index = index;
     
                 allocate_display_init();
-    
+                Set_main_div_enable(false);
                 popup_bed_list_div_close();
             });
         }

@@ -90,7 +90,7 @@ async function downloadExcel(url, jsonData, filename)
     // 创建下载链接
     let downloadLink = document.createElement('a');
     downloadLink.href = window.URL.createObjectURL(blob);
-    downloadLink.download = `${year}/${month}/${day}_${filename}.xls`;
+    downloadLink.download = `${year}/${month}/${day}_${filename}.xlsx`;
     downloadLink.click();
   } catch (error) {
     console.error(error);

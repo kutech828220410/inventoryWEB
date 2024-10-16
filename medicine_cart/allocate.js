@@ -178,7 +178,7 @@ function get_p_bed_header() {
     pb_list_btn.classList.add("pb_list_btn");
     pb_list_btn.innerHTML = "病床清單";
     pb_list_btn.addEventListener("click", () => {
-        set_pp_bed_list_info();
+        // set_pp_bed_list_info();
         popup_bed_list_div_open();
     })
     
@@ -1349,6 +1349,7 @@ async function light_off_func() {
         console.log("沒有燈要關");
     }
 }
+
 async function light_on_func(code, phar, type) {
     await light_off_func();
     console.log("開始亮燈");
