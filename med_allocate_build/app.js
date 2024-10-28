@@ -109,6 +109,9 @@ async function set_main_diplay() {
     form_input_content.appendChild(form_input_div);
   });
 
+  let form_btn_container = document.createElement("div");
+  form_btn_container.classList.add("form_btn_container");
+
   let submit_btn = document.createElement("div");
   submit_btn.classList.add("submit_btn");
   submit_btn.classList.add("btn");
@@ -117,8 +120,19 @@ async function set_main_diplay() {
     submit_form();
   });
 
+  let clean_btn = document.createElement("div");
+  clean_btn.classList.add("clean_btn");
+  clean_btn.classList.add("btn");
+  clean_btn.innerHTML = "清空";
+  clean_btn.addEventListener("click", () => {
+    clean_form();
+  });
+  
+  form_btn_container.appendChild(submit_btn);
+  form_btn_container.appendChild(clean_btn);
+
   main_form_container.appendChild(form_input_content);
-  main_form_container.appendChild(submit_btn);
+  main_form_container.appendChild(form_btn_container);
 
   main_div.appendChild(main_form_container);
 }
@@ -243,6 +257,16 @@ function set_input_div(element, phar_data) {
       let destinationStoreType_select = document.createElement("select");
       destinationStoreType_select.id = element.value;
       destinationStoreType_select.classList.add("select_style");
+
+      // 設定預設目的庫別
+      let index = phar_data.findIndex(item => item.name === "共用區");
+      if (index !== -1) {
+          // 將找到的物件取出
+          let obj = phar_data.splice(index, 1)[0];
+          // 把物件插入到陣列的第一個位置
+          phar_data.unshift(obj);
+      };
+
       phar_data.forEach(element => {
         destinationStoreType_select.innerHTML += `<option value="${element.name}">${element.name}</option>`;
       });
@@ -362,13 +386,26 @@ async function submit_form() {
   let return_data = await add_allocate_list(temp_post_data);
   console.log("return_data",return_data);
   if(return_data.Code == 200) {
-    name_input.value = "";
-    code_input.value = "";
-    skdiacode_input.value = "";
-    issuedQuantity_input.value = "";
+    clean_form();
   } else {
     alert("建單失敗，請確認原因");
   }
+}
+
+function clean_form() {
+  let name_input = document.querySelector("#name");
+  let code_input = document.querySelector("#code");
+  let skdiacode_input = document.querySelector("#skdiacode");
+  let issuedQuantity_input = document.querySelector("#issuedQuantity");
+  let sourceStoreType_input = document.querySelector("#sourceStoreType");
+  let destinationStoreType_input = document.querySelector("#destinationStoreType");
+
+  name_input.value = "";
+  code_input.value = "";
+  skdiacode_input.value = "";
+  issuedQuantity_input.value = "";
+  sourceStoreType_input.selectedIndex = 0;
+  destinationStoreType_input.selectedIndex = 0;
 }
 
 async function get_serversetting_by_type() {

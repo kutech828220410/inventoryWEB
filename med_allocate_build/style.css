@@ -144,9 +144,11 @@
     color: #000;    
     transition: all 0.2s ease-in;
 }
-.submit_btn {
-    width: 60%;
-    margin: auto;
+.form_btn_container {
+    padding: 0px 40px;
+    display: grid;
+    grid-template-columns: 30% 30%;
+    justify-content: space-between;
 }
 
 .under-line {

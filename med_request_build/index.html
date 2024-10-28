@@ -71,17 +71,28 @@
   BarcodeKeyinEvent = BarcodeKeyin;
   async function BarcodeKeyin(parsedCode)
   {
-    let main_fast_search_input = document.querySelector(".main_fast_search_input");
-    if(document.activeElement == main_fast_search_input) return;
+    let name_input = document.querySelector("#name");
+    let code_input = document.querySelector("#code");
+    let skdiacode_input = document.querySelector("#skdiacode");
+    let issuedQuantity_input = document.querySelector("#issuedQuantity");
+
+    if(document.activeElement == name_input) return;
+    if(document.activeElement == code_input) return;
+    if(document.activeElement == skdiacode_input) return;
+    if(document.activeElement == issuedQuantity_input) return;
 
     const response = await serch_by_BarCode(parsedCode ,medicine_page.Data);
     console.log("serch_by_BarCode",response)
     if(response.Data.length == 0) {
-        main_fast_search_input.value = ''
+        alert("查無此藥品");
         return;
     }
 
-    console.log(response.Data[0].CODE);
+    console.log(response.Data[0]);
+
+    name_input.value = response.Data[0].NAME;
+    code_input.value = response.Data[0].CODE;
+    skdiacode_input.value = response.Data[0].SKDIACODE;
 
     let today = new Date();
     let yyyy = today.getFullYear();
@@ -96,22 +107,22 @@
 
     let code = response.Data[0].CODE;
 
-    console.log("barcode：" + main_fast_search_input.value);
+    console.log("barcode：" + parsedCode);
     console.log("Barcode search result：" + code);
 
     if(code == undefined) return;
 
-    temp_search_condition.date = `${yyyy}-${mm}-${dd}`;
-    temp_search_condition.req_unit = "all";
-    temp_search_condition.type = "code";
-    temp_search_condition.content = code;
+    // temp_search_condition.date = `${yyyy}-${mm}-${dd}`;
+    // temp_search_condition.req_unit = "all";
+    // temp_search_condition.type = "code";
+    // temp_search_condition.content = code;
 
-    main_fast_search_input.value = "";
+    // main_fast_search_input.value = "";
 
-    console.log(temp_search_condition);
-    set_list_result_and_filter();
+    // console.log(temp_search_condition);
+    // set_list_result_and_filter();
 
-    main_fast_search_input.value = '';
+    // main_fast_search_input.value = '';
   }
 
 // 解析帶有分隔符的字符串
