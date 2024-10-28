@@ -1,5 +1,6 @@
 // 取得住院藥局清單
 async function med_cart_all_get_phar() {
+    let start_p = performance.now();
     let temp_doman = transform_api_ip_4433(api_ip);
     let temp_data = await fetch(`${temp_doman}api/medCarList/get_phar`, {
         method: "POST",
@@ -10,8 +11,10 @@ async function med_cart_all_get_phar() {
     })
     .then((response) => {
         return response.json();
-    })
+    });
 
+    let end_p = performance.now();
+    console.log(end_p - start_p);
     console.log(temp_data);
 
     return temp_data;
@@ -19,6 +22,7 @@ async function med_cart_all_get_phar() {
 
 // 依藥局取得護理站清單
 async function get_all_med_cart_by_phar(phar) {
+    let start_p = performance.now();
     let temp_doman = transform_api_ip_4433(api_ip);
     let temp_data = await fetch(`${temp_doman}api/medCarList/get_medcar_by_phar`, {
         method: "POST",
@@ -31,8 +35,10 @@ async function get_all_med_cart_by_phar(phar) {
     })
     .then((response) => {
         return response.json();
-    })
+    });
 
+    let end_p = performance.now();
+    console.log(end_p - start_p);
     console.log(temp_data);
 
     return temp_data;
@@ -40,6 +46,7 @@ async function get_all_med_cart_by_phar(phar) {
 
 // 取得病床清單
 async function get_bed_list_by_cart(phar, med_cart) {
+    let start_p = performance.now();
     let temp_doman = transform_api_ip(api_ip);
     console.log(temp_doman);
     let temp_data = await fetch(`${temp_doman}/api/med_cart/get_bed_list_by_cart`, {
@@ -55,6 +62,8 @@ async function get_bed_list_by_cart(phar, med_cart) {
         return response.json();
     })
 
+    let end_p = performance.now();
+    console.log(end_p - start_p);
     console.log(temp_data);
 
     return temp_data;
@@ -62,6 +71,7 @@ async function get_bed_list_by_cart(phar, med_cart) {
 
 // 取的病床資訊
 async function get_patient_by_bedNum(phar, med_cart, bed_num) {
+    let start_p = performance.now();
     let temp_doman = transform_api_ip(api_ip);
     let temp_data = await fetch(`${temp_doman}/api/med_cart/get_patient_by_bedNum`, {
         method: "POST",
@@ -76,12 +86,15 @@ async function get_patient_by_bedNum(phar, med_cart, bed_num) {
         return response.json();
     })
 
+    let end_p = performance.now();
+    console.log(end_p - start_p);
     console.log(temp_data);
 
     return temp_data;
 }
 // 取的病床資訊
 async function get_patient_GUID(data) {
+    let start_p = performance.now();
     let temp_doman = transform_api_ip(api_ip);
     let temp_data = await fetch(`${temp_doman}/api/med_cart/get_patient_by_GUID`, {
         method: "POST",
@@ -94,6 +107,8 @@ async function get_patient_GUID(data) {
         return response.json();
     })
 
+    let end_p = performance.now();
+    console.log(end_p - start_p);
     console.log(temp_data);
 
     return temp_data;
@@ -101,6 +116,7 @@ async function get_patient_GUID(data) {
 
 // 取得藥品總量
 async function get_all_med_qty(phar, med_cart, table) {
+    let start_p = performance.now();
     let temp_doman = transform_api_ip(api_ip);
     let temp_data = await fetch(`${temp_doman}/api/med_cart/get_med_qty`, {
         method: "POST",
@@ -116,6 +132,32 @@ async function get_all_med_qty(phar, med_cart, table) {
         return response.json();
     })
 
+    let end_p = performance.now();
+    console.log(end_p - start_p);
+    console.log(temp_data);
+
+    return temp_data;
+}
+
+// 取得藥品異動清單
+async function get_patient_with_NOdispense(data) {
+    let start_p = performance.now();
+    let temp_doman = transform_api_ip_4433(api_ip);
+    let temp_data = await fetch(`${temp_doman}api/med_cart/get_patient_with_NOdispense`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            ValueAry: data
+        }),
+    })
+    .then((response) => {
+        return response.json();
+    })
+
+    let end_p = performance.now();
+    console.log(end_p - start_p);
     console.log(temp_data);
 
     return temp_data;
@@ -123,6 +165,7 @@ async function get_all_med_qty(phar, med_cart, table) {
 
 // 依藥局取得調劑台
 async function get_serversetting_by_department_type(phar) {
+    let start_p = performance.now();
     let temp_doman = transform_api_ip_4433(api_ip);
     let temp_data = await fetch(`${temp_doman}api/ServerSetting/get_serversetting_by_department_type`, {
         method: "POST",
@@ -137,12 +180,15 @@ async function get_serversetting_by_department_type(phar) {
         return response.json();
     })
 
+    let end_p = performance.now();
+    console.log(end_p - start_p);
     console.log(temp_data);
 
     return temp_data;
 }
 // 依藥局&護理站確認可否交車
 async function med_cart_handover(phar, med_cart) {
+    let start_p = performance.now();
     let temp_doman = transform_api_ip_4433(api_ip);
     let temp_data = await fetch(`${temp_doman}api/med_cart/handover`, {
         method: "POST",
@@ -157,12 +203,15 @@ async function med_cart_handover(phar, med_cart) {
         return response.json();
     })
 
+    let end_p = performance.now();
+    console.log(end_p - start_p);
     console.log(temp_data);
 
     return temp_data;
 }
 // 調劑狀態確認
 async function api_med_cart_check_dispense(data) {
+    let start_p = performance.now();
     let temp_doman = transform_api_ip_4433(api_ip);
     let temp_data = await fetch(`${temp_doman}api/med_cart/check_dispense`, {
         method: "POST",
@@ -175,12 +224,15 @@ async function api_med_cart_check_dispense(data) {
         return response.json();
     })
 
+    let end_p = performance.now();
+    console.log(end_p - start_p);
     console.log("病床藥品調劑確認");
     console.log(temp_data);
     return temp_data
 }
 // 覆核狀態確認
 async function api_med_cart_double_check(data) {
+    let start_p = performance.now();
     let temp_doman = transform_api_ip_4433(api_ip);
     let temp_data = await fetch(`${temp_doman}api/med_cart/double_check`, {
         method: "POST",
@@ -193,12 +245,15 @@ async function api_med_cart_double_check(data) {
         return response.json();
     })
 
+    let end_p = performance.now();
+    console.log(end_p - start_p);
     console.log("病床藥品覆核確認");
     console.log(temp_data);
     return temp_data
 }
 // 覆核狀態確認
 async function api_med_cart_double_check_by_GUID(data) {
+    let start_p = performance.now();
     let temp_doman = transform_api_ip_4433(api_ip);
     let temp_data = await fetch(`${temp_doman}api/med_cart/double_check_by_GUID`, {
         method: "POST",
@@ -211,12 +266,15 @@ async function api_med_cart_double_check_by_GUID(data) {
         return response.json();
     })
 
+    let end_p = performance.now();
+    console.log(end_p - start_p);
     console.log("單一藥品覆核確認");
     console.log(temp_data);
     return temp_data
 }
 // 調劑狀態確認
 async function api_med_cart_check_dispense_by_GUID(data) {
+    let start_p = performance.now();
     let temp_doman = transform_api_ip_4433(api_ip);
     let temp_data = await fetch(`${temp_doman}api/med_cart/check_dispense_by_GUID`, {
         method: "POST",
@@ -229,6 +287,8 @@ async function api_med_cart_check_dispense_by_GUID(data) {
         return response.json();
     })
 
+    let end_p = performance.now();
+    console.log(end_p - start_p);
     console.log("單一藥品調劑確認");
     console.log(temp_data);
     return temp_data
@@ -236,6 +296,7 @@ async function api_med_cart_check_dispense_by_GUID(data) {
 
 // 初盤紀錄log
 async function add_med_inventory_log(data) {
+    let start_p = performance.now();
     let temp_doman = transform_api_ip_4433(api_ip);
     let temp_data = await fetch(`${temp_doman}api/med_inventory/add_med_inventory_log`, {
         method: "POST",
@@ -248,10 +309,13 @@ async function add_med_inventory_log(data) {
         return response.json();
     })
 
+    let end_p = performance.now();
+    console.log(end_p - start_p);
     console.log(temp_data);
 }
 // 新增初盤紀錄
 async function add_med_inventory_time_track(data) {
+    let start_p = performance.now();
     let temp_doman = transform_api_ip_4433(api_ip);
     let temp_data = await fetch(`${temp_doman}api/med_inventory/add_med_inventory`, {
         method: "POST",
@@ -266,10 +330,14 @@ async function add_med_inventory_time_track(data) {
     if(temp_data.Code == 200) {
         alert(`紀錄時間：${temp_data.Data[0].op_time}`);
     }
+
+    let end_p = performance.now();
+    console.log(end_p - start_p);
     console.log(temp_data);
 }
 // 根據藥局、護理站、日期給出操作人清單
 async function get_opid_by_time(data) {
+    let start_p = performance.now();
     let temp_doman = transform_api_ip_4433(api_ip);
     let temp_data = await fetch(`${temp_doman}api/med_inventory/get_opid_by_time`, {
         method: "POST",
@@ -281,6 +349,9 @@ async function get_opid_by_time(data) {
     .then((response) => {
         return response.json();
     })
+
+    let end_p = performance.now();
+    console.log(end_p - start_p);
     console.log(temp_data);
 
     return temp_data

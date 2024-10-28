@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="popup_similar_drugs.css">
   <link rel="stylesheet" href="popup_physician_notes.css">
   <link rel="stylesheet" href="popup_insurance_regulations.css">
+  <link rel="stylesheet" href="popup_med_change_list.css">
   <script src="../../Function/Basic.js?v=1.14"></script>
 
   <script>
@@ -58,6 +59,7 @@
           loadScript("popup_similar_drugs.js");
           loadScript("popup_physician_notes.js");
           loadScript("popup_insurance_regulations.js");
+          loadScript("popup_med_change_list.js");
         })();
 
   </script>
@@ -93,6 +95,9 @@
 
     get_popup_insurance_regulations();
     popup_insurance_regulations_div.Set_Visible(false);
+
+    get_popup_med_change_list();
+    popup_med_change_list_div.Set_Visible(false);
   </script>
 
   <div class="under-line">

@@ -59,7 +59,7 @@ async function postDataToAPI(url, data)
       const responseData = await response.json();
       return responseData;
     } catch (error) {
-      alert("伺服器未回應，請聯絡工程師進行確認。");
+      console.log("伺服器未回應，請聯絡工程師進行確認。");
       console.error(error);
       //throw error;
     }

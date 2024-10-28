@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  <title>申領建單</title>
+  <!-- <link rel="stylesheet" href="main.css"> -->
+  <link rel="stylesheet" href="style.css?v=">
+  <link rel="stylesheet" href="../UI/style/navBar.css?v=">
+  <link rel="stylesheet" href="../../UI/popup_UI/med_storage/popup_storage.css?v=">
+  <script src="../../Function/Basic.js?v=1.14"></script>
+  <script>
+    (async function() 
+        {
+          loadScript("../../ApiURL.js");
+          loadScript("../../ChatHub.js");
+          loadScript("../../svg/mySVG.js");
+          loadScript("../../UI/map.js");
+          loadScript("../../popup/map.js");    
+          loadScript("../../dist/JsBarcode.all.js");
+          loadScript("../../session_check.js");
+          loadScript("../../session.js");
+          loadScript("../../Function/WebApiFunc.js");
+          loadScript("../../api/materialRequisition.js");
+          loadScript("../../api/med_page.js");
+          loadScript("page_data.js");
+          loadScript("app.js");
+          loadScript("../../UI/popup_UI/med_storage/popup_storage.js");
+          loadScript("../../UI/navBar.js");
+          loadScript("../../api/web_permissions.js");
+        })();
+
+  </script>
+</head>
+<body>
+  
+      <script>
+          // document.body.style.position = 'absolute';
+          // const header_div = get_header();
+          // document.body.appendChild(header_div);
+          // const main_div = get_main();
+          // document.body.appendChild(main_div);  
+
+          // get_popup_search_select();
+          // popup_search_select_div.Set_Visible(true);
+          
+          // const popup_find_div = get_popup_serch();
+          // document.body.appendChild(popup_find_div.div);
+          // popup_find_div.Set_Visible(false);
+
+          // get_popup_search_select();
+          // popup_search_select_div.Set_Visible(false);
+
+          // get_popup_storage();
+          // popup_storage_div.Set_Visible(false);
+
+          // get_popup_unit_content();
+          // popup_unit_content_div.Set_Visible(false);
+          
+          // get_popup_excel_down();
+          // popup_excel_down_div.Set_Visible(false);
+      </script>
+   
+  <div class="under-line">
+    <B> Copyright ©2024 鴻森智能科技 </B>
+  </div>
+<script>
+  BarcodeKeyinEvent = BarcodeKeyin;
+  async function BarcodeKeyin(parsedCode)
+  {
+    let main_fast_search_input = document.querySelector(".main_fast_search_input");
+    if(document.activeElement == main_fast_search_input) return;
+
+    const response = await serch_by_BarCode(parsedCode ,medicine_page.Data);
+    console.log("serch_by_BarCode",response)
+    if(response.Data.length == 0) {
+        main_fast_search_input.value = ''
+        return;
+    }
+
+    console.log(response.Data[0].CODE);
+
+    let today = new Date();
+    let yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1;
+    let dd = today.getDate();
+    if (mm < 10) {
+        mm = '0' + mm;
+    }
+    if (dd < 10) {
+        dd = '0' + dd;
+    }
+
+    let code = response.Data[0].CODE;
+
+    console.log("barcode：" + main_fast_search_input.value);
+    console.log("Barcode search result：" + code);
+
+    if(code == undefined) return;
+
+    temp_search_condition.date = `${yyyy}-${mm}-${dd}`;
+    temp_search_condition.req_unit = "all";
+    temp_search_condition.type = "code";
+    temp_search_condition.content = code;
+
+    main_fast_search_input.value = "";
+
+    console.log(temp_search_condition);
+    set_list_result_and_filter();
+
+    main_fast_search_input.value = '';
+  }
+
+// 解析帶有分隔符的字符串
+function parseBarcode(scannedCode) 
+{
+  const delimiter = /[\n\r]/g;
+  const matches = scannedCode.split(delimiter);
+  return matches[0];
+}
+
+</script>
+  
+</body>
+</html>

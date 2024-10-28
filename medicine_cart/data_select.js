@@ -120,6 +120,7 @@ let patient_bed_index = -1;
 let last_patient_bed_index = -1;
 let first_patient_bed_index;
 let final_patient_bed_index;
+let med_change_data;
 let light_on_arr = {
     ServerName: "",
     ServerType: "",

@@ -56,7 +56,7 @@
 }
 .pb_btn_container {
     display: flex;
-    width: 400px;
+    width: 500px;
     justify-content: end;
 }
 .pb_list_btn {
@@ -498,6 +498,10 @@
         flex-direction: column;
     }
     .pb_btn_container {
+        display: grid;
+        grid-template-columns: 40% 40%;
+        justify-content: center;
+        text-align: center;
         width: 370px;
     }
     .pbic_top {

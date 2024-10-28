@@ -79,7 +79,7 @@ async function get_med_pic_by_code(code) {
       "Data": {},
       "ValueAry" : [code]
   };
-  console.log("進入api取得資料");
+  console.log("進入api取得資料", data);
   // console.log(`${api_ip}api/medPic/get_by_code`);
   let temp_data = await fetch(`${api_ip}api/medPic/get_by_code`, {
       method: "POST",
@@ -93,7 +93,7 @@ async function get_med_pic_by_code(code) {
       // console.log(response.json());
       return response.json();
   });
-  // console.log(temp_data);
+  console.log(temp_data);
 
   if(temp_data.Code != -200) {
     console.log("code 200");

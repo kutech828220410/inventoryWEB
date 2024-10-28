@@ -173,6 +173,14 @@ function get_p_bed_header() {
     let pb_btn_container = document.createElement("div");
     pb_btn_container.classList.add("pb_btn_container");
 
+    let ppmcl_btn = document.createElement("div");
+    ppmcl_btn.classList.add("btn");
+    ppmcl_btn.classList.add("ppmcl_btn");
+    ppmcl_btn.innerHTML = "藥品異動";
+    ppmcl_btn.addEventListener("click", () => {
+        popup_med_change_list_div_open();
+    })
+
     let pb_list_btn = document.createElement("div");
     pb_list_btn.classList.add("btn");
     pb_list_btn.classList.add("pb_list_btn");
@@ -221,6 +229,9 @@ function get_p_bed_header() {
         popup_dc_new_div_open();
     });
 
+    if(current_func == "allocate") {
+        pb_btn_container.appendChild(ppmcl_btn);
+    }
     pb_btn_container.appendChild(dc_new_btn);
     pb_btn_container.appendChild(med_cart_sum_list_btn);
     pb_btn_container.appendChild(pb_list_btn);
@@ -738,33 +749,33 @@ function set_pbm_main_container() {
 
         let med_card_name = document.createElement("div");
         med_card_name.classList.add("med_card_name");
-        if(element["med_cloud"].length < 1) {
+        if(!element["med_cloud"]) {
             if(element.name == "") {
                 med_card_name.innerHTML = ``;
             } else {
                 med_card_name.innerHTML = `${element.name}`;
             }
         } else {
-            if(element["med_cloud"][0].NAME == "") {
+            if(!element["med_cloud"].NAME) {
                 med_card_name.innerHTML = ``;
             } else {
-                med_card_name.innerHTML = `${element["med_cloud"][0].NAME}`;
+                med_card_name.innerHTML = `${element["med_cloud"].NAME}`;
             }
         }
 
         let med_card_cht_name = document.createElement("div");
         med_card_cht_name.classList.add("med_card_cht_name");
-        if(element["med_cloud"].length < 1) {
+        if(!element["med_cloud"]) {
             if(element.cht_name == "") {
                 med_card_cht_name.innerHTML = ``;
             } else {
                 med_card_cht_name.innerHTML = `${element.cht_name}`;
             }
         } else {
-            if(element["med_cloud"][0].CHT_NAME == "") {
+            if(!element["med_cloud"].CHT_NAME) {
                 med_card_cht_name.innerHTML = ``;
             } else {
-                med_card_cht_name.innerHTML = `${element["med_cloud"][0].CHT_NAME}`;
+                med_card_cht_name.innerHTML = `${element["med_cloud"].CHT_NAME}`;
             }
         }
 
@@ -1184,7 +1195,7 @@ async function pre_bed_func() {
 }
 async function next_bed_func() {
     Set_main_div_enable(true);
-    await set_post_data_to_check_dispense();
+    set_post_data_to_check_dispense();
     let temp_p_bed_index = patient_bed_index;
     first_patient_bed_index;
     final_patient_bed_index;

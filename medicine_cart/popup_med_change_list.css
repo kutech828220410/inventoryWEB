@@ -1,0 +1,114 @@
+.popup_med_change_list_div {
+    width: 600px;
+}
+.ppmcl_header_container {
+    width: 100%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+.ppmcl_h_title {
+    padding: 4px 48px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    background-color: rgb(222, 222, 222);
+    color: #000000;
+    border-radius: 5px;
+}
+.ppmcl_h_close_btn {
+    position: absolute;
+    cursor: pointer;
+    display: block;
+    width: 36px;
+    top: 0px;
+    right: 0px;
+}
+.ppmcl_main_container {
+    max-height: 520px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+/* 整個捲動條的樣式 */
+.ppmcl_main_container::-webkit-scrollbar {
+    width:  6px; /* 調整捲動條的寬度 */
+    height: 4px; /* 水平捲動條的高度 */
+}
+
+/* 捲動條的滑軌部分 */
+.ppmcl_main_container::-webkit-scrollbar-track {
+    background-color: #f1f1f1; 
+    border-radius: 10px;
+}
+
+/* 捲動條的滑塊（可以拖動的部分） */
+.ppmcl_main_container::-webkit-scrollbar-thumb {
+    background-color: #878787; /* 滑塊的顏色 */
+    border-radius: 10px; /* 使滑塊變圓角 */
+
+}
+
+.ppmcl_main_no_info {
+    font-size: 20px;
+    text-align: center;
+    padding-bottom: 20px;
+    color: #000;
+}
+.ppmcl_bed_card_container {
+    padding-bottom: 24px;
+}
+.ppmcl_bed_name_container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+.ppmcl_bed_name_title {
+    width: 120px;
+    text-align: center;
+    padding: 4px;
+    border-radius: 5px;
+    background-color: rgb(120, 120, 120);
+    color: aliceblue;
+    margin: 4px;
+}
+.ppmcl_cpoe_container {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 6px;
+    border-radius: 5px;
+    background-color: #e0e0e0;
+    margin-bottom: 12px;
+    align-items: center;
+}
+.ppmcl_cpoe_med_info_container {
+    flex-grow: 1;
+    padding-right: 8px;
+}
+.ppmcl_cpoe_med_info2 {
+    display: flex;
+    padding-top: 6px;
+    align-items: center;
+    justify-content: space-between;
+}
+/* .ppmcl_cpoe_name,
+.ppmcl_cpoe_cht_name {
+    word-break: break-all;
+} */
+.ppmcl_cpoe_qty {
+    font-size: 20px;
+    font-weight: 600;
+}
+.ppmcl_cpoe_med_check_btn {
+    min-width: 82px;
+    text-align: center;
+}
+
+@media screen and (max-width: 1200px) {
+}
+@media screen and (max-width: 550px) {
+    .popup_med_change_list_div {
+        width: 360px;
+    }
+}

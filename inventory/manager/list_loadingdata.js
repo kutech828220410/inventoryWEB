@@ -170,14 +170,14 @@ function creat_row_div(_index , item)
         info_div.style.background ="rgb(255,255,255)";
         info_div.style.background ="linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(231,236,23,0.3) 50%, rgba(231,236,23,0.7) 100%)"
         in_text_div.style.background ="rgba(231,236,23,0.7)"
-        info_btn_div.onclick = select_btn_Click;
+        in_text_div.onclick = select_btn_Click;
     }
     else if(item.STATE == '盤點中')
     {
         info_div.style.background ="rgb(255,255,255)";
         info_div.style.background ="linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(236,23,23,0.3) 50%, rgba(236,23,23,0.7) 100%)"
         in_text_div.style.background ="rgba(236,23,23,0.7)"
-        info_btn_div.onclick = select_btn_Click;
+        in_text_div.onclick = select_btn_Click;
     }
     else if(item.STATE == '鎖定')
     {

@@ -9,7 +9,7 @@ let html_pages = [
                 pages: [
                     {
                         html_name: "inventory",
-                        html_ctName: "盤點單管理",
+                        html_ctName: "盤點管理",
                         html_url: "../../inventory/manager",
                         icon_url: "../../image/icon/inventory.png",
                         icon_big_url: "../../image/icon/inventory_big_icon.png"
@@ -30,7 +30,7 @@ let html_pages = [
                     },
                     {
                         html_name: "med_balance",
-                        html_ctName: "庫存量清單",
+                        html_ctName: "庫存清單",
                         html_url: "../../med_balance",
                         icon_url: "../../image/icon/balance_icon.png",
                         icon_big_url: "../../image/icon/balance_big_icon.png"
@@ -56,14 +56,14 @@ let html_pages = [
                 pages: [
                     {
                         html_name: "inspection",
-                        html_ctName: "驗收單管理",
+                        html_ctName: "驗收管理",
                         html_url: "../../storehouse/inspection",
                         icon_url: "../../image/icon/inspection.png",
                         icon_big_url: "../../image/icon/inspection_big_icon.png"
                     },
                     {
                         html_name: "pickingpage",
-                        html_ctName: "揀貨",
+                        html_ctName: "揀貨指引",
                         html_url: "../../pickingpage",
                         icon_url: "../../image/icon/assortment.png",
                         icon_big_url: "../../image/icon/picking_big_icon.png"
@@ -81,6 +81,13 @@ let html_pages = [
                         html_url: "../../med_allocate",
                         icon_url: "../../image/icon/assortment.png",
                         icon_big_url: "../../image/list.png"
+                    },
+                    {
+                        html_name: "med_allocate_build",
+                        html_ctName: "撥補建單",
+                        html_url: "../../med_allocate_build",
+                        icon_url: "../../image/icon/assortment.png",
+                        icon_big_url: "../../image/allocate_bulid_icon.png"
                     },
                     {
                         html_name: "requisitions_upload",
@@ -128,7 +135,14 @@ let html_pages = [
                         html_url: "../../medicine_cart",
                         icon_url: "../../image/icon/drug_cart.png",
                         icon_big_url: "../../image/icon/drug_cart_big_icon.png"
-                    }
+                    },
+                    {
+                        html_name: "med_request_build",
+                        html_ctName: "申領建單",
+                        html_url: "../../med_request_build",
+                        icon_url: "../../image/icon/assortment.png",
+                        icon_big_url: "../../image/requset_bulid_icon.png"
+                    },
                 ]
             },
             {

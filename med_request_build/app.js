@@ -57,7 +57,7 @@ function get_header(test_user_data) {
 
     let h_title = document.createElement("div");
     h_title.classList = 'h_title';
-    h_title.innerHTML = "撥補建單";
+    h_title.innerHTML = "申領建單";
 
     let header_user = document.createElement("div");
     header_user.classList.add("header_user");
@@ -109,6 +109,22 @@ async function set_main_diplay() {
     form_input_content.appendChild(form_input_div);
   });
 
+  let actionType_div = document.createElement("div");
+  actionType_div.classList.add("actionType_div");
+
+  let actionType_label = document.createElement("label");
+  actionType_label.classList.add("actionType_label");
+  actionType_label.setAttribute("for", "actionType");
+  actionType_label.innerHTML = "緊急申領";
+
+  let actionType_check_box = document.createElement("input");
+  actionType_check_box.id = "actionType";
+  actionType_check_box.name = "actionType";
+  actionType_check_box.type = "checkbox";
+
+  actionType_div.appendChild(actionType_check_box);
+  actionType_div.appendChild(actionType_label);
+
   let submit_btn = document.createElement("div");
   submit_btn.classList.add("submit_btn");
   submit_btn.classList.add("btn");
@@ -118,6 +134,7 @@ async function set_main_diplay() {
   });
 
   main_form_container.appendChild(form_input_content);
+  main_form_container.appendChild(actionType_div);
   main_form_container.appendChild(submit_btn);
 
   main_div.appendChild(main_form_container);
@@ -325,6 +342,8 @@ async function submit_form() {
   let sourceStoreType_input = document.querySelector("#sourceStoreType");
   let destinationStoreType_input = document.querySelector("#destinationStoreType");
 
+  let actionType_check_box = document.querySelector("#actionType");
+
   let name_value = name_input.value;
   let code_value = code_input.value;
   let issuedQuantity_value = issuedQuantity_input.value;
@@ -344,22 +363,36 @@ async function submit_form() {
     return;
   };
 
-  let loggedName = sessionStorage.getItem('loggedName');  
-  let temp_post_data = {
-    sourceStoreType: `${sourceStoreType_value}`,
-    destinationStoreType: `${destinationStoreType_value}`,
-    code: code_value,
-    name: name_value,
-    issuedQuantity: `${issuedQuantity_value}`,
-    actualIssuedQuantity: "0",
-    reportName: loggedName,
-    state: "等待過帳",
-  };
+  let loggedName = sessionStorage.getItem('loggedName'); 
+  let temp_post_data;
+  if(actionType_check_box.checked) {
+    temp_post_data = {
+      actionType: "緊急申領",
+      requestingUnit: `${destinationStoreType_value}`,
+      code: code_value,
+      name: name_value,
+      requestedQuantity: `${issuedQuantity_value}`,
+      actualQuantity: "0",
+      requestingPerson: loggedName,
+      state: "等待過帳",
+    };
+  } else {
+    temp_post_data = {
+      actionType: "一般申領",
+      requestingUnit: `${destinationStoreType_value}`,
+      code: code_value,
+      name: name_value,
+      requestedQuantity: `${issuedQuantity_value}`,
+      actualQuantity: "0",
+      requestingPerson: loggedName,
+      state: "等待過帳",
+    };
+  }
 
   // 藥碼、藥名、撥發量、實撥量預設0、目的庫別、來源庫別（藥庫）、狀態（等待過帳）reportName(建單人)
   console.log(temp_post_data);
 
-  let return_data = await add_allocate_list(temp_post_data);
+  let return_data = await add_request_list(temp_post_data);
   console.log("return_data",return_data);
   if(return_data.Code == 200) {
     name_input.value = "";
