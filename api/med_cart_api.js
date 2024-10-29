@@ -463,11 +463,10 @@ function transform_api_ip(ip) {
     // 4433 => 4436
     let temp_url = serch_APIServer("Main", "網頁", "med_cart_vm_api");
     console.log(temp_url);
-    console.log("VM轉址",temp_url[0].server);  
-
-    // let newStr = ip.replace(":4433", ":4436");
-    // let newStr = ip
-    return temp_url[0].server;
+    
+    let newStr = temp_url[0].server.replace("/api/med_cart", "");
+    console.log("VM轉址", newStr);  
+    return newStr;
 }
 function transform_api_ip_4433(ip) {
     let newStr = ip.replace(":4433", ":4436");

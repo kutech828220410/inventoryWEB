@@ -83,7 +83,7 @@ let html_pages = [
                         icon_big_url: "../../image/list.png"
                     },
                     {
-                        html_name: "med_allocate_build",
+                        html_name: "med_allocate",
                         html_ctName: "撥補建單",
                         html_url: "../../med_allocate_build",
                         icon_url: "../../image/icon/assortment.png",
@@ -137,7 +137,7 @@ let html_pages = [
                         icon_big_url: "../../image/icon/drug_cart_big_icon.png"
                     },
                     {
-                        html_name: "med_request_build",
+                        html_name: "med_request",
                         html_ctName: "申領建單",
                         html_url: "../../med_request_build",
                         icon_url: "../../image/icon/assortment.png",

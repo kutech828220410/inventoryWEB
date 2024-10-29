@@ -63,6 +63,8 @@ function get_page_section(object, arr) {
         object['branch'][0]["pages"].forEach(element => {
           let temp_div = get_page_icon(element, arr);
           if(!front_page_display_logic(element.html_name, arr)) {
+            console.log(element.html_name);
+            console.log(front_page_display_logic(element.html_name, arr));
             pages_icon_container.appendChild(temp_div);
           }
         });
@@ -71,6 +73,8 @@ function get_page_section(object, arr) {
         object['branch'][0]["pages"].forEach(element => {
           let temp_div = get_page_icon(element, arr);
           if(front_page_display_logic(element.html_name, arr)) {
+            console.log(element.html_name);
+            console.log(front_page_display_logic(element.html_name, arr));
             pages_icon_container.appendChild(temp_div);
           }
         });
@@ -124,7 +128,9 @@ function get_page_section(object, arr) {
       } else {
         element["pages"].forEach(element => {
           let temp_div = get_page_icon(element, arr);
-          if(!front_page_display_logic(element.html_name, arr)) {
+          if(!front_page_display_logic(element.html_name, arr)) { 
+            console.log(element.html_name);
+            console.log(front_page_display_logic(element.html_name, arr));
             pages_icon_container.appendChild(temp_div);
           }
         });
@@ -133,6 +139,8 @@ function get_page_section(object, arr) {
         element["pages"].forEach(element => {
           let temp_div = get_page_icon(element, arr);
           if(front_page_display_logic(element.html_name, arr)) {
+            console.log(element.html_name);
+            console.log(front_page_display_logic(element.html_name, arr));
             pages_icon_container.appendChild(temp_div);
           }
         });

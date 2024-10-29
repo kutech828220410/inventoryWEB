@@ -25,7 +25,7 @@ async function load()
   // permissions = await GetApipermissions();
   // console.log(permissions);
 
-  await page_check_permissions("consumption_report");
+  await page_check_permissions("medicine_cart");
 
   let rowNum = 1;
   const Loadingpopup = GetLoadingpopup();

@@ -110,6 +110,7 @@ async function allocate_display_init(light_on) {
             }
         }
 
+        console.log("post_data", post_data);
         current_p_bed_data = await get_patient_GUID(post_data);
         current_p_bed_data = current_p_bed_data.Data;
         if(Array.isArray(current_p_bed_data["cpoe"]) && current_p_bed_data["cpoe"].length > 0) {
@@ -749,33 +750,33 @@ function set_pbm_main_container() {
 
         let med_card_name = document.createElement("div");
         med_card_name.classList.add("med_card_name");
-        if(!element["med_cloud"]) {
+        if(!element["med_cloud"][0]) {
             if(element.name == "") {
                 med_card_name.innerHTML = ``;
             } else {
                 med_card_name.innerHTML = `${element.name}`;
             }
         } else {
-            if(!element["med_cloud"].NAME) {
+            if(!element["med_cloud"][0].NAME) {
                 med_card_name.innerHTML = ``;
             } else {
-                med_card_name.innerHTML = `${element["med_cloud"].NAME}`;
+                med_card_name.innerHTML = `${element["med_cloud"][0].NAME}`;
             }
         }
 
         let med_card_cht_name = document.createElement("div");
         med_card_cht_name.classList.add("med_card_cht_name");
-        if(!element["med_cloud"]) {
+        if(!element["med_cloud"][0]) {
             if(element.cht_name == "") {
                 med_card_cht_name.innerHTML = ``;
             } else {
                 med_card_cht_name.innerHTML = `${element.cht_name}`;
             }
         } else {
-            if(!element["med_cloud"].CHT_NAME) {
+            if(!element["med_cloud"][0].CHT_NAME) {
                 med_card_cht_name.innerHTML = ``;
             } else {
-                med_card_cht_name.innerHTML = `${element["med_cloud"].CHT_NAME}`;
+                med_card_cht_name.innerHTML = `${element["med_cloud"][0].CHT_NAME}`;
             }
         }
 

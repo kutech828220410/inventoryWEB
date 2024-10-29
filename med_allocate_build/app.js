@@ -20,7 +20,7 @@ async function load() {
   permissions = await GetApipermissions();
   console.log(permissions);
 
-  await page_check_permissions("med_request");
+  await page_check_permissions("med_allocate");
 
   let rowNum = 1;
   const Loadingpopup = GetLoadingpopup();

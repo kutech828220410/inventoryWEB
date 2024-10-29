@@ -42,44 +42,64 @@ function swtich_logic_func(str) {
     // 模塊轉換
     let temp_str = "";
     switch (str) {
-        case "驗收單管理模組不啟用":
-            temp_str = "inspection";
-            break;
-        case "庫存量清單模組不啟用":
-            temp_str = "med_balance";
-            break;
-        case "交易紀錄模組不啟用":
-            temp_str = "consumption_report";
-            break;
-        case "藥品申領模組不啟用":
-            temp_str = "med_request";
-            break;
-        case "揀貨模組不啟用":
-            temp_str = "pickingpage";
-            break;
-        case "盤點單合併模組不啟用":
-            temp_str = "inventory_merge";
-            break;
-        case "條碼建置模組不啟用":
-            temp_str = "barcodemanagement";
-            break;
-        case "管制結存模組不啟用":
-            temp_str = "drugs_report";
-            break;
-        case "藥品管理模組不啟用":
-            temp_str = "medGroup";
-            break;
         case "盤點單管理模組不啟用":
             temp_str = "inventory_list";
             break;
+
+        case "條碼建置模組不啟用":
+            temp_str = "barcodemanagement";
+            break;
+
+        case "藥品管理模組不啟用":
+            temp_str = "medGroup";
+            break;
+
+        case "庫存量清單模組不啟用":
+            temp_str = "med_balance";
+            break;
+
+        case "盤點單合併模組不啟用":
+            temp_str = "inventory_merge";
+            break;
+
+        case "驗收單管理模組不啟用":
+            temp_str = "inspection";
+            break;
+
+        case "藥品申領模組不啟用":
+            temp_str = "med_request";
+            break;
+
+        case "揀貨模組不啟用":
+            temp_str = "pickingpage";
+            break;
+
+        case "藥品撥補模組不啟用":
+            temp_str = "med_allcoate";
+            break;
+
+        case "管制結存模組不啟用":
+            temp_str = "drugs_report";
+            break;
+
+        case "交易紀錄模組不啟用":
+            temp_str = "consumption_report";
+            break;
+
+        case "批次入庫模組不啟用":
+            temp_str = "batch_storage";
+            break;
+
+        case "住院調劑模組不啟用":
+            temp_str = "medicine_cart";
+            break;
+
         case "中藥交易紀錄模組不啟用":
             temp_str = "cht_consumption_report";
             break;
+
         case "中藥醫令模組不啟用":
             temp_str = "ch_medical_order";
-            break;
-        case "批次入庫模組不啟用":
-            temp_str = "batch_storage";
             break;
     
         default:
