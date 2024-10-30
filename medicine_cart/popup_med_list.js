@@ -231,11 +231,19 @@ async function set_pp_med_list_display() {
 
         let ppml_ci_1_div = document.createElement("div");
         ppml_ci_1_div.classList.add("ppml_ci_1_div");
-        ppml_ci_1_div.innerHTML = `
-            <div class="ppml_ci_content">藥碼：${element.code}</div>
-            <div class="ppml_ci_content">(英)：${element.name}</div>
-            <div class="ppml_ci_content">(中)：${element.cht_name}</div>
-        `;
+        if(element.cht_name) {
+            ppml_ci_1_div.innerHTML = `
+                <div class="ppml_ci_content">${element.name}</div>
+                <div class="ppml_ci_content">${element.cht_name}</div>
+                <div class="ppml_ci_content">藥碼：${element.code}</div>
+            `;
+        } else {
+            ppml_ci_1_div.innerHTML = `
+                <div class="ppml_ci_content">${element.name}</div>
+                <div class="ppml_ci_content"></div>
+                <div class="ppml_ci_content">藥碼：${element.code}</div>
+            `;
+        }
 
         let ppml_ci_2_div = document.createElement("div");
         ppml_ci_2_div.classList.add("ppml_ci_2_div");

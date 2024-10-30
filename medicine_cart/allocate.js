@@ -177,7 +177,7 @@ function get_p_bed_header() {
     let ppmcl_btn = document.createElement("div");
     ppmcl_btn.classList.add("btn");
     ppmcl_btn.classList.add("ppmcl_btn");
-    ppmcl_btn.innerHTML = "藥品異動";
+    ppmcl_btn.innerHTML = "未調藥品";
     ppmcl_btn.addEventListener("click", () => {
         popup_med_change_list_div_open();
     })
@@ -1173,7 +1173,7 @@ function set_pbm_footer_container() {
     pbm_footer_container.appendChild(pbmh_pre_btn);
     if(current_func == "allocate") {
         pbm_footer_container.appendChild(pbmh_light_on_btn);
-        pbm_footer_container.appendChild(pbmf_submit_btn);
+        // pbm_footer_container.appendChild(pbmf_submit_btn);
     }
     pbm_footer_container.appendChild(pbmh_checked_submit_btn);
     pbm_footer_container.appendChild(pbmh_next_btn);
