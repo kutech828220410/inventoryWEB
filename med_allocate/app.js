@@ -104,7 +104,7 @@ function get_header(test_user_data) {
       popup_excel_down_div_open();
     });
 
-    // header_btn_container.appendChild(h_download_btn);
+    header_btn_container.appendChild(h_download_btn);
     header_btn_container.appendChild(h_search_btn);
 
     header.appendChild(header_title_container);

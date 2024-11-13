@@ -2,6 +2,7 @@
 async function med_cart_all_get_phar() {
     let start_p = performance.now();
     let temp_doman = transform_api_ip_4433(api_ip);
+    console.log(temp_doman);
     let temp_data = await fetch(`${temp_doman}api/medCarList/get_phar`, {
         method: "POST",
         headers: {
@@ -469,7 +470,14 @@ function transform_api_ip(ip) {
     return newStr;
 }
 function transform_api_ip_4433(ip) {
-    let newStr = ip.replace(":4433", ":4436");
-    // return newStr;
-    return ip;
+    let newStr
+    if (window.location.protocol === "https:") {
+        console.log("目前的連線是 HTTPS");
+
+        newStr = ip.replace(":4443", ":4436");
+    } else {
+        newStr = ip.replace(":4433", ":4436");
+    }
+    return newStr;
+    // return ip;
 }

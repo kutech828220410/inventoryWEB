@@ -16,6 +16,7 @@ let web_list = [
 async function get_permissions_arr() {
     let temp_arr = [];
     let permissions_data = await et_web_peremeter();
+    console.log(permissions_data);
     if(permissions_data == "error") {
         return permissions_data
     } else {
@@ -100,6 +101,9 @@ function swtich_logic_func(str) {
 
         case "中藥醫令模組不啟用":
             temp_str = "ch_medical_order";
+            break;
+        case "單據辨識模組不啟用":
+            temp_str = "requisitions_upload";
             break;
     
         default:
@@ -194,6 +198,7 @@ async function et_web_peremeter() {
 }
 async function page_check_permissions(str) {
     let permissions_arr = await get_permissions_arr();
+    console.log(permissions_arr);
     if(permissions_arr == "error") {
       console.log("權限全開");
     } else {

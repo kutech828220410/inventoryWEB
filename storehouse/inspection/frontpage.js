@@ -17,7 +17,7 @@ async function load()
   const API_inspection_excel_upload = serch_APIServer(ServerName,ServerType,"API_inspection_excel_upload");
   const API_inspection_excel_download = serch_APIServer(ServerName,ServerType,"API_inspection_excel_download");
   
-
+  // console.log("api_ip",api_ip);
   console.log("API01",API01);
   console.log("API02",API02);
   console.log("API_inspection_excel",API_inspection_excel);
@@ -25,12 +25,12 @@ async function load()
   console.log("API_inspection_excel_download",API_inspection_excel_download[0].server);
   if(API_inspection_excel.length > 0) inspection_excel_url = API_inspection_excel[0].server;
   else inspection_excel_url = `${API01[0].server}/api/inspection/excel_upload`;
-  check_ip(API01[0].server,API02[0].server);
-  permissions = await GetApipermissions();
-  console.log(permissions);
-
+  await check_ip(API01[0].server,API02[0].server);
+  // permissions = await GetApipermissions();
+  // console.log(permissions);
+  
   await page_check_permissions("inspection");
-
+  
   let rowNum = 1;
   const Loadingpopup = GetLoadingpopup();
   document.body.appendChild(Loadingpopup);

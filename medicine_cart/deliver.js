@@ -2,6 +2,10 @@
 let deliver_cart_data;
 
 function display_deliver_func() {
+    // 清除現有的定時器
+    if (setUpdateInterval) {
+        clearInterval(setUpdateInterval);
+    }
     func_display_init();
 
     let function_display_container = document.querySelector(".function_display_container");

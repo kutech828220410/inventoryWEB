@@ -138,13 +138,14 @@ async function update_actual_quantity(GUID, a_qty) {
 async function download_excel_by_requestTime(data)
 {
     let temp_url = serch_APIServer("Main", "網頁", "download_excel_by_requestTime");
-    if(temp_url.length != 0) { 
+    if(temp_url[0].server) { 
         // console.log("post_data [excel_upload]",file);
         // let api_url = api_ip.replace(":4433", ":443/dbvm/batch_inventory_import/excel_upload");
         // ${api_url}api/materialRequisition/download_excel_by_requestTime
         console.log(temp_url);
         console.log("batch上傳excel轉址",temp_url[0].server);  
         try {
+            console.log("bvcx");
             const response = await fetch(`${temp_url[0].server}`, {
             method: 'POST',
             headers: {

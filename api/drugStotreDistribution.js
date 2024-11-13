@@ -171,63 +171,64 @@ async function add_allocate_list(data) {
 //     return;
 // }
 
-// async function download_excel_by_requestTime(data)
-// {
-//     let temp_url = serch_APIServer("Main", "網頁", "download_excel_by_requestTime");
-//     if(temp_url.length != 0) { 
-//         // console.log("post_data [excel_upload]",file);
-//         // let api_url = api_ip.replace(":4433", ":443/dbvm/batch_inventory_import/excel_upload");
-//         // ${api_url}api/materialRequisition/download_excel_by_requestTime
-//         console.log(temp_url);
-//         console.log("batch上傳excel轉址",temp_url[0].server);  
-//         try {
-//             const response = await fetch(`${temp_url[0].server}`, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify(data),
-//             });
+async function download_excel_by_requestTime(data)
+{
+    let temp_url = serch_APIServer("Main", "網頁", "download_excel_by_addedTime");
+    console.log(temp_url);
+    if(temp_url.length != 0) { 
+        // console.log("post_data [excel_upload]",file);
+        // let api_url = api_ip.replace(":4433", ":443/dbvm/batch_inventory_import/excel_upload");
+        // ${api_url}api/materialRequisition/download_excel_by_requestTime
+        console.log(temp_url);
+        console.log("batch上傳excel轉址",temp_url[0].server);  
+        try {
+            const response = await fetch(`${temp_url[0].server}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+            });
     
-//             if (!response.ok) {
-//             throw new Error('Failed to fetch the Excel file.');
-//             }
+            if (!response.ok) {
+            throw new Error('Failed to fetch the Excel file.');
+            }
     
-//             const blob = await response.blob();
-//             const _url = window.URL.createObjectURL(blob);
+            const blob = await response.blob();
+            const _url = window.URL.createObjectURL(blob);
     
-//             // 创建下载链接
-//             let downloadLink = document.createElement('a');
-//             downloadLink.href = window.URL.createObjectURL(blob);
-//             downloadLink.download = `${data.ValueAry[0]}-${data.ValueAry[1]}申領紀錄.xlsx`;
-//             downloadLink.click();
-//         } catch (error) {
-//             console.error(error);
-//         }
-//     } else {
-//         try {
-//             const response = await fetch(`${api_ip}api/materialRequisition/download_excel_by_requestTime`, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify(data),
-//             });
+            // 创建下载链接
+            let downloadLink = document.createElement('a');
+            downloadLink.href = window.URL.createObjectURL(blob);
+            downloadLink.download = `${data.ValueAry[0]}-${data.ValueAry[1]}撥補紀錄.xlsx`;
+            downloadLink.click();
+        } catch (error) {
+            console.error(error);
+        }
+    } else {
+        try {
+            const response = await fetch(`${api_ip}api/drugStotreDistribution/download_excel_by_addedTime`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+            });
     
-//             if (!response.ok) {
-//             throw new Error('Failed to fetch the Excel file.');
-//             }
+            if (!response.ok) {
+            throw new Error('Failed to fetch the Excel file.');
+            }
     
-//             const blob = await response.blob();
-//             const _url = window.URL.createObjectURL(blob);
+            const blob = await response.blob();
+            const _url = window.URL.createObjectURL(blob);
     
-//             // 创建下载链接
-//             let downloadLink = document.createElement('a');
-//             downloadLink.href = window.URL.createObjectURL(blob);
-//             downloadLink.download = `${data.ValueAry[0]}-${data.ValueAry[1]}申領紀錄.xlsx`;
-//             downloadLink.click();
-//         } catch (error) {
-//             console.error(error);
-//         }
-//     }
-// }
+            // 创建下载链接
+            let downloadLink = document.createElement('a');
+            downloadLink.href = window.URL.createObjectURL(blob);
+            downloadLink.download = `${data.ValueAry[0]}-${data.ValueAry[1]}撥補紀錄.xlsx`;
+            downloadLink.click();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+}

@@ -8,6 +8,7 @@ async function load()
 { 
     ServerName ="";
     ServerType = "網頁";
+    console.log("object");
     APIServer = await LoadAPIServer();
     const API01 = serch_APIServer(ServerName,ServerType,"API01");
     const API02 = serch_APIServer(ServerName,ServerType,"API02");

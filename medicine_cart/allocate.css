@@ -470,6 +470,13 @@
 .inve_log_info {
     line-height: 20px;
 }
+.s_color {
+    padding: 0px 4px;
+    background-color: #ff9292;
+}
+.p_status_td {
+    height: 22px;
+}
 
 @media screen and (max-width: 1200px) {
     .p_bed_simple_container,

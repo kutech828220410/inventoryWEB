@@ -200,18 +200,33 @@ function get_title_popup_input()
     My_Div.Init(title_text_div, 'title_text_div_popup_input','title_text_div_popup_input', '100%', '', '');
     My_Div.Set_Block(title_text_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
     title_text_div.style.borderBottom = '1px solid black';
+    title_text_div.style.paddingBottom = '4px';
+
+    let vision_count_btn = document.createElement("div");
+    vision_count_btn.classList.add("vision_count_btn");
+    // vision_count_btn.innerHTML = "拍照";
+
+    let vision_img = document.createElement("img");
+    vision_img.classList.add("vision_img");
+    vision_img.src = '../image/dot.png';
+
+    vision_count_btn.appendChild(vision_img);
+
+    title_text_div.appendChild(vision_count_btn);
+
+
 
     const title_text = document.createElement('div');
     My_Div.Init(title_text, 'title_text_popup_input','title_text_popup_input', '250px', '40px', '');
     My_Div.Set_Block(title_text, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.CENTER);
     My_Div.Set_Text(title_text ,"盤點資訊" , TextAlignEnum.CENTER , "26px", true,"微軟正黑體","black");
     title_text.style.borderRadius = "5px";
-    title_text.style.marginLeft = "110px";
+    // title_text.style.marginLeft = "110px";
     title_text_div.appendChild(title_text);
 
 
     const undo_div = document.createElement('div');
-    My_Div.Init(undo_div, 'undo_div_popup_input','undo_div_popup_input', '70%', '40px', '');
+    My_Div.Init(undo_div, 'undo_div_popup_input','undo_div_popup_input', '44px', '40px', '');
     My_Div.Set_Block(undo_div, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
     const undo_SVG = Get_undo_SVG("40px","100%" ,"60%","100%","black");
     My_Div.Init(undo_SVG, 'svg','svg', '40px', '40px', '');

@@ -1,7 +1,7 @@
 
 async function getDataFromAPI(url)
 {
-    // console.log("getDataFromAPI",url);
+    console.log("getDataFromAPI", url);
 
     return fetch(url, {
         method: 'GET',
@@ -16,13 +16,14 @@ async function getDataFromAPI(url)
             throw new Error('Network response was not ok.');
         })
         .catch(error => {
+          console.log(url);
             console.error('There was a problem with the fetch operation:', error);
         });
 }
 async function postDataToAPI_NoneReturn(url, data) 
 {
     try {
-      // console.log("postDataToAPI_NoneReturn",url);
+      console.log("postDataToAPI_NoneReturn",url);
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -42,8 +43,9 @@ async function postDataToAPI_NoneReturn(url, data)
 }
 async function postDataToAPI(url, data) 
 {
+    url = is_https_trans_ip(url);
     try {
-      // console.log("postDataToAPI",url);
+      console.log("postDataToAPI",url);
       const response = await fetch(url, {
         method: 'POST',
         headers: {

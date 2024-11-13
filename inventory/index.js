@@ -163,7 +163,9 @@ async function init()
     await check_ip(API01[0].server,API02[0].server);
     console.log("inventory_url",inventory_url);
 
-    await page_check_permissions("inventory");
+    // await page_check_permissions("inventory");
+    let userAgent = navigator.userAgent;
+    console.log("userAgent", userAgent);
 
     current_IC_SN = sessionStorage.getItem('IC_SN');
     

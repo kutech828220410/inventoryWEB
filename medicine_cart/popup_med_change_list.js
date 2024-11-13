@@ -20,7 +20,7 @@ function get_ppmcl_header() {
 
     let ppmcl_h_title = document.createElement("div");
     ppmcl_h_title.classList.add("ppmcl_h_title");
-    ppmcl_h_title.innerText = "藥品異動";
+    ppmcl_h_title.innerText = "未調藥品";
 
     let ppmcl_h_close_btn = document.createElement("img");
     ppmcl_h_close_btn.classList.add("ppmcl_h_close_btn");
@@ -59,9 +59,14 @@ async function popup_med_change_list_div_open() {
     // med_change_data = med_change_data.filter((e) => {
     //     return e.cpoe_change_status != "";
     // });
+
+    console.log(med_change_data);
+
     med_change_data = med_change_data.filter((e) => {
         return e.cpoe.length != 0;
     });
+
+    console.log(med_change_data);
 
     if(med_change_data.length > 0) {
         med_change_data.sort((a, b) => +a.bednum - +b.bednum);
@@ -105,7 +110,7 @@ function set_ppmcl_main_info() {
                 element.cpoe.forEach(async item => {
                     Set_main_div_enable(true);
                     // item.dispens_change == "" && 
-                    if(item.dispens_status != "") {
+                    if(item.dispens_status == "") {
                         let return_data = await set_post_data_to_check_dispense_for_med_list(element.GUID, item.GUID, "Y");
 
                         if(return_data.Code == 200) {

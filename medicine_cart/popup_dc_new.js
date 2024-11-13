@@ -83,7 +83,7 @@ function popup_dc_new_div_open() {
 function set_dc_new_info_table() {
     let bed_name = dc_new_p_bed_data[0].bednum;
     let med_array = dc_new_p_bed_data[0].cpoe_change;
-    let table_th_arr = ["藥碼", "藥名", "（中）", "DC/NEW", "數量", "單位", "頻次", "更新時間"];
+    let table_th_arr = ["序號", "藥名", "（中）", "DC/NEW", "數量", "單位", "頻次", "更新時間"];
 
     let ppdn_main_container = document.querySelector(".ppdn_main_container");
     ppdn_main_container.innerHTML = "";
@@ -133,8 +133,8 @@ function set_dc_new_info_table() {
     
                 switch (i) {
                     case 0:
-                        // 藥碼
-                        ppdn_med_td.innerHTML = element.code;
+                        // 序號
+                        ppdn_med_td.innerHTML = element.ordseq;
                         break;
                     case 1:
                         // 藥名

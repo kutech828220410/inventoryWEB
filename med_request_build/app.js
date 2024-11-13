@@ -17,6 +17,7 @@ async function load() {
   console.log("API01",API01);
   console.log("API02",API02);
   check_ip(API01[0].server,API02[0].server);
+  
   permissions = await GetApipermissions();
   console.log(permissions);
 
