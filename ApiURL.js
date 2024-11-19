@@ -18,6 +18,7 @@ var MED_page_url = ``;
 async function LoadAPIServer(log)
 {
   const json = await Loadtxt("../../config.txt");
+  console.log(json);
   json.API_Server = is_https_trans_ip(json.API_Server);
   APIServer = await getDataFromAPI(`${json.API_Server}/api/ServerSetting`);
   const API_Session = serch_APIServer("Main","網頁" ,"API_Session");
@@ -185,6 +186,9 @@ function is_https_trans_ip(ip) {
   let temp_url = ip;
   let close_url = ip;
   let temp_str = window.location.protocol;
+  let domain = window.location.hostname;
+  console.log(domain);
+  // 使用URL物件解析網址
   console.log("https", temp_str.includes("s"));
   if (temp_str.includes("s")) {
     console.log("目前的連線是 HTTPS");
@@ -202,12 +206,14 @@ function is_https_trans_ip(ip) {
   
           // 替換原始的 port 號為新的 port 號
           newStr =  newStr.replace(portRegex, `:${newPort}$2`);
-          newStr = newStr.replace(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/, "www.kutech.tw");
+          console.log(newStr);
+          newStr = newStr.replace(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/, domain);
       }
       
       temp_url = newStr;
     }
-
+  } else {
+    // temp_url = temp_url.replace(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/, domain);
   }
 
   console.log(temp_url);

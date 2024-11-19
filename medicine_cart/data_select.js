@@ -5,19 +5,19 @@ let light_color_list = [
     },
     {
         name: "blue",
-        rgb: "40,40,255"
-    },
-    {
-        name: "red",
         rgb: "255,40,40"
     },
     {
+        name: "red",
+        rgb: "40,40,255"
+    },
+    {
         name: "yellow",
-        rgb: "255,255,40"
+        rgb: "40,255,255"
     },
     {
         name: "orange",
-        rgb: "255,160,40"
+        rgb: "40,255,120"
     },
     {
         name: "black",

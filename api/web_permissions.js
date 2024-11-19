@@ -76,7 +76,7 @@ function swtich_logic_func(str) {
             break;
 
         case "藥品撥補模組不啟用":
-            temp_str = "med_allcoate";
+            temp_str = "med_allocate";
             break;
 
         case "管制結存模組不啟用":

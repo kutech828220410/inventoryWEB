@@ -173,7 +173,7 @@ async function add_allocate_list(data) {
 
 async function download_excel_by_requestTime(data)
 {
-    let temp_url = serch_APIServer("Main", "網頁", "download_excel_by_addedTime");
+    let temp_url = serch_APIServer("Main", "網頁", "download_drugStotreDistribution_excel");
     console.log(temp_url);
     if(temp_url.length != 0) { 
         // console.log("post_data [excel_upload]",file);

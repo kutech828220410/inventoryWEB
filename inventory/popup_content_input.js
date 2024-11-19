@@ -204,6 +204,13 @@ function get_title_popup_input()
 
     let vision_count_btn = document.createElement("div");
     vision_count_btn.classList.add("vision_count_btn");
+    vision_count_btn.addEventListener("click", async () => {
+        if(isMobileOrTablet()) {
+            tigger_count_drugs_container(true);
+        } else {
+            alert("請使用行動裝置");
+        }
+    });
     // vision_count_btn.innerHTML = "拍照";
 
     let vision_img = document.createElement("img");

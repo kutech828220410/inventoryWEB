@@ -1,0 +1,113 @@
+.popup_code_compare_div {
+    top: 40% !important;
+    width: 360px;
+}
+
+.pcc_header_container,
+.pcc_footer_container {
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+.pcc_footer_container {
+    margin-top: 16px;
+}
+.pcc_h_title {
+    padding: 4px 48px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    background-color: rgb(68, 68, 68);
+    color: #ebebeb;
+    border-radius: 5px;
+}
+.pcc_h_close_btn {
+    position: absolute;
+    cursor: pointer;
+    display: block;
+    width: 36px;
+    top: 0px;
+    right: 0px;
+}
+.pcc_content_div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.pcc_label {
+    width: 80px;
+    text-align: center;
+    border-radius: 5px;
+    border: 1px solid #000;
+    margin: 8px 12px 8px 0px;
+    padding: 2px 4px;
+    background-color: #d7d7d7;
+}
+.pcc_content_div > input {
+    padding: 4px;
+    border-radius: 5px;
+    border: 1px solid #000;
+    font-size: 16px;
+    flex-grow: 1;
+}
+.pcc_med_search_block {
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #d7d7d7;
+    width: 100%;
+    border: 1px solid #000000;
+    min-height: 100px;
+    position: relative;
+}
+.pcc_med_search_title {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 16px;
+}
+.pccms_content {
+    display: flex;
+}
+.pccms_select {
+    display: block;
+    padding: 2px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 16px;
+    margin-right: 12px;
+}
+.pccms_input {
+    display: block;
+    padding: 2px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    font-size: 16px;
+    flex-grow: 1;
+}
+.pccms_input_result {
+    /* display: none; */
+    position: absolute;
+    width: 230px;
+    max-height: 240px;
+    top: 80px;
+    right: 11px;
+    border-radius: 2px;
+    background-color: #faefd2;
+    z-index: 4;
+    overflow-y: auto;
+}
+.result_card {
+    padding: 2px 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.result_card:hover {
+    transition: all 0.2s ease;
+    background-color: #f59b1b;
+}
+.highlight_red {
+    color: red;
+    font-weight: 600;
+}

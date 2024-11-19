@@ -637,10 +637,33 @@ function set_pbm_header_container() {
     pbmh_checked_submit_btn.classList.add("btn");
     pbmh_checked_submit_btn.innerHTML = "完成";
     pbmh_checked_submit_btn.addEventListener("click", async () => {
+        Set_main_div_enable(true);
         let return_data = await set_post_data_to_check_dispense();
         if(return_data.Code == 200) {
-            alert(`第${current_p_bed_data.bednum}床，完成調劑`);
+            if(current_med_table == "" || current_med_table == "all") {
+                if(current_func == "allocate") {
+                    current_med_table = "all";
+                    last_current_med_table = "all";
+                    let med_table_content = document.querySelector(".med_table_content");
+                    med_table_content.innerHTML = "全部";
+                }
+
+                post_data = {
+                    Value: current_med_table,
+                    ValueAry: [med_cart_beds_data[patient_bed_index].GUID]
+                }
+            } else {
+                post_data = {
+                    Value: current_med_table.name,
+                    ValueAry: [med_cart_beds_data[patient_bed_index].GUID]
+                }
+            }
+        
+            current_p_bed_data = await get_patient_GUID(post_data);
+            current_p_bed_data = current_p_bed_data.Data;
             await allocate_display_init("");
+            alert(`第${current_p_bed_data.bednum}床，完成調劑`);
+            Set_main_div_enable(false);
         }
     });
 
@@ -1180,13 +1203,33 @@ function set_pbm_footer_container() {
     pbmh_checked_submit_btn.classList.add("btn");
     pbmh_checked_submit_btn.innerHTML = "完成";
     pbmh_checked_submit_btn.addEventListener("click", async () => {
+        Set_main_div_enable(true);
         let return_data = await set_post_data_to_check_dispense();
         if(return_data.Code == 200) {
-            if(current_func == "allocate") {
-                alert(`第${current_p_bed_data.bednum}床，完成調劑`);
+            if(current_med_table == "" || current_med_table == "all") {
+                if(current_func == "allocate") {
+                    current_med_table = "all";
+                    last_current_med_table = "all";
+                    let med_table_content = document.querySelector(".med_table_content");
+                    med_table_content.innerHTML = "全部";
+                }
+
+                post_data = {
+                    Value: current_med_table,
+                    ValueAry: [med_cart_beds_data[patient_bed_index].GUID]
+                }
             } else {
-                alert(`第${current_p_bed_data.bednum}床，完成覆核`);
+                post_data = {
+                    Value: current_med_table.name,
+                    ValueAry: [med_cart_beds_data[patient_bed_index].GUID]
+                }
             }
+        
+            current_p_bed_data = await get_patient_GUID(post_data);
+            current_p_bed_data = current_p_bed_data.Data;
+            await allocate_display_init("");
+            alert(`第${current_p_bed_data.bednum}床，完成調劑`);
+            Set_main_div_enable(false);
         }
     })
 
@@ -1197,8 +1240,9 @@ function set_pbm_footer_container() {
         if(current_med_table == "all" || current_med_table == "") {
             alert("未選擇調劑台，請選好調劑台或使用藥品總量功能");
             return;
+        } else {
+            light_switch_func();
         }
-        light_switch_func();
     });
 
     let pbmh_next_btn = document.createElement("div");
@@ -1233,88 +1277,52 @@ function set_pbm_footer_container() {
 }
 async function pre_bed_func() {
     Set_main_div_enable(true);
-    await set_post_data_to_check_dispense();
-    let temp_p_bed_index = patient_bed_index;
-
-    do {
-        temp_p_bed_index--;
-    } while(med_cart_beds_data[temp_p_bed_index]["bed_status"] != "已佔床");
-
-    last_patient_bed_index = patient_bed_index;
-    patient_bed_index = temp_p_bed_index;
-
     if(pre_p_bed_data.GUID == current_p_bed_data.GUID || pre_p_bed_data == "") {
-        let post_data;
-        if(current_med_table == "" || current_med_table == "all") {
-
-            if(current_func == "allocate") {
-                current_med_table = "all";
-                last_current_med_table = "all";
-                let med_table_content = document.querySelector(".med_table_content");
-                med_table_content.innerHTML = "全部";
-            }
-
-            post_data = {
-                Value: current_med_table,
-                ValueAry: [med_cart_beds_data[patient_bed_index].GUID]
-            }
-        } else {
-            post_data = {
-                Value: current_med_table.name,
-                ValueAry: [med_cart_beds_data[patient_bed_index].GUID]
-            }
-        }
-
-        console.log("上一床資料相同時，post_data", post_data);
-        current_p_bed_data = await get_patient_GUID(post_data);
-        current_p_bed_data = current_p_bed_data.Data;
+        setTimeout(() => {
+            console.log("上一床waitting");
+            pre_bed_func();
+        }, 2000);
     } else {
+        Set_main_div_enable(true);
+        await set_post_data_to_check_dispense();
+        let temp_p_bed_index = patient_bed_index;
+    
+        do {
+            temp_p_bed_index--;
+        } while(med_cart_beds_data[temp_p_bed_index]["bed_status"] != "已佔床");
+    
+        last_patient_bed_index = patient_bed_index;
+        patient_bed_index = temp_p_bed_index;
+
         let temp_p_bed_data = current_p_bed_data;
+        next_p_bed_data = temp_p_bed_data;
         current_p_bed_data = pre_p_bed_data;
+        allocate_display_init("on");
     }
-    allocate_display_init("on");
 }
 async function next_bed_func() {
     Set_main_div_enable(true);
-    set_post_data_to_check_dispense();
-    let temp_p_bed_index = patient_bed_index;
-
-    do {
-        temp_p_bed_index++;
-    } while(med_cart_beds_data[temp_p_bed_index]["bed_status"] != "已佔床");
-    last_patient_bed_index = patient_bed_index;
-    patient_bed_index = temp_p_bed_index;
-
     if(next_p_bed_data.GUID == current_p_bed_data.GUID  || next_p_bed_data == "") {
-        let post_data;
-        if(current_med_table == "" || current_med_table == "all") {
-
-            if(current_func == "allocate") {
-                current_med_table = "all";
-                last_current_med_table = "all";
-                let med_table_content = document.querySelector(".med_table_content");
-                med_table_content.innerHTML = "全部";
-            }
-
-            post_data = {
-                Value: current_med_table,
-                ValueAry: [med_cart_beds_data[patient_bed_index].GUID]
-            }
-        } else {
-            post_data = {
-                Value: current_med_table.name,
-                ValueAry: [med_cart_beds_data[patient_bed_index].GUID]
-            }
-        }
-
-        console.log("下一床資料相同時，post_data", post_data);
-        current_p_bed_data = await get_patient_GUID(post_data);
-        current_p_bed_data = current_p_bed_data.Data;
+        setTimeout(() => {
+            console.log("下一床waitting");
+            next_bed_func();
+        }, 2000);
     } else {
+        Set_main_div_enable(true);
+        set_post_data_to_check_dispense();
+        let temp_p_bed_index = patient_bed_index;
+    
+        do {
+            temp_p_bed_index++;
+        } while(med_cart_beds_data[temp_p_bed_index]["bed_status"] != "已佔床");
+        last_patient_bed_index = patient_bed_index;
+        patient_bed_index = temp_p_bed_index;
+
         let temp_p_bed_data = current_p_bed_data;
+        pre_p_bed_data = temp_p_bed_data;
         current_p_bed_data = next_p_bed_data;
+        allocate_display_init("on");
     }
-    allocate_display_init("on");
 }
 
 async function set_post_data_to_check_dispense() {
@@ -1450,7 +1458,9 @@ async function light_switch_func() {
     last_light_on_arr.ServerType = current_med_table.type;
 
     console.log("light_on_arr", light_on_arr);
+
     await light_on_by_code(light_on_arr);
+    
     last_light_on_arr.ValueAry.push(temp_arr.join(","));
     last_light_on_arr.ValueAry.push("0,0,0");
     last_light_on_arr.ValueAry.push("2");
@@ -1521,8 +1531,8 @@ async function setPreprocessingInterval() {
             }
         }
 
-        console.log("第一次預載入下一床", post_data);
         next_p_bed_data = await get_patient_GUID(post_data);
+        console.log("第一次預載入下一床完成");
         next_p_bed_data = next_p_bed_data.Data;
 
     }
@@ -1549,8 +1559,8 @@ async function setPreprocessingInterval() {
             }
         }
 
-        console.log("第一次預載入上一床", post_data);
         pre_p_bed_data = await get_patient_GUID(post_data);
+        console.log("第一次預載入上一床完成");
         pre_p_bed_data = pre_p_bed_data.Data;
 
         // console.log("上一床Data", pre_p_bed_data);
@@ -1608,8 +1618,8 @@ async function set_pre_p_bed_data() {
             }
         }
 
-        console.log("預載上一床", post_data);
         pre_p_bed_data = await get_patient_GUID(post_data);
+        console.log("預載上一床完成");
         pre_p_bed_data = pre_p_bed_data.Data;
 
     }
@@ -1638,8 +1648,8 @@ async function set_next_p_bed_data() {
             }
         }
 
-        console.log("預載入下一床", post_data);
         next_p_bed_data = await get_patient_GUID(post_data);
+        console.log("預載入下一床完成");
         next_p_bed_data = next_p_bed_data.Data;
     }
 }

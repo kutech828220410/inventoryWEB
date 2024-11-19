@@ -86,12 +86,35 @@ function set_pp_bed_list_info() {
             pp_bed_card.addEventListener("click", async () => {
                 if(index == patient_bed_index) return;
                 Set_main_div_enable(true);
-                await set_post_data_to_check_dispense()
+                await set_post_data_to_check_dispense();
 
                 last_patient_bed_index = patient_bed_index;
                 patient_bed_index = index;
+
+                if(current_med_table == "" || current_med_table == "all") {
+                    if(current_func == "allocate") {
+                        current_med_table = "all";
+                        last_current_med_table = "all";
+                        let med_table_content = document.querySelector(".med_table_content");
+                        med_table_content.innerHTML = "全部";
+                    }
+        
+                    post_data = {
+                        Value: current_med_table,
+                        ValueAry: [med_cart_beds_data[patient_bed_index].GUID]
+                    }
+                } else {
+                    post_data = {
+                        Value: current_med_table.name,
+                        ValueAry: [med_cart_beds_data[patient_bed_index].GUID]
+                    }
+                }
+            
+                current_p_bed_data = await get_patient_GUID(post_data);
+                current_p_bed_data = current_p_bed_data.Data;
+                console.log("病床跳轉", current_p_bed_data);
     
-                allocate_display_init();
+                allocate_display_init("");
                 Set_main_div_enable(false);
                 popup_bed_list_div_close();
             });
