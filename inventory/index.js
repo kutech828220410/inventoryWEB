@@ -192,6 +192,10 @@ async function page_Init(data)
   My_Div.Init(main_div, 'main_div','main_div', '100%', '', '');
   My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
 
+  let header_div = document.querySelector(".header_div");
+  let temp_height = header_div.offsetHeight;
+  main_div.style.paddingTop = `${temp_height+10}px`;
+
   main_div.style.flexWrap = "wrap";
   main_div.style.overflowX = "hidden";
   main_div.style.overflowY = "hidden";
@@ -542,7 +546,6 @@ function edit_herader_view_QTY()
 }
 function get_main() 
 {
-
   const main_div = document.createElement('div');
   My_Div.Init(main_div, 'main_div','main_div', '100%', '', '');
   My_Div.Set_Block(main_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);

@@ -1,7 +1,15 @@
+let base64_data = ""; // 儲存 Base64 格式影像資料的變數
+let stream;
+let isRunning = true;
+let temp_guid = "";
+
 window.onload = load;
 // window.addEventListener('resize', handleResize);
 let base64_img = "";
 let medicine_page = [];
+let info_arr = [
+  "藥碼","藥名(英)","藥名(中)","數量","效期","批號","單號",
+]
 
 function handleResize() 
 {
@@ -13,6 +21,7 @@ async function load()
     alert("請使用行動裝置");
     window.location.href = "../../frontpage";
   }
+
   check_session_off();
   var serverName = "";
   //   ServerName = serverName;
@@ -44,48 +53,26 @@ async function load()
     id: loggedID,
     name: loggedName,
   }
+   
+ 
+  createUpdatedUI();
 
-  nav_bar_create("requisitions_upload", test_user_data);
-  get_header(test_user_data);
-  get_main_div();
+  // nav_bar_create("requisitions_upload", test_user_data);
+  // 啟動相機
+  await startCamera();
+
+  
+  let triggerButton = document.querySelector('.trigger');
+  // 按下按鈕後執行擷取影像
+  triggerButton.addEventListener('click', () => {
+    captureAndSend();
+  });
+  
+
   Set_main_div_enable(false);
 }
 
-function get_header(test_user_data) {
-    let body = document.querySelector("body");
-    const header = document.createElement("div");
-    header.id = "header";
-    header.className = "header";
 
-    let header_title_container = document.createElement("div");
-    header_title_container.classList = "header_title_container";
-
-    let h_title = document.createElement("div");
-    h_title.classList = 'h_title';
-    h_title.innerHTML = "單據辨識";
-
-    let header_user = document.createElement("div");
-    header_user.classList.add("header_user");
-    header_user.innerHTML = `使用者 : ${test_user_data.name}`
-
-    header_title_container.appendChild(h_title);
-    header_title_container.appendChild(header_user);
-
-    let header_btn_container = document.createElement("div");
-    header_btn_container.classList = "header_btn_container";
-
-    header.appendChild(header_title_container);
-    header.appendChild(header_btn_container);
-    body.appendChild(header);
-}
-function get_main_div() {
-    let body = document.querySelector("body");
-    const main_div = document.createElement("div");
-    main_div.id = "main_div";
-    main_div.className = "main_div";
-
-    body.appendChild(main_div);
-}
 function Set_main_div_enable(value) 
 {
     const main_div = document.querySelector('#main_div');
@@ -97,154 +84,246 @@ function Set_main_div_enable(value)
     }
 }
 
-function set_upload_btn() {
-  let upload_btn = document.createElement("div");
-  upload_btn.classList.add("upload_btn");
-  upload_btn.classList.add("unable_btn");
-  upload_btn.classList.add("btn");
-  upload_btn.innerHTML = "上傳";
+async function startCamera() {
+  const videoElement = document.getElementById("steam_container");
+  const canvas = document.querySelector(".draw_canvas");
+  const context = canvas.getContext("2d");
 
-  upload_btn.addEventListener("click", async e => {
-    if(e.target.classList.contains("unable_btn")) {
-      alert("請先將單據拍照後進行確認");
-      return;
-    } else {
-      let loggedID = sessionStorage.getItem('loggedID');
-      let loggedName = sessionStorage.getItem('loggedName');
-      
-      if(!loggedID) {
-        alert("未登入使用者，請先登入後再進行操作");
-        return;
+  try {
+    // 啟用相機
+    videoElement.setAttribute("playsinline", "true");
+    videoElement.muted = true;
+
+    // 請求相機，指定高解析度
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: "environment",
+        width: { ideal: 4032 }, // 指定寬度
+        height: { ideal: 3024 } // 指定高度
       }
+    });
 
-      let post_data = {
-        Data: [
-          {
-            op_id: loggedID,
-            op_name: loggedName,
-            base64: base64_img
-          }
-        ]
-      };
+    videoElement.srcObject = stream;
 
-      console.log(post_data);
-      let responce = await upload_img_to_analysis(post_data);
-      console.log(responce);
+    videoElement.onloadedmetadata = () => {
+      videoElement.play();
+      canvas.width = videoElement.videoWidth;
+      canvas.height = videoElement.videoHeight;
 
-      set_analysis_result(responce);
-    }
-  });
-
-  return upload_btn;
+      // 開始以20fps繪製到畫布
+      animationFrameId = setInterval(() => drawToCanvas(), 1000 / 20);
+    };
+  } catch (error) {
+    alert("無法啟動相機:", error);
+    console.error("無法啟動相機:", error);
+  }
 }
 
-async function set_analysis_func() {
-  let loggedID = sessionStorage.getItem('loggedID');
-  let loggedName = sessionStorage.getItem('loggedName');
-  
-  if(!loggedID) {
-    alert("未登入使用者，請先登入後再進行操作");
-    return;
-  }
+function drawToCanvas() {
+  const videoElement = document.getElementById("steam_container");
+  const canvas = document.querySelector(".draw_canvas");
+  const context = canvas.getContext("2d");
 
-  let post_data = {
-    Data: [
-      {
-        op_id: loggedID,
-        op_name: loggedName,
-        base64: base64_img
-      }
-    ]
+  if (videoElement.readyState === 4) {
+    context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+  }
+}
+
+function captureAndSend() {
+  const videoElement = document.getElementById("steam_container");
+  const canvas = document.querySelector(".draw_canvas");
+  const context = canvas.getContext("2d");
+
+  // 停止實時畫面展示
+  clearInterval(animationFrameId);
+
+  // 調整畫布大小到 4032x3024 並將畫面定格
+  canvas.width = 4032;
+  canvas.height = 3024;
+  context.drawImage(videoElement, 0, 0, videoElement.videoWidth, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
+
+  // 將成像轉為 base64 格式
+  base64_data = canvas.toDataURL("image/jpeg");
+  console.log("Base64 Data Captured:", base64_data);
+
+  // 停止相機
+  stopCamera();
+
+  // 將 base64 資料傳送到後端
+  sendToAPI(base64_data);
+}
+
+function stopCamera() {
+  if (stream) {
+    const tracks = stream.getTracks();
+    tracks.forEach(track => track.stop());
+    stream = null;
+  }
+  console.log("相機已停止");
+}
+
+function sendToAPI(base64Image) {
+  fetch("/api/recognize", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ image: base64Image })
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log("辨識結果:", data);
+      renderResult(data);
+    })
+    .catch(error => {
+      console.error("API 請求失敗:", error);
+      // startCamera();
+      temp_guid = "";
+    });
+}
+
+// 這邊把辨識結果執行
+function renderResult(data) {
+  const resultContainer = document.querySelector(".draw_result");
+  resultContainer.innerHTML = ""; // 清空結果
+  resultContainer.textContent = JSON.stringify(data, null, 2); // 顯示辨識結果
+}
+
+function createUpdatedUI() {
+  const mainDiv = document.createElement("div");
+  mainDiv.className = "main";
+
+  // Draw container
+  const drawContainer = document.createElement("div");
+  drawContainer.className = "draw_container";
+
+  const videoElement = document.createElement("video");
+  videoElement.id = "steam_container";
+  videoElement.src = "";
+  videoElement.muted = true;
+  videoElement.autoplay = true;
+
+  const canvasElement = document.createElement("canvas");
+  canvasElement.className = "draw_canvas";
+
+  const drawResult = document.createElement("div");
+  drawResult.className = "draw_result";
+
+  drawContainer.append(videoElement, canvasElement, drawResult);
+
+  // Trigger container
+  const triggerContainer = document.createElement("div");
+  triggerContainer.className = "tigger_container";
+
+  const triggerDiv = document.createElement("div");
+  triggerDiv.className = "trigger";
+
+  triggerContainer.appendChild(triggerDiv);
+
+  // Result container
+  const resultContainer = document.createElement("div");
+  resultContainer.className = "result_container";
+
+  const scrollBar = document.createElement("div");
+  scrollBar.className = "srcoll_bar";
+
+  const medInfoContainer = document.createElement("div");
+  medInfoContainer.className = "med_info_container";
+
+  const medInfoDiv = document.createElement("div");
+  medInfoDiv.className = "med_info";
+
+  const createLabelInputPair = (labelText, inputId, maxLength) => {
+    const label = document.createElement("label");
+    label.htmlFor = inputId;
+    label.textContent = labelText;
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.id = inputId;
+    input.maxLength = maxLength;
+
+    return [label, input];
   };
 
-  console.log(post_data);
-  let responce = await upload_img_to_analysis(post_data);
-  console.log(responce);
+  // Add medicine info inputs
+  const medInfoPairs = [
+    ["藥碼", "code", 20],
+    ["藥名(英)", "name", 60],
+    ["藥名(中)", "cht_name", 40],
+  ];
+  medInfoPairs.forEach(([label, id, maxLength]) => {
+    const [labelElement, inputElement] = createLabelInputPair(label, id, maxLength);
+    medInfoDiv.append(labelElement, inputElement);
+  });
 
-  await set_analysis_result(responce);
+  const reNameButton = document.createElement("div");
+  reNameButton.className = "re_name btn unable_btn";
+  // reNameButton.textContent = "資料庫比對";
+  reNameButton.textContent = "比對成功";
+
+  medInfoContainer.append(medInfoDiv, reNameButton);
+
+  const listInfoContainer = document.createElement("div");
+  listInfoContainer.className = "list_info_container";
+
+  // Add list info inputs
+  const listInfoPairs = [
+    ["數量", "qty", 40],
+    ["效期", "deadtime", 40],
+    ["批號", "batch_num", 40],
+    ["單號", "order_num", 40],
+  ];
+  listInfoPairs.forEach(([label, id, maxLength]) => {
+    const [labelElement, inputElement] = createLabelInputPair(label, id, maxLength);
+    listInfoContainer.append(labelElement, inputElement);
+  });
+
+  const listCheckContainer = document.createElement("div");
+  listCheckContainer.className = "list_check_container";
+
+  const listCheckButton = document.createElement("div");
+  listCheckButton.className = "list_check btn";
+  listCheckButton.textContent = "送出";
+
+  const listRetryButton = document.createElement("div");
+  listRetryButton.className = "list_retry btn";
+  listRetryButton.textContent = "重新辨識";
+
+  listCheckContainer.append(listCheckButton, listRetryButton);
+
+  resultContainer.append(scrollBar, medInfoContainer, listInfoContainer, listCheckContainer);
+
+  // Append everything to the main div
+  mainDiv.append(drawContainer, triggerContainer, resultContainer);
+
+  // Append to the body or a specific container
+  document.body.appendChild(mainDiv);
 }
 
-async function set_analysis_result(data) {
-  let info_data = data.Data[0];
-  if(data == undefined || data.Code == -200) {
-    alert("Oops！資料發生不可預期的錯誤");
-    return;
-  }
-  if(data.Result == "AI辨識未啟動") {
-    alert("請聯絡工程師確認軟體運行狀況");
-    return;
-  }
 
-  let dateTime = info_data.expirydate;
-  let dateOnly = dateTime.split(' ')[0];
 
-  let prc_code_content = document.querySelector("#prc_code_content");
-  let prc_name_content = document.querySelector("#prc_name_content");
-  let prc_cht_name_content = document.querySelector("#prc_cht_name_content");
-  let prc_deadtime_input = document.querySelector("#prc_deadtime_input");
-  let prc_qty_input = document.querySelector("#prc_qty_input");
-  let prc_batch_num_input = document.querySelector("#prc_batch_num_input");
-  let prc_list_num_input = document.querySelector("#prc_list_num_input");
-  let prc_cancel_btn = document.querySelector(".prc_cancel_btn");
-  let prc_double_confirm_btn = document.querySelector(".prc_double_confirm_btn");
-  
-  let pcc_code_input = document.querySelector("#pcc_code_input");
-  let pcc_name_content = document.querySelector("#pcc_name_content");
-  let pcc_cht_name_content = document.querySelector("#pcc_cht_name_content");
-  let pcc_code_compare_confirm_btn = document.querySelector(".pcc_code_compare_confirm_btn");
-  let pcc_h_close_btn = document.querySelector(".pcc_h_close_btn");
-  
-  prc_code_content.innerHTML = info_data.code;
-  prc_name_content.innerHTML = info_data.name;
-  prc_cht_name_content.innerHTML = info_data.cht_name;
-  prc_deadtime_input.value = dateOnly;
-  prc_qty_input.value = info_data.qty;
-  prc_batch_num_input.value = info_data.batch_num;
-  prc_list_num_input.value = info_data.po_num;
-  prc_cancel_btn.setAttribute("guid", info_data.GUID);
-  prc_double_confirm_btn.setAttribute("guid", info_data.GUID);
-  
-  pcc_name_content.innerHTML = info_data.name;
-  pcc_cht_name_content.innerHTML = info_data.cht_name;
-  pcc_code_compare_confirm_btn.setAttribute("guid", info_data.GUID);
-  pcc_h_close_btn.setAttribute("guid", info_data.GUID);
-  prc_cancel_btn.setAttribute("guid", info_data.GUID);
-
-  popup_result_confirm_div_open();
-
-  if(prc_deadtime_input.value == "") prc_deadtime_input.classList.add("border_red");
-  if(prc_qty_input.value == "") prc_qty_input.classList.add("border_red");
-  if(prc_batch_num_input.value == "") prc_batch_num_input.classList.add("border_red");
-  if(prc_list_num_input.value == "") prc_list_num_input.classList.add("border_red");
-
-  if(info_data.code == "") {
-    console.log("開啟code比對輸入");
-    popup_code_compare_div_open();
-  }
-}
-
-// 判斷行動裝置
 function isMobileOrTablet() {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
   // 檢查常見行動裝置的 User Agent 關鍵字
-  const mobileKeywords = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|Tablet|Windows Phone|Kindle|Silk|Mobile|PlayBook/i;
+  const mobileKeywords = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|Tablet|Windows Phone|Kindle|Silk|Mobile|PlayBook|iPad/i;
 
   // 使用 navigator.userAgentData 判斷行動裝置（部分新版瀏覽器支援）
   const isMobileDevice = navigator.userAgentData?.mobile;
 
-  // 判斷 iPad 的條件，包括 iPad 在桌面模式下的特徵
+  // 判斷是否是 iPad（包括 iPad Air 和 iPad Pro），並考慮 Chrome 模擬環境特徵
   const isIPad = /iPad/i.test(userAgent) || 
-                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ||
-                 (navigator.platform === 'MacIntel' && screen.width <= 1024);
+                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) || 
+                 (navigator.platform === 'MacIntel' && screen.width >= 820 && screen.width <= 1366) || 
+                 /Macintosh/i.test(userAgent) && navigator.maxTouchPoints > 1;
 
-  // 綜合判斷行動裝置或平板
+  // 綜合判斷是否為行動裝置或平板
   const result = mobileKeywords.test(userAgent) || isMobileDevice || isIPad;
 
   // 加入 console.log 來顯示判斷信息
   console.log("User Agent:", userAgent);
   console.log("Platform:", navigator.platform);
   console.log("Screen Width:", screen.width);
+  console.log("Max Touch Points:", navigator.maxTouchPoints);
   console.log("是否判定為行動裝置或平板:", result);
 
   return result;

@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Noto Sans TC';
-    src: url('../font/Noto_Sans_TC/static/NotoSansTC-Regular.ttf') format('woff');
+    /* src: url('../font/Noto_Sans_TC/static/NotoSansTC-Regular.ttf') format('woff'); */
     font-weight: normal;
     font-style: normal;
 }
@@ -15,45 +15,14 @@
     font-style: normal;
 }
 
-.header {
-    width: 100%;
-    height: 60px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-left: 80px;
-}
-.main_div {
-    margin-bottom: 60px;
-}
-.no_info_data_div {
-    padding: 36px;
-    text-align: center;
-    font-weight: 600;
-    font-size: 32px;
-    color: #e73f3f;
-}
-.h_title {
-    font-size: 24px;
-    font-weight: 600;
-}
-.header_user {
-    padding-left: 24px;
-}
-
-.header_btn_container {
-    display: flex;
-    margin-right: 40px;
-}
 
 .btn {
-  margin: 4px;
   font-weight: 600;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   border: 1px solid black;
   color: #F6F7F7;
-  padding: 6px 32px;
+  padding: 2px;
   border-radius: 5px;
   transition: all 0.2s ease-out;
   background-color: black;
@@ -73,83 +42,153 @@
     transition: all 0.2s ease-out;
 }
 
-.upload_img_container {
-    margin: 4px auto;
+.main {
+    position: relative;
+    width: 100svw;
+    height: 100svh;
+    padding-bottom: 30px;
+    background-color: #202020;
+    overflow: hidden;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-#pic_input {
+.draw_container {
+    width: 100%;
+    aspect-ratio: 3/4; 
+    max-width: 600px;
+    margin: auto;
+    position: relative;
+    z-index: 30;
+}
+.draw_canvas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 31;
+}
+.draw_result {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 32;
+}
+
+#steam_container {
     display: none;
 }
-.take_pic_label {
-    padding: 6px 48px;
-    font-size: 20px;
-    font-weight: 800;
-}
-.notice_container {
-    margin: 8px auto 12px;
-    display: flex;
-    justify-content: center;
-}
-.notice_content {
-    width: 600px;
-    text-align: center;
-    font-weight: 600;
-    color: black;
-    line-height: 32px;
-    letter-spacing: 1px;
-}
 
-.display_container {
-    box-sizing: content-box;
-    position: relative;
-    width: 600px;
-    height: 800px;
-    margin: auto;
-    border: 2px solid #000;
-}
-.display_container > img {
-    display: block;
+.tigger_container {
     width: 100%;
-    max-height: 100%;
-    object-fit: cover;
-    object-position: left;
+    margin: auto;
+    background-color: #202020;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
 }
-.location_point {
-    width: 20px;
-    height: 20px;
-    background-color: red;
-    position: absolute;
-    transform: translate(-50% -50%);
+.trigger {
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
+    background-color: #f9f9f9;
+    border: 4px solid #bebebe;
 }
-.l_0 {
-    top: -10px;
-    left: -10px;
+.result_container {
+    position: absolute;
+    top: 100svh;
+    background-color: #ffffff;
+    width: 100%;
+    padding: 10px 30px 52px;
+    border-radius: 30px 30px 0px 0px;
+    max-height: 100svh;
+    overflow-x: auto;
 }
 
-.l_1 {
-    bottom: -10px;
-    left: -10px;
+.srcoll_bar {
+    width: 60%;
+    height: 6px;
+    border-radius: 3px;
+    background-color: #6B6B63;
+    margin: auto;
+    max-width: 360px;
+    margin-bottom: 32px;
 }
-.l_2 {
-    bottom: -10px;
-    right: 35px;
+.med_info_container {
+    padding: 10px 16px;
+    border: 2px solid #b6b6b6;
+    border-radius: 5px;
+    margin-bottom: 12px;
 }
-.l_3 {
-    top: -10px;
-    right: 35px;
+.med_info,
+.list_info_container {
+    margin: auto;
+    display: grid;
+    grid-template-columns: 100%;
+    justify-content: space-between;
 }
-.upload_btn {
-    font-size: 20px;
-    font-weight: 800;
-    width: 120px;
+.med_info_container {
+    margin: auto;
+    max-width: 400px;
+}
+label {
+    font-size: 16px;
+}
+
+input {
+    border-radius: 0px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1.5px solid #000;
+    padding: 2px 6px 3px;
+    font-size: 16px;
+}
+input:focus {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1.5px solid #000;
+    outline: none;
+}
+
+.med_info > label,
+.list_info_container > label  {
+    display: block;
+    margin-bottom: 4px;
+}
+.med_info > input,
+.list_info_container > input  {
+    margin-bottom: 14px;
+    display: block;
+}
+.re_name {
+    width: 160px;
+    text-align: center;
+    margin: auto;
+}
+
+.list_info_container {
+    max-width: 400px;
+    margin-top: 20px;
+    padding: 0px 16px;
+}
+
+.list_check_container {
     display: flex;
-    justify-content: center;
-    margin: 16px auto 0px;
-    padding: 8px;
+    justify-content: space-between;
 }
+.list_check,
+.list_retry {
+    width: 120px;
+    text-align: center;
+    padding: 6px;
+    font-size: 16px;
+}
+
 
 .under-line {
     position: fixed;
@@ -157,48 +196,13 @@
     left: 0;
     width: 100%;
     text-align: center;
-    font-size: 18px;
+    font-size: 12px;
     color: #000000;
     background-color: #ffffff;
-    height: 30px;
-    line-height: 30px;
     display: block;
-    z-index: 9;
-}
-.border_red {
-    border: 2px solid #ff0000 !important;
+    z-index: 999;
+    padding-bottom: 4px;
 }
 
-@media screen and (max-width: 768px) {
-    /* 在寬度小於或等於 768px 的屏幕上應用這些樣式 */
-    .display_container {
-        width: 321px;
-        height: 428px;
-    }
-    .notice_content {
-        width: 321px;
-        font-size: 13px;
-        line-height: 20px;
-    }
-    .location_point {
-        width: 10px;
-        height: 10px;
-    }
-    .l_0 {
-        top: -5px;
-        left: -5px;
-    }
-    
-    .l_1 {
-        bottom: -5px;
-        left: -5px;
-    }
-    .l_2 {
-        bottom: -5px;
-        right: 14px;
-    }
-    .l_3 {
-        top: -5px;
-        right: 14px;
-    }
+@media screen and (min-width: 550px) {
 }
