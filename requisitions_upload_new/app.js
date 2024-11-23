@@ -5,6 +5,51 @@ let temp_guid = "";
 let isExpanded = false; // 是否展開
 let startY = 0; // 觸摸起點 Y
 
+let test_data =[
+        {
+          "key_word": "po",
+          "height": "160",
+          "width": "900",
+          "center": "1905.5,2307",
+          "conf": "0.9859460592269897"
+        },
+        {
+          "key_word": "batch_num",
+          "height": "120",
+          "width": "763",
+          "center": "2066.5,2590.5",
+          "conf": "0.9705426096916199"
+        },
+        {
+          "key_word": "cht_name",
+          "height": "100",
+          "width": "727",
+          "center": "395.5,1647",
+          "conf": "0.9415721893310547"
+        },
+        {
+          "key_word": "expirydate",
+          "height": "100",
+          "width": "627",
+          "center": "2523.5,592",
+          "conf": "0.999523937702179"
+        },
+        {
+          "key_word": "name",
+          "height": "100",
+          "width": "1292",
+          "center": "1328,586",
+          "conf": "0.9357761144638062"
+        },
+        {
+          "key_word": "qty",
+          "height": "100",
+          "width": "464",
+          "center": "1346.5,2589",
+          "conf": "0.9991824626922607"
+        }
+      ];
+
 window.onload = load;
 // window.addEventListener('resize', handleResize);
 let base64_img = "";
@@ -78,6 +123,8 @@ async function load()
   });
   
 
+  // drawBoundingBoxesWithDiv(test_data);
+
   Set_main_div_enable(false);
   // show_result_div(true);
 }
@@ -108,7 +155,7 @@ async function startCamera() {
     stream = await navigator.mediaDevices.getUserMedia({
       video: {
         facingMode: "environment",
-        width: { ideal: 4032 }, // 指定寬度
+        width: { ideal: 4032}, // 指定寬度
         height: { ideal: 3024 } // 指定高度
       }
     });
@@ -190,6 +237,10 @@ async function captureAndSend() {
   if(return_data.Code == 200) {
     renderResult(return_data.Data);
   } else {
+    alert("辨識失敗");
+    show_result_div(false);
+    result_div_init();
+    await startCamera();
     console.log(return_data);
   }
 }
@@ -225,11 +276,11 @@ function stopCamera() {
 
 // 這邊把辨識結果執行
 function renderResult(data) {
-  const resultContainer = document.querySelector(".draw_result");
-  resultContainer.innerHTML = ""; // 清空結果
   // resultContainer.textContent = JSON.stringify(data, null, 2); // 顯示辨識結果
-
+  
   let temp_data = data[0];
+
+  drawBoundingBoxesWithDiv(temp_data.Value);
 
   temp_guid = temp_data.GUID;
 
@@ -551,4 +602,57 @@ function result_div_init() {
   med_deadtime.value = "";
   med_batch_num.value = "";
   med_order_num.value = "";
+}
+
+function drawBoundingBoxesWithDiv(drawData) {
+  const drawContainer = document.querySelector(`.draw_container`);
+  const drawResult = drawContainer.querySelector(".draw_result");
+
+  // 清空 draw_result 的內容
+  drawResult.innerHTML = "";
+
+  // 原始圖片大小
+  const originalWidth = 4032;
+  const originalHeight = 3024;
+
+  // 畫布調整比例
+  const containerWidth = drawContainer.offsetWidth;
+  const containerHeight = drawContainer.offsetHeight;
+
+  const scaleX = containerWidth / originalWidth;
+  const scaleY = containerHeight / originalHeight;
+
+  // 繪製框框
+  drawData.forEach(item => {
+      const centerX = parseFloat(item.center.split(",")[0]);
+      const centerY = parseFloat(item.center.split(",")[1]);
+      const width = parseFloat(item.width);
+      const height = parseFloat(item.height);
+
+      // 調整比例
+      const scaledX = centerX * scaleX - (width * scaleX) / 2;
+      const scaledY = centerY * scaleY - (height * scaleY) / 2;
+      const scaledWidth = width * scaleX;
+      const scaledHeight = height * scaleY;
+
+      // 創建框框元素
+      const box = document.createElement("div");
+      box.className = "bounding-box";
+      box.style.left = `${scaledX}px`;
+      box.style.top = `${scaledY}px`;
+      box.style.width = `${scaledWidth}px`;
+      box.style.height = `${scaledHeight}px`;
+
+      // 添加文字標籤
+      const label = document.createElement("span");
+      label.className = "bounding-label";
+      label.innerText = item.key_word;
+      label.style.top = `${scaledHeight}px`; // 放置於框框底部
+
+      // 將標籤加入框框
+      box.appendChild(label);
+
+      // 將框框加入 drawResult
+      drawResult.appendChild(box);
+  });
 }

@@ -457,7 +457,7 @@ async function enter_count_result() {
         renderResult(return_data.Data);
         console.log('數完', drugs_counts);
     } else {
-        alert("辨識不完全，重新開始辨識");
+        alert("辨識錯誤，重新開始辨識");
         stopAllProcesses();
         setTimeout(() => startCamera(), 500);
         return;
@@ -534,13 +534,13 @@ function display_notice_func(boolean) {
         clearTimeout(hideTimeout);
     }
 
-    // if(boolean) {
-    //     notice.style.backgroundColor = "#00b718";
-    //     notice.innerHTML = "已加入";
-    // } else {
-    //     notice.style.backgroundColor = "#b72800";
-    //     notice.innerHTML = "辨識失敗";
-    // }
+    if(boolean) {
+        notice.style.backgroundColor = "#00b718";
+        notice.innerHTML = "已加入";
+    } else {
+        notice.style.backgroundColor = "#b72800";
+        notice.innerHTML = "存入失敗";
+    }
 
     // 將通知從上方移到畫面內
     notice.style.top = "60px";

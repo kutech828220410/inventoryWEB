@@ -4,7 +4,7 @@ async function upload_img_to_analysis(data) {
         let start_p = performance.now();
         console.log("進入api取得資料");
         console.log(data);
-        // console.log(`${api_ip}api/PCMPO/analyze`);
+        console.log(`${api_ip}api/PCMPO/analyze`);
         // console.log(`http://www.kutech.tw:4436/api/PCMPO/analyze`);
         console.log(trans_api_ip(api_ip));
         let temp_data = await fetch(`${trans_api_ip(api_ip)}api/PCMPO/analyze`, {
@@ -153,6 +153,6 @@ async function delete_textVision(data) {
 
 function trans_api_ip(ip) {
     let url = 'http://www.kutech.tw:4436/';
-    return url;
-    // return ip;
+    // return url;
+    return ip;
 }

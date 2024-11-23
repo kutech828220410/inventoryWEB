@@ -225,6 +225,19 @@ input:disabled {
     font-size: 16px;
 }
 
+.bounding-box {
+    position: absolute;
+    border: 2px solid rgb(103, 255, 57);
+    box-sizing: border-box;
+}
+.bounding-label {
+    position : absolute;
+    left : 0px;
+    color : rgb(103, 255, 57);
+    font-size: 12px;
+    white-space : nowrap;
+}
+
 
 .under-line {
     position: fixed;
