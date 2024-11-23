@@ -4,8 +4,10 @@ async function upload_img_to_analysis(data) {
         let start_p = performance.now();
         console.log("進入api取得資料");
         console.log(data);
-        console.log(`http://www.kutech.tw:4436/api/PCMPO/analyze`);
-        let temp_data = await fetch(`http://www.kutech.tw:4436/api/PCMPO/analyze`, {
+        // console.log(`${api_ip}api/PCMPO/analyze`);
+        // console.log(`http://www.kutech.tw:4436/api/PCMPO/analyze`);
+        console.log(trans_api_ip(api_ip));
+        let temp_data = await fetch(`${trans_api_ip(api_ip)}api/PCMPO/analyze`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -27,7 +29,11 @@ async function upload_img_to_analysis(data) {
     
         return temp_data;
     } catch(err) {
-        console.log(err);
+        let err_data = {
+            Code: -200,
+            error: err
+        }
+        return err_data;
     }
 }
 async function update_med_code_srch(data) {
@@ -36,8 +42,10 @@ async function update_med_code_srch(data) {
         let start_p = performance.now();
         console.log("進入api取得資料");
         console.log(data);
-        console.log(`http://www.kutech.tw:4436/api/PCMPO/update_med_code_srch`);
-        let temp_data = await fetch(`http://www.kutech.tw:4436/api/PCMPO/update_med_code_srch`, {
+        // console.log(`${api_ip}api/PCMPO/update_med_code_srch`);
+        // console.log(`http://www.kutech.tw:4436/api/PCMPO/update_med_code_srch`);
+        console.log(trans_api_ip(api_ip));
+        let temp_data = await fetch(`${trans_api_ip(api_ip)}api/PCMPO/update_med_code_srch`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -59,7 +67,11 @@ async function update_med_code_srch(data) {
     
         return temp_data;
     } catch(err) {
-        console.log(err);
+        let err_data = {
+            Code: -200,
+            error: err
+        }
+        return err_data;
     }
 }
 async function update_textvision(data) {
@@ -68,8 +80,10 @@ async function update_textvision(data) {
         let start_p = performance.now();
         console.log("進入api取得資料");
         console.log(data);
-        console.log(`http://www.kutech.tw:4436/api/PCMPO/update_textvision`);
-        let temp_data = await fetch(`http://www.kutech.tw:4436/api/PCMPO/update_textvision`, {
+        // console.log(`${api_ip}api/PCMPO/update_textvision`);
+        // console.log(`http://www.kutech.tw:4436/api/PCMPO/update_textvision`);
+        console.log(trans_api_ip(api_ip));
+        let temp_data = await fetch(`${trans_api_ip(api_ip)}api/PCMPO/update_textvision`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -91,7 +105,11 @@ async function update_textvision(data) {
     
         return temp_data;
     } catch(err) {
-        console.log(err);
+        let err_data = {
+            Code: -200,
+            error: err
+        }
+        return err_data;
     }
 }
 async function delete_textVision(data) {
@@ -100,8 +118,10 @@ async function delete_textVision(data) {
         let start_p = performance.now();
         console.log("進入api取得資料");
         console.log(data);
-        console.log(`http://www.kutech.tw:4436/api/PCMPO/delete_textVision`);
-        let temp_data = await fetch(`http://www.kutech.tw:4436/api/PCMPO/delete_textVision`, {
+        // console.log(`${api_ip}api/PCMPO/delete_textVision`);
+        // console.log(`http://www.kutech.tw:4436/api/PCMPO/delete_textVision`);
+        console.log(trans_api_ip(api_ip));
+        let temp_data = await fetch(`${trans_api_ip(api_ip)}api/PCMPO/delete_textVision`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -123,6 +143,16 @@ async function delete_textVision(data) {
     
         return temp_data;
     } catch(err) {
-        console.log(err);
+        let err_data = {
+            Code: -200,
+            error: err
+        }
+        return err_data;
     }
+}
+
+function trans_api_ip(ip) {
+    let url = 'http://www.kutech.tw:4436/';
+    return url;
+    // return ip;
 }

@@ -276,7 +276,7 @@ async function set_analysis_func() {
 async function set_analysis_result(data) {
   let info_data = data.Data[0];
   if(data == undefined || data.Code == -200) {
-    alert("Oops！資料發生不可預期的錯誤");
+    alert("辨識失敗，請重新拍照");
     return;
   }
   if(data.Result == "AI辨識未啟動") {

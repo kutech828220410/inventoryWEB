@@ -83,7 +83,7 @@ function get_prc_footer() {
 
             let res_data = await update_textvision(post_data);
             if(res_data.Code == 200) {
-                alert("上傳成功");
+                alert("寫入成功");
                 popup_result_confirm_div_close();
             }
             return;

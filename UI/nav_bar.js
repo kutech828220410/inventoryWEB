@@ -92,7 +92,7 @@ let html_pages = [
                     {
                         html_name: "requisitions_upload",
                         html_ctName: "單據辨識",
-                        html_url: "../../requisitions_upload",
+                        html_url: "../../requisitions_upload_new",
                         icon_url: "../../image/icon/assortment.png",
                         icon_big_url: "../../image/icon/requisitions_upload.png"
                     }
@@ -142,6 +142,13 @@ let html_pages = [
                         html_url: "../../med_request_build",
                         icon_url: "../../image/icon/assortment.png",
                         icon_big_url: "../../image/requset_bulid_icon.png"
+                    },
+                    {
+                        html_name: "pickingpage",
+                        html_ctName: "藥品指引",
+                        html_url: "../../pickingpage_phar",
+                        icon_url: "../../image/icon/assortment.png",
+                        icon_big_url: "../../image/icon/picking_big_icon.png"
                     },
                 ]
             },
