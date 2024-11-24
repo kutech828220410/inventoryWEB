@@ -231,7 +231,7 @@ async function startCamera() {
         canvas.height = videoElement.videoHeight;
   
         // 每秒15張
-        captureIntervalId = setInterval(() => drawToCanvas(), 1000 / 10);
+        captureIntervalId = setInterval(() => drawToCanvas(), 1000 / 20);
   
         // 開始AI辨識輪詢
         setTimeout(() => captureImage(), 500); // 首次延遲0.5秒

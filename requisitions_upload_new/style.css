@@ -102,14 +102,35 @@
     margin: auto;
 }
 .trigger_homepage {
+    position: absolute;
+    top: 20px;
+    right: 20px;
     width: 32px;
     height: 32px;
     margin: auto;
+    z-index: 1000000;
 }
 .trigger_homepage > img {
     display: block;
     width: 100%;
 }
+
+.upload_div {
+    margin: auto;
+}
+#pic_input {
+    display: none;
+}
+.take_pic_label {
+    display: block;
+    width: 36px;
+    height: 36px;
+}
+.take_pic_label > img {
+    display: block;
+    width: 100%;
+}
+
 .trigger_reset {
     width: 32px;
     height: 32px;

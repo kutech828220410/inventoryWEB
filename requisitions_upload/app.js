@@ -111,7 +111,7 @@ function set_taking_pic_div() {
   pic_input.name = "pic_input";
   pic_input.type = "file";
   pic_input.accept = "image/*";
-  pic_input.setAttribute('capture', '');
+  // pic_input.setAttribute('capture', '');
   pic_input.onchange = async (e) => {
     await previewImage(e);
     // let upload_btn = document.querySelector(".upload_btn");

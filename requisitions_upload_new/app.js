@@ -1,5 +1,6 @@
 let base64_data = ""; // 儲存 Base64 格式影像資料的變數
 let stream;
+let animationFrameId;
 let isRunning = true;
 let temp_guid = "";
 let isExpanded = false; // 是否展開
@@ -71,10 +72,10 @@ async function load()
     window.location.href = "../../frontpage";
   };
 
-  if(!isMobileOrTablet()) {
-    alert("請使用行動裝置");
-    window.location.href = "../../frontpage";
-  };
+  // if(!isMobileOrTablet()) {
+  //   alert("請使用行動裝置");
+  //   window.location.href = "../../frontpage";
+  // };
 
   check_session_off();
   var serverName = "";
@@ -187,6 +188,8 @@ function drawToCanvas() {
 }
 
 async function captureAndSend() {
+  Set_main_div_enable(true);
+
   let result_container = document.querySelector(".result_container");
 
   if(result_container.classList.contains("show_result_container")) return;
@@ -199,8 +202,8 @@ async function captureAndSend() {
   clearInterval(animationFrameId);
 
   // 調整畫布大小到 4032x3024 並將畫面定格
-  canvas.width = 4032;
-  canvas.height = 3024;
+  canvas.width = 3024;
+  canvas.height = 4032;
   
   context.drawImage(videoElement, 0, 0, videoElement.videoWidth, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
 
@@ -217,6 +220,7 @@ async function captureAndSend() {
   
   if(!loggedID) {
     alert("未登入使用者，請先登入後再進行操作");
+    Set_main_div_enable(false);
     return;
   }
 
@@ -236,8 +240,10 @@ async function captureAndSend() {
 
   if(return_data.Code == 200) {
     renderResult(return_data.Data);
+    Set_main_div_enable(false);
   } else {
     alert("辨識失敗");
+    Set_main_div_enable(false);
     show_result_div(false);
     result_div_init();
     await startCamera();
@@ -254,33 +260,15 @@ function stopCamera() {
   console.log("相機已停止");
 }
 
-// function sendToAPI(base64Image) {
-//   fetch("/api/recognize", {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({ image: base64Image })
-//   })
-//     .then(response => response.json())
-//     .then(data => {
-//       console.log("辨識結果:", data);
-//       renderResult(data);
-//     })
-//     .catch(error => {
-//       console.error("API 請求失敗:", error);
-//       // startCamera();
-//       temp_guid = "";
-//       console.log("asdf");
-//       renderResult("");
-//     });
-// }
 
 // 這邊把辨識結果執行
 function renderResult(data) {
   // resultContainer.textContent = JSON.stringify(data, null, 2); // 顯示辨識結果
   
   let temp_data = data[0];
+  console.log("renderResult", temp_data);
 
-  drawBoundingBoxesWithDiv(temp_data.Value);
+  drawBoundingBoxesWithDiv(temp_data.value);
 
   temp_guid = temp_data.GUID;
 
@@ -342,12 +330,25 @@ function createUpdatedUI() {
   const triggerDiv = document.createElement("div");
   triggerDiv.className = "trigger";
 
-  let trigger_homepage = document.createElement("div");
-  trigger_homepage.classList.add("trigger_homepage");
-  trigger_homepage.innerHTML = `<img src="../../image/home_white.png" alt="">`;
-  trigger_homepage.addEventListener("click", () => {
-    window.location.href = '../../frontpage';
-  })
+  let upload_div = document.createElement("div");
+  upload_div.classList.add("upload_div");
+
+  let pic_input = document.createElement("input");
+  pic_input.id = "pic_input";
+  pic_input.name = "pic_input";
+  pic_input.type = "file";
+  pic_input.accept = "image/*";
+  pic_input.onchange = async (e) => {
+    await previewImage(e);
+  };
+
+  let take_pic_label = document.createElement("label");
+  take_pic_label.classList.add("take_pic_label");
+  take_pic_label.setAttribute("for", "pic_input");
+  take_pic_label.innerHTML = `<img src="../../image/image_upload.png" alt="">`;
+
+  upload_div.appendChild(pic_input);
+  upload_div.appendChild(take_pic_label);
 
   let trigger_reset = document.createElement("div");
   trigger_reset.classList.add("trigger_reset");
@@ -358,7 +359,8 @@ function createUpdatedUI() {
     await startCamera();
   })
 
-  triggerContainer.appendChild(trigger_homepage);
+  // triggerContainer.appendChild(trigger_homepage);
+  triggerContainer.appendChild(upload_div);
   triggerContainer.appendChild(triggerDiv);
   triggerContainer.appendChild(trigger_reset);
 
@@ -459,8 +461,10 @@ function createUpdatedUI() {
   listCheckButton.className = "list_check btn";
   listCheckButton.textContent = "送出";
   listCheckButton.addEventListener("click", async () => {
+    Set_main_div_enable(true);
     if(temp_guid == "") {
       alert("無請購單資料");
+      Set_main_div_enable(false);
       return;
     }
 
@@ -492,11 +496,13 @@ function createUpdatedUI() {
     let res_data = await update_textvision(post_data);
     if(res_data.Code == 200) {
         alert("寫入成功");
+        Set_main_div_enable(false);
         show_result_div(false);
         result_div_init();
         await startCamera();
     } else {
       alert("寫入失敗，請確認伺服器狀態");
+      Set_main_div_enable(false);
     }
     return;
   });
@@ -538,8 +544,16 @@ function createUpdatedUI() {
 
   resultContainer.append(scrollBar, medInfoContainer, listInfoContainer, listCheckContainer);
 
+  let trigger_homepage = document.createElement("div");
+  trigger_homepage.classList.add("trigger_homepage");
+  trigger_homepage.innerHTML = `<img src="../../image/home_white.png" alt="">`;
+  trigger_homepage.addEventListener("click", () => {
+    window.location.href = '../../frontpage';
+  })
+
   // Append everything to the main div
   mainDiv.append(drawContainer, triggerContainer, resultContainer);
+  mainDiv.append(trigger_homepage);
 
   // Append to the body or a specific container
   document.body.appendChild(mainDiv);
@@ -612,8 +626,8 @@ function drawBoundingBoxesWithDiv(drawData) {
   drawResult.innerHTML = "";
 
   // 原始圖片大小
-  const originalWidth = 4032;
-  const originalHeight = 3024;
+  const originalWidth = 3024;
+  const originalHeight = 4032;
 
   // 畫布調整比例
   const containerWidth = drawContainer.offsetWidth;
@@ -655,4 +669,90 @@ function drawBoundingBoxesWithDiv(drawData) {
       // 將框框加入 drawResult
       drawResult.appendChild(box);
   });
+}
+
+async function previewImage(event) {
+  let file = event.target.files[0];
+  // 確認input是否有上傳檔案
+  if (!file) return;
+
+  let img = new Image();
+  img.src = URL.createObjectURL(file);
+
+  img.onload = async () => {
+    Set_main_div_enable(true);
+
+    // 停止實時畫面展示
+    if(animationFrameId) {
+      clearInterval(animationFrameId);
+    }
+    // 停止相機
+    stopCamera();
+
+    let MAX_PIXELS = 12192768; // 3,145,728 pixels => 2048px x 1536px
+    const canvas = document.querySelector(".draw_canvas");
+    const context = canvas.getContext("2d");
+    
+    let width = img.width;
+    let height = img.height;
+    let pixels = width * height;
+
+    if (pixels > MAX_PIXELS) {
+        // Adjust the size to maintain the 3:4 aspect ratio
+        let aspectRatio = 3 / 4;
+        if (width / height > aspectRatio) {
+            width = Math.sqrt(MAX_PIXELS * aspectRatio);
+            height = width / aspectRatio;
+        } else {
+            height = Math.sqrt(MAX_PIXELS / aspectRatio);
+            width = height * aspectRatio;
+        }
+    }
+
+    canvas.width = width;
+    canvas.height = height;
+    context.drawImage(img, 0, 0, width, height);
+    // 停止相機
+    stopCamera();
+
+    let temp_base64_img = canvas.toDataURL('image/jpeg');
+
+    // 將 base64 資料傳送到後端
+    let loggedID = sessionStorage.getItem('loggedID');
+    let loggedName = sessionStorage.getItem('loggedName');
+    
+    if(!loggedID) {
+      alert("未登入使用者，請先登入後再進行操作");
+      Set_main_div_enable(false);
+      return;
+    }
+
+    let post_data = {
+      Data: [
+        {
+          op_id: loggedID,
+          op_name: loggedName,
+          base64: temp_base64_img
+        }
+      ]
+    };
+
+    console.log(post_data);
+    let return_data = await upload_img_to_analysis(post_data);
+    console.log("辨識結果:", return_data);
+
+    if(return_data.Code == 200) {
+      renderResult(return_data.Data);
+      Set_main_div_enable(false);
+    } else {
+      alert("辨識失敗");
+      Set_main_div_enable(false);
+      show_result_div(false);
+      result_div_init();
+      await startCamera();
+      console.log(return_data);
+    }
+
+    Set_main_div_enable(false);
+  };
 }
