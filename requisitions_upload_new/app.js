@@ -53,7 +53,6 @@ let test_data =[
 
 window.onload = load;
 // window.addEventListener('resize', handleResize);
-let base64_img = "";
 let medicine_page = [];
 let info_arr = [
   "藥碼","藥名(英)","藥名(中)","數量","效期","批號","單號",
@@ -169,7 +168,7 @@ async function startCamera() {
       canvas.height = videoElement.videoHeight;
 
       // 開始以20fps繪製到畫布
-      animationFrameId = setInterval(() => drawToCanvas(), 1000 / 20);
+      animationFrameId = setInterval(() => drawToCanvas(), 1000 / 60);
     };
   } catch (error) {
     alert("無法啟動相機:", error);
@@ -290,7 +289,7 @@ function renderResult(data) {
 
   let re_name = document.querySelector(".re_name");
 
-  if(temp_data.code = "") {
+  if(temp_data.code == "") {
     re_name.classList.remove("unable_btn");
     temp_data.code.innerHTML = "資料庫比對";
   } else {
@@ -625,50 +624,60 @@ function drawBoundingBoxesWithDiv(drawData) {
   // 清空 draw_result 的內容
   drawResult.innerHTML = "";
 
-  // 原始圖片大小
-  const originalWidth = 3024;
-  const originalHeight = 4032;
+  // 創建一個 Image 對象來解析 Base64 圖片的尺寸
+  const img = new Image();
+  img.src = base64_data;
 
-  // 畫布調整比例
-  const containerWidth = drawContainer.offsetWidth;
-  const containerHeight = drawContainer.offsetHeight;
+  img.onload = function () {
+    // 取得圖片的原始寬高
+    const originalWidth = img.width;
+    const originalHeight = img.height;
 
-  const scaleX = containerWidth / originalWidth;
-  const scaleY = containerHeight / originalHeight;
+    // 畫布調整比例
+    const containerWidth = drawContainer.offsetWidth;
+    const containerHeight = drawContainer.offsetHeight;
 
-  // 繪製框框
-  drawData.forEach(item => {
-      const centerX = parseFloat(item.center.split(",")[0]);
-      const centerY = parseFloat(item.center.split(",")[1]);
-      const width = parseFloat(item.width);
-      const height = parseFloat(item.height);
+    const scaleX = containerWidth / originalWidth;
+    const scaleY = containerHeight / originalHeight;
 
-      // 調整比例
-      const scaledX = centerX * scaleX - (width * scaleX) / 2;
-      const scaledY = centerY * scaleY - (height * scaleY) / 2;
-      const scaledWidth = width * scaleX;
-      const scaledHeight = height * scaleY;
+    // 繪製框框
+    drawData.forEach(item => {
+        const centerX = parseFloat(item.center.split(",")[0]);
+        const centerY = parseFloat(item.center.split(",")[1]);
+        const width = parseFloat(item.width);
+        const height = parseFloat(item.height);
 
-      // 創建框框元素
-      const box = document.createElement("div");
-      box.className = "bounding-box";
-      box.style.left = `${scaledX}px`;
-      box.style.top = `${scaledY}px`;
-      box.style.width = `${scaledWidth}px`;
-      box.style.height = `${scaledHeight}px`;
+        // 調整比例
+        const scaledX = centerX * scaleX - (width * scaleX) / 2;
+        const scaledY = centerY * scaleY - (height * scaleY) / 2;
+        const scaledWidth = width * scaleX;
+        const scaledHeight = height * scaleY;
 
-      // 添加文字標籤
-      const label = document.createElement("span");
-      label.className = "bounding-label";
-      label.innerText = item.key_word;
-      label.style.top = `${scaledHeight}px`; // 放置於框框底部
+        // 創建框框元素
+        const box = document.createElement("div");
+        box.className = "bounding-box";
+        box.style.left = `${scaledX}px`;
+        box.style.top = `${scaledY}px`;
+        box.style.width = `${scaledWidth}px`;
+        box.style.height = `${scaledHeight}px`;
 
-      // 將標籤加入框框
-      box.appendChild(label);
+        // 添加文字標籤
+        const label = document.createElement("span");
+        label.className = "bounding-label";
+        label.innerText = item.key_word;
+        label.style.top = `${scaledHeight}px`; // 放置於框框底部
 
-      // 將框框加入 drawResult
-      drawResult.appendChild(box);
-  });
+        // 將標籤加入框框
+        box.appendChild(label);
+
+        // 將框框加入 drawResult
+        drawResult.appendChild(box);
+    });
+  };
+
+  img.onerror = function () {
+    console.error("Base64 圖片加載失敗");
+  };
 }
 
 async function previewImage(event) {
@@ -715,7 +724,7 @@ async function previewImage(event) {
     // 停止相機
     stopCamera();
 
-    let temp_base64_img = canvas.toDataURL('image/jpeg');
+    base64_data = canvas.toDataURL('image/jpeg');
 
     // 將 base64 資料傳送到後端
     let loggedID = sessionStorage.getItem('loggedID');
@@ -732,7 +741,7 @@ async function previewImage(event) {
         {
           op_id: loggedID,
           op_name: loggedName,
-          base64: temp_base64_img
+          base64: base64_data
         }
       ]
     };

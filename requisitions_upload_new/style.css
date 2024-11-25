@@ -108,7 +108,7 @@
     width: 32px;
     height: 32px;
     margin: auto;
-    z-index: 1000000;
+    z-index: 39;
 }
 .trigger_homepage > img {
     display: block;
@@ -235,6 +235,8 @@ input:disabled {
 }
 
 .list_check_container {
+    max-width: 400px;
+    margin: auto;
     display: flex;
     justify-content: space-between;
 }
@@ -275,4 +277,10 @@ input:disabled {
 }
 
 @media screen and (min-width: 550px) {
+    .show_result_container {
+        bottom: calc(-100% + 480px);
+    }
+    .expanded {
+        bottom: 0px;
+    }
 }
