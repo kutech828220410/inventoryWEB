@@ -103,6 +103,19 @@ function set_popup_container() {
     let ppcd_video_top = document.createElement("div");
     ppcd_video_top.classList.add("ppcd_video_top");
 
+    let ppcd_perf_btn = document.createElement("div");
+    ppcd_perf_btn.classList.add("ppcd_perf_btn");
+    ppcd_perf_btn.addEventListener("click", () => {
+        let ppcd_perf_div = document.querySelector(".ppcd_perf_div");
+        if(ppcd_perf_div.classList.contains("display_none")) {
+            ppcd_perf_div.classList.remove("display_none");
+        } else {
+            ppcd_perf_div.classList.add("display_none");
+        }
+    });
+
+    ppcd_video_top.appendChild(ppcd_perf_btn);
+
     let ppcd_video_main_zone = document.createElement("div");
     ppcd_video_main_zone.classList.add("ppcd_video_main_zone");
 
@@ -115,7 +128,49 @@ function set_popup_container() {
     
     let ppcd_video_bottom = document.createElement("div");
     ppcd_video_bottom.classList.add("ppcd_video_bottom");
-    ppcd_video_bottom.innerHTML = "";
+
+    let ppcd_perf_draw_time = document.createElement("div");
+    ppcd_perf_draw_time.classList.add("ppcd_perf_time");
+    ppcd_perf_draw_time.classList.add("ppcd_perf_draw_time");
+    ppcd_perf_draw_time.innerHTML = '繪製圖片:';
+
+    let ppcd_perf_api_time = document.createElement("div");
+    ppcd_perf_api_time.classList.add("ppcd_perf_time");
+    ppcd_perf_api_time.classList.add("ppcd_perf_api_time");
+    ppcd_perf_api_time.innerHTML = 'API呼叫:';
+
+    let ppcd_perf_result_time = document.createElement("div");
+    ppcd_perf_result_time.classList.add("ppcd_perf_time");
+    ppcd_perf_result_time.classList.add("ppcd_perf_result_time");
+    ppcd_perf_result_time.innerHTML = '結果輸出:';
+
+    // let ppcd_perf_canvas_time = document.createElement("div");
+    // ppcd_perf_canvas_time.classList.add("ppcd_perf_time");
+    // ppcd_perf_canvas_time.classList.add("ppcd_perf_canvas_time");
+    // ppcd_perf_canvas_time.innerHTML = 'Canvas繪圖:';
+
+    // let ppcd_perf_base64_time = document.createElement("div");
+    // ppcd_perf_base64_time.classList.add("ppcd_perf_time");
+    // ppcd_perf_base64_time.classList.add("ppcd_perf_base64_time");
+    // ppcd_perf_base64_time.innerHTML = 'canvase轉base64:';
+
+    let ppcd_perf_total_time = document.createElement("div");
+    ppcd_perf_total_time.classList.add("ppcd_perf_time");
+    ppcd_perf_total_time.classList.add("ppcd_perf_total_time");
+    ppcd_perf_total_time.innerHTML = '總時長:';
+
+    let ppcd_perf_div = document.createElement("div");
+    ppcd_perf_div.classList.add("ppcd_perf_div");
+    ppcd_perf_div.classList.add("display_none");
+
+    // ppcd_perf_div.appendChild(ppcd_perf_canvas_time);
+    // ppcd_perf_div.appendChild(ppcd_perf_base64_time);
+    ppcd_perf_div.appendChild(ppcd_perf_draw_time);
+    ppcd_perf_div.appendChild(ppcd_perf_api_time);
+    ppcd_perf_div.appendChild(ppcd_perf_result_time);
+    ppcd_perf_div.appendChild(ppcd_perf_total_time);
+
+    ppcd_video_bottom.appendChild(ppcd_perf_div);
 
     ppcd_video_container.appendChild(ppcd_video_top);
     ppcd_video_container.appendChild(ppcd_video_main_zone);
@@ -149,7 +204,7 @@ function set_popup_container() {
 
     let ppcd_training_trigger = document.createElement("div");
     ppcd_training_trigger.classList.add("ppcd_training_trigger");
-    ppcd_training_trigger.innerHTML = "AI訓練";
+    ppcd_training_trigger.innerHTML = "採樣上傳";
     ppcd_training_trigger.addEventListener("click", async() => {
         await enter_count_training();
     })
@@ -161,7 +216,7 @@ function set_popup_container() {
 
     let ppcd_h_close_btn = document.createElement("img");
     ppcd_h_close_btn.classList.add("ppcd_h_close_btn");
-    ppcd_h_close_btn.src = "../image/close.png";
+    ppcd_h_close_btn.src = "../image/cancel_white.png";
     ppcd_h_close_btn.addEventListener("click", () => {
         tigger_count_drugs_container(false);
     });
@@ -198,8 +253,28 @@ let resultPollingId;
 let isRunning = true;
 let drugs_counts = 0; // 用於輪詢AI辨識結果
 let count_done = "";
-let temp_base64;
+let training_64;
 let hideTimeout;
+
+let capture_sp;
+let capture_ep;
+let capture_time;
+
+let api_sp;
+let api_ep;
+let api_time;
+
+let handle_sp;
+let handle_ep;
+let handle_time;
+
+let canvas_sp;
+let canvas_ep;
+let canvas_time;
+
+let base64_sp;
+let base64_ep;
+let base64_time;
 
 async function startCamera() {
     const videoElement = document.querySelector(".ppcd_video");
@@ -212,29 +287,28 @@ async function startCamera() {
       videoElement.setAttribute("playsinline", "true");
       videoElement.muted = true;
   
-
-
       // 請求相機，指定高解析度
       stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: "environment",
           width: { ideal: 4032 }, // 指定寬度
-          height: { ideal: 3024 } // 指定高度
+          height: { ideal: 3024 }, // 指定高度
+          frameRate: { ideal: 30, max: 120 },
         }
       });
   
       videoElement.srcObject = stream;
   
       videoElement.onloadedmetadata = () => {
-        videoElement.play();
+        setTimeout(() => videoElement.play(), 100);
         canvas.width = videoElement.videoWidth;
         canvas.height = videoElement.videoHeight;
   
         // 每秒15張
-        captureIntervalId = setInterval(() => drawToCanvas(), 1000 / 20);
+        // captureIntervalId = setInterval(() => drawToCanvas(), 1000 / 15);
   
         // 開始AI辨識輪詢
-        setTimeout(() => captureImage(), 500); // 首次延遲0.5秒
+        setTimeout(() => captureImage(), 300); // 首次延遲0.5秒
       };
     } catch (error) {
         alert("無法啟動相機:", error);
@@ -249,9 +323,24 @@ function drawToCanvas() {
 
     if (videoElement.readyState === 4) {
         context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-    }   
+    }
+
+    // AI訓練截圖
+    const canvas_1 = document.createElement("canvas");
+    const size = Math.min(videoElement.videoWidth, videoElement.videoHeight);
+    canvas_1.width = 960;
+    canvas_1.height = 960;
+    const context_1 = canvas_1.getContext("2d");
+
+    // 中心裁切並縮放至960x960
+    const sx = (videoElement.videoWidth - size) / 2;
+    const sy = (videoElement.videoHeight - size) / 2;
+    context_1.drawImage(videoElement, sx, sy, size, size, 0, 0, 960, 960);
+
+    const base64Image = canvas_1.toDataURL("image/jpeg");
+    training_64 = base64Image;
 }
-  
+
 function captureImage() {
     if (!isRunning) return;
     const videoElement = document.querySelector(".ppcd_video");
@@ -260,36 +349,27 @@ function captureImage() {
     canvas.width = 960;
     canvas.height = 960;
     const context = canvas.getContext("2d");
-
+    
+    capture_sp = performance.now();
     // 中心裁切並縮放至960x960
     const sx = (videoElement.videoWidth - size) / 2;
     const sy = (videoElement.videoHeight - size) / 2;
     context.drawImage(videoElement, sx, sy, size, size, 0, 0, 960, 960);
+    
+    capture_ep = performance.now();
+    capture_time = capture_ep - capture_sp;
+    console.log("傳圖繪製", capture_time, "ms");
 
-    const base64Image = canvas.toDataURL("image/jpeg");
-    temp_base64 = base64Image;
-
-    console.log(
-        JSON.stringify(
-            {
-                Data:[
-                    { 
-                        base64: "base64Image"
-                    }
-                ],
-                Value: "",
-            }
-        )
-    );
-    // 將圖片傳遞給後端
-    fetch(`${api_ip}api/medCount/medCountAnalyze`, {
+    api_sp = performance.now();
+    // `${api_ip}api/medCount/medCountAnalyze`
+    fetch(`https://www.kutech.tw:3200/Pill_recognition`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(
             {
                 Data:[
                     { 
-                        base64: base64Image
+                        base64: canvas.toDataURL("image/jpeg")
                     }
                 ],
                 Value: "",
@@ -300,27 +380,56 @@ function captureImage() {
     .then(response => response.json())
     .then(data => handleRecognitionResult(data))
     .catch(error => {
-        // console.error("辨識失敗:", error);
+        console.error("辨識失敗:", error);
+        api_ep = performance.now();
+        api_time = api_ep - api_sp;
+        console.log("api時間：", api_time, "ms");
+        performance_result();
         if (isRunning) {
             // console.log(test_data);
             // handleRecognitionResult(test_data);
-            setTimeout(() => captureImage(), 800); // 繼續輪詢
+            captureImage();
+            // setTimeout(() => captureImage(), 500); // 繼續輪詢
         }
     });
+
+    training_64 = canvas.toDataURL("image/jpeg");
 }
   
 function handleRecognitionResult(data) {
     if (!isRunning) return; // 停止時直接返回
 
+    api_ep = performance.now();
+    api_time = api_ep - api_sp;
+    console.log("api時間：", api_time, "ms");
+
+    handle_sp = performance.now();
+    
     console.log(data);
     drugs_counts = 0;
     if (data.Code == 200) {
         renderResult(data.Data);
+        handle_ep = performance.now();
+        handle_time = handle_ep - handle_sp;
+        console.log("框框時間：", handle_time, "ms");
         //   stopAllProcesses(); // 停止API輪詢與相機
+        performance_result();
         captureImage();
     } else {
-        // captureImage();
-        setTimeout(() => captureImage(), 500); // 繼續輪詢
+        handle_ep = performance.now();
+        handle_time = handle_ep - handle_sp;
+
+        let container = document.querySelector(".ppcd_result_container");
+        container.innerHTML = ""; // 清除先前的結果
+
+        drugs_counts = 0;
+        let ppcd_pic_qty = document.querySelector(".ppcd_pic_qty");
+        ppcd_pic_qty.innerHTML = `總量:${drugs_counts}`;
+
+        console.log("框框時間：", handle_time, "ms");
+        performance_result();
+        captureImage();
+        // setTimeout(() => captureImage(), 500); // 繼續輪詢
         drugs_counts = 0;
     }
 }
@@ -379,6 +488,7 @@ function renderResult(data) {
     ppcd_pic_drug_type.innerHTML = `藥丸外型:${data.length}`;
     ppcd_pic_qty.innerHTML = `總量:${drugs_counts}`;
     console.log("三小", drugs_counts);
+
 }
   
 function stopAllProcesses() {
@@ -428,8 +538,7 @@ async function enter_count_result() {
     const sy = (videoElement.videoHeight - size) / 2;
     context.drawImage(videoElement, sx, sy, size, size, 0, 0, 960, 960);
 
-    const base64Image = canvas.toDataURL("image/jpeg");
-    temp_base64 = base64Image;
+    // const base64Image = canvas.toDataURL("image/jpeg");
 
     if (stream) {
         const tracks = stream.getTracks();
@@ -437,18 +546,7 @@ async function enter_count_result() {
         stream = null;
     }
 
-    let temp_post = JSON.stringify(
-        {
-            Data:[
-                { 
-                    base64: temp_base64
-                }
-            ],
-            Value: "",
-        }
-    )
-
-    let return_data = await pic_analyze_api(temp_base64, "");
+    let return_data = await pic_analyze_api(canvas.toDataURL("image/jpeg"), "");
 
     console.log("辨識trigger", return_data.Data);
     drugs_counts = 0;
@@ -457,7 +555,7 @@ async function enter_count_result() {
         renderResult(return_data.Data);
         console.log('數完', drugs_counts);
     } else {
-        alert("辨識錯誤，重新開始辨識");
+        alert(`辨識錯誤，重新開始辨識${return_data.Result}`);
         stopAllProcesses();
         setTimeout(() => startCamera(), 500);
         return;
@@ -482,7 +580,7 @@ async function enter_count_result() {
         tigger_count_drugs_container(false);
         return;
     } else {
-        await pic_analyze_api(temp_base64, "True");
+        await pic_analyze_api(canvas.toDataURL("image/jpeg"), "True");
         stopAllProcesses();
         setTimeout(() => startCamera(), 500);
         return;
@@ -491,8 +589,8 @@ async function enter_count_result() {
 
 // 輸入AI學習
 async function enter_count_training() {
-    let return_data = await pic_analyze_api(temp_base64, "True");
-    if(return_data.Code == 200) {
+    let return_data = await pic_analyze_api(training_64, "True");
+    if(return_data.Code == 200 || return_data["Result"].includes("AI辨識失敗")) {
         display_notice_func(true);
     } else {
         display_notice_func(false);
@@ -505,7 +603,18 @@ async function enter_count_training() {
 
 async function pic_analyze_api(base64_data, training_trigger) {
     // 將圖片傳遞給後端
-    let return_data = await fetch(`${api_ip}api/medCount/medCountAnalyze`, {
+    // ${api_ip}api/medCount/medCountAnalyze
+    // https://6d2f-220-135-128-247.ngrok-free.app/Pill_recognition
+    // https://ai.kutech.tw:3200/Pill_recognition
+    let temp_url;
+    
+    if(training_trigger =="True") {
+        temp_url = `${api_ip}api/medCount/medCountAnalyze`;
+    } else {
+        temp_url = `https://www.kutech.tw:3200/Pill_recognition`;
+    }
+    console.log(temp_url);
+    let return_data = await fetch(temp_url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(
@@ -523,7 +632,8 @@ async function pic_analyze_api(base64_data, training_trigger) {
     .then(response => {
         return response.json()
     }).catch(error => {
-        console.error("錯誤 : ", error)
+        console.error("錯誤 : ", error);
+        alert(error);
     });
 
     return return_data;
@@ -560,3 +670,41 @@ document.addEventListener("visibilitychange", () => {
         stopAllProcesses();
     }
 });
+
+function performance_result() {
+    // if(canvas_time) {
+    //     let ppcd_perf_canvas_time = document.querySelector(".ppcd_perf_canvas_time");
+    //     ppcd_perf_canvas_time.innerHTML = `Canvas繪圖: ${canvas_time}ms`;
+    // }
+
+    // if(base64_time) {
+    //     let ppcd_perf_base64_time = document.querySelector(".ppcd_perf_base64_time");
+    //     ppcd_perf_base64_time.innerHTML = `canvase轉base64: ${base64_time}ms`;
+    // }
+
+    if(capture_time) {
+        let ppcd_perf_draw_time = document.querySelector(".ppcd_perf_draw_time");
+        ppcd_perf_draw_time.innerHTML = `繪製圖片: ${capture_time.toFixed(1)}ms`;
+    }
+
+    if(api_time) {
+        let ppcd_perf_api_time = document.querySelector(".ppcd_perf_api_time");
+        ppcd_perf_api_time.innerHTML = `API呼叫: ${api_time.toFixed(1)}ms`;
+    }
+
+    if(handle_time) {
+        let ppcd_perf_result_time = document.querySelector(".ppcd_perf_result_time");
+        ppcd_perf_result_time.innerHTML = `結果輸出: ${handle_time.toFixed(1)}ms`;
+
+        let temp_total_time = capture_time + api_time + handle_time;
+        let ppcd_perf_total_time = document.querySelector(".ppcd_perf_total_time");
+        ppcd_perf_total_time.innerHTML = `總時長: ${temp_total_time.toFixed(1)}ms`;
+    } else {
+        let ppcd_perf_result_time = document.querySelector(".ppcd_perf_result_time");
+        ppcd_perf_result_time.innerHTML = `結果輸出:`;
+
+        let temp_total_time = capture_time + api_time;
+        let ppcd_perf_total_time = document.querySelector(".ppcd_perf_total_time");
+        ppcd_perf_total_time.innerHTML = `總時長: ${temp_total_time.toFixed(1)}ms`;
+    }
+}

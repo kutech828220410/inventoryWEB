@@ -146,6 +146,8 @@ async function startCamera() {
   const canvas = document.querySelector(".draw_canvas");
   const context = canvas.getContext("2d");
 
+  trigger_canvas_container(false);
+
   try {
     // 啟用相機
     videoElement.setAttribute("playsinline", "true");
@@ -156,19 +158,18 @@ async function startCamera() {
       video: {
         facingMode: "environment",
         width: { ideal: 4032}, // 指定寬度
-        height: { ideal: 3024 } // 指定高度
+        height: { ideal: 3024 }, // 指定高度
+        frameRate: { ideal: 30, max: 120 }
       }
     });
 
     videoElement.srcObject = stream;
 
     videoElement.onloadedmetadata = () => {
-      videoElement.play();
-      canvas.width = videoElement.videoWidth;
-      canvas.height = videoElement.videoHeight;
+      setTimeout(() => videoElement.play(), 800);
 
       // 開始以20fps繪製到畫布
-      animationFrameId = setInterval(() => drawToCanvas(), 1000 / 60);
+      animationFrameId = setInterval(() => drawToCanvas(), 1000 / 15);
     };
   } catch (error) {
     alert("無法啟動相機:", error);
@@ -190,39 +191,46 @@ async function captureAndSend() {
   Set_main_div_enable(true);
 
   let result_container = document.querySelector(".result_container");
-
+  
   if(result_container.classList.contains("show_result_container")) return;
-
+  
   const videoElement = document.getElementById("steam_container");
   const canvas = document.querySelector(".draw_canvas");
   const context = canvas.getContext("2d");
-
+  
   // 停止實時畫面展示
   clearInterval(animationFrameId);
-
+  
   // 調整畫布大小到 4032x3024 並將畫面定格
   canvas.width = 3024;
   canvas.height = 4032;
   
   context.drawImage(videoElement, 0, 0, videoElement.videoWidth, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
-
+  
   // 將成像轉為 base64 格式
   base64_data = canvas.toDataURL("image/jpeg");
   console.log("Base64 Data Captured:", base64_data);
-
+  
+  trigger_canvas_container(true);
   // 停止相機
   stopCamera();
 
+  let drawContainer = document.querySelector('.draw_container');
+  let temp_width = drawContainer.clientWidth;
+  canvas.style.height = `${temp_width}px`;
+
+  
   // 將 base64 資料傳送到後端
   let loggedID = sessionStorage.getItem('loggedID');
   let loggedName = sessionStorage.getItem('loggedName');
   
   if(!loggedID) {
     alert("未登入使用者，請先登入後再進行操作");
+    await startCamera();
     Set_main_div_enable(false);
     return;
   }
-
+  
   let post_data = {
     Data: [
       {
@@ -232,19 +240,31 @@ async function captureAndSend() {
       }
     ]
   };
-
+  
   console.log(post_data);
   let return_data = await upload_img_to_analysis(post_data);
   console.log("辨識結果:", return_data);
-
+  
   if(return_data.Code == 200) {
     renderResult(return_data.Data);
+    
+    if(return_data.Result) {
+      let result_content_div = document.querySelector(".result_content_div");
+  
+      result_content_div.textContent = `辨識結果：${return_data.Result}`;
+      show_result_div(true);
+    }
+
     Set_main_div_enable(false);
   } else {
-    alert("辨識失敗");
+    if(return_data.Result) {
+      alert(`${return_data.Result}`);
+    } else {
+      alert("發生連線錯誤，請聯絡工程師");
+    }
     Set_main_div_enable(false);
     show_result_div(false);
-    result_div_init();
+    await result_div_init();
     await startCamera();
     console.log(return_data);
   }
@@ -259,6 +279,18 @@ function stopCamera() {
   console.log("相機已停止");
 }
 
+function trigger_canvas_container(boolean) {
+  let draw_canvas = document.querySelector(".draw_canvas");
+  let videoElement = document.getElementById("steam_container");
+  if(boolean) {
+    draw_canvas.style.display = "block";
+    videoElement.style.display = "none";
+  } else {
+    draw_canvas.style.display = "none";
+    videoElement.style.display = "block";
+  }
+}
+
 
 // 這邊把辨識結果執行
 function renderResult(data) {
@@ -271,33 +303,32 @@ function renderResult(data) {
 
   temp_guid = temp_data.GUID;
 
-  let med_code = document.querySelector("#code");
-  let med_name = document.querySelector("#name");
-  let med_cht_name = document.querySelector("#cht_name");
+  // let med_code = document.querySelector("#code");
+  // let med_name = document.querySelector("#name");
+  // let med_cht_name = document.querySelector("#cht_name");
   let med_qty = document.querySelector("#qty");
   let med_deadtime = document.querySelector("#deadtime");
-  let med_batch_num = document.querySelector("#cht_name");
+  let med_batch_num = document.querySelector("#batch_num");
   let med_order_num = document.querySelector("#order_num");
 
-  med_code.value = temp_data.code;
-  med_name.value = temp_data.name;
-  med_cht_name.value = temp_data.cht_name;
+  // med_code.value = temp_data.code;
+  // med_name.value = temp_data.name;
+  // med_cht_name.value = temp_data.cht_name;
   med_qty.value = temp_data.qty;
   med_deadtime.value = temp_data.expirydate;
   med_batch_num.value = temp_data.batch_num;
   med_order_num.value = temp_data.po_num;
 
-  let re_name = document.querySelector(".re_name");
+  // let re_name = document.querySelector(".re_name");
 
-  if(temp_data.code == "") {
-    re_name.classList.remove("unable_btn");
-    temp_data.code.innerHTML = "資料庫比對";
-  } else {
-    re_name.classList.add("unable_btn");
-    temp_data.code.innerHTML = "比對成功";
-  }
+  // if(temp_data.code == "") {
+  //   re_name.classList.remove("unable_btn");
+  //   temp_data.code.innerHTML = "資料庫比對";
+  // } else {
+  //   re_name.classList.add("unable_btn");
+  //   temp_data.code.innerHTML = "比對成功";
+  // }
 
-  show_result_div(true);
 }
 
 function createUpdatedUI() {
@@ -354,7 +385,7 @@ function createUpdatedUI() {
   trigger_reset.innerHTML = `<img src="../../image/reset_white.png" alt="">`;
   trigger_reset.addEventListener("click", async () => {
     show_result_div(false);
-    result_div_init();
+    await result_div_init();
     await startCamera();
   })
 
@@ -379,14 +410,17 @@ function createUpdatedUI() {
   scrollBar.addEventListener("touchmove", (e) => {
     const currentY = e.touches[0].clientY;
     const deltaY = currentY - startY;
+    let temp_height = resultContainer.offsetHeight;
     
     if (deltaY < -20 && !isExpanded) {
       // 向上滑動展開
       resultContainer.classList.add("expanded");
+      resultContainer.style.bottom = `0px`;
       isExpanded = true;
     } else if (deltaY > 20 && isExpanded) {
       // 向下滑動收合
       resultContainer.classList.remove("expanded");
+      resultContainer.style.bottom = `${-temp_height + 80}px`;
       isExpanded = false;
     }
   });
@@ -461,20 +495,34 @@ function createUpdatedUI() {
   listCheckButton.textContent = "送出";
   listCheckButton.addEventListener("click", async () => {
     Set_main_div_enable(true);
-    if(temp_guid == "") {
-      alert("無請購單資料");
-      Set_main_div_enable(false);
-      return;
-    }
+    // if(temp_guid == "") {
+    //   alert("無請購單資料");
+    //   Set_main_div_enable(false);
+    //   return;
+    // }
 
-    let med_code = document.querySelector("#code");
-    let med_name = document.querySelector("#name");
-    let med_cht_name = document.querySelector("#cht_name");
+    // let med_code = document.querySelector("#code");
+    // let med_name = document.querySelector("#name");
+    // let med_cht_name = document.querySelector("#cht_name");
     let med_qty = document.querySelector("#qty");
     let med_deadtime = document.querySelector("#deadtime");
-    let med_batch_num = document.querySelector("#cht_name");
+    let med_batch_num = document.querySelector("#batch_num");
     let med_order_num = document.querySelector("#order_num");
 
+    // let post_data = {
+    //   Data: [
+    //     {
+    //       GUID: temp_guid,
+    //       batch_num: med_batch_num.value,
+    //       po_num: med_order_num.value,
+    //       qty: med_qty.value,
+    //       expirydate: med_deadtime.value,
+    //       code: med_code.innerHTML,
+    //       name: med_name.innerHTML,
+    //       cht_name: med_cht_name.innerHTML
+    //     }
+    //   ]  
+    // };
     let post_data = {
       Data: [
         {
@@ -482,10 +530,7 @@ function createUpdatedUI() {
           batch_num: med_batch_num.value,
           po_num: med_order_num.value,
           qty: med_qty.value,
-          expirydate: med_deadtime.value,
-          code: med_code.innerHTML,
-          name: med_name.innerHTML,
-          cht_name: med_cht_name.innerHTML
+          expirydate: med_deadtime.value
         }
       ]  
     };
@@ -494,14 +539,17 @@ function createUpdatedUI() {
 
     let res_data = await update_textvision(post_data);
     if(res_data.Code == 200) {
-        alert("寫入成功");
+        // alert("寫入成功");
         Set_main_div_enable(false);
         show_result_div(false);
-        result_div_init();
+        await result_div_init();
         await startCamera();
     } else {
-      alert("寫入失敗，請確認伺服器狀態");
+      // alert("寫入失敗，請確認伺服器狀態");
       Set_main_div_enable(false);
+      show_result_div(false);
+      await result_div_init();
+      await startCamera();
     }
     return;
   });
@@ -510,30 +558,31 @@ function createUpdatedUI() {
   listRetryButton.className = "list_retry btn";
   listRetryButton.textContent = "重新辨識";
   listRetryButton.addEventListener("click", async () => {
-    if(temp_guid == "") {
-      alert("無請購單資料");
-      return;
-    }
+    // if(temp_guid == "") {
+    //   alert("無請購單資料");
+    //   return;
+    // }
 
     if(confirm("取消辨識結果?")) {
-      console.log("這裡放取消辨識的API，並刪除DB資料");
+      // console.log("這裡放取消辨識的API，並刪除DB資料");
 
-      let post_data = {
-          ValueAry: [temp_guid]
-      };
+      // let post_data = {
+      //     ValueAry: [temp_guid]
+      // };
 
-      console.log(post_data);
+      // console.log(post_data);
 
-      let res_data = await delete_textVision(post_data);
-      console.log(res_data);
-      if(res_data.Code == 200) {
-        console.log("刪除辨識資料");
-      } else {
-        alert("刪除辨識資料失敗");
-      }
+      // let res_data = await delete_textVision(post_data);
+      // console.log(res_data);
+      // if(res_data.Code == 200) {
+      //   // console.log("刪除辨識資料");
+      // } else {
+      //   // alert("刪除辨識資料失敗");
+      // }
 
+      
       show_result_div(false);
-      result_div_init();
+      await result_div_init();
       await startCamera();
     }
     return;
@@ -541,7 +590,11 @@ function createUpdatedUI() {
 
   listCheckContainer.append(listCheckButton, listRetryButton);
 
-  resultContainer.append(scrollBar, medInfoContainer, listInfoContainer, listCheckContainer);
+  let result_content_div = document.createElement("div");
+  result_content_div.classList.add("result_content_div");
+
+  resultContainer.append(scrollBar, listInfoContainer, result_content_div, listCheckContainer);
+  // resultContainer.append(scrollBar, medInfoContainer, listInfoContainer, listCheckContainer);
 
   let trigger_homepage = document.createElement("div");
   trigger_homepage.classList.add("trigger_homepage");
@@ -588,29 +641,39 @@ function isMobileOrTablet() {
 
 function show_result_div(boolean) {
   let result_container = document.querySelector(".result_container");
+  let temp_height = result_container.offsetHeight;
   if(boolean) {
+    result_container.style.bottom = `${-temp_height + 80}px`;
     result_container.classList.add("show_result_container");
   } else {
+    result_container.classList.remove("show_result_container");
     result_container.classList.remove("expanded");
     isExpanded = false;
-    result_container.classList.remove("show_result_container");
+    result_container.style.bottom = `${-temp_height}px`;
   }
 }
 
-function result_div_init() {
-  let med_code = document.querySelector("#code");
-  let med_name = document.querySelector("#name");
-  let med_cht_name = document.querySelector("#cht_name");
+async function result_div_init() {
+  const drawResult = document.querySelector(".draw_result");
+
+  // 清空 draw_result 的內容
+  drawResult.innerHTML = "";
+  // let med_code = document.querySelector("#code");
+  // let med_name = document.querySelector("#name");
+  // let med_cht_name = document.querySelector("#cht_name");
   let med_qty = document.querySelector("#qty");
   let med_deadtime = document.querySelector("#deadtime");
-  let med_batch_num = document.querySelector("#cht_name");
+  let med_batch_num = document.querySelector("#batch_num");
   let med_order_num = document.querySelector("#order_num");
+  let result_content_div = document.querySelector(".result_content_div");
+
+  result_content_div.textContent = "";
 
   temp_guid = "";
 
-  med_code.value = "";
-  med_name.value = "";
-  med_cht_name.value = "";
+  // med_code.value = "";
+  // med_name.value = "";
+  // med_cht_name.value = "";
   med_qty.value = "";
   med_deadtime.value = "";
   med_batch_num.value = "";
@@ -618,11 +681,13 @@ function result_div_init() {
 }
 
 function drawBoundingBoxesWithDiv(drawData) {
-  const drawContainer = document.querySelector(`.draw_container`);
-  const drawResult = drawContainer.querySelector(".draw_result");
+  const drawContainer = document.querySelector(`.draw_canvas`);
+  const drawResult = document.querySelector(".draw_result");
 
   // 清空 draw_result 的內容
   drawResult.innerHTML = "";
+  drawResult.style.width = `${drawContainer.clientHeight}px`;
+  drawResult.style.height = `${drawContainer.clientWidth}px`;
 
   // 創建一個 Image 對象來解析 Base64 圖片的尺寸
   const img = new Image();
@@ -660,15 +725,16 @@ function drawBoundingBoxesWithDiv(drawData) {
         box.style.top = `${scaledY}px`;
         box.style.width = `${scaledWidth}px`;
         box.style.height = `${scaledHeight}px`;
+        // box.style.transform = `translateX(-50%) translateY(-50%)`;
 
         // 添加文字標籤
-        const label = document.createElement("span");
-        label.className = "bounding-label";
-        label.innerText = item.key_word;
-        label.style.top = `${scaledHeight}px`; // 放置於框框底部
+        // const label = document.createElement("span");
+        // label.className = "bounding-label";
+        // label.innerText = item.key_word;
+        // label.style.top = `${scaledHeight}px`; // 放置於框框底部
 
         // 將標籤加入框框
-        box.appendChild(label);
+        // box.appendChild(label);
 
         // 將框框加入 drawResult
         drawResult.appendChild(box);
@@ -676,6 +742,7 @@ function drawBoundingBoxesWithDiv(drawData) {
   };
 
   img.onerror = function () {
+    alert("Base64 圖片加載失敗");
     console.error("Base64 圖片加載失敗");
   };
 }
@@ -723,6 +790,10 @@ async function previewImage(event) {
     context.drawImage(img, 0, 0, width, height);
     // 停止相機
     stopCamera();
+      let drawContainer = document.querySelector('.draw_container');
+  let temp_width = drawContainer.clientWidth;
+  canvas.style.height = `${temp_width}px`;
+    trigger_canvas_container(true);
 
     base64_data = canvas.toDataURL('image/jpeg');
 
@@ -749,15 +820,27 @@ async function previewImage(event) {
     console.log(post_data);
     let return_data = await upload_img_to_analysis(post_data);
     console.log("辨識結果:", return_data);
+    console.log("辨識結果:", return_data.Result);
 
     if(return_data.Code == 200) {
       renderResult(return_data.Data);
+      if(return_data.Data[0].logs) {
+        let result_content_div = document.querySelector(".result_content_div");
+    
+        result_content_div.textContent = `辨識結果：${return_data.Result}`;
+        show_result_div(true);
+      }
       Set_main_div_enable(false);
     } else {
-      alert("辨識失敗");
+      if(return_data.Result) {
+        alert(`${return_data.Result}`);
+      } else {
+        alert("發生連線錯誤，請聯絡工程師");
+      }
       Set_main_div_enable(false);
       show_result_div(false);
-      result_div_init();
+      await result_div_init();
+      trigger_canvas_container(false);
       await startCamera();
       console.log(return_data);
     }

@@ -49,7 +49,7 @@ async function get_all_med_cart_by_phar(phar) {
 async function get_bed_list_by_cart(phar, med_cart) {
     let start_p = performance.now();
     let temp_doman = transform_api_ip(api_ip);
-    console.log(temp_doman);
+    console.log(`"test", ${temp_doman}api/med_cart/get_bed_list_by_cart`);
     let temp_data = await fetch(`${temp_doman}api/med_cart/get_bed_list_by_cart`, {
         method: "POST",
         headers: {
@@ -462,23 +462,22 @@ async function get_dispens_by_code(data) {
 
 function transform_api_ip(ip) {
     let temp_url = serch_APIServer("Main", "網頁", "med_cart_vm_api");
-    console.log(temp_url);
+    // console.log(temp_url);
     
     let newStr = temp_url[0].server.replace("/api/med_cart", "");
-    console.log("VM轉址", newStr);  
+    console.log("VM轉址", newStr);
 
-    // return newStr;
-    return ip;
+    newStr += "/";
+
+    newStr = is_https_trans_ip(newStr);
+
+    return newStr;
+    // return ip;
 }
 function transform_api_ip_4433(ip) {
-    let newStr
-    if (window.location.protocol === "https:") {
-        console.log("目前的連線是 HTTPS");
+    let newStr = ip
 
-        newStr = ip.replace(":4443", ":4436");
-    } else {
-        newStr = ip.replace(":4433", ":4436");
-    }
+    newStr = is_https_trans_ip(newStr);
     // return newStr;
     return ip;
 }

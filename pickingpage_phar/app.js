@@ -1,10 +1,10 @@
 window.onload = load;
 let select_rgb = {
     "black" : [0, 0, 0],
-    "red" : [255, 0, 0],
-    "green" : [0, 255, 0],
-    "yellow" : [255, 255, 0],
-    "blue" : [0, 0, 255]
+    "red" : [40,40,255],
+    "green" : [40, 255, 40],
+    "yellow" : [40, 255, 255],
+    "blue" : [255, 40, 40]
 }
 let last_light_med = "";
 let temp_table_arr;

@@ -14,7 +14,7 @@ async function med_manage_get_data() {
     let windowWidth = window.innerWidth;
 
     if (windowWidth < 1200) {
-        alert("建議使用電腦畫面操作");
+        // alert("建議使用電腦畫面操作");
     };
 
     let gm_main_container = document.querySelector('.gm_main_container');
@@ -40,7 +40,16 @@ function mm_header_init() {
     mm_header_g_med_list_btn.classList.add("mm_header_g_med_list_btn");
     mm_header_g_med_list_btn.classList.add("btn");
     mm_header_g_med_list_btn.innerHTML = "公藥清單";
-    mm_header_button_container.appendChild(mm_header_g_med_list_btn);
+    // mm_header_button_container.appendChild(mm_header_g_med_list_btn);
+
+    let mm_header_g_med_batch_btn = document.createElement("div");
+    mm_header_g_med_batch_btn.classList.add("mm_header_g_med_batch_btn");
+    mm_header_g_med_batch_btn.classList.add("btn");
+    mm_header_g_med_batch_btn.innerHTML = "藥檔匯入";
+    mm_header_button_container.appendChild(mm_header_g_med_batch_btn);
+    mm_header_g_med_batch_btn.addEventListener("click", () => {
+
+    });
 
     let mm_header_add_med_btn = document.createElement("div");
     mm_header_add_med_btn.classList.add("mm_header_btn_style");
@@ -274,15 +283,14 @@ async function get_search_result_display() {
                         <span>${skdiacode_switch(element.SKDIACODE)}</span>
                     </div>
                     <div class="med_item_btn_container">
-                        <div class="add_in_generic_drug btn" id="add_in_generic_drug_${element.CODE}" code="${element.CODE}">加入公藥清單</div>
                         <div class="med_item_modify_btn btn" id="med_modify_code_${element.CODE}" code="${element.CODE}">修改</div>
                     </div>
-                </div>
-                    `;
+                </div>`;
+            // <div class="add_in_generic_drug btn" id="add_in_generic_drug_${element.CODE}" code="${element.CODE}">加入公藥清單</div>
             // <div class="med_item_delete_btn" id="med_delete_code_${element.CODE}">刪除</div>
             mm_all_display_container.appendChild(med_item_card_container);
     
-            let add_in_generic_drug = document.querySelector(`.add_in_generic_drug[code="${element.CODE}"]`);
+            // let add_in_generic_drug = document.querySelector(`.add_in_generic_drug[code="${element.CODE}"]`);
             let med_modify_btn = document.querySelector(`.med_item_modify_btn[code="${element.CODE}"]`);
     
             med_modify_btn.addEventListener("click", (e) => {
@@ -291,17 +299,17 @@ async function get_search_result_display() {
                 show_med_item(code);
             });
 
-            add_in_generic_drug.addEventListener("click", async (e) => {
-                let code = e.target.getAttribute("code");
+            // add_in_generic_drug.addEventListener("click", async (e) => {
+            //     let code = e.target.getAttribute("code");
                 
-                // show_med_item(code);
+            //     // show_med_item(code);
 
-                if (confirm(`${code}：是否加入公藥清單`)) {
-                    alert(`${code}加入公藥清單`);
-                } else {
-                    return;
-                }
-            })
+            //     if (confirm(`${code}：是否加入公藥清單`)) {
+            //         alert(`${code}加入公藥清單`);
+            //     } else {
+            //         return;
+            //     }
+            // })
             set_pagination_init();
         };
         hideLoadingPopup();

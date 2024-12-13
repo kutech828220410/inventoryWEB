@@ -31,7 +31,7 @@ async function upload_img_to_analysis(data) {
     } catch(err) {
         let err_data = {
             Code: -200,
-            error: err
+            Result: err
         }
         return err_data;
     }
@@ -69,7 +69,7 @@ async function update_med_code_srch(data) {
     } catch(err) {
         let err_data = {
             Code: -200,
-            error: err
+            Result: err
         }
         return err_data;
     }
@@ -107,7 +107,7 @@ async function update_textvision(data) {
     } catch(err) {
         let err_data = {
             Code: -200,
-            error: err
+            Result: err
         }
         return err_data;
     }
@@ -145,7 +145,7 @@ async function delete_textVision(data) {
     } catch(err) {
         let err_data = {
             Code: -200,
-            error: err
+            Result: err
         }
         return err_data;
     }

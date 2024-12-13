@@ -5,7 +5,9 @@
     font-weight: normal;
     font-style: normal;
 }
+body {
 
+}
 * {
     margin: 0;
     padding: 0;
@@ -94,9 +96,9 @@
 }
 
 .card_div {
-    top: 25px;
+    top: 24px;
     position: absolute;
-    width: 292px;
+    width: calc(100% - 48px);
     height: calc(100% - 48px);
     background-color: #b8c6e8;
     border-radius: 20px;
