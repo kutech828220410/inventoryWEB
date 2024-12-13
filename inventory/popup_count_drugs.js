@@ -362,7 +362,7 @@ function captureImage() {
 
     api_sp = performance.now();
     // `${api_ip}api/medCount/medCountAnalyze`
-    fetch(`https://www.kutech.tw:3200/Pill_recognition`, {
+    fetch(ai_api_ip, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(
@@ -611,7 +611,7 @@ async function pic_analyze_api(base64_data, training_trigger) {
     if(training_trigger =="True") {
         temp_url = `${api_ip}api/medCount/medCountAnalyze`;
     } else {
-        temp_url = `https://www.kutech.tw:3200/Pill_recognition`;
+        temp_url = ai_api_ip;
     }
     console.log(temp_url);
     let return_data = await fetch(temp_url, {

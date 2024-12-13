@@ -57,7 +57,7 @@
 .pb_btn_container {
     display: flex;
     width: 500px;
-    justify-content: end;
+    justify-content: flex-end;
 }
 .pb_list_btn {
     position: relative;
@@ -152,7 +152,7 @@
     margin-top: 36px;
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: flex-end;
     position: relative;
     width: 100%;
 }
@@ -160,7 +160,7 @@
     margin-top: 16px;
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: flex-end;
     position: relative;
     width: 100%;
 }

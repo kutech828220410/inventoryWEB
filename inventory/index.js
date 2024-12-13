@@ -22,6 +22,7 @@ let allrows = [];
 let medicine_page = [];
 Window.load = load;
 var Header_state;
+let ai_api_ip;
 
 let inventory_checked = "check";
 
@@ -158,8 +159,11 @@ async function init()
     APIServer = await LoadAPIServer();
     const API01 = serch_APIServer(serverName,serverType,"API01");
     const API02 = serch_APIServer(serverName,serverType,"API02");
+    ai_api_ip = serch_APIServer("Main", "網頁", "ai_medCount_api");
+    ai_api_ip = ai_api_ip[0].server;
     console.log("API01",API01);
     console.log("API02",API02);
+    console.log("AI_API_IP", ai_api_ip);
     await check_ip(API01[0].server,API02[0].server);
     console.log("inventory_url",inventory_url);
 

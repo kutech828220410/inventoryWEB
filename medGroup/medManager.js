@@ -48,8 +48,35 @@ function mm_header_init() {
     mm_header_g_med_batch_btn.innerHTML = "藥檔匯入";
     mm_header_button_container.appendChild(mm_header_g_med_batch_btn);
     mm_header_g_med_batch_btn.addEventListener("click", () => {
-
+        let med_data_batch_upload = document.querySelector(".med_data_batch_upload");
+        med_data_batch_upload.click();
     });
+
+    let med_data_batch_upload = document.createElement("input");
+    med_data_batch_upload.classList.add("med_data_batch_upload");
+    med_data_batch_upload.type = "file";
+    med_data_batch_upload.accept = ".xlsx, .xls";
+    med_data_batch_upload.style.display = "none";
+    med_data_batch_upload.addEventListener("change", async (event) => {
+      let file = event.target.files[0];
+      if (file) {
+          let formData = new FormData();
+          formData.append('file', file);
+          formData.append('CT_NAME', test_user_data.name);
+
+        //   let return_data = await batch_excel_upload(formData);
+          if(return_data.Code == 200) {
+              batch_data = return_data.Data;
+            //   set_main_batch_list_container();
+              alert(return_data.Result);
+          } else {
+              alert("上傳失敗，請聯絡工程師");
+          }
+          med_data_batch_upload.value = "";
+      }
+    });
+    
+    mm_header_button_container.appendChild(med_data_batch_upload);
 
     let mm_header_add_med_btn = document.createElement("div");
     mm_header_add_med_btn.classList.add("mm_header_btn_style");

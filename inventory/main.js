@@ -6,6 +6,7 @@ var loging_name = get_logedName();
 var current_IC_SN = "";
 let allrows = [];
 let medicine_page = [];
+let ai_api_ip;
 setInterval(function() 
 {
 
@@ -33,8 +34,10 @@ async function load()
     APIServer = await LoadAPIServer();
     const API01 = serch_APIServer(ServerName,ServerType,"API01");
     const API02 = serch_APIServer(ServerName,ServerType,"API02");
+    ai_api_ip = serch_APIServer("Main", "網頁", "ai_medCount_api");
     console.log("API01",API01);
     console.log("API02",API02);
+    console.log("AI_API_IP", ai_api_ip);
     await check_ip(API01[0].server,API02[0].server);
     console.log("inventory_url",inventory_url);
 
