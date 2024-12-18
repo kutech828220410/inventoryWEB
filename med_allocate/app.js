@@ -401,6 +401,8 @@ function set_main_list_display() {
 
     mci_not_qty.innerHTML = `未核發量：${temp_actualIssuedQuantity - temp_do_actualIssuedQuantity}`;
     mci_total_qty.innerHTML = `已發總量：${temp_do_actualIssuedQuantity}`;
+    mci_not_qty.style.fontSize = `24px`;
+    mci_not_qty.style.fontWeight = `600`;
     mci_total_qty.style.fontSize = `24px`;
     mci_total_qty.style.fontWeight = `600`;
 
