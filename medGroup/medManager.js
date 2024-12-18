@@ -42,6 +42,15 @@ function mm_header_init() {
     mm_header_g_med_list_btn.innerHTML = "公藥清單";
     // mm_header_button_container.appendChild(mm_header_g_med_list_btn);
 
+    let mm_header_g_ex_med_batch_btn = document.createElement("div");
+    mm_header_g_ex_med_batch_btn.classList.add("mm_header_g_ex_med_batch_btn");
+    mm_header_g_ex_med_batch_btn.classList.add("btn");
+    mm_header_g_ex_med_batch_btn.innerHTML = "範例下載";
+    mm_header_button_container.appendChild(mm_header_g_ex_med_batch_btn);
+    mm_header_g_ex_med_batch_btn.addEventListener("click", () => {
+        console.log("測試下載範例");
+    });
+
     let mm_header_g_med_batch_btn = document.createElement("div");
     mm_header_g_med_batch_btn.classList.add("mm_header_g_med_batch_btn");
     mm_header_g_med_batch_btn.classList.add("btn");
@@ -60,19 +69,20 @@ function mm_header_init() {
     med_data_batch_upload.addEventListener("change", async (event) => {
       let file = event.target.files[0];
       if (file) {
-          let formData = new FormData();
-          formData.append('file', file);
-          formData.append('CT_NAME', test_user_data.name);
+        let formData = new FormData();
+        formData.append('file', file);
+        //   formData.append('CT_NAME', test_user_data.name);
 
-        //   let return_data = await batch_excel_upload(formData);
-          if(return_data.Code == 200) {
-              batch_data = return_data.Data;
-            //   set_main_batch_list_container();
-              alert(return_data.Result);
-          } else {
-              alert("上傳失敗，請聯絡工程師");
-          }
-          med_data_batch_upload.value = "";
+        let return_data = await batch_upload_med_excel(formData);
+        console.log(return_data);
+        if(return_data.Code == 200) {
+            // batch_data = return_data.Data;
+            // set_main_batch_list_container();
+            // alert(return_data.Result);
+        } else {
+            alert("上傳失敗，請聯絡工程師");
+        }
+        med_data_batch_upload.value = "";
       }
     });
     

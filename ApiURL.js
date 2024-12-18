@@ -137,6 +137,7 @@ async function pingIP(ipAddress, timeout = 100000)
     try {
       const response = await fetch(url, {
         method: 'GET',
+        mode: 'cors',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -183,6 +184,7 @@ else if(Target == Enum_Target.Phar)
     BalsicDeviceTableName = Enum_BasicDeviceTableName.Phar;
 }
 function is_https_trans_ip(ip) {
+  console.log(ip);
   let temp_url = ip;
   let close_url = ip;
   let temp_str = window.location.protocol;

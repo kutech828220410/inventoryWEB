@@ -105,7 +105,6 @@
   </div>
   
 <script>
-    
   (async function() {
     
     await popup_login_init();
@@ -114,18 +113,18 @@
     
 
     if(!IsLogged)
-  {
-    await popup_login_div.Show();
-  }
-  // else if(IsLogged && !IsCreatSelected)
-  // {
-  //   await popup_creatSelect_div.Show();
-  //   await  popup_login_div.Close();
-  // }
-  // else if(IsLogged && IsCreatSelected)
-  // {
-  //   popup_creatSelect_finished();
-  // }
+    {
+      await popup_login_div.Show();
+    }
+    // else if(IsLogged && !IsCreatSelected)
+    // {
+    //   await popup_creatSelect_div.Show();
+    //   await  popup_login_div.Close();
+    // }
+    // else if(IsLogged && IsCreatSelected)
+    // {
+    //   popup_creatSelect_finished();
+    // }
   })();
 
   var barcode_value = '';

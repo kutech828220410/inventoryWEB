@@ -159,6 +159,11 @@ function set_popup_container() {
     ppcd_perf_total_time.classList.add("ppcd_perf_total_time");
     ppcd_perf_total_time.innerHTML = '總時長:';
 
+    let ppcd_perf_url = document.createElement("div");
+    ppcd_perf_url.classList.add("ppcd_perf_time");
+    ppcd_perf_url.classList.add("ppcd_perf_url");
+    ppcd_perf_url.innerHTML = `ai:${ai_api_ip}`;
+
     let ppcd_perf_div = document.createElement("div");
     ppcd_perf_div.classList.add("ppcd_perf_div");
     ppcd_perf_div.classList.add("display_none");
@@ -169,6 +174,7 @@ function set_popup_container() {
     ppcd_perf_div.appendChild(ppcd_perf_api_time);
     ppcd_perf_div.appendChild(ppcd_perf_result_time);
     ppcd_perf_div.appendChild(ppcd_perf_total_time);
+    ppcd_perf_div.appendChild(ppcd_perf_url);
 
     ppcd_video_bottom.appendChild(ppcd_perf_div);
 
@@ -488,7 +494,6 @@ function renderResult(data) {
     ppcd_pic_drug_type.innerHTML = `藥丸外型:${data.length}`;
     ppcd_pic_qty.innerHTML = `總量:${drugs_counts}`;
     console.log("三小", drugs_counts);
-
 }
   
 function stopAllProcesses() {
@@ -707,4 +712,7 @@ function performance_result() {
         let ppcd_perf_total_time = document.querySelector(".ppcd_perf_total_time");
         ppcd_perf_total_time.innerHTML = `總時長: ${temp_total_time.toFixed(1)}ms`;
     }
+
+    let ppcd_perf_url = document.querySelector(".ppcd_perf_url");
+    ppcd_perf_url.innerHTML = `ai_url: ${ai_api_ip}`;
 }

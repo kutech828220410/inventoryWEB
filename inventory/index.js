@@ -160,7 +160,11 @@ async function init()
     const API01 = serch_APIServer(serverName,serverType,"API01");
     const API02 = serch_APIServer(serverName,serverType,"API02");
     ai_api_ip = serch_APIServer("Main", "網頁", "ai_medCount_api");
-    ai_api_ip = ai_api_ip[0].server;
+    if(ai_api_ip.length != 0) {
+      ai_api_ip = ai_api_ip[0].server;
+    } else {
+      ai_api_ip = undefined;
+    }
     console.log("API01",API01);
     console.log("API02",API02);
     console.log("AI_API_IP", ai_api_ip);

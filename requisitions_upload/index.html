@@ -6,12 +6,11 @@
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="pragma" content="no-cache">
   <meta http-equiv="expires" content="0">
-  <title>單據辨識</title>
+  <title>單據辨識批次上傳</title>
   <!-- <link rel="stylesheet" href="main.css"> -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=1.0">
+  <link rel="stylesheet" href="popup_input_po_num.css">
   <link rel="stylesheet" href="../UI/style/navBar.css">
-  <link rel="stylesheet" href="popup_result_confirm.css">
-  <link rel="stylesheet" href="popup_code_compare.css">
   <script src="../../Function/Basic.js?v=1.14"></script>
 
   <script>
@@ -28,10 +27,10 @@
           loadScript("../../session.js");
           loadScript("../../Function/WebApiFunc.js");
           loadScript("../../Function/heic2any.js");
-          loadScript("../../api/text_vision.js");
+          loadScript("../../api/po_analyze.js");
           loadScript("app.js");
-          loadScript("popup_result_confirm.js");
-          loadScript("popup_code_compare.js");
+          loadScript("popup_login.js");
+          loadScript("popup_input_po_num.js");
           loadScript("../../UI/navBar.js");
           loadScript("../../api/web_permissions.js");
         })();
@@ -42,19 +41,52 @@
   
       <script>
 
-        get_popup_result_confirm();
-        popup_result_confirm_div.Set_Visible(false);
-
-        get_popup_code_compare();
-        popup_code_compare_div.Set_Visible(true);
-
       </script>
    
   <div class="under-line">
     <B> Copyright ©2024 鴻森智能科技 </B>
   </div>
+  <div class="popup_input_po_num_div">
+    <div class="popup_input_po_num_container">
+      <div class="ppipn_header_container">
+        <div class="ppipn_header">單據辨識修改</div>
+        <img class="ppipn_header_close" src="../image/close.png" alt="" onclick="trigger_popup_input_po_num(false)">
+      </div>
+      <div class="ppipn_main_container">
+        <img class="ppipn_main_img" src="" alt="">
+        <div class="ppipn_main_content">
+          <input class="ppipn_main_input input_style" type="text" maxlength="30" placeholder="請輸入單號">
+        </div>
+      </div>
+      <div class="ppipn_footer_container">
+        <div class="ppipn_f_revise_btn btn">修改</div>
+      </div>
+    </div>
+  </div>
   
   <script>
+
+  (async function() {
+    trigger_popup_input_po_num(true);
+    await popup_login_init();
+    
+    popup_login_finishedEvent.push(popup_login_finished);
+    
+
+    if(!IsLogged) {
+      await popup_login_div.Show();
+    }
+  // else if(IsLogged && !IsCreatSelected)
+  // {
+  //   await popup_creatSelect_div.Show();
+  //   await  popup_login_div.Close();
+  // }
+  // else if(IsLogged && IsCreatSelected)
+  // {
+  //   popup_creatSelect_finished();
+  // }
+  })();
+  
   var barcode_value = '';
     // 監聽頁面的keydown事件
   window.addEventListener('keydown', function(event) 

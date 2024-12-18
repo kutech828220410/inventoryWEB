@@ -17,13 +17,13 @@
 
 .header {
     width: 100%;
-    height: 60px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     padding-left: 80px;
 }
 .main_div {
+    margin-top: 40px;
     margin-bottom: 60px;
 }
 .no_info_data_div {
@@ -72,83 +72,74 @@
     background-color: #b8b8b8;
     transition: all 0.2s ease-out;
 }
-
-.upload_img_container {
-    margin: 4px auto;
-    display: flex;
-    justify-content: center;
-}
-
-#pic_input {
-    display: none;
-}
-.take_pic_label {
-    padding: 6px 48px;
-    font-size: 20px;
-    font-weight: 800;
-}
-.notice_container {
-    margin: 8px auto 12px;
-    display: flex;
-    justify-content: center;
-}
-.notice_content {
-    width: 600px;
-    text-align: center;
-    font-weight: 600;
-    color: black;
-    line-height: 32px;
-    letter-spacing: 1px;
-}
-
-.display_container {
-    box-sizing: content-box;
-    position: relative;
-    width: 600px;
-    height: 800px;
-    margin: auto;
-    border: 2px solid #000;
-}
-.display_container > img {
-    display: block;
-    width: 100%;
-    max-height: 100%;
-    object-fit: cover;
-    object-position: left;
-}
-.location_point {
-    width: 20px;
-    height: 20px;
-    background-color: red;
-    position: absolute;
-    transform: translate(-50% -50%);
-    border-radius: 50%;
-}
-.l_0 {
-    top: -10px;
-    left: -10px;
-}
-
-.l_1 {
-    bottom: -10px;
-    left: -10px;
-}
-.l_2 {
-    bottom: -10px;
-    right: 35px;
-}
-.l_3 {
-    top: -10px;
-    right: 35px;
-}
-.upload_btn {
-    font-size: 20px;
-    font-weight: 800;
-    width: 120px;
-    display: flex;
-    justify-content: center;
-    margin: 16px auto 0px;
+.anal_result_container {
+    max-width: 1200px;
     padding: 8px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 49% 49%;
+    justify-content: space-between;
+}
+.anal_card {
+    border-radius: 5px;
+    border: 3px solid #000;
+    min-height: 100px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    padding: 12px;
+    display: grid;
+    grid-template-columns: 100%;
+    justify-content: space-between;
+}
+.card_med_content_info {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    justify-content: space-between;
+}
+.card_info_container {
+    color: #383838;
+    display: flex;
+    padding-bottom: 8px;
+}
+.card_info_container_2 {
+    color: #383838;
+    padding-bottom: 4px;
+}
+.card_op_num,
+.card_batch_num,
+.card_expirydate,
+.card_qty {
+    color: #000;
+    font-size: 20px;
+    font-weight: 800;
+}
+.error_info {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card_btn_container {
+    margin-top: 12px;
+    display: flex;
+    justify-content: flex-end;
+}
+.tb_btn_container {
+    display: flex;
+    padding: 0px 20px;
+    justify-content: space-between;
+}
+
+.bgc_red {
+    background-color: #f69999;
+}
+.bgc_yellow {
+    background-color: rgb(241, 233, 145);
+}
+.bgc_success {
+    background-color: rgb(145, 241, 174);
 }
 
 .under-line {
@@ -165,40 +156,53 @@
     display: block;
     z-index: 9;
 }
-.border_red {
-    border: 2px solid #ff0000 !important;
-}
 
 @media screen and (max-width: 768px) {
     /* 在寬度小於或等於 768px 的屏幕上應用這些樣式 */
-    .display_container {
-        width: 321px;
-        height: 428px;
+    .main_div {
+        margin-top: 20px;
     }
-    .notice_content {
-        width: 321px;
-        font-size: 13px;
-        line-height: 20px;
+}
+@media screen and (max-width: 600px) {
+    /* 在寬度小於或等於 768px 的屏幕上應用這些樣式 */
+    .header {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding-left: 0px;
     }
-    .location_point {
-        width: 10px;
-        height: 10px;
+    .main_div {
+        margin-top: 0px;
     }
-    .l_0 {
-        top: -5px;
-        left: -5px;
+    .header_title_container {
+        padding-left: 68px;
     }
-    
-    .l_1 {
-        bottom: -5px;
-        left: -5px;
+    .header_btn_container {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-right: 0px;
+        margin: 12px auto 0px;
+        padding: 0px 8px;
     }
-    .l_2 {
-        bottom: -5px;
-        right: 14px;
+    .header_upload_img_btn {
+        width: 100%;
+        text-align: center;
     }
-    .l_3 {
-        top: -5px;
-        right: 14px;
+    .header_recover_btn {
+        width: calc(50% - 8px);
+        text-align: center;
+    }
+    .header_logout_btn {
+        width: calc(50% - 8px);
+        text-align: center;
+    }
+    .anal_result_container {
+        padding: 12px;
+        grid-template-columns: 100%;
+    }
+    .anal_card {
+        margin-bottom: 12px;
+        padding: 12px;
+        grid-template-columns: 100%;
     }
 }

@@ -63,3 +63,26 @@ async function upadte_by_guid(Meds)
 
   return response;
 }
+
+async function batch_upload_med_excel(data)
+{
+    // `${api_ip}api/med_page/excel_upload`
+    try {
+        const response = await fetch(`${api_ip}api/med_page/excel_upload`, {
+        method: 'POST',
+        body: data,
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch the Excel file.');
+        }
+
+        // 解析回傳內容為 JSON
+        const result = await response.json();
+
+        return result;
+    } catch (error) {
+        console.error(error);
+        return error;
+    }   
+}
