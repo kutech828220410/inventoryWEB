@@ -86,3 +86,29 @@ async function batch_upload_med_excel(data)
         return error;
     }   
 }
+async function get_ex_excel_download()
+{
+  try {
+    const response = await fetch(`${api_ip}api/med_page/excel_download`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch the Excel file.');
+    }
+
+    const blob = await response.blob();
+    const _url = window.URL.createObjectURL(blob);
+
+    // 创建下载链接
+    let downloadLink = document.createElement('a');
+    downloadLink.href = window.URL.createObjectURL(blob);
+    downloadLink.download = `範例表格.xlsx`;
+    downloadLink.click();
+  } catch (error) {
+    console.error(error);
+  }
+}

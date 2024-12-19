@@ -48,7 +48,7 @@ function mm_header_init() {
     mm_header_g_ex_med_batch_btn.innerHTML = "範例下載";
     mm_header_button_container.appendChild(mm_header_g_ex_med_batch_btn);
     mm_header_g_ex_med_batch_btn.addEventListener("click", () => {
-        console.log("測試下載範例");
+        get_ex_excel_download();
     });
 
     let mm_header_g_med_batch_btn = document.createElement("div");
@@ -78,7 +78,7 @@ function mm_header_init() {
         if(return_data.Code == 200) {
             // batch_data = return_data.Data;
             // set_main_batch_list_container();
-            // alert(return_data.Result);
+            alert(return_data.Result);
         } else {
             alert("上傳失敗，請聯絡工程師");
         }
