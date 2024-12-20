@@ -34,7 +34,7 @@ let fake_icon_popup_data = [
 ];
 
 // 調劑畫面生成
-function allocate_diplay_logic() {
+async function allocate_diplay_logic() {
     if(last_current_cart == "") {
         console.log("調劑功能畫面初生成");
         patient_bed_index = -1;
@@ -43,6 +43,7 @@ function allocate_diplay_logic() {
         next_patient_bed_index = -1;
         pre_p_bed_data = "";
         next_p_bed_data = "";
+        change_cart = true;
     } else if(current_cart != last_current_cart && last_current_cart != "") {
         console.log("調劑功能畫面init，藥車切換");
         patient_bed_index = -1;
@@ -51,15 +52,19 @@ function allocate_diplay_logic() {
         next_patient_bed_index = -1;
         pre_p_bed_data = "";
         next_p_bed_data = "";
+        change_cart = true;
     }
 
     // 根據選取的調劑台解鎖藥品
     if(current_med_table != "") {
         console.log("切換調劑台");
-        allocate_display_init("on");
+        await allocate_display_init("on");
     } else {
         console.log("未選調劑台");
-        allocate_display_init();
+        await allocate_display_init();
+    }
+    if(change_cart && med_cart_beds_data.length != 0) {
+        alert(`目前為第${med_cart_beds_data[patient_bed_index].bednum}床`);
     }
 
     return;
@@ -195,6 +200,7 @@ async function allocate_display_init(light_on) {
             }
         });
         open_med_detail_info();
+
         Set_main_div_enable(false);
     }
 }
@@ -580,6 +586,7 @@ function set_pbm_header_container() {
     pbmh_checked_trigger_label.innerHTML = "全選";
     pbmh_checked_trigger_label.addEventListener("click", (e) => {
         let tirgger = e.target.getAttribute("checked");
+        let pbmh_checked_trigger_label = document.querySelectorAll(".pbmh_checked_trigger_label");
         let med_card_checkbox = document.querySelectorAll(".med_card_checkbox");
         if(tirgger == "false") {
             // 點選後全選
@@ -587,8 +594,10 @@ function set_pbm_header_container() {
                 let temp_boolean = element.classList.contains("med_card_checkbox_disabled");
                 if(!element.disabled && !temp_boolean) {
                     element.checked = true;
-                    e.target.innerHTML = "取消全選";
-                    e.target.setAttribute("checked", true);
+                    pbmh_checked_trigger_label.forEach(item => {
+                        item.innerHTML = "取消全選";
+                        item.setAttribute("checked", true);
+                    });
                     med_log_arr.push(element.id);
                 }
             });
@@ -597,8 +606,10 @@ function set_pbm_header_container() {
                 let temp_boolean = element.classList.contains("med_card_checkbox_disabled");
                 if(!element.disabled && !temp_boolean) {
                     element.checked = false;
-                    e.target.innerHTML = "全選";
-                    e.target.setAttribute("checked", false);
+                    pbmh_checked_trigger_label.forEach(item => {
+                        item.innerHTML = "全選";
+                        item.setAttribute("checked", false);
+                    });
                     let index = med_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
 
                     if (index !== -1) {
@@ -1245,6 +1256,47 @@ function set_pbm_footer_container() {
         }
     });
 
+    let pbmh_checked_trigger_label = document.createElement("div");
+    pbmh_checked_trigger_label.classList.add("pbmh_checked_trigger_label");
+    pbmh_checked_trigger_label.classList.add("btn");
+    pbmh_checked_trigger_label.setAttribute("checked", false);
+    pbmh_checked_trigger_label.innerHTML = "全選";
+    pbmh_checked_trigger_label.addEventListener("click", (e) => {
+        let tirgger = e.target.getAttribute("checked");
+        let pbmh_checked_trigger_label = document.querySelectorAll(".pbmh_checked_trigger_label");
+        let med_card_checkbox = document.querySelectorAll(".med_card_checkbox");
+        if(tirgger == "false") {
+            // 點選後全選
+            med_card_checkbox.forEach(element => {
+                let temp_boolean = element.classList.contains("med_card_checkbox_disabled");
+                if(!element.disabled && !temp_boolean) {
+                    element.checked = true;
+                    pbmh_checked_trigger_label.forEach(item => {
+                        item.innerHTML = "取消全選";
+                        item.setAttribute("checked", true);
+                    });
+                    med_log_arr.push(element.id);
+                }
+            });
+        } else {
+            med_card_checkbox.forEach(element => {
+                let temp_boolean = element.classList.contains("med_card_checkbox_disabled");
+                if(!element.disabled && !temp_boolean) {
+                    element.checked = false;
+                    pbmh_checked_trigger_label.forEach(item => {
+                        item.innerHTML = "全選";
+                        item.setAttribute("checked", false);
+                    });
+                    let index = med_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+
+                    if (index !== -1) {
+                        med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                    }
+                }
+            });
+        }
+    });
+
     let pbmh_next_btn = document.createElement("div");
     pbmh_next_btn.classList.add("pbmh_next_btn");
     pbmh_next_btn.classList.add("btn");
@@ -1270,6 +1322,7 @@ function set_pbm_footer_container() {
         pbm_footer_container.appendChild(pbmh_light_on_btn);
         // pbm_footer_container.appendChild(pbmf_submit_btn);
     }
+    pbm_footer_container.appendChild(pbmh_checked_trigger_label);
     pbm_footer_container.appendChild(pbmh_checked_submit_btn);
     pbm_footer_container.appendChild(pbmh_next_btn);
 
@@ -1286,13 +1339,36 @@ async function pre_bed_func() {
         Set_main_div_enable(true);
         await set_post_data_to_check_dispense();
         let temp_p_bed_index = patient_bed_index;
-    
+        let temp_none_bed_num_arr = [];
+        let temp_arr_none_bed = [];
         do {
             temp_p_bed_index--;
+            if(med_cart_beds_data[temp_p_bed_index]["bed_status"] != "已佔床") {
+                temp_none_bed_num_arr.push(+temp_p_bed_index);
+            }
         } while(med_cart_beds_data[temp_p_bed_index]["bed_status"] != "已佔床");
     
         last_patient_bed_index = patient_bed_index;
         patient_bed_index = temp_p_bed_index;
+
+        temp_none_bed_num_arr.sort((a, b) => a - b);
+
+        temp_none_bed_num_arr.forEach(element => {
+            temp_arr_none_bed.push(`第${med_cart_beds_data[+element].bednum}床`); 
+        });
+
+        if(temp_arr_none_bed != 0) {
+            let temp_str = '';
+            temp_arr_none_bed.forEach((element, index) => {
+                if(index == temp_arr_none_bed.length - 1) {
+                    temp_str += element;
+                } else {
+                    temp_str += element + "、";
+                }
+            });
+            temp_str += `為空床，已為您轉到第 ${med_cart_beds_data[patient_bed_index].bednum} 床。`;
+            alert(temp_str);
+        }
 
         let temp_p_bed_data = current_p_bed_data;
         next_p_bed_data = temp_p_bed_data;
@@ -1311,12 +1387,29 @@ async function next_bed_func() {
         Set_main_div_enable(true);
         set_post_data_to_check_dispense();
         let temp_p_bed_index = patient_bed_index;
-    
+        let temp_arr_none_bed = [];
         do {
             temp_p_bed_index++;
+            if(med_cart_beds_data[temp_p_bed_index]["bed_status"] != "已佔床") {
+                temp_arr_none_bed.push(`第${med_cart_beds_data[temp_p_bed_index].bednum}床`);
+            }
         } while(med_cart_beds_data[temp_p_bed_index]["bed_status"] != "已佔床");
+
         last_patient_bed_index = patient_bed_index;
         patient_bed_index = temp_p_bed_index;
+
+        if(temp_arr_none_bed != 0) {
+            let temp_str = '';
+            temp_arr_none_bed.forEach((element, index) => {
+                if(index == temp_arr_none_bed.length - 1) {
+                    temp_str += element;
+                } else {
+                    temp_str += element + "、";
+                }
+            });
+            temp_str += `為空床，已為您轉到第 ${med_cart_beds_data[patient_bed_index].bednum} 床。`;
+            alert(temp_str);
+        }
 
         let temp_p_bed_data = current_p_bed_data;
         pre_p_bed_data = temp_p_bed_data;

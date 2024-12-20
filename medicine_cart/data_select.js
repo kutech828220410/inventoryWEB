@@ -133,6 +133,7 @@ let last_light_on_arr = {
     ServerType: "",
     ValueAry: []
 };
+let change_cart = false;
 // ValueAry => [ arr,  str,  str]
 // 顏色 => str = "0,255,0"
 // 秒數 => str = "60"  （單位：秒）

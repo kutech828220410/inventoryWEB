@@ -72,65 +72,6 @@
     background-color: #b8b8b8;
     transition: all 0.2s ease-out;
 }
-.anal_result_container {
-    max-width: 1200px;
-    padding: 8px;
-    margin: auto;
-    display: grid;
-    grid-template-columns: 49% 49%;
-    justify-content: space-between;
-}
-.anal_card {
-    border-radius: 5px;
-    border: 3px solid #000;
-    min-height: 100px;
-    margin-bottom: 20px;
-    cursor: pointer;
-    padding: 12px;
-    display: grid;
-    grid-template-columns: 100%;
-    justify-content: space-between;
-}
-.card_med_content_info {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    justify-content: space-between;
-}
-.card_info_container {
-    color: #383838;
-    display: flex;
-    padding-bottom: 8px;
-}
-.card_info_container_2 {
-    color: #383838;
-    padding-bottom: 4px;
-}
-.card_op_num,
-.card_batch_num,
-.card_expirydate,
-.card_qty {
-    color: #000;
-    font-size: 20px;
-    font-weight: 800;
-}
-.error_info {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.card_btn_container {
-    margin-top: 12px;
-    display: flex;
-    justify-content: flex-end;
-}
-.tb_btn_container {
-    display: flex;
-    padding: 0px 20px;
-    justify-content: space-between;
-}
 
 .bgc_red {
     background-color: #f69999;
@@ -187,22 +128,5 @@
     .header_upload_img_btn {
         width: 100%;
         text-align: center;
-    }
-    .header_recover_btn {
-        width: calc(50% - 8px);
-        text-align: center;
-    }
-    .header_logout_btn {
-        width: calc(50% - 8px);
-        text-align: center;
-    }
-    .anal_result_container {
-        padding: 12px;
-        grid-template-columns: 100%;
-    }
-    .anal_card {
-        margin-bottom: 12px;
-        padding: 12px;
-        grid-template-columns: 100%;
     }
 }
