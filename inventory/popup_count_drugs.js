@@ -567,7 +567,7 @@ async function enter_count_result() {
     }
 
     if(confirm(`辨識數量: ${drugs_counts}，是否正確?`)) {
-        let END_QTY_input = document.querySelector('#END_QTY_input_popup_input');
+        let END_QTY_input_popup_input = document.querySelector('#END_QTY_input_popup_input');
         let GUID = popup_input_div_Content.GUID;
         let CODE = popup_input_div_Content.CODE;
         let END_QTY = drugs_counts;
@@ -577,22 +577,26 @@ async function enter_count_result() {
             return
         }
 
-        END_QTY_input.value = '';
+        // END_QTY_input_popup_input.value = '';
         let OP = sessionData.Name;
 
-        let END_QTY_input_popup_input = document.querySelector("#END_QTY_input_popup_input");
-        let temp_qty = +END_QTY_input_popup_input.value;
-        let temp_sum = 0;
-        if(temp_qty != NaN && temp_qty > 0) {
-            temp_sum = END_QTY + temp_qty;
+        let temp_str = END_QTY_input_popup_input.value;
+        let input_lastChar = "";
+
+        if(temp_str == "") {
+            END_QTY_input_popup_input.value = END_QTY;
         } else {
-            temp_sum = END_QTY;
+            input_lastChar = END_QTY_input_popup_input.value.slice(-1);
+            let isSymbol = ["+", "-", "*"].includes(input_lastChar);
+            if(isSymbol) {
+                temp_str += END_QTY;
+            } else {
+                temp_str += `+${+END_QTY}`;
+            }
         }
 
-        alert(`輸入藥品數量: ${END_QTY} + ${temp_qty} = ${temp_sum}`);
-
-        sub_content_add(GUID , temp_sum , OP, CODE);
-        hide_popup_input();
+        // sub_content_add(GUID , temp_sum , OP, CODE);
+        // hide_popup_input();
         tigger_count_drugs_container(false);
         return;
     } else {

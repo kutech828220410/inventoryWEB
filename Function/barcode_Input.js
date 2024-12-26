@@ -2,10 +2,7 @@ var barcode_value = '';
 var barcode_keydown_datetime;
 var BarcodeKeyinEvent = null;
   // 監聽頁面的keydown事件
-window.addEventListener('keydown', function(event) 
-{
-   barcode_keydown(event);
-});
+window.addEventListener('keydown', barcode_keydown);
 async function barcode_keydown(event)
 {
   // 判斷按下的按鍵是否是Tab鍵或Enter鍵

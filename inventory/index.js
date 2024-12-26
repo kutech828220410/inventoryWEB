@@ -684,3 +684,23 @@ function get_row(Sub_Content)
   return row_div;
 }
 
+function focus_barcode_input_func() {
+  let header_serch_text = document.querySelector("#header_serch_text");
+  let temp_boolean = isIOSDevice();
+  console.log("isIOSDevice", temp_boolean);
+  if(temp_boolean) {
+    header_serch_text.focus();
+  }
+}
+
+function isIOSDevice() {
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+  // 判斷是否為 iOS 系統 (iPhone 或 iPad)
+  const isiPhone = /iPhone/i.test(userAgent);
+  const isiPad = /iPad/i.test(userAgent);
+  const isIPod = /iPod/i.test(userAgent); // 可選，若需判斷 iPod
+
+  // 結合判斷條件，回傳布林值
+  return isiPhone || isiPad || isIPod;
+}

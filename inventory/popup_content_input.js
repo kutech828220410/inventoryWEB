@@ -54,6 +54,8 @@ function hide_popup_input()
 {
     window.addEventListener('keydown', get_barcode_input_event);
     popup_input_div.Close();
+    
+    focus_barcode_input_func();
 }
 
 function next_page_popup_input() 
@@ -702,10 +704,3 @@ function calculateExpression(expression) {
     return stack.reduce((total, num) => total + num, 0);
   }
   
-
-
-
-
-
-
-
