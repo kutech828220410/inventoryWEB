@@ -23,8 +23,11 @@
     padding-left: 80px;
 }
 .main_div {
-    margin-top: 40px;
+    max-width: 1200px;
+    margin: auto;
+    margin-top: 20px;
     margin-bottom: 60px;
+    padding: 0px 12px;
 }
 .no_info_data_div {
     padding: 36px;
@@ -73,6 +76,49 @@
     transition: all 0.2s ease-out;
 }
 
+
+.mhb_upload {
+    margin: 0px auto;
+    text-align: center;
+    max-width: 1200px;
+}
+.mhb_search_container {
+    max-width: 1200px;
+    margin: 0px auto;
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 12px;
+}
+.mhb_search_input {
+    width: 100%;
+    font-size: 16px;
+    color: #505050;
+    padding: 4px;
+    border-radius: 5px;
+    border: 2px solid #505050;
+}
+.mhb_search_btn {
+    width: 24px;
+    display: block;
+    position: absolute;
+    cursor: pointer;
+    right: 8px;
+}
+
+.main_display_btn_container {
+    display: flex;
+    justify-content: space-between;
+    margin: 12px 0px;
+}
+.main_display_card_container {
+    background-color: #b8b8b8;
+    border-radius: 10px;
+    min-height: 100px;
+}
+
 .bgc_red {
     background-color: #f69999;
 }
@@ -106,23 +152,13 @@
 }
 @media screen and (max-width: 600px) {
     /* 在寬度小於或等於 768px 的屏幕上應用這些樣式 */
-    .header {
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
-        padding-left: 0px;
-    }
     .main_div {
-        margin-top: 0px;
-    }
-    .header_title_container {
-        padding-left: 68px;
+        margin-top: 16px;
     }
     .header_btn_container {
         flex-wrap: wrap;
         justify-content: space-between;
         margin-right: 0px;
-        margin: 12px auto 0px;
         padding: 0px 8px;
     }
     .header_upload_img_btn {

@@ -580,7 +580,18 @@ async function enter_count_result() {
         END_QTY_input.value = '';
         let OP = sessionData.Name;
 
-        sub_content_add(GUID , END_QTY , OP, CODE);
+        let END_QTY_input_popup_input = document.querySelector("#END_QTY_input_popup_input");
+        let temp_qty = +END_QTY_input_popup_input.value;
+        let temp_sum = 0;
+        if(temp_qty != NaN && temp_qty > 0) {
+            temp_sum = END_QTY + temp_qty;
+        } else {
+            temp_sum = END_QTY;
+        }
+
+        alert(`輸入藥品數量: ${END_QTY} + ${temp_qty} = ${temp_sum}`);
+
+        sub_content_add(GUID , temp_sum , OP, CODE);
         hide_popup_input();
         tigger_count_drugs_container(false);
         return;

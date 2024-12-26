@@ -1,26 +1,6 @@
 window.onload = load;
 // window.addEventListener('resize', handleResize);
-let base64_img = "";
 let medicine_page = [];
-let batch_id = "";
-let batch_id_return = [];
-
-let test_data = {
-  Data: [
-    {
-      GUID: "41241234123fads",
-      batch_id: "20241215142930",
-      batch_num: "114241412",
-      cht_name: "1040938300AC26萬克適錠60公絲28顆/盒",
-      expirydate: "2027.01.22",
-      name: "23274814 ARC0XIA 60MG 28'S/BX",
-      po_num: "1131024001-10",
-      qty: "540",
-    },
-  ],
-  Code: 200,
-  Result: "查無對應單號資料",
-};
 
 var IsLogged = (function() 
 {
@@ -124,6 +104,16 @@ function get_main_div() {
     main_div.id = "main_div";
     main_div.className = "main_div";
 
+    let main_header_btn_container = set_main_header_btn_container();
+    let main_display_top_btn_container = set_main_display_btn_container();
+    let main_display_bottom_btn_container = set_main_display_btn_container();
+    let main_display_card_container = set_main_display_card_container();
+
+    main_div.appendChild(main_header_btn_container);
+    main_div.appendChild(main_display_top_btn_container);
+    main_div.appendChild(main_display_card_container);
+    main_div.appendChild(main_display_bottom_btn_container);
+
     body.appendChild(main_div);
 }
 function Set_main_div_enable(value) 
@@ -137,6 +127,60 @@ function Set_main_div_enable(value)
     }
 }
 
+function set_main_header_btn_container() {
+  let main_header_btn_container = document.createElement("div");
+  main_header_btn_container.classList.add("main_header_btn_container");
+
+  let mhb_upload = document.createElement("div");
+  mhb_upload.classList.add("mhb_upload");
+  mhb_upload.classList.add("btn");
+  mhb_upload.innerHTML = '上傳圖片(限100張)';
+
+  let mhb_search_container = document.createElement("div");
+  mhb_search_container.classList.add("mhb_search_container");
+
+  let mhb_search_input = document.createElement("input");
+  mhb_search_input.classList.add("mhb_search_input");
+  mhb_search_input.type = "text";
+  mhb_search_input.maxLength = 36;
+
+  let mhb_search_btn = document.createElement("img");
+  mhb_search_btn.classList.add("mhb_search_btn");
+  mhb_search_btn.src = "../image/icon/search_glass.png";
+
+  mhb_search_container.appendChild(mhb_search_input);
+  mhb_search_container.appendChild(mhb_search_btn);
+
+  main_header_btn_container.appendChild(mhb_upload);
+  main_header_btn_container.appendChild(mhb_search_container);
+
+  return main_header_btn_container;
+}
+function set_main_display_btn_container() {
+  let main_display_btn_container = document.createElement("div");
+  main_display_btn_container.classList.add("main_display_btn_container");
+
+  let mdbc_submit = document.createElement("div");
+  mdbc_submit.classList.add("mdbc_submit");
+  mdbc_submit.classList.add("btn");
+  mdbc_submit.innerHTML = "送出";
+
+  let mdbc_del = document.createElement("div");
+  mdbc_del.classList.add("mdbc_del");
+  mdbc_del.classList.add("btn");
+  mdbc_del.innerHTML = "刪除";
+
+  main_display_btn_container.appendChild(mdbc_submit);
+  main_display_btn_container.appendChild(mdbc_del);
+
+  return main_display_btn_container;
+}
+function set_main_display_card_container() {
+  main_display_card_container = document.createElement("div");
+  main_display_card_container.classList.add("main_display_card_container");
+
+  return main_display_card_container;
+}
 
 function set_batch_id() {
   let now = new Date();
