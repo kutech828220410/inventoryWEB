@@ -48,7 +48,7 @@ async function get_all_med_cart_by_phar(phar) {
 // 取得病床清單
 async function get_bed_list_by_cart(phar, med_cart) {
     let start_p = performance.now();
-    let temp_doman = transform_api_ip(api_ip);
+    let temp_doman = transform_api_ip_4433(api_ip);
     console.log(`"test", ${temp_doman}api/med_cart/get_bed_list_by_cart`);
     let temp_data = await fetch(`${temp_doman}api/med_cart/get_bed_list_by_cart`, {
         method: "POST",
@@ -73,7 +73,7 @@ async function get_bed_list_by_cart(phar, med_cart) {
 // 取的病床資訊
 async function get_patient_by_bedNum(phar, med_cart, bed_num) {
     let start_p = performance.now();
-    let temp_doman = transform_api_ip(api_ip);
+    let temp_doman = transform_api_ip_4433(api_ip);
     let temp_data = await fetch(`${temp_doman}api/med_cart/get_patient_by_bedNum`, {
         method: "POST",
         headers: {
@@ -96,7 +96,7 @@ async function get_patient_by_bedNum(phar, med_cart, bed_num) {
 // 取的病床資訊
 async function get_patient_GUID(data) {
     let start_p = performance.now();
-    let temp_doman = transform_api_ip(api_ip);
+    let temp_doman = transform_api_ip_4433(api_ip);
     let temp_data = await fetch(`${temp_doman}api/med_cart/get_patient_by_GUID`, {
         method: "POST",
         headers: {
@@ -118,7 +118,7 @@ async function get_patient_GUID(data) {
 // 取得藥品總量
 async function get_all_med_qty(phar, med_cart, table) {
     let start_p = performance.now();
-    let temp_doman = transform_api_ip(api_ip);
+    let temp_doman = transform_api_ip_4433(api_ip);
     let temp_data = await fetch(`${temp_doman}api/med_cart/get_med_qty`, {
         method: "POST",
         headers: {
@@ -190,7 +190,7 @@ async function get_serversetting_by_department_type(phar) {
 // 依藥局&護理站確認可否交車
 async function med_cart_handover(phar, med_cart) {
     let start_p = performance.now();
-    let temp_doman = transform_api_ip_4433(api_ip);
+    let temp_doman = transform_api_ip(api_ip);
     let temp_data = await fetch(`${temp_doman}api/med_cart/handover`, {
         method: "POST",
         headers: {
@@ -376,7 +376,7 @@ async function get_time_by_op_id(data) {
 }
 // 根據病床GUID給出DC/NEW資料
 async function get_medChange_by_GUID(data) {
-    let temp_doman = transform_api_ip(api_ip);
+    let temp_doman = transform_api_ip_4433(api_ip);
     let temp_data = await fetch(`${temp_doman}api/med_cart/get_medChange_by_GUID`, {
         method: "POST",
         headers: {
@@ -478,6 +478,6 @@ function transform_api_ip_4433(ip) {
     let newStr = ip
 
     newStr = is_https_trans_ip(newStr);
-    // return newStr;
-    return ip;
+    return newStr;
+    // return ip;
 }

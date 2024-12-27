@@ -131,9 +131,23 @@ async function page_Init(data)
   }
   else
   {
-    for (var i = 0; i < data.Data.length; i++) 
+    let temp_data = data.Data;
+    // 定義排序順序
+    // 等待盤點 -> 盤點中 -> 鎖定
+    let stateOrder = {
+      "等待盤點": 0,
+      "盤點中": 1,
+      "鎖定": 2
+    };
+    // 排序資料
+    let sortedData = temp_data.sort((a, b) => {
+      return stateOrder[a.STATE] - stateOrder[b.STATE];
+    });
+
+    console.log(sortedData);
+    for (var i = 0; i < sortedData.length; i++) 
     {
-      const all_div = creat_row_div(i, data.Data[i]);
+      const all_div = creat_row_div(i, sortedData[i]);
       main_div.appendChild(all_div);
     }
 

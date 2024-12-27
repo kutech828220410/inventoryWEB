@@ -49,6 +49,10 @@ async function load()
   get_header(test_user_data);
   get_main_div();
   Set_main_div_enable(false);
+
+  test_data.forEach(element => {
+    set_card(element);
+  });
 }
 
 function get_header(test_user_data) {
@@ -148,8 +152,13 @@ function set_main_header_btn_container() {
   mhb_search_btn.classList.add("mhb_search_btn");
   mhb_search_btn.src = "../image/icon/search_glass.png";
 
+  let mhb_cancel_btn = document.createElement("img");
+  mhb_cancel_btn.classList.add("mhb_cancel_btn");
+  mhb_cancel_btn.src = "../image/icon/cancel.png";
+
   mhb_search_container.appendChild(mhb_search_input);
   mhb_search_container.appendChild(mhb_search_btn);
+  mhb_search_container.appendChild(mhb_cancel_btn);
 
   main_header_btn_container.appendChild(mhb_upload);
   main_header_btn_container.appendChild(mhb_search_container);
@@ -176,7 +185,7 @@ function set_main_display_btn_container() {
   return main_display_btn_container;
 }
 function set_main_display_card_container() {
-  main_display_card_container = document.createElement("div");
+  let main_display_card_container = document.createElement("div");
   main_display_card_container.classList.add("main_display_card_container");
 
   return main_display_card_container;
@@ -220,4 +229,94 @@ async function processImage(file) {
       // 如果是 PNG 或 HEIC，讀取後再轉換
       reader.readAsDataURL(file);
   });
+}
+function init_main_display_card_container () {
+  let main_display_card_container = document.querySelector(".main_display_card_container");
+  main_display_card_container.innerHTML = "";
+}
+function set_card(data) {
+  let main_display_card_container = document.querySelector(".main_display_card_container");
+
+  let card_container = document.createElement("div");
+  card_container.classList.add("card_container");
+
+  console.log(data.Data[0].submit);
+  if(data.Data[0].submit == "Y") card_container.classList.add("bgc_success");
+  if(data.Data[0].submit == "" && data.Code == 200) card_container.classList.add("bgc_yellow");
+  if(data.Code != 200) card_container.classList.add("bgc_red");
+
+  let temp_info = data.Data[0];
+
+  let card_left = document.createElement("div");
+  card_left.classList.add("card_left");
+
+  let card_left_name_container = document.createElement("div");
+  card_left_name_container.classList.add("card_left_name_container");
+
+  let card_left_name = document.createElement("div");
+  card_left_name.classList.add("card_left_name");
+  card_left_name.innerHTML = `(英) ${temp_info.name}`;
+
+  let card_left_cht_name = document.createElement("div");
+  card_left_cht_name.classList.add("card_left_cht_name");
+  card_left_cht_name.innerHTML = `(中) ${temp_info.cht_name}`;
+
+  card_left_name_container.appendChild(card_left_name);
+  card_left_name_container.appendChild(card_left_cht_name);
+
+  let card_left_info_container = document.createElement("div");
+  card_left_info_container.classList.add("card_left_info_container");
+
+  let card_left_po_num_container = document.createElement("div");
+  card_left_po_num_container.classList.add("card_left_po_num_container");
+
+  let card_left_po_num_title = document.createElement("div");
+  card_left_po_num_title.classList.add("card_left_po_num_title");
+  card_left_po_num_title.innerHTML = "單號";
+
+  let card_left_po_num = document.createElement("div");
+  card_left_po_num.classList.add("card_left_po_num");
+  card_left_po_num.innerHTML = temp_info.po_num;
+
+  card_left_po_num_container.appendChild(card_left_po_num_title);
+  card_left_po_num_container.appendChild(card_left_po_num);
+
+  let card_left_batch_num_container = document.createElement("div");
+  card_left_batch_num_container.classList.add("card_left_batch_num_container");
+
+  let card_left_batch_num_title = document.createElement("div");
+  card_left_batch_num_title.classList.add("card_left_batch_num_title");
+  card_left_batch_num_title.innerHTML = "批號";
+
+  let card_left_batch_num = document.createElement("div");
+  card_left_batch_num.classList.add("card_left_batch_num");
+  card_left_batch_num.innerHTML = temp_info.batch_num;
+
+  card_left_batch_num_container.appendChild(card_left_batch_num_title);
+  card_left_batch_num_container.appendChild(card_left_batch_num);
+
+  let card_left_expirydate_container = document.createElement("div");
+  card_left_expirydate_container.classList.add("card_left_expirydate_container");
+
+  let card_left_expirydate_title = document.createElement("div");
+  card_left_expirydate_title.classList.add("card_left_expirydate_title");
+  card_left_expirydate_title.innerHTML = "效期";
+
+  let card_left_expirydate = document.createElement("div");
+  card_left_expirydate.classList.add("card_left_expirydate");
+  card_left_expirydate.innerHTML = temp_info.expirydate;
+
+  card_left_expirydate_container.appendChild(card_left_expirydate_title);
+  card_left_expirydate_container.appendChild(card_left_expirydate);
+  
+  card_left_info_container.appendChild(card_left_po_num_container);
+  card_left_info_container.appendChild(card_left_batch_num_container);
+  card_left_info_container.appendChild(card_left_expirydate_container);
+
+  card_left.appendChild(card_left_name_container);
+  card_left.appendChild(card_left_info_container);
+
+  card_container.appendChild(card_left);
+
+  main_display_card_container.appendChild(card_container);
 }
