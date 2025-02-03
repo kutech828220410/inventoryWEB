@@ -102,9 +102,13 @@ async function allocate_display_init(light_on) {
             first_patient_bed_index++;
         } while(med_cart_beds_data[first_patient_bed_index].bed_status != "已佔床");
     
-        do {
-            final_patient_bed_index--;
-        } while(med_cart_beds_data[final_patient_bed_index].bed_status != "已佔床" || first_patient_bed_index == final_patient_bed_index);
+        if(med_cart_beds_data.length > 1) {
+            do {
+                final_patient_bed_index--;
+            } while(med_cart_beds_data[final_patient_bed_index].bed_status != "已佔床" || first_patient_bed_index == final_patient_bed_index);
+        } else {
+            final_patient_bed_index == 0;
+        }
         
         if(patient_bed_index == -1) {
             for (let index = 0; index < med_cart_beds_data.length; index++) {
@@ -201,6 +205,13 @@ async function allocate_display_init(light_on) {
         });
         open_med_detail_info();
 
+        console.log("回到最上面");
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth" // 平滑滾動
+        });
+        console.log("回到最上面done");
+
         Set_main_div_enable(false);
     }
 }
@@ -266,6 +277,7 @@ function get_p_bed_header() {
 
         med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, "all");
         med_list_data = med_list_data.Data;
+        med_list_data = sort_med_list_data(med_list_data, current_func);
         await set_pp_med_list_display();
 
         await popup_med_list_div_open();
@@ -600,6 +612,11 @@ function set_pbm_header_container() {
                     });
                     med_log_arr.push(element.id);
                 }
+
+                // 大瓶藥品api參數設定追加
+                if(element.getAttribute("isBig") == "L") {
+                    element.checked = false;
+                }
             });
         } else {
             med_card_checkbox.forEach(element => {
@@ -722,6 +739,7 @@ function set_pbm_main_container() {
         let med_card_checkbox = document.createElement("input");
         med_card_checkbox.classList.add("med_card_checkbox");
         med_card_checkbox.id = `${element.GUID}`;
+        med_card_checkbox.setAttribute("isBig", element.large);
         med_card_checkbox.type = "checkbox";
         if(current_func == "allocate") {
             if(element.dispens_status == "Y") med_card_checkbox.checked = true;
@@ -786,6 +804,30 @@ function set_pbm_main_container() {
 
         let med_card_main_display_container = document.createElement("div");
         med_card_main_display_container.classList.add("med_card_main_display_container");
+
+        med_card_main_display_container.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            startX = touch.clientX;
+            startY = touch.clientY;
+        });
+        
+        med_card_main_display_container.addEventListener('touchend', (e) => {
+            const touch = e.changedTouches[0];
+            const endX = touch.clientX;
+            const endY = touch.clientY;
+        
+            const distanceX = Math.abs(endX - startX);
+            const distanceY = Math.abs(endY - startY);
+        
+            // 設定滑動距離閾值，例如10像素
+            if (distanceX < 10 && distanceY < 10) {
+                if(!med_card_checkbox.classList.contains("med_card_checkbox_disabled")) {
+                    med_card_checkbox.checked = !med_card_checkbox.checked;
+                } else {
+                    alert("尚未完成調劑，無法進行覆核");
+                }
+            }
+        });
 
         let med_card_info_container = document.createElement("div");
         med_card_info_container.classList.add("med_card_info_container");
@@ -1277,6 +1319,11 @@ function set_pbm_footer_container() {
                     });
                     med_log_arr.push(element.id);
                 }
+
+                // 大瓶藥品api參數設定追加
+                if(element.getAttribute("isBig") == "L") {
+                    element.checked = false;
+                }
             });
         } else {
             med_card_checkbox.forEach(element => {
@@ -1377,45 +1424,43 @@ async function pre_bed_func() {
     // }
 }
 async function next_bed_func() {
-    Set_main_div_enable(true);
     // if(next_p_bed_data.GUID == current_p_bed_data.GUID  || next_p_bed_data == "") {
     //     setTimeout(() => {
     //         console.log("下一床waitting");
     //         next_bed_func();
     //     }, 2000);
     // } else {
-        Set_main_div_enable(true);
-        set_post_data_to_check_dispense();
-        let temp_p_bed_index = patient_bed_index;
-        let temp_arr_none_bed = [];
-        do {
-            temp_p_bed_index++;
-            if(med_cart_beds_data[temp_p_bed_index]["bed_status"] != "已佔床") {
-                temp_arr_none_bed.push(`第${med_cart_beds_data[temp_p_bed_index].bednum}床`);
-            }
-        } while(med_cart_beds_data[temp_p_bed_index]["bed_status"] != "已佔床");
-
-        last_patient_bed_index = patient_bed_index;
-        patient_bed_index = temp_p_bed_index;
-
-        if(temp_arr_none_bed != 0) {
-            let temp_str = '';
-            temp_arr_none_bed.forEach((element, index) => {
-                if(index == temp_arr_none_bed.length - 1) {
-                    temp_str += element;
-                } else {
-                    temp_str += element + "、";
-                }
-            });
-            temp_str += `為空床，已為您轉到第 ${med_cart_beds_data[patient_bed_index].bednum} 床。`;
-            alert(temp_str);
+    Set_main_div_enable(true);
+    set_post_data_to_check_dispense();
+    let temp_p_bed_index = patient_bed_index;
+    let temp_arr_none_bed = [];
+    do {
+        temp_p_bed_index++;
+        if(med_cart_beds_data[temp_p_bed_index]["bed_status"] != "已佔床") {
+            temp_arr_none_bed.push(`第${med_cart_beds_data[temp_p_bed_index].bednum}床`);
         }
+    } while(med_cart_beds_data[temp_p_bed_index]["bed_status"] != "已佔床");
 
-        let temp_p_bed_data = current_p_bed_data;
-        pre_p_bed_data = temp_p_bed_data;
-        // current_p_bed_data = next_p_bed_data;
-        allocate_display_init("on");
-    // }
+    last_patient_bed_index = patient_bed_index;
+    patient_bed_index = temp_p_bed_index;
+
+    if(temp_arr_none_bed != 0) {
+        let temp_str = '';
+        temp_arr_none_bed.forEach((element, index) => {
+            if(index == temp_arr_none_bed.length - 1) {
+                temp_str += element;
+            } else {
+                temp_str += element + "、";
+            }
+        });
+        temp_str += `為空床，已為您轉到第 ${med_cart_beds_data[patient_bed_index].bednum} 床。`;
+        alert(temp_str);
+    }
+
+    let temp_p_bed_data = current_p_bed_data;
+    pre_p_bed_data = temp_p_bed_data;
+    // current_p_bed_data = next_p_bed_data;
+    allocate_display_init("on");
 }
 
 async function set_post_data_to_check_dispense() {

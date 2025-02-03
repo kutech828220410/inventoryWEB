@@ -1,0 +1,102 @@
+:root {
+    --skyBlue: rgb(170, 170, 170);
+}
+.process_bar_div {
+    position: fixed;
+    width: 100vw;
+    width: 100svw;
+    height: 100vh;
+    height: 100svh;
+    z-index: 100000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.594);
+    display: none;
+}
+.process_bar_container {
+    padding: 20px;
+    width: 80%;
+    max-width: 320px;
+    min-height: 320px;
+    /* background-color: #00000037; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+}
+
+.process_bar {
+    box-sizing: content-box;
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    padding: 5px;
+    /* border: 5px solid rgb(118, 218, 255); */
+    /* border: 5px solid rgb(170, 170, 170); */
+    background-color: var(--skyBlue);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    overflow: hidden;
+}
+.bar {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    background-color: var(--skyBlue);
+    border-radius: 50%;
+}
+.bar_before,
+.bar_after {
+    content: "";
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        top: 80px;
+        left: 50%;
+        background-color: rgba(255, 255, 255, .4);
+        border-radius: 45%;
+        transform: translate(-50%, -70%) rotate(0);
+        transition: top 1s ease;
+        animation: rotate 3s linear infinite;
+        z-index: 1;
+}
+.bar_after {
+    border-radius: 47%;
+    background-color: rgba(255, 255, 255, .9);
+    transform: translate(-50%, -70%) rotate(0);
+    animation: rotate 10s linear -5s infinite;
+    z-index: 2;
+}
+
+.bar_text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff;
+    z-index: 10;
+    text-align: center;
+    width: 100%;
+}
+.process_log {
+    font-size: 36px;
+    text-shadow: 1px 1px 6px #000000b4;
+}
+.process_content {
+    font-size: 24px;
+    letter-spacing: 2px;
+    font-weight: 600;
+    text-shadow: 1px 1px 6px #000000b4;
+}
+
+@keyframes rotate {
+    50% {
+        transform: translate(-50%, -73%) rotate(180deg);
+    } 100% {
+        transform: translate(-50%, -70%) rotate(360deg);
+    }
+}

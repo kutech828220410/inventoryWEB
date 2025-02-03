@@ -69,3 +69,7 @@
     font-weight: 600;
     text-align: center;
 }
+.ppmls_footer_container {
+    display: flex;
+    justify-content: space-between;
+}

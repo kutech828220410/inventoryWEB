@@ -72,16 +72,18 @@ async function popup_med_change_list_div_open() {
         med_change_data.sort((a, b) => +a.bednum - +b.bednum);
     }
 
-    console.log(med_change_data);
-    set_ppmcl_main_info();
+    console.log("++++++++++++++++++++", med_change_data);
+    await set_ppmcl_main_info();
     
     popup_med_change_list_div.Set_Visible(true);
     Set_main_div_enable(false);
 }
 
-function set_ppmcl_main_info() {
+async function set_ppmcl_main_info() {
     let ppmcl_main_container = document.querySelector(".ppmcl_main_container");
+    console.log("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
     ppmcl_main_container.innerHTML = "";
+    console.log("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
     if(med_change_data.length == 0) {
         ppmcl_main_container.innerHTML = `<div class="ppmcl_main_no_info">${current_cart.hnursta} 處方無異動</div>`;
         return;
@@ -98,39 +100,93 @@ function set_ppmcl_main_info() {
         let ppmcl_bed_name_title = document.createElement("div");
         ppmcl_bed_name_title.classList.add("ppmcl_bed_name_title");
         ppmcl_bed_name_title.innerHTML = `${element.bednum} 號病床`;
+        ppmcl_bed_name_title.addEventListener("click", () => {
+            let temp_index = -1;
+            for (let index = 0; index < med_cart_beds_data.length; index++) {
+                const item = med_cart_beds_data[index];
+                if(item.bednum == element.bednum) {
+                    temp_index = index;
+                    break;
+                }
+            }
+
+            if(temp_index == patient_bed_index) {
+                alert("已經是目前床位"); 
+                return;
+            } else {
+                Set_main_div_enable(true);
+            
+                last_patient_bed_index = patient_bed_index;
+                patient_bed_index = temp_index;
+            
+                allocate_display_init("");
+                popup_med_change_list_div_close();
+            }
+        });
 
         let ppmcl_bed_name_all_btn = document.createElement("div");
         ppmcl_bed_name_all_btn.classList.add("ppmcl_bed_name_all_btn");
         ppmcl_bed_name_all_btn.classList.add("btn");
         ppmcl_bed_name_all_btn.innerHTML = `全部調劑`;
         ppmcl_bed_name_all_btn.setAttribute("Master_GUID", element.GUID);
-        ppmcl_bed_name_all_btn.addEventListener("click", () => {
+        ppmcl_bed_name_all_btn.addEventListener("click", async () => {
             if(confirm(`${element.bednum} 號病床處方異動調劑確認`)) {
-                
-                element.cpoe.forEach(async item => {
-                    Set_main_div_enable(true);
-                    // item.dispens_change == "" && 
-                    if(item.dispens_status == "") {
-                        let return_data = await set_post_data_to_check_dispense_for_med_list(element.GUID, item.GUID, "Y");
+                Set_main_div_enable(true);
+                let temp_guid_arr = [];
 
-                        if(return_data.Code == 200) {
-                            let ppmcl_cpoe_container = document.querySelector(`.ppmcl_cpoe_container[guid="${item.GUID}"]`);
-                            ppmcl_cpoe_container.style.display = "none";
-                        }
-
-                        // 判斷該床是否還有處方，若沒有處方則所有床位消失
-                        let ppmcl_bed_card = document.querySelector(`.ppmcl_bed_card[Master_Guid="${element.GUID}"]`);
-                        let ppmcl_bed_card_container = document.querySelector(`.ppmcl_bed_card_container[Master_Guid="${element.GUID}"]`);
-
-                        console.log(ppmcl_bed_card.clientHeight == 0);
-
-                        if(ppmcl_bed_card.clientHeight == 0) {
-                            ppmcl_bed_card_container.style.display = "none";
-                        }
-                    }
-                    Set_main_div_enable(false);
+                let post_data = [current_cart.phar, current_cart.hnursta];
+                console.log(post_data);
+            
+                med_change_data = await get_patient_with_NOdispense(post_data);
+                med_change_data = med_change_data.Data;
+            
+                med_change_data = med_change_data.filter((e) => {
+                    return e.cpoe.length != 0;
                 });
 
+                let temp_result = med_change_data.find(item => item.GUID === element.GUID);
+            
+                console.log(med_change_data);
+                console.log(temp_result);
+
+                temp_result.cpoe.forEach(async item => {
+                    if(item.dispens_status == "") {
+                        temp_guid_arr.push(item.GUID);
+                    }
+                });
+
+                let return_data = await set_post_data_to_dispensed_by_GUID(temp_guid_arr, element.GUID);
+                console.log(return_data);
+                return_data = return_data.Data;
+                
+                if(Array.isArray(return_data)) {
+                    return_data.forEach(item => {
+                        if(item.dispens_status == "Y") {
+                            let ppmcl_cpoe_container = document.querySelector(`.ppmcl_cpoe_container[guid="${item.GUID}"]`);
+                            if (ppmcl_cpoe_container) {
+                                ppmcl_cpoe_container.remove();
+                            }
+                        }
+                    });
+    
+                    let allDispensStatusY = return_data.every(item => item.dispens_status === "Y");
+    
+                    // // 判斷該床是否還有處方，若沒有處方則所有床位消失
+                    if(allDispensStatusY) {
+                        let ppmcl_bed_card = document.querySelector(`.ppmcl_bed_card[Master_Guid="${element.GUID}"]`);
+                        let ppmcl_bed_card_container = document.querySelector(`.ppmcl_bed_card_container[Master_Guid="${element.GUID}"]`);
+        
+                        console.log(ppmcl_bed_card.clientHeight == 0);
+        
+                        if(ppmcl_bed_card.clientHeight == 0) {
+                            if (ppmcl_bed_card_container) {
+                                ppmcl_bed_card_container.remove();
+                            }
+                        }
+                    }
+                }
+
+                Set_main_div_enable(false);
             }
         });
 
@@ -198,7 +254,7 @@ function set_ppmcl_main_info() {
 
                     if(return_data.Code == 200) {
                         let ppmcl_cpoe_container = document.querySelector(`.ppmcl_cpoe_container[guid="${item.GUID}"]`);
-                        ppmcl_cpoe_container.style.display = "none";
+                        ppmcl_cpoe_container.remove();
                     }
 
                     // 判斷該床是否還有處方，若沒有處方則所有床位消失
@@ -208,7 +264,7 @@ function set_ppmcl_main_info() {
                     console.log(ppmcl_bed_card.clientHeight == 0);
 
                     if(ppmcl_bed_card.clientHeight == 0) {
-                        ppmcl_bed_card_container.style.display = "none";
+                        ppmcl_bed_card_container.remove();
                     }
                     Set_main_div_enable(false);
                 });
@@ -226,3 +282,54 @@ function set_ppmcl_main_info() {
         ppmcl_main_container.appendChild(ppmcl_bed_card_container);
     });
 }
+
+async function set_post_data_to_dispensed_by_GUID(guid_arr, master_guid) {
+    let loggedName = sessionStorage.getItem('login_json');
+    loggedName = JSON.parse(loggedName);
+    let med_card_checkbox = document.querySelectorAll(".med_card_checkbox");
+    let return_data;
+    let temp_str = "";
+    temp_str = guid_arr.join(";");
+
+    let post_data = {
+        ValueAry: []
+    };
+
+    post_data.ValueAry[0] = temp_str;
+    post_data.ValueAry[1] = master_guid;
+
+    console.log("post_data", post_data);
+
+    med_card_checkbox.forEach(element => {
+        if(guid_arr.includes(element.id)) {
+            element.checked = true;
+        }
+    });
+
+    if(current_func == "allocate") {
+        return_data = await api_med_cart_dispensed_by_GUID(post_data);
+    };
+
+    await guid_arr.forEach(async element => {
+        let post_data2 = {
+            Data: [
+                {
+                    op_id: loggedName.ID,
+                    op_name: loggedName.Name
+                }
+            ],
+            ValueAry: [element],
+            Value: ""
+        }
+
+        if(current_func == "allocate") {
+            post_data2.Value = "調劑"
+        } else if(current_func == "review") {
+            post_data2.Value = "覆核"
+        }
+    
+        await add_med_inventory_log(post_data2);
+    });
+
+    return return_data;
+};

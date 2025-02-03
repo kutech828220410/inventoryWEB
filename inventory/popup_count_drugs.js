@@ -89,7 +89,6 @@ function set_popup_container() {
     let ppcd_video_container = document.createElement("div");
     ppcd_video_container.classList.add("ppcd_video_container");
 
-
     let ppcd_video = document.createElement("video");
     ppcd_video.classList.add("ppcd_video");
     ppcd_video.autoplay = true;
@@ -593,6 +592,7 @@ async function enter_count_result() {
             } else {
                 temp_str += `+${+END_QTY}`;
             }
+            END_QTY_input_popup_input.value = temp_str;
         }
 
         // sub_content_add(GUID , temp_sum , OP, CODE);

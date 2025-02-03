@@ -57,6 +57,10 @@ let medicine_page = [];
 let info_arr = [
   "藥碼","藥名(英)","藥名(中)","數量","效期","批號","單號",
 ]
+var IsLogged = (function() 
+{
+  return (sessionData.Name != null && sessionData.Name != "");
+})();
 
 function handleResize() 
 {
@@ -139,6 +143,9 @@ function Set_main_div_enable(value)
     else {
       hideLoadingPopup();
     }
+}
+async function popup_login_finished() {
+  console.log(`[${arguments.callee.name}]`);
 }
 
 async function startCamera() {

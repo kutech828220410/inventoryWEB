@@ -107,6 +107,13 @@ function get_pp_med_list_search_footer() {
     ppmls_search_btn.innerHTML = "搜尋";
     ppmls_search_btn.onclick = med_list_search_result;
 
+    let ppmls_search_big_btn = document.createElement("div");
+    ppmls_search_big_btn.classList.add('ppmls_search_big_btn');
+    ppmls_search_big_btn.classList.add("btn");
+    ppmls_search_big_btn.innerHTML = "顯示大瓶藥品";
+    ppmls_search_big_btn.onclick = display_big_result;
+
+    ppmls_footer_container.appendChild(ppmls_search_big_btn);
     ppmls_footer_container.appendChild(ppmls_search_btn);
 
     return ppmls_footer_container;
@@ -136,27 +143,44 @@ async function med_list_search_result() {
 
     let ppmls_input = document.querySelector(".ppmls_input");
 
-    switch (ppmls_type_select.value) {
-        case "code":
-            console.log(ppmls_type_select.value);
-            console.log(ppmls_input.value);
-            if(ppmls_input.value == "") return;
-            med_list_data = med_list_data.filter((item) => {
-                return item["code"].toUpperCase().includes(ppmls_input.value.toUpperCase());
-            });
-            break;
-        case "name":
-            console.log(ppmls_type_select.value);
-            console.log(ppmls_input.value);
-            if(ppmls_input.value == "") return;
-            med_list_data = med_list_data.filter((item) => {
-                return item["name"].toUpperCase().includes(ppmls_input.value.toUpperCase());
-            });
-            break;
-    
-        default:
-            break;
+    if(ppmls_input.value != "") {
+        switch (ppmls_type_select.value) {
+            case "code":
+                console.log(ppmls_type_select.value);
+                console.log(ppmls_input.value);
+                if(ppmls_input.value == "") return;
+                med_list_data = med_list_data.filter((item) => {
+                    return item["code"].toUpperCase().includes(ppmls_input.value.toUpperCase());
+                });
+                break;
+            case "name":
+                console.log(ppmls_type_select.value);
+                console.log(ppmls_input.value);
+                if(ppmls_input.value == "") return;
+                med_list_data = med_list_data.filter((item) => {
+                    return item["name"].toUpperCase().includes(ppmls_input.value.toUpperCase());
+                });
+                break;
+        
+            default:
+                break;
+        }
     }
+
+    med_list_data = sort_med_list_data(med_list_data, current_func);;
+
+    await set_pp_med_list_display();
+    await popup_med_list_search_div_close();
+}
+async function display_big_result() {
+    let ppmls_table_select = document.querySelector(".ppmls_table_select");
+    med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, ppmls_table_select.value);
+    med_list_data = med_list_data.Data;
+    med_list_data = med_list_data.filter((item) => {
+        return item["dispens_name"] == "Y" && item["large"] == "L";
+    });
+
+    med_list_data = sort_med_list_data(med_list_data, current_func);;
 
     await set_pp_med_list_display();
     await popup_med_list_search_div_close();

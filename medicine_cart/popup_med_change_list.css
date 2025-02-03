@@ -72,6 +72,8 @@
     background-color: rgb(120, 120, 120);
     color: aliceblue;
     margin: 4px;
+    cursor: pointer;
+    user-select: none;
 }
 .ppmcl_cpoe_container {
     display: flex;

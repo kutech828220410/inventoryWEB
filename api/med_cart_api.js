@@ -294,6 +294,26 @@ async function api_med_cart_check_dispense_by_GUID(data) {
     console.log(temp_data);
     return temp_data
 }
+// 調劑狀態確認（未調藥品）
+async function api_med_cart_dispensed_by_GUID(data) {
+    let start_p = performance.now();
+    let temp_doman = transform_api_ip_4433(api_ip);
+    let temp_data = await fetch(`${temp_doman}api/med_cart/dispensed_by_GUID`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then((response) => {
+        return response.json();
+    })
+
+    let end_p = performance.now();
+    console.log(end_p - start_p);
+    console.log(temp_data);
+    return temp_data
+}
 
 // 初盤紀錄log
 async function add_med_inventory_log(data) {

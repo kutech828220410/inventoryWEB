@@ -164,19 +164,19 @@ async function popup_login_content_submit_button_click(event)
     sessionStorage.setItem('color', session_login.Data.color);
     const greeting = `${session_login.Data.Name} 登入成功!`;
 
-    let loggedID = sessionStorage.getItem('loggedID');
+    // let loggedID = sessionStorage.getItem('loggedID');
 
-    let post_data = {
-        ValueAry: [loggedID],
-        Value: "N"
-    }
-    user_log = await user_precheck(post_data);
+    // let post_data = {
+    //     ValueAry: [loggedID],
+    //     Value: "N"
+    // }
+    // user_log = await user_precheck(post_data);
 
     alert(greeting);
 
-    let user_name = sessionStorage.getItem("loggedName");
-    let header_user = document.querySelector(".header_user");
-    header_user.innerHTML = `使用者：${user_name}`;
+    // let user_name = sessionStorage.getItem("loggedName");
+    // let header_user = document.querySelector(".header_user");
+    // header_user.innerHTML = `使用者：${user_name}`;
 
     Set_main_div_enable(false);
     

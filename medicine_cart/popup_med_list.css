@@ -72,6 +72,7 @@
     background: #555; 
 } 
 .ppml_card_container {
+    position: relative;
     padding: 8px;
     border-radius: 5px;
     border: 1px solid #000;
@@ -79,8 +80,43 @@
 }
 .ppml_card_info_container {
     display: grid;
-    grid-template-columns: 304px 100px 50px 90px;
+    grid-template-columns: 396px 156px;
+    justify-content: space-between;
     margin-bottom: 8px;
+}
+.ppml_ci_top {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+.ppml_ci_name_container {
+    flex-grow: 1;
+    padding-right: 4px;
+}
+.ppml_ci_content {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    white-space: normal;
+    line-break: loose;
+}
+.ppml_big_bottle {
+    color: #404040;
+    /* background-color: #f7b875; */
+    border-radius: 50%;
+    border: none;
+    min-height: 32px;
+    min-width: 32px;
+    background-image: url(../../image/iv-bag.png);
+    background-size: cover;
+}
+.ppml_ci_bottom_container {
+    margin: 4px 0px;
+    display: grid;
+    grid-template-columns: 20% 30% 30%;
+}
+.ppml_ci_info_container {
+    text-align: center;
 }
 .ppml_ci_3_div,
 .ppml_ci_2_div {
@@ -96,6 +132,7 @@
 .ppml_light_btn_container {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
 }
 .ppml_hr {
     width: 100%;
@@ -159,7 +196,19 @@
         flex-wrap: wrap;
         justify-content: space-between;
     }
+    .ppml_ci_bottom_container {
+        margin: 4px 0px;
+        display: grid;
+        grid-template-columns: 25% 50% 25%;
+    }
+    .ppml_ci_1_div {
+        flex-grow: 1;
+    }
     .ppml_bed_list_container {
         grid-template-columns: 25% 25% 25% 25%;
+    }
+    .ppml_light_btn_container {
+        flex-grow: 1;
+        justify-content: space-between;
     }
 }

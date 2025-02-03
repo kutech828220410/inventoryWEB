@@ -27,6 +27,7 @@
           loadScript("../../session.js");
           loadScript("../../Function/WebApiFunc.js");
           loadScript("../../Function/heic2any.js");
+          loadScript("popup_login.js");
           loadScript("../../api/text_vision.js");
           loadScript("popup_code_compare.js");
           loadScript("app.js");
@@ -78,9 +79,20 @@
   </div> -->
 
       <script>
-        get_popup_code_compare();
-        popup_code_compare_div.Set_Visible(false);
+        (async function() {
+          await popup_login_init();
+  
+          popup_login_finishedEvent.push(popup_login_finished);
+          
 
+          if(!IsLogged) {
+            await popup_login_div.Show();
+          }
+
+
+          get_popup_code_compare();
+          popup_code_compare_div.Set_Visible(false);
+        })();
       </script>
    
   <div class="under-line">

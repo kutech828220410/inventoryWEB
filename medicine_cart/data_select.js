@@ -37,6 +37,8 @@ let color_select = {
     name: "green",
     rgb: "40,255,40"
 };
+let startX = 0;
+let startY = 0;
 
 let func_list = [
     {

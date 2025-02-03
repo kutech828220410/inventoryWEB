@@ -1,9 +1,9 @@
-@font-face {
+/* @font-face {
     font-family: 'Noto Sans TC';
     src: url('../font/Noto_Sans_TC/NotoSansTC-VariableFont_wght.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
-}
+} */
 
 * {
     margin: 0;
@@ -89,7 +89,7 @@
   font-size: 16px;
   border: 1px solid black;
   color: #F6F7F7;
-  padding: 4px 24px;
+  padding: 4px 18px;
   border-radius: 5px;
   transition: all 0.2s ease-out;
   background-color: black;

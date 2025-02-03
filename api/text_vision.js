@@ -4,10 +4,10 @@ async function upload_img_to_analysis(data) {
         let start_p = performance.now();
         console.log("進入api取得資料");
         console.log(data);
-        console.log(`${api_ip}api/PCMPO/analyze`);
+        console.log(`${api_ip}api/PCMPO/OLDanalyze`);
         // console.log(`http://www.kutech.tw:4436/api/PCMPO/analyze`);
         console.log(trans_api_ip(api_ip));
-        let temp_data = await fetch(`${trans_api_ip(api_ip)}api/PCMPO/analyze`, {
+        let temp_data = await fetch(`${trans_api_ip(api_ip)}api/PCMPO/OLDanalyze`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

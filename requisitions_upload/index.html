@@ -8,11 +8,12 @@
   <meta http-equiv="expires" content="0">
   <title>單據辨識批次上傳</title>
   <!-- <link rel="stylesheet" href="main.css"> -->
-  <link rel="stylesheet" href="style.css?v=1.2">
+  <link rel="stylesheet" href="style.css?v=1.4">
   <link rel="stylesheet" href="popup_input_po_num.css">
   <link rel="stylesheet" href="../UI/style/navBar.css">
+  <link rel="stylesheet" href="process_bar.css">
+  <link rel="stylesheet" href="popup_retake.css">
   <script src="../../Function/Basic.js?v=1.14"></script>
-
   <script>
     (async function() 
         {
@@ -34,6 +35,8 @@
           loadScript("popup_input_po_num.js");
           loadScript("../../UI/navBar.js");
           loadScript("../../api/web_permissions.js");
+          loadScript("popup_retake.js");
+          loadScript("process_bar.js");
         })();
 
   </script>
@@ -60,7 +63,22 @@
         </div>
       </div>
       <div class="ppipn_footer_container">
-        <div class="ppipn_f_revise_btn btn">修改</div>
+        <div class="ppipn_f_revise_btn btn" onclick="update_by_GUID_po_num()">修改</div>
+      </div>
+    </div>
+  </div>
+  <input type="file" name="pic_input" id="pic_input" accept="image/*" multiple>
+  <div class="process_bar_div">
+    <div class="process_bar_container">
+      <div class="process_bar">
+        <div class="bar">
+          <div class="bar_before"></div>
+          <div class="bar_after"></div>
+        </div>
+        <div class="bar_text">
+          <div class="process_log"><span class="process_log_num">0</span>%</div>
+          <div class="process_content">Uploading...</div>
+        </div>
       </div>
     </div>
   </div>
@@ -77,6 +95,10 @@
     if(!IsLogged) {
       await popup_login_div.Show();
     }
+
+
+    get_popup_retake();
+    popup_retake_div.Set_Visible(false);
   // else if(IsLogged && !IsCreatSelected)
   // {
   //   await popup_creatSelect_div.Show();
