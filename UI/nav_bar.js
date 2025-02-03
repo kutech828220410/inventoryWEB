@@ -91,6 +91,13 @@ let html_pages = [
                     },
                     {
                         html_name: "requisitions_upload",
+                        html_ctName: "單據辨識(批次)",
+                        html_url: "../../requisitions_upload",
+                        icon_url: "../../image/icon/assortment.png",
+                        icon_big_url: "../../image/icon/requisitions_upload.png"
+                    },
+                    {
+                        html_name: "requisitions_upload",
                         html_ctName: "單據辨識",
                         html_url: "../../requisitions_upload_new",
                         icon_url: "../../image/icon/assortment.png",
