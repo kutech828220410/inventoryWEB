@@ -1,0 +1,50 @@
+.popup_add_modify_staff_div {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    width: 330px;
+}
+.ppams_header_container {
+    width: 60%;
+    margin: 0px auto 12px;
+    text-align: center;
+    padding: 4px;
+    font-size: 20px;
+    font-weight: 600;
+    background-color: gray;
+    color: #fff;
+    border-radius: 5px;
+}
+.ppams_main_container {
+    margin-bottom: 20px;
+}
+.staff_info_container {
+    margin: 12px 0px;
+    display: flex;
+    align-items: center;
+}
+.staff_info_container > label {
+    width: 100px;
+    margin-right: 12px;
+    padding: 2px;
+    text-align: center;
+    background-color: rgb(63, 63, 63);
+    color: #fff;
+    border-radius: 5px;
+}
+.staff_gender_label {
+    margin: 0px 20px 0px 4px;
+    width: auto !important;
+    background-color: #fff !important;
+    color: #000000 !important;
+}
+.staff_info_container > input[type="text"],
+.staff_info_container > select {
+    width: 200px;
+    flex-grow: 1;
+    padding: 2px;
+}
+.ppams_footer_container {
+    display: flex;
+    justify-content: space-between;
+}

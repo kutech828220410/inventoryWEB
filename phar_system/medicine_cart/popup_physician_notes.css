@@ -1,0 +1,37 @@
+.popup_physician_notes_div {
+    width: 360px;
+}
+
+.pppns_header_container {
+    width: 100%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+.pppns_h_title {
+    padding: 4px 48px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    background-color: rgb(222, 222, 222);
+    color: #000000;
+    border-radius: 5px;
+}
+.pppns_h_close_btn {
+    position: absolute;
+    cursor: pointer;
+    display: block;
+    width: 36px;
+    top: 0px;
+    right: 0px;
+}
+.pppns_footer_container {
+    display: flex;
+}
+.pppns_main_img {
+    width: 100%;
+    object-fit: cover;
+    padding: 16px;
+}

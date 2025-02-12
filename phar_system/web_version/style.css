@@ -1,0 +1,71 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.display {
+    position: relative;
+    width: 600px;
+    height: 800px;
+    margin: auto;
+    border: 1px solid #000;
+}
+
+.display > img {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+}
+.locked {
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    position: absolute;
+    transform: translate(-50% -50%);
+    border-radius: 50%;
+}
+.l_1 {
+    top: -5px;
+    left: -5px;
+}
+
+.l_2 {
+    bottom: -5px;
+    left: -5px;
+}
+.l_3 {
+    bottom: -5px;
+    right: 40px;
+}
+.l_4 {
+    top: -5px;
+    right: 40px;
+}
+
+@media screen and (max-width: 768px) {
+/* 在寬度小於或等於 768px 的屏幕上應用這些樣式 */
+    .display {
+        position: relative;
+        width: 321px;
+        height: 428px;
+        margin: auto;
+        border: 1px solid #000;
+    }
+    .l_1 {
+        top: -5px;
+        left: -5px;
+    }
+    
+    .l_2 {
+        bottom: -5px;
+        left: -5px;
+    }
+    .l_3 {
+        bottom: -5px;
+        right: 14px;
+    }
+    .l_4 {
+        top: -5px;
+        right: 14px;
+    }
+}

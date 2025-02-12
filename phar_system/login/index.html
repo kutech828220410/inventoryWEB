@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link rel="stylesheet" href="../login.css">
+    <title>次世代智慧藥局管理平台</title>
+    <script src="../../Function/Basic.js?v=1.0"></script>
+
+    <!-- <script src="../session.js"></script>
+    <script src="../ApiURL.js"></script>
+    <script src="../login.js"></script> -->
+    <script>
+        (async function(){
+        loadScript("../api/map.js");
+        loadScript("../ApiURL.js");
+        loadScript("../ChatHub.js");
+        loadScript("../svg/mySVG.js");
+        loadScript("../UI/map.js");
+        loadScript("../popup/map.js");
+        loadScript("../dist/JsBarcode.all.js");
+        loadScript("../session_check.js");
+        loadScript("../session.js");
+        loadScript("../login.js");
+        })();
+      </script>
+</head>
+<body>
+    <div class="container">
+        <form class="login-form" action="login.php" method="POST" onsubmit="return verifyUser(event)">
+            <div class="form_login_icon">
+                <img src="../user.png" alt="">
+            </div>
+            <div class="form_background"></div>
+            <h2>次世代智慧藥局整合平台</h2>
+            <div class="input_container" style="margin-bottom: 20px;">
+                <label for="account">
+                    <img src="../user_little.png" alt="">
+                </label>
+                <input id="account" autocomplete="username" type="text" name="account" placeholder="account">
+            </div>
+            <div class="input_container">
+                <label for="password">
+                    <img src="../lock_icon.png" alt="">
+                </label>
+                <input id="password" autocomplete="current-password" type="password" name="password" placeholder="password">
+            </div>
+            <button type="submit" id="login-btn">LOGIN</button>
+        </form>
+    </div>
+    <div class="under-line">
+        <div> Copyright ©2024 鴻森智能科技 </div>
+    </div>
+</body>
+</html>

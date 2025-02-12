@@ -1,0 +1,43 @@
+.popup_light_table_select_div {
+    width: 350px;
+}
+
+.pplts_header_container {
+    width: 100%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+.pplts_h_title {
+    padding: 4px 48px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    background-color: rgb(222, 222, 222);
+    color: #000000;
+    border-radius: 5px;
+}
+.pplts_h_close_btn {
+    position: absolute;
+    cursor: pointer;
+    display: block;
+    width: 36px;
+    top: 0px;
+    right: 0px;
+}
+.pplts_med_info_container {
+    margin-bottom: 24px;
+}
+.pplts_table_info_container {
+    display: grid;
+    justify-content: space-evenly;
+    grid-template-columns: 48% 48%;
+}
+.light_on_table {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+}

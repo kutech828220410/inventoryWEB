@@ -1,0 +1,132 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Noto Sans TC", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 80px;
+}
+.main_div {
+    max-width: 1200px;
+    margin: 20px auto 60px;
+}
+.h_title {
+    font-size: 24px;
+    font-weight: 600;
+}
+.header_user {
+    padding-left: 24px;
+}
+
+.header_btn_container {
+    display: flex;
+    margin-right: 40px;
+}
+
+.btn {
+  margin: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 18px;
+  border: 1px solid black;
+  color: #F6F7F7;
+  padding: 4px 24px;
+  border-radius: 5px;
+  transition: all 0.2s ease-out;
+  background-color: black;
+  text-align: center;
+}
+.btn:hover {
+  background-color: #6B6B63;
+  transition: all 0.2s ease-out;
+}
+
+.main_search_container {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#ms_date_input,
+#ms_text_input {
+    display: block;
+    font-size: 16px;
+    margin: 0px 12px;
+    height: 36px;
+    border-radius: 5px;
+    border: 1px solid #000000;
+    padding: 2px 6px;
+}
+#ms_date_input {
+    width: 140px;
+}
+#ms_text_input {
+    width: 300px;
+}
+
+.under-line {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    color: #000000;
+    background-color: #ffffff;
+    height: 30px;
+    line-height: 30px;
+    display: block;
+    z-index: 9;
+}
+
+@media screen and (max-width: 550px) {
+    .header {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        padding-left: 0px;
+    }
+    .header_title_container {
+        width: 100%;
+        padding-left: 80px;
+    }
+    .header_btn_container {
+        margin-right: auto;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 12px;
+    }
+    .main_div {
+        margin: 4px auto 60px;;
+    }
+    .main_search_container {
+        flex-direction: column;
+        padding: 0px 12px;
+    }
+    #ms_date_input,
+    #ms_text_input {
+        margin-bottom: 12px;
+    }
+    #ms_date_input {
+        width: 100%;
+    }
+    #ms_text_input {
+        width: 100%;
+    }
+    #ms_submit {
+        margin: 0px;
+        width: 100%;
+    }
+}
+

@@ -1,0 +1,174 @@
+.top_banner {
+  color: #dfe6f2;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 220px 0px 240px;
+  min-height: 100vh;
+  // justify-content: center;
+  align-items: center;
+  background-image: url(../../resource/about_banner_bg.jpg);
+  background-size: cover;
+  background-position: right;
+  background-repeat: no-repeat;
+  .top_banner_title {
+    position: relative;
+    z-index: 3;
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0px auto 36px;
+    backdrop-filter: blur(5px);
+  }
+  .top_banner_content {
+    position: relative;
+    z-index: 3;
+    padding: 0px 20px;
+    font-size: 1.5rem;
+    max-width: 1200px;
+    line-height: 3.6rem;
+    backdrop-filter: blur(5px);
+  }
+}
+.about_hope_container {
+  width: 100%;
+  background: linear-gradient(to bottom, #f8faff1d, #f8faff1d);
+  .about_hope_div_container {
+    position: relative;
+    margin: auto;
+    padding: 60px 20px;
+    max-width: 1200px;
+    text-align: center;
+
+    .about_hope_title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin: 0px auto 36px;
+    }
+    .about_hope_content {
+      font-size: 1.2rem;
+      line-height: 2.4rem;
+    }
+    .about_hope_cards_container {
+      margin: 60px auto 0px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+
+      .about_hope_card {
+        .card_img_container {
+          width: 150px;
+          img {
+            width: 100%;
+          }
+        }
+
+        .card_content {
+          padding: 12px 0px;
+          font-size: 1.5rem;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}
+
+.about_competition_container {
+  position: relative;
+  background-image: url(../../resource/power.jpg);
+  background-size: cover;
+  background-position: left;
+  background-repeat: no-repeat;
+  padding: 60px 0px;
+
+  .about_competition_div_container {
+    max-width: 1200px;
+    margin: 0px auto 60px;
+    padding: 0px 20px;
+    display: flex;
+    .a_c_left_container {
+      width: 50%;
+      backdrop-filter: blur(10px);
+
+      .a_c_left_title {
+        position: relative;
+        font-size: 2.5rem;
+        padding-bottom: 12px;
+      }
+      .a_c_left_title::after {
+        content: '';
+        height: 1px;
+        background-color: black;
+        width: 80px;
+        position: absolute;
+        bottom: 0;
+        left: 8px;
+      }
+      h3 {
+        margin: 24px 36px;
+        color: blue;
+      }
+      p {
+        font-size: 1.1rem;
+        color: #1a1a1a;
+        padding-right: 12px;
+        line-height: 2rem;
+      }
+    }
+    .a_c_right_container {
+      width: 50%;
+      display: flex;
+      flex-wrap: wrap;
+      .a_c_right_img {
+        width: 100%;
+        height: 100%;
+        img {
+          display: block;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .about_competition_container {
+    .about_competition_div_container {
+      .a_c_left_container {
+        width: 100%;
+        padding: 16px;
+      }
+      .a_c_right_container {
+        padding: 16px;
+        width: 100%;
+      }
+    }
+  }
+}
+@media screen and (max-width: 550px) {
+  .top_banner {
+    padding: 120px 0px 120px;
+    .top_banner_content {
+      font-size: 1.2rem;
+      width: 100%;
+      padding: 0px 28px;
+    }
+  }
+
+  .about_hope_content {
+    padding: 0px 16px;
+  }
+
+  .about_competition_container {
+    .about_competition_div_container {
+      flex-direction: column;
+      .a_c_left_container {
+        width: 100%;
+        padding: 16px;
+      }
+      .a_c_right_container {
+        padding: 16px;
+        width: 100%;
+      }
+    }
+  }
+}

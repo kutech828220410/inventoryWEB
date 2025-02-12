@@ -1,0 +1,75 @@
+.popup_med_list_search_div {
+    width: 330px;
+}
+
+.ppmls_header_container {
+    width: 100%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+.ppmls_h_title {
+    padding: 4px 48px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    background-color: rgb(222, 222, 222);
+    color: #000000;
+    border-radius: 5px;
+}
+.ppmls_h_close_btn {
+    position: absolute;
+    cursor: pointer;
+    display: block;
+    width: 36px;
+    top: 0px;
+    right: 0px;
+}
+.ppmls_search_btn {
+    text-align: center;
+}
+.ppmls_type_select,
+.ppmls_table_select {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 4px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 600;
+    display: block;
+    text-align: center;
+}
+.ppmls_input {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 4px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 600;
+    display: block;
+    text-align: center;
+}
+.ppmls_input:disabled {
+    cursor: not-allowed;
+    background-color: #c4c4c4;
+    border: 1px solid #000000;
+}
+.ppmls_select {
+    display: none;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 4px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+}
+.ppmls_footer_container {
+    display: flex;
+    justify-content: space-between;
+}

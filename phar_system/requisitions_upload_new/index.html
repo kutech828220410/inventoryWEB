@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  <title>單據辨識</title>
+  <!-- <link rel="stylesheet" href="main.css"> -->
+  <link rel="stylesheet" href="../UI/style/navBar.css">
+  <link rel="stylesheet" href="style.css?v=1.7">
+  <link rel="stylesheet" href="popup_code_compare.css?v=1.4">
+  <script src="../Function/Basic.js?v=1.14"></script>
+
+  <script>
+    (async function() 
+        {
+          loadScript("../api/map.js");
+          loadScript("../../ApiURL.js");
+          loadScript("../../ChatHub.js");
+          loadScript("../../session_check.js");
+          loadScript("../../session.js");
+          loadScript("../svg/mySVG.js");
+          loadScript("../UI/map.js");
+          loadScript("../popup/map.js");    
+          loadScript("../dist/JsBarcode.all.js");
+          loadScript("../Function/WebApiFunc.js");
+          loadScript("../Function/heic2any.js");
+          loadScript("./popup_login.js");
+          loadScript("../api/text_vision.js");
+          loadScript("./popup_code_compare.js");
+          loadScript("./app.js");
+          loadScript("../UI/navBar.js");
+          loadScript("../api/web_permissions.js");
+        })();
+
+  </script>
+</head>
+<body>
+  <!-- <div class="main">
+    <div class="draw_container">
+      <video id="steam_container" src="" muted autoplay></video>
+      <canvas class="draw_canvas"></canvas>
+      <div class="draw_result"></div>
+    </div>
+    <div class="tigger_container">
+      <div class="trigger"></div>
+    </div>
+    <div class="result_container">
+      <div class="srcoll_bar"></div>
+      <div class="med_info_container">
+        <div class="med_info">
+          <label for="code">藥碼</label>
+          <input type="text" maxlength="20" id="code">
+          <label for="name">藥名(英)</label>
+          <input type="text" maxlength="60" id="name">
+          <label for="cht_name">藥名(中)</label>
+          <input type="text" maxlength="40" id="cht_name">
+        </div>
+        <div class="re_name btn">資料庫輸入</div>
+      </div>
+ 
+      <div class="list_info_container">
+        <label for="qty">數量</label>
+        <input type="text" maxlength="40" id="qty">
+        <label for="deadtime">效期</label>
+        <input type="text" maxlength="40" id="deadtime">
+        <label for="batch_num">批號</label>
+        <input type="text" maxlength="40" id="batch_num">
+        <label for="order_num">單號</label>
+        <input type="text" maxlength="40" id="order_num">
+      </div>
+      <div class="list_check_container">
+        <div class="list_check btn">送出</div>
+        <div class="list_retry btn">重新辨識</div>
+      </div>
+    </div>
+  </div> -->
+
+      <script>
+        (async function() {
+          await popup_login_init();
+  
+          popup_login_finishedEvent.push(popup_login_finished);
+          
+
+          if(!IsLogged) {
+            await popup_login_div.Show();
+          }
+
+
+          get_popup_code_compare();
+          popup_code_compare_div.Set_Visible(false);
+        })();
+      </script>
+   
+  <div class="under-line">
+    <B> Copyright ©2024 鴻森智能科技 </B>
+  </div>
+  
+  <script>
+  var barcode_value = '';
+    // 監聽頁面的keydown事件
+  window.addEventListener('keydown', function(event) 
+  {
+    // 判斷按下的按鍵是否是Tab鍵或Enter鍵
+    console.log(event.key);
+    if (event.key === 'Tab' || event.key === 'Enter') {
+    // 防止頁面重新載入
+        event.preventDefault();
+        const parsedCode = parseBarcode(barcode_value);
+        
+        // 取得輸入框的值
+        barcode_value = '';
+        // 解析藍牙掃描器返回的數據
+        if(parsedCode != '')
+        {
+   
+        }         
+    }
+    else
+    {
+        const isValid = /^[a-zA-Z0-9]+$/.test(event.key);
+        const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
+        const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);
+        
+
+        if (isValid && (!isControlKey||isNumPadlKey)) {
+            // 將解析後的條碼值設定為輸入框的值
+            barcode_value += event.key;
+        } 
+    }
+});
+
+// 解析帶有分隔符的字符串
+function parseBarcode(scannedCode) 
+{
+  const delimiter = /[\n\r]/g;
+  const matches = scannedCode.split(delimiter);
+  return matches[0];
+}
+
+</script>
+  
+</body>
+</html>

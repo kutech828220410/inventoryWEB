@@ -1,0 +1,398 @@
+.main_div_container {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.main_div_header_container {
+    display: flex;
+    margin: 0px auto 16px;
+    max-width: 960px;
+    justify-content: space-between;
+}
+.header_merge_select_div {
+    display: flex;
+    margin: 16px 4px;
+}
+.header_merge_select_label {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-right: 8px;
+}
+.header_merge_select_select {
+    width: 200px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+.header_new_del_container {
+    display: flex;
+    align-items: center;
+}
+.header_del_button, .header_new_button {
+    cursor: pointer;
+    padding: 4px 24px;
+    color: rgb(217, 223, 228);
+    background-color: rgb(5, 55, 99);
+    border: 1px solid rgb(10, 100, 178);
+    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-left: 20px;
+    height: 28px;
+    line-height: 28px;
+    transition: 0.2s ease-out;
+}
+.header_del_button:hover, .header_new_button:hover {
+    color: rgb(35, 35, 35);
+    background-color: rgb(15, 184, 240);
+    border: 1px solid rgb(5, 55, 99);
+    transition: 0.2s ease-out;
+}
+
+.merge_display_container {
+    box-sizing: border-box;
+    margin: 0px auto 12px;
+    max-width: 760px;
+    padding: 12px 0px;
+    background-color: #f1deb0;
+    border: 2px solid #7f5e0a;
+    border-radius: 5px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding: 16px 24px;
+}
+.merge_display_header_container {
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    margin-bottom: 16px;
+    flex-direction: row-reverse;
+}
+.merge_display_header_left_container {
+    display: flex;
+    flex-grow: 1;
+}
+.merge_add_button {
+    box-sizing: border-box;
+    cursor: pointer;
+    padding: 4px 20px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(19, 111, 117);
+    border: 1px solid rgb(7, 216, 231);
+    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    height: 20px;
+    line-height: 20px;
+    transition: 0.2s ease-out;
+    width: 140px;
+    height: 30px;
+    margin: 0px auto;
+}
+.merge_add_button:hover {
+    color: rgb(50, 50, 50);
+    background-color: rgb(49, 205, 216);
+    border: 1px solid rgb(22, 87, 2);
+    transition: 0.2s ease-out;
+}
+.merge_display_header_name {
+    flex-grow: 1;
+    text-align: center;
+}
+.merge_display_header_container > div {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.merge_display_table_container {
+    border: 2px solid #001e78;
+    width: 100%;
+    background-color: #caccc8;
+    border-spacing: 0px;
+}
+.merge_display_table_thead {
+    background-color: #dedede;
+}
+.merge_display_table_thead > tr > th {
+    padding: 4px 0px;
+    color: whitesmoke;
+    font-size: 1.2rem;
+    font-weight: 600;
+    background-color: #3f86c9;
+    border: 1px solid #dedede;
+}
+.merge_display_table_thead_1 {
+    width: 60px;
+}
+.merge_display_table_thead_2 {
+    width: 80px;
+}
+.merge_display_table_thead_3 {
+    width: 120px;
+}
+.merge_display_table_thead_5 {
+    width: 80px;
+}
+.merge_display_table_thead_6 {
+    width: 80px;
+}
+.merge_display_table_tbody > tr > td {
+    box-sizing: border-box;
+    padding: 4px 0px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border: 1px solid #dedede;
+}
+.merge_delete_button, .merge_display_button {
+    cursor: pointer;
+    box-sizing: border-box;
+    padding: 4px 8px;
+    color: rgb(217, 223, 228);
+    background-color: rgb(5, 55, 99);
+    border: 1px solid rgb(10, 100, 178);
+    margin: 0px 4px;
+    border-radius: 5px;
+}
+.merge_delete_button:hover, .merge_display_button:hover {
+    color: rgb(35, 35, 35);
+    background-color: rgb(15, 184, 240);
+    border: 1px solid rgb(5, 55, 99);
+    transition: 0.2s ease-out;
+}
+
+.merge_display_foot_container {
+    display: flex;
+    width: 100%;
+}
+.merge_display_foot_left_div {
+    flex-grow: 1;
+}
+.merge_display_foot_right_div, .merge_display_foot_left_div {
+    display: flex;
+    margin-top: 16px;
+}
+.foot_right_button_1 {
+    margin-right: 8px;
+}
+.button_style {
+    cursor: pointer;
+    padding: 4px 24px;
+    color: rgb(217, 223, 228);
+    background-color: rgb(5, 55, 99);
+    border: 1px solid rgb(10, 100, 178);
+    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    height: 24px;
+    line-height: 24px;
+    transition: 0.2s ease-out;
+}
+.button_style:hover {
+    color: rgb(35, 35, 35);
+    background-color: rgb(15, 184, 240);
+    border: 1px solid rgb(5, 55, 99);
+    transition: 0.2s ease-out;
+}
+
+/* 彈跳視窗樣式 */
+.popup_merge_create_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 260px;
+    height: 300px;
+    background-color: #ffffff;
+}
+.merge_create_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.merge_create_container > label {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+#merge_create_name {
+    font-size: 1.2rem;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    height: 32px;
+    width: 160px;
+    margin: 16px 0 24px;
+    padding: 0px 6px;
+}
+.merge_create_button {
+    cursor: pointer;
+    padding: 6px 16px;
+    background-color: rgb(212, 191, 167);
+    border: 1px solid #000000;
+    border-radius: 5px;
+    transition: 0.3s ease-out;
+}
+.merge_create_button:hover {
+    background-color: bisque;
+}
+.close_merge_create_button {
+    cursor: pointer;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 24px;
+    height: 24px;
+}
+.close_merge_create_button > img, .close_merge_add_button > img {
+    width: 100%;
+}
+
+.popup_merge_add_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 330px;
+    min-height: 300px;
+    border-radius: 5px;
+}
+.close_merge_add_button {
+    cursor: pointer;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+}
+.merge_add_container {
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #c5c5c5;
+    border-radius: 5px;
+}
+.merge_add_type_select, .merge_add_list_select {
+    width: 240px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 2px 4px;
+    border-radius: 5px;
+}
+.merge_add_type_select > option, .merge_add_list_select > option {
+    width: 240px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 2px 4px;
+    border-radius: 5px;
+}
+
+.merge_add_list_input_div {
+    position: relative;
+}
+
+#merge_add_list_input {
+    width: 228px;
+    padding: 6px;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.merge_add_list_input_result_container {
+    background-color: #ffffff;
+    position: absolute;
+    width: 230px;
+    top: 38px;
+    left: 5px;
+}
+.input_result_div {
+    cursor: pointer;
+    padding: 2px 4px;
+    transition: all .2s;
+    background-color: transparent;
+}
+.input_result_div:hover {
+    background-color: #83cbea;
+    transition: all .2s;
+}
+.input_current_result_div {
+    background-color: #3eb4e7;
+    transition: all .2s;
+}
+
+.highlight_color {
+    color: #ff3939;
+    font-weight: 600;
+}
+
+.merge_add_confirm_button {
+    cursor: pointer;
+    padding: 4px 24px;
+    color: rgb(217, 223, 228);
+    background-color: rgb(5, 55, 99);
+    border: 1px solid rgb(10, 100, 178);
+    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    height: 24px;
+    line-height: 24px;
+    transition: 0.2s ease-out;
+}
+.merge_add_confirm_button:hover {
+    color: rgb(35, 35, 35);
+    background-color: rgb(15, 184, 240);
+    border: 1px solid rgb(5, 55, 99);
+    transition: 0.2s ease-out;
+}
+
+@media screen and (max-width: 860px) {
+}
+
+@media screen and (max-width: 500px) {
+    .main_div_header_container {
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+    .header_del_button, .header_new_button {
+        margin: 0px 12px;
+    }
+    .merge_add_button {
+        margin: 8px auto;
+    }
+
+    .merge_display_header_container {
+        flex-direction: column;
+    }
+    .main_div_middle_container > select {
+        margin-bottom: 8px;
+    }
+    .merge_display_table_thead_1 {
+        width: 30px;
+    }
+    .merge_display_table_thead_2 {
+        width: 30px;
+    }
+    .merge_display_table_thead_3 {
+        width: 60px;
+    }
+    .merge_display_table_thead_5 {
+        width: 40px;
+    }
+    .merge_display_table_thead_6 {
+        width: 40px;
+    }
+
+    .merge_display_foot_container {
+        flex-direction: column;
+        align-items: center;
+    }
+}

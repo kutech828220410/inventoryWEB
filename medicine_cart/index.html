@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="popup_similar_drugs.css">
   <link rel="stylesheet" href="popup_physician_notes.css">
   <link rel="stylesheet" href="popup_insurance_regulations.css">
+  <link rel="stylesheet" href="popup_bed_change.css">
   <link rel="stylesheet" href="popup_med_change_list.css">
   <script src="../../Function/Basic.js?v=1.14"></script>
 
@@ -40,6 +41,7 @@
           loadScript("../../api/med_cart_api.js");
           loadScript("../../api/web_permissions.js");
           loadScript("../../api/med_page.js");
+          loadScript("../../api/pages_setting.js");
           // loadScript("main_loadingdata.js");
           // loadScript("main_popup_serch.js");
           loadScript("popup_login.js");
@@ -60,6 +62,7 @@
           loadScript("popup_physician_notes.js");
           loadScript("popup_insurance_regulations.js");
           loadScript("popup_med_change_list.js");
+          loadScript("popup_bed_change.js");
         })();
 
   </script>
@@ -98,6 +101,9 @@
 
     get_popup_med_change_list();
     popup_med_change_list_div.Set_Visible(false);
+
+    get_popup_bed_change();
+    popup_bed_change_div.Set_Visible(false);
   </script>
 
   <div class="under-line">

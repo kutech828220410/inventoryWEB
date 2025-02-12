@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>驗收操作頁面</title>
+  <link rel="stylesheet" href="main.css">
+  <script src="../../ApiURL.js"></script>
+  <script src="../../ChatHub.js"></script>
+  <script src="../../Function/WebApiFunc.js"></script>
+  <script src="../../svg/mySVG.js"></script>
+  <script src="../../Function/Basic.js"></script>
+  <script src="../../popup/map.js"></script>
+  <script src="../../dist/JsBarcode.all.js"></script>
+  <script src="../../UI/map.js"></script>
+  <script src="../../session_check.js"></script>
+  <script src="../../session.js"></script>
+
+  <script src="main.js"></script>
+  <script src="main_loadingdata.js"></script>
+  <script src="main_popup_input.js"></script>
+  <script src="main_popup_serch.js"></script>
+  <script src="jsonFunc.js"></script>
+  
+</head>
+<body>
+      <script>
+        document.body.style.position = 'absolute';
+        const header_div = get_header();
+        document.body.appendChild(header_div);
+        const main_div = get_main();
+        document.body.appendChild(main_div);
+        get_popup_input();
+        document.body.appendChild(popup_input_div.div);
+        get_popup_serch();
+        document.body.appendChild(popup_serch_div.div);
+
+        popup_input_div.Set_Visible(false);
+        popup_serch_div.Set_Visible(false);
+
+      </script>
+   
+
+  <div class="under-line">
+    <B> Copyright ©2024 鴻森智能科技 </B>
+  </div>
+  
+  <script>
+ 
+  signalR_init(`${api_ip}chatHub`);
+  ChathubReceivedEvent = ChathubReceived;
+  function ChathubReceived(user, message)
+  {
+    var jsonObject = JSON.parse(message); 
+    console.log('ReceivedEvent',jsonObject);
+    if(jsonObject.Method == 'sub_content_add' || jsonObject.Method == 'sub_contents_delete_by_GUID')
+    {
+       if(jsonObject.Data.IC_SN == current_IC_SN)
+       {
+          Replace_data_by_content(data.Data[0],jsonObject.Data);
+          if(popup_input_div.Get_Visible())
+          {
+              if(popup_input_div_Content.GUID == jsonObject.Data.GUID) show_popup_input(jsonObject.Data);                     
+          }
+       }
+       
+    }
+  };
+  var barcode_value = '';
+    // 監聽頁面的keydown事件
+  window.addEventListener('keydown', function(event) 
+  {
+    if(document.body.style.overflow != "") return;
+    // 判斷按下的按鍵是否是Tab鍵或Enter鍵
+    console.log(event.key);
+
+    if (event.key === 'Tab' || event.key === 'Enter') {
+    // 防止頁面重新載入
+        event.preventDefault();
+        const parsedCode = parseBarcode(barcode_value);
+        
+        // 取得輸入框的值
+        barcode_value = '';
+        // 解析藍牙掃描器返回的數據
+        if(parsedCode != '')
+        {
+           for(var i = 0; i < allrows.length; i++)
+           {
+               const CODE = allrows[i].getAttribute("CODE")
+               const SKDIACODE = allrows[i].getAttribute("SKDIACODE");
+               if(CODE.toUpperCase() == parsedCode.toUpperCase())
+               {
+                  sub_row_div_onclick(allrows[i]);
+                  return;
+               }
+               if(SKDIACODE.toUpperCase() == parsedCode.toUpperCase())
+               {
+                  sub_row_div_onclick(allrows[i]);
+                  return;
+               }
+           }
+        }         
+    }
+    else
+    {
+        const isValid = /^[a-zA-Z0-9]+$/.test(event.key);
+        const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
+        const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);
+        
+
+        if (isValid && (!isControlKey||isNumPadlKey)) {
+            // 將解析後的條碼值設定為輸入框的值
+            barcode_value += event.key;
+        } 
+    }
+});
+
+// 解析帶有分隔符的字符串
+function parseBarcode(scannedCode) 
+{
+  const delimiter = /[\n\r]/g;
+  const matches = scannedCode.split(delimiter);
+  return matches[0];
+}
+</script>
+  
+</body>
+</html>

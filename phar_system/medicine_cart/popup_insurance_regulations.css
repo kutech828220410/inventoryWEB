@@ -1,0 +1,42 @@
+.popup_insurance_regulations_div {
+    width: 360px;
+}
+
+.ppir_header_container {
+    width: 100%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+.ppir_h_title {
+    padding: 4px 48px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    background-color: rgb(222, 222, 222);
+    color: #000000;
+    border-radius: 5px;
+}
+.ppir_h_close_btn {
+    position: absolute;
+    cursor: pointer;
+    display: block;
+    width: 36px;
+    top: 0px;
+    right: 0px;
+}
+.ppir_main_content {
+    height: 400px;
+    overflow-y: auto;
+    padding-right: 3px;
+}
+.ppir_footer_container {
+    display: flex;
+}
+.ppir_main_img {
+    width: 100%;
+    object-fit: cover;
+    padding: 16px;
+}

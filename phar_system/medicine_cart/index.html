@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  <title>住院藥局調劑</title>
+  <!-- <link rel="stylesheet" href="main.css"> -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../UI/style/navBar.css">
+  <link rel="stylesheet" href="allocate.css">
+  <link rel="stylesheet" href="review.css">
+  <link rel="stylesheet" href="popup_dc_new.css">
+  <link rel="stylesheet" href="popup_bed_list.css">
+  <link rel="stylesheet" href="popup_med_list.css">
+  <link rel="stylesheet" href="popup_med_list_search.css">
+  <link rel="stylesheet" href="popup_light_table_select.css">
+  <link rel="stylesheet" href="popup_med_pic.css">
+  <link rel="stylesheet" href="popup_prescription_info.css">
+  <link rel="stylesheet" href="popup_similar_drugs.css">
+  <link rel="stylesheet" href="popup_physician_notes.css">
+  <link rel="stylesheet" href="popup_insurance_regulations.css">
+  <link rel="stylesheet" href="popup_bed_change.css">
+  <link rel="stylesheet" href="popup_med_change_list.css">
+  <script src="../Function/Basic.js?v=1.14"></script>
+
+  <script>
+    (async function() 
+        {
+          loadScript("../../ApiURL.js");
+          loadScript("../../ChatHub.js");
+          loadScript("../../session_check.js");
+          loadScript("../../session.js");
+          loadScript("../svg/mySVG.js");
+          loadScript("../UI/map.js");
+          loadScript("../popup/map.js");    
+          loadScript("../dist/JsBarcode.all.js");
+          loadScript("../Function/WebApiFunc.js");
+          loadScript("../api/med_cart_api.js");
+          loadScript("../api/web_permissions.js");
+          loadScript("../api/med_page.js");
+          loadScript("../api/pages_setting.js");
+          // loadScript("main_loadingdata.js");
+          // loadScript("main_popup_serch.js");
+          loadScript("popup_login.js");
+          loadScript("data_select.js");
+          loadScript("app.js");
+          loadScript("deliver.js");
+          loadScript("allocate.js");
+          loadScript("review.js");
+          loadScript("../UI/navBar.js");
+          loadScript("popup_dc_new.js");
+          loadScript("popup_bed_list.js");
+          loadScript("popup_med_list.js");
+          loadScript("popup_med_list_search.js");
+          loadScript("popup_light_table_select.js");
+          loadScript("popup_prescription_info.js");
+          loadScript("popup_med_pic.js");
+          loadScript("popup_similar_drugs.js");
+          loadScript("popup_physician_notes.js");
+          loadScript("popup_insurance_regulations.js");
+          loadScript("popup_med_change_list.js");
+          loadScript("popup_bed_change.js");
+        })();
+
+  </script>
+</head>
+<body>
+  <script>
+    get_popup_dc_new();
+    popup_dc_new_div.Set_Visible(false);
+
+    get_popup_bed_list();
+    popup_bed_list_div.Set_Visible(false);
+
+    get_popup_med_list();
+    popup_med_list_div.Set_Visible(false);
+
+    get_popup_med_list_search();
+    popup_med_list_search_div.Set_Visible(false);
+
+    get_popup_light_table_select();
+    popup_light_table_select_div.Set_Visible(false);
+
+    get_popup_med_pic();
+    popup_med_pic_div.Set_Visible(false);
+
+    get_popup_prescription_info();
+    popup_prescription_info_div.Set_Visible(false);
+
+    get_popup_similar_drugs();
+    popup_similar_drugs_div.Set_Visible(false);
+
+    get_popup_physician_notes();
+    popup_physician_notes_div.Set_Visible(false);
+
+    get_popup_insurance_regulations();
+    popup_insurance_regulations_div.Set_Visible(false);
+
+    get_popup_med_change_list();
+    popup_med_change_list_div.Set_Visible(false);
+
+    get_popup_bed_change();
+    popup_bed_change_div.Set_Visible(false);
+  </script>
+
+  <div class="under-line">
+    <B> Copyright ©2024 鴻森智能科技 </B>
+  </div>
+  
+<script>
+  (async function() {
+    
+    await popup_login_init();
+    
+    popup_login_finishedEvent.push(popup_login_finished);
+    
+
+    if(!IsLogged)
+    {
+      await popup_login_div.Show();
+    }
+    // else if(IsLogged && !IsCreatSelected)
+    // {
+    //   await popup_creatSelect_div.Show();
+    //   await  popup_login_div.Close();
+    // }
+    // else if(IsLogged && IsCreatSelected)
+    // {
+    //   popup_creatSelect_finished();
+    // }
+  })();
+
+  var barcode_value = '';
+    // 監聽頁面的keydown事件
+  window.addEventListener('keydown', function(event) 
+  {
+    // 判斷按下的按鍵是否是Tab鍵或Enter鍵
+    console.log(event.key);
+    if (event.key === 'Tab' || event.key === 'Enter') {
+    // 防止頁面重新載入
+        event.preventDefault();
+        const parsedCode = parseBarcode(barcode_value);
+        
+        // 取得輸入框的值
+        barcode_value = '';
+        // 解析藍牙掃描器返回的數據
+        if(parsedCode != '')
+        {
+   
+        }         
+    }
+    else
+    {
+        const isValid = /^[a-zA-Z0-9]+$/.test(event.key);
+        const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
+        const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);
+        
+
+        if (isValid && (!isControlKey||isNumPadlKey)) {
+            // 將解析後的條碼值設定為輸入框的值
+            barcode_value += event.key;
+        } 
+    }
+  });
+
+  // 解析帶有分隔符的字符串
+  function parseBarcode(scannedCode) 
+  {
+    const delimiter = /[\n\r]/g;
+    const matches = scannedCode.split(delimiter);
+    return matches[0];
+  }
+
+</script>
+  
+</body>
+</html>

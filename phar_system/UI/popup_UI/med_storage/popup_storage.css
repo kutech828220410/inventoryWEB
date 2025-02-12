@@ -1,0 +1,71 @@
+.popup_storage_div {
+    width: 330px;
+}
+
+.ppstorage_header_container {
+    width: 100%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+}
+.ppstorage_h_title {
+    padding: 4px 48px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    background-color: rgb(68, 68, 68);
+    color: #ebebeb;
+    border-radius: 5px;
+}
+.ppstorage_h_close_btn {
+    position: absolute;
+    cursor: pointer;
+    display: block;
+    width: 36px;
+    top: 0px;
+    right: 0px;
+}
+.ppsi_div {
+    display: flex;
+}
+.ppsi_label {
+    padding: 4px 0px;
+    text-align: center;
+    min-width: 88px;
+}
+.ppsi_content {
+    padding-top: 4px;
+    flex-grow: 1;
+}
+.ppsi_med_img {
+    display: block;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+    margin: 12px auto;
+}
+.ppsi_code {
+    display: block;
+    margin-right: 24px;
+}
+.ppstorage_footer_container {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+.ppstorage_light_on_btn {
+    background-color: #007016;
+}
+.ppstorage_light_off_btn {
+    background-color: #680000;
+}
+.ppstorage_light_on_btn:hover {
+    background-color: #008d1c;
+    transition: 0.2s all;
+}
+.ppstorage_light_off_btn:hover {
+    background-color: #880000;
+    transition: 0.2s all;
+} 

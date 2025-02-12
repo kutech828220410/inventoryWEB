@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  <title>單據辨識批次上傳</title>
+  <!-- <link rel="stylesheet" href="main.css"> -->
+  <link rel="stylesheet" href="style.css?v=1.4">
+  <link rel="stylesheet" href="popup_input_po_num.css">
+  <link rel="stylesheet" href="../UI/style/navBar.css">
+  <link rel="stylesheet" href="process_bar.css">
+  <link rel="stylesheet" href="popup_retake.css">
+  <script src="../Function/Basic.js?v=1.14"></script>
+  <script>
+    (async function() 
+        {
+          loadScript("../../api/map.js");
+          loadScript("../../ApiURL.js");
+          loadScript("../../session_check.js");
+          loadScript("../../session.js");
+          loadScript("../../ChatHub.js");
+          loadScript("../svg/mySVG.js");
+          loadScript("../UI/map.js");
+          loadScript("../popup/map.js");    
+          loadScript("../dist/JsBarcode.all.js");
+          loadScript("../Function/WebApiFunc.js");
+          loadScript("../Function/heic2any.js");
+          loadScript("../api/po_analyze.js");
+          loadScript("data_storage.js");
+          loadScript("app.js");
+          loadScript("popup_login.js");
+          loadScript("popup_input_po_num.js");
+          loadScript("../UI/navBar.js");
+          loadScript("../api/web_permissions.js");
+          loadScript("popup_retake.js");
+          loadScript("process_bar.js");
+        })();
+
+  </script>
+</head>
+<body>
+  
+      <script>
+
+      </script>
+   
+  <div class="under-line">
+    <B> Copyright ©2024 鴻森智能科技 </B>
+  </div>
+  <div class="popup_input_po_num_div">
+    <div class="popup_input_po_num_container">
+      <div class="ppipn_header_container">
+        <div class="ppipn_header">單據辨識修改</div>
+        <img class="ppipn_header_close" src="../image/close.png" alt="" onclick="trigger_popup_input_po_num(false)">
+      </div>
+      <div class="ppipn_main_container">
+        <img class="ppipn_main_img" src="" alt="">
+        <div class="ppipn_main_content">
+          <input class="ppipn_main_input input_style" type="text" maxlength="30" placeholder="請輸入單號">
+        </div>
+      </div>
+      <div class="ppipn_footer_container">
+        <div class="ppipn_f_revise_btn btn" onclick="update_by_GUID_po_num()">修改</div>
+      </div>
+    </div>
+  </div>
+  <input type="file" name="pic_input" id="pic_input" accept="image/*" multiple>
+  <div class="process_bar_div">
+    <div class="process_bar_container">
+      <div class="process_bar">
+        <div class="bar">
+          <div class="bar_before"></div>
+          <div class="bar_after"></div>
+        </div>
+        <div class="bar_text">
+          <div class="process_log"><span class="process_log_num">0</span>%</div>
+          <div class="process_content">Uploading...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+
+  (async function() {
+    trigger_popup_input_po_num(false);
+    await popup_login_init();
+    
+    popup_login_finishedEvent.push(popup_login_finished);
+    
+
+    if(!IsLogged) {
+      await popup_login_div.Show();
+    }
+
+
+    get_popup_retake();
+    popup_retake_div.Set_Visible(false);
+  // else if(IsLogged && !IsCreatSelected)
+  // {
+  //   await popup_creatSelect_div.Show();
+  //   await  popup_login_div.Close();
+  // }
+  // else if(IsLogged && IsCreatSelected)
+  // {
+  //   popup_creatSelect_finished();
+  // }
+  })();
+  
+  var barcode_value = '';
+    // 監聽頁面的keydown事件
+  window.addEventListener('keydown', function(event) 
+  {
+    // 判斷按下的按鍵是否是Tab鍵或Enter鍵
+    console.log(event.key);
+    if (event.key === 'Tab' || event.key === 'Enter') {
+    // 防止頁面重新載入
+        event.preventDefault();
+        const parsedCode = parseBarcode(barcode_value);
+        
+        // 取得輸入框的值
+        barcode_value = '';
+        // 解析藍牙掃描器返回的數據
+        if(parsedCode != '')
+        {
+   
+        }         
+    }
+    else
+    {
+        const isValid = /^[a-zA-Z0-9]+$/.test(event.key);
+        const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
+        const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);
+        
+
+        if (isValid && (!isControlKey||isNumPadlKey)) {
+            // 將解析後的條碼值設定為輸入框的值
+            barcode_value += event.key;
+        } 
+    }
+});
+
+// 解析帶有分隔符的字符串
+function parseBarcode(scannedCode) 
+{
+  const delimiter = /[\n\r]/g;
+  const matches = scannedCode.split(delimiter);
+  return matches[0];
+}
+
+</script>
+  
+</body>
+</html>

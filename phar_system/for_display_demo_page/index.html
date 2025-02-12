@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智慧藥局系統</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="../../favicon.ico" >
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="192x192">
+  <link rel="icon" type="image/png" sizes="192x192" href="android-touch-icon.png">
+  <script src="../../Function/Basic.js?v=1.0"></script>
+  <script>
+    (async function(){
+    loadScript("../api/map.js");
+    loadScript("../ApiURL.js");
+    loadScript("../ChatHub.js");
+    loadScript("../svg/mySVG.js");
+    loadScript("../UI/map.js");
+    loadScript("../popup/map.js");    
+    loadScript("../dist/JsBarcode.all.js");
+    loadScript("../session_check.js");
+    loadScript("../session.js");
+    loadScript("./app.js");
+    loadScript("../UI/navBar.js");
+    })();
+  </script>
+</head>
+<body>
+    <div class="gm_main_container">
+        <div class="title">揀貨操作</div>
+        <div class="radio_container">
+            <label for="black">
+                <input type="radio" name="color" id="black" value="black" checked>
+                黑色
+            </label>
+            <label for="red">
+                <input type="radio" name="color" id="red" value="red">
+                紅色
+            </label>
+            <label for="green">
+                <input type="radio" name="color" id="green" value="green">
+                綠色
+            </label>
+            <label for="yellow">
+                <input type="radio" name="color" id="yellow" value="yellow">
+                黃色
+            </label>
+            <label for="blue">
+                <input type="radio" name="color" id="blue" value="blue">
+                藍色
+            </label>
+        </div>
+        <div class="for_input">
+            <input id="barcode_test" type="text" placeholder="用掃碼槍掃描或輸入藥碼">
+            <button id="barcode_test_btn">送出</button>
+        </div>
+        <div class="show_med">
+            <div class="med_code">藥碼:</div>
+            <div class="med_name">英文:</div>
+            <div class="med_ctname">中文:</div>
+        </div>
+    </div>
+    <div class="under-line">
+        <B> Copyright ©2024 鴻森智能科技 </B>
+    </div>
+</body>
+</html>

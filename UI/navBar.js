@@ -150,7 +150,7 @@ function nav_bar_create(html_page, user_data) {
     homepage_logo.alt = "front page icon";
     
     nav_bar_tigger_container.addEventListener("click", () => {
-        location.href = "../../frontpage/";
+        location.href = "../../phar_system/frontpage/";
     })
 
     nav_bar_tigger_container.appendChild(homepage_logo);

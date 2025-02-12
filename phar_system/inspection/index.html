@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  <title>驗收操作頁面</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="../UI/style/navBar.css">
+  <link rel="stylesheet" href="../UI/popup_UI/med_storage/popup_storage.css">
+  <link rel="icon" href="../favicon.ico" >
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="192x192">
+  <link rel="icon" type="image/png" sizes="192x192" href="android-touch-icon.png">
+  <script src="../Function/Basic.js?v=1.0"></script>
+  <script>
+    (async function() 
+        {
+          // loadScript("../../api/inspection.js");
+          // loadScript("../../api/map.js");
+          loadScript("../../ApiURL.js");
+          loadScript("../../ChatHub.js");
+          loadScript("../../session_check.js");
+          loadScript("../../session.js");
+          loadScript("../UI/map.js");
+          loadScript("../svg/mySVG.js");
+          loadScript("../popup/map.js");    
+          loadScript("../dist/JsBarcode.all.js");
+          loadScript("main_loadingdata.js");
+          loadScript("main_popup_serch.js");
+          loadScript("popup_content_input.js");
+          loadScript("popup_login.js");
+          loadScript("popup_creatSelect.js");
+          loadScript("popup_med_serch.js");
+          loadScript("popup_select_by_pon.js");
+          loadScript("../../UI/popup_UI/med_storage/popup_storage.js");
+          loadScript("index.js");
+          loadScript("jsonFunc.js");
+          loadScript("../../api/med_page.js");
+          loadScript("jsonFunc_inspection.js");
+          loadScript("../../api/web_permissions.js");
+        })();
+
+  </script>
+</head>
+<body>
+      <script>
+        (async function() 
+        {
+          // document.body.style.position = 'absolute';
+          document.body.style.overflowY = "scroll";
+          document.body.style.overflowX = "hidden";
+        
+          get_popup_input();
+          document.body.appendChild(popup_input_div.div);
+          popup_input_div.LoadEvent.push(popup_content_input_Load);
+          popup_input_div.ClosedEvent.push(popup_content_input_Closed);
+          get_popup_serch();
+          document.body.appendChild(popup_serch_div.div);
+
+          await popup_login_init();
+          popup_login_finishedEvent.push(popup_login_finished);
+
+          await popup_creatSelect_init();
+          popup_creatSelect_finishedEvent.push(popup_creatSelect_finished);
+
+          await popup_med_serch_init();
+          popup_med_serch_div.LoadEvent.push(popup_med_serch_Load);
+          popup_med_serch_div.ClosedEvent.push(popup_med_serch_Closed);
+          popup_med_serch_finishedEvent.push(popup_med_serch_finished);
+
+          get_popup_storage();
+          popup_storage_div.Set_Visible(false);
+          
+
+          const Loadingpopup = GetLoadingpopup();
+          document.body.appendChild(Loadingpopup);
+
+          const header_div = get_header();
+          document.body.appendChild(header_div);
+          const main_div = get_main();
+          document.body.appendChild(main_div);
+
+          popup_input_div.Set_Visible(false);
+          popup_serch_div.Set_Visible(false);
+
+          
+          if(!IsLogged)
+          {
+            await popup_creatSelect_div.Close();
+            await popup_login_div.Show();
+          }
+          else if(IsLogged && !IsCreatSelected)
+          {
+            await popup_creatSelect_div.Show();
+            await  popup_login_div.Close();
+          }
+          else if(IsLogged && IsCreatSelected)
+          {
+            popup_creatSelect_finished();
+          }
+          document.body.style.marginTop = header_div.offsetHeight + "px";
+          document.body.style.marginBottom= "30" + "px";
+        })();
+
+      </script>
+   
+
+  <div class="under-line">
+    <B> Copyright ©2024 鴻森智能科技 </B>
+  </div>
+  
+  <script>
+ 
+  signalR_init(`${api_ip}chatHub`);
+  ChathubReceivedEvent = ChathubReceived;
+  function ChathubReceived(user, message)
+  {
+    var jsonObject = JSON.parse(message); 
+    console.log('ReceivedEvent',jsonObject);
+    if(jsonObject.Method == 'sub_content_add' || jsonObject.Method == 'sub_contents_delete_by_GUID')
+    {
+       if(jsonObject.Data.IC_SN == current_IC_SN)
+       {
+          Replace_data_by_content(jsonObject);
+          if(popup_input_div.Get_Visible())
+          {
+              if(popup_input_div_Content.GUID == jsonObject.Data.GUID) show_popup_input(jsonObject.Data);                     
+          }
+     
+       } 
+    } else if (jsonObject.Method == 'creat_lock_by_IC_SN') {
+      if (jsonObject.Data.IC_SN == data['Data'][0].IC_SN) {
+        alert(`此驗收單已被鎖定，即將退出${data['Data'][0].IC_NAME}驗收單`);
+        popup_creatSelect_div.Show();
+      }
+    }
+  };
+  ChathubErrorEvent = ChathubError;
+  function ChathubError()
+  {
+    // alert("連線斷開,重新整理");
+    // location.reload();
+    signalR_init(`${api_ip}chatHub`);
+    console.log("reconnect....");
+  }
+
+  BarcodeKeyinEvent = BarcodeKeyin;
+  async function BarcodeKeyin(parsedCode)
+  {
+     const header_serch_text = document.querySelector("#header_serch_text");
+     console.log(`[${arguments.callee.name}]`,State);
+     if (header_serch_text.contains(document.activeElement) == false && Header_state.textContent == StateType.等待條碼刷入)
+     {
+        if(Header_state.textContent == StateType.等待條碼刷入)
+        {
+            console.log("BarcodeKeyin" , "顯示藥品資料")
+            serch_CODE_input_enter(parsedCode);
+        }
+      
+     }
+     
+  }
+
+  function keydown_event_for_conculate(event) {
+    console.log("isDesktop",isDesktop);
+    if(isDesktop)
+    {
+      if(Header_state.textContent == StateType.輸入盤點資訊中)
+        {
+            console.log("keydown" , event.key);
+            if (event.key == 'Enter') 
+            {
+              console.log("Enter" , event.key);
+                confirm_popup_input();
+            }
+            else if (event.key == 'Backspace') 
+            {
+              console.log("Backspace" , event.key);
+              popup_input_END_QTY_input.value = popup_input_END_QTY_input.value.slice(0, -1);
+            }        
+            else if(event.key == '1' || event.key == '2' || event.key == '3' || event.key == '4' || event.key == '5' || event.key == '6' || event.key == '7'
+            || event.key == '8' || event.key == '9' || event.key == '0'|| event.key == '-'|| event.key == '+'|| event.key == '*' )
+            {
+              calculate_input(event.key);
+            }
+        }
+    }
+  }
+
+  window.addEventListener("keydown", keydown_event_for_conculate)
+
+  // window.addEventListener('keydown', function(event) 
+  // {
+  //     console.log("isDesktop",isDesktop);
+  //     if(isDesktop)
+  //     {
+  //       if(Header_state.textContent == StateType.輸入盤點資訊中)
+  //         {
+  //             console.log("keydown" , event.key);
+  //             if (event.key == 'Enter') 
+  //             {
+  //               console.log("Enter" , event.key);
+  //                confirm_popup_input();
+  //             }
+  //             else if (event.key == 'Backspace') 
+  //             {
+  //               console.log("Backspace" , event.key);
+  //               popup_input_END_QTY_input.value = popup_input_END_QTY_input.value.slice(0, -1);
+  //             }        
+  //             else if(event.key == '1' || event.key == '2' || event.key == '3' || event.key == '4' || event.key == '5' || event.key == '6' || event.key == '7'
+  //             || event.key == '8' || event.key == '9' || event.key == '0'|| event.key == '-'|| event.key == '+'|| event.key == '*' )
+  //             {
+  //               calculate_input(event.key);
+  //             }
+  //         }
+  //     }
+  // });
+   // 阻止双击放大
+   var lastTouchEnd = 0;
+
+    document.addEventListener('touchend', function(event) {
+      var now = (new Date()).getTime();
+      if (now - lastTouchEnd <= 0) { event.preventDefault(); }
+      lastTouchEnd = now;
+    }, false);
+
+</script>
+  
+</body>
+</html>

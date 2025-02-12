@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拍照上传并调整图片大小</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+        #upload {
+            display: none;
+        }
+        label {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        #photo-container {
+            border: 1px solid #ccc;
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 300px;
+        }
+        #photo-container img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <input type="file" id="upload" accept="image/*" capture="environment">
+    <label for="upload">點擊拍照</label>
+    <div id="photo-container"></div>
+    <img id="aaaa" src="" alt="">
+
+    <script>
+      let base64Image = '';
+      let base64_data = ``;
+
+        let imgg = document.getElementById("aaaa");
+        imgg.src = base64_data
+document.getElementById('upload').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+    img.onload = () => {
+        const MAX_PIXELS = 3145728; // 3,145,728 pixels
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let width = img.width;
+        let height = img.height;
+        const pixels = width * height;
+
+        if (pixels > MAX_PIXELS) {
+            // Adjust the size to maintain the 4:3 aspect ratio
+            const aspectRatio = 3 / 4;
+            if (width / height > aspectRatio) {
+                width = Math.sqrt(MAX_PIXELS * aspectRatio);
+                height = width / aspectRatio;
+            } else {
+                height = Math.sqrt(MAX_PIXELS / aspectRatio);
+                width = height * aspectRatio;
+            }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+
+        base64Image = canvas.toDataURL('image/png');
+        document.getElementById('photo-container').innerHTML = `<img src="${base64Image}" alt="Resized Photo">`;
+    };
+});
+
+    </script>
+</body>
+</html>
