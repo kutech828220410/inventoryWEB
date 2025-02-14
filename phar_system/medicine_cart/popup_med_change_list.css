@@ -111,6 +111,11 @@
     text-align: center;
     margin-bottom: 20px;
 }
+.ppmcl_cpoe_status {
+    font-size: 20px;
+    text-align: center;
+    font-weight: 600;
+}
 
 @media screen and (max-width: 1200px) {
 }

@@ -140,4 +140,6 @@ let change_cart = false;
 // 顏色 => str = "0,255,0"
 // 秒數 => str = "60"  （單位：秒）
 
-let page_setting_params = {}
+let page_setting_params = {};
+let bed_change_data = [];
+let dispaly_bed_change_data = [];

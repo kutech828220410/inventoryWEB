@@ -104,29 +104,34 @@ function get_ppr_footer() {
         }
         console.log("更新圖片post", post_data);
         let return_data = await update_pic_by_GUID(post_data);
-        if(return_data.Data[0].Code_status == -5) {
-            alert(`${return_data.Data[0].Result}`);
+        if(return_data.Code == -200) {
+            alert(`${return_data.Result}`);
             Set_main_div_enable(false);
             return;
         }
         console.log("更新圖片return", return_data);
+
+        post_data = {
+            ValueAry:[guid]
+        };
+
+        console.log(post_data);
+        return_data = await img_to_analysis(post_data);
+
         if(return_data.Data[0].Code_status == 200 || return_data.Data[0].Code_status == -5 || return_data.Data[0].Code_status == -4 || return_data.Data[0].Code_status == -2 || return_data.Data[0].Code_status == -1) {
             let card_container = document.querySelector(`.card_container[guid="${guid}"]`);
-            let post_data_1 = {
-                ValueAry:[guid]
-            }
-    
-            console.log(post_data_1);
-            let return_data_1 = await img_to_analysis(post_data_1);
+
             if(return_data.Data[0].Code_status == -5 || return_data.Data[0].Code_status == -4 || return_data.Data[0].Code_status == -2 || return_data.Data[0].Code_status == -1) {
                 alert(`${return_data.Data[0].Result}`);
+                switch_video_canvas_display("video");
+                startCamera();
                 Set_main_div_enable(false);
                 return;
             }
-            console.log("以圖片更新", return_data_1);
-            orgin_list_data = change_object_by_GUID(orgin_list_data, return_data_1);
+            console.log("以圖片更新", return_data);
+            orgin_list_data = change_object_by_GUID(orgin_list_data, return_data);
         
-            update_card(card_container, return_data_1.Data[0]);
+            update_card(card_container, return_data.Data[0]);
 
             popup_retake_div_close();
         } else {

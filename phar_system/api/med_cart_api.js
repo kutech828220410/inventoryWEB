@@ -478,6 +478,24 @@ async function get_dispens_by_code(data) {
     console.log(temp_data);
 
     return temp_data
+};
+
+// 病床異動api
+async function get_bed_status(data) {
+    let temp_doman = transform_api_ip_4433(api_ip);
+    let temp_data = await fetch(`${temp_doman}api/med_cart/get_bed_status`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then((response) => {
+        return response.json();
+    })
+    console.log(temp_data);
+
+    return temp_data
 }
 
 function transform_api_ip(ip) {

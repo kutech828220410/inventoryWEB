@@ -268,7 +268,7 @@
         grid-template-columns: 50% 50%;
     }
 }
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 700px) {
     .header {
         padding: 12px 20px;
     }
@@ -299,7 +299,7 @@
         border-top: 25px solid transparent;
         border-bottom: 25px solid transparent;
         border-left: 15px solid var(--able-select);
-        left: 40%;
+        left: calc(50% - 32px);
         top: 30px;
     }
     .hos_block_option_container,

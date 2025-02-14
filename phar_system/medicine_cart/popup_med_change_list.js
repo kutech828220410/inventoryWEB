@@ -20,7 +20,7 @@ function get_ppmcl_header() {
 
     let ppmcl_h_title = document.createElement("div");
     ppmcl_h_title.classList.add("ppmcl_h_title");
-    ppmcl_h_title.innerText = "未調藥品";
+    ppmcl_h_title.innerText = "藥品異動";
 
     let ppmcl_h_close_btn = document.createElement("img");
     ppmcl_h_close_btn.classList.add("ppmcl_h_close_btn");
@@ -93,6 +93,85 @@ async function set_ppmcl_main_info() {
     med_change_all_check_btn.classList.add("med_change_all_check_btn");
     med_change_all_check_btn.classList.add("btn");
     med_change_all_check_btn.innerHTML = "全部異動調劑";
+    med_change_all_check_btn.addEventListener("click", async () => {
+        if(confirm("是否調劑所有異動？")) {
+            Set_main_div_enable(true);
+            let ppmcl_bed_card_container = document.querySelectorAll(".ppmcl_bed_card_container");
+            let ppmcl_cpoe_med_check_btn = document.querySelectorAll(".ppmcl_cpoe_med_check_btn");
+            if(ppmcl_bed_card_container.length == 0) {
+                Set_main_div_enable(false);
+                return;
+            }
+            let temp_master_arr = [];
+            let temp_object = {};
+            ppmcl_bed_card_container.forEach(element => {
+                let temp_master_guid = element.getAttribute("master_guid");
+                temp_master_arr.push(temp_master_guid);
+                temp_object[temp_master_guid] = [];
+            });
+
+            ppmcl_cpoe_med_check_btn.forEach(element => {
+                let master_guid = element.getAttribute("master_guid");
+                let guid = element.getAttribute("guid");
+
+                temp_object[master_guid].push(guid);
+            });
+
+            console.log(temp_master_arr);
+            console.log(temp_object);
+
+            let result_arr = [];
+
+            for (let i = 0; i < temp_master_arr.length; i++) {
+                const element = temp_master_arr[i];
+                let return_data = await set_post_data_to_dispensed_by_GUID(temp_object[element], element);
+
+                console.log(return_data);
+                if(return_data.Code == 200) {
+                    result_arr.push(return_data.ValueAry[1]);
+                }
+            }
+            if(result_arr.length == 0) {
+                alert("調劑失敗，請確認伺服器狀態");
+                Set_main_div_enable(false);
+                return;
+            }
+            for (let i = 0; i < result_arr.length; i++) {
+                const element = result_arr[i];
+                
+                let ppmcl_bed_card_container = document.querySelector(`.ppmcl_bed_card_container[Master_Guid="${element}"]`);
+                let ppmcl_bed_card_container_arr = document.querySelectorAll(".ppmcl_bed_card_container");
+                ppmcl_bed_card_container.remove();
+
+                if(ppmcl_bed_card_container_arr.length > 0) {
+                    let post_data = [current_cart.phar, current_cart.hnursta];
+                    console.log(post_data);
+                
+                    med_change_data = await get_patient_with_NOdispense(post_data);
+                    med_change_data = med_change_data.Data;
+                    med_change_data = med_change_data.filter((e) => {
+                        return e.cpoe_change_status != "";
+                    });
+                
+                    console.log(med_change_data);
+                
+                    med_change_data = med_change_data.filter((e) => {
+                        return e.cpoe.length != 0;
+                    });
+                
+                    console.log(med_change_data);
+                
+                    if(med_change_data.length > 0) {
+                        med_change_data.sort((a, b) => +a.bednum - +b.bednum);
+                    }
+                
+                    console.log("++++++++++++++++++++", med_change_data);
+                    await set_ppmcl_main_info();
+                }
+            }
+            Set_main_div_enable(false);
+        }
+    });
 
     ppmcl_main_container.appendChild(med_change_all_check_btn);
 
@@ -163,7 +242,7 @@ async function set_ppmcl_main_info() {
                 });
 
                 let return_data = await set_post_data_to_dispensed_by_GUID(temp_guid_arr, element.GUID);
-                console.log(return_data);
+                console.log("***************************", return_data);
                 return_data = return_data.Data;
                 
                 if(Array.isArray(return_data)) {
@@ -205,10 +284,12 @@ async function set_ppmcl_main_info() {
         ppmcl_bed_card.setAttribute("Master_Guid", element.GUID);
 
         let temp_cpoe = element.cpoe.filter(e => {
-            return e.dispens_status == "";
+            return e.dispens_change == "Y";
         });
 
         if(temp_cpoe.length == 0) ppmcl_bed_card_container.style.display = "none";
+
+        // console.log(temp_cpoe);
 
         temp_cpoe.forEach(item => {
             // if(item.dispens_change != "") {}
@@ -248,6 +329,13 @@ async function set_ppmcl_main_info() {
                 ppmcl_cpoe_med_info_container.appendChild(ppmcl_cpoe_name);
                 ppmcl_cpoe_med_info_container.appendChild(ppmcl_cpoe_cht_name);
                 ppmcl_cpoe_med_info_container.appendChild(ppmcl_cpoe_med_info2);
+
+                let ppmcl_cpoe_right_container = document.createElement("div");
+                ppmcl_cpoe_right_container.classList.add("ppmcl_cpoe_right_container");
+
+                let ppmcl_cpoe_status = document.createElement("div");
+                ppmcl_cpoe_status.classList.add("ppmcl_cpoe_status");
+                ppmcl_cpoe_status.textContent = item.status;
     
                 let ppmcl_cpoe_med_check_btn = document.createElement("div");
                 ppmcl_cpoe_med_check_btn.classList.add("ppmcl_cpoe_med_check_btn");
@@ -275,9 +363,12 @@ async function set_ppmcl_main_info() {
                     }
                     Set_main_div_enable(false);
                 });
+
+                ppmcl_cpoe_right_container.appendChild(ppmcl_cpoe_status);
+                ppmcl_cpoe_right_container.appendChild(ppmcl_cpoe_med_check_btn);
     
-                ppmcl_cpoe_container.appendChild(ppmcl_cpoe_med_info_container)
-                ppmcl_cpoe_container.appendChild(ppmcl_cpoe_med_check_btn)
+                ppmcl_cpoe_container.appendChild(ppmcl_cpoe_med_info_container);
+                ppmcl_cpoe_container.appendChild(ppmcl_cpoe_right_container);
     
                 ppmcl_bed_card.appendChild(ppmcl_cpoe_container);   
             }

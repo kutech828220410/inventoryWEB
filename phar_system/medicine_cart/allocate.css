@@ -508,7 +508,7 @@
         box-shadow: 1px 1px 4px 1px #00000067;
     }
 }
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 700px) {
     .p_bed_header {
         flex-direction: column;
     }
@@ -517,7 +517,7 @@
         grid-template-columns: 40% 40%;
         justify-content: center;
         text-align: center;
-        width: 370px;
+        width: 100%;
     }
     .pbic_top {
         flex-direction: column;
