@@ -22,7 +22,7 @@ function get_pp_dc_new_header() {
 
     let ppdn_h_title = document.createElement("div");
     ppdn_h_title.classList.add("ppdn_h_title");
-    ppdn_h_title.innerText = "DC / NEW 清單";
+    ppdn_h_title.innerText = "歷程清單";
 
     let ppdn_h_close_btn = document.createElement("img");
     ppdn_h_close_btn.classList.add("ppdn_h_close_btn");

@@ -35,29 +35,66 @@
     top: 0px;
     left: 0px;
 }
-
-.ppbc_main_container {
+.ppbc_main_radio_container {
     display: grid;
-    grid-template-columns: 100%;
+    grid-template-columns: 23% 23% 23% 23%;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+.ppbc_main_radio_label {
+    display: flex;
+    padding: 4px 12px;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid;
+    background-color: #b1b1b1;
+    color: #000000;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+.ppbc_main_radio_container input[type="radio"] {
+    display: none;
+}
+.ppbc_main_radio:checked + .ppbc_main_radio_label {
+    background-color: #3c3c3c !important;
+    color: #fafafa;
+    transition: all 0.2s;
+}
+.ppbc_display_container {
+    display: flex;
+    flex-direction: column;
     gap: 10px;
     padding-right: 4px;
+    height: 420px;
+    overflow-y: auto;
 }
 .ppbc_card_container {
     display: grid;
-    grid-template-columns: 70% 30%;
+    grid-template-columns: 55% 45%;
     align-items: center;
     gap: 10px;
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     font-size: 18px;
+    max-height: 100px;
+    border: 1px solid #848484;
+    background-color: #eeeeee;
 }
 .ppbc_bed_in_bg {
-    background-color: #cdf2d8;
+    /* background-color: #bfeddc; */
+}
+
+.ppbc_bed_change_bg {
+    /* background-color: #ebd6bc; */
 }
 
 .ppbc_bed_out_bg {
-    background-color: #ebd6bc;
+    /* background-color: #f2bdbd; */
 }
 
 .ppbc_paitient_status,
@@ -65,24 +102,22 @@
     text-align: center;
 }
 
-.ppbc_paitient_bed {
+.ppbc_paitient_bed_span {
     text-decoration: underline;
+    cursor: pointer;
 }
 
 
 .ppbc_footer_container {
     display: flex;
     justify-content: space-between;
+    /* justify-content: center; */
     margin-top: 12px;
 }
 
 @media screen and (max-width: 550px) {
     .popup_bed_change_div {
         width: 360px;
-    }
-    .ppbc_main_container {
-        height: 504px;
-        overflow-y: scroll;
     }
     .pp_bed_card {
         height: 60px;

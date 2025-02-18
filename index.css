@@ -7,6 +7,10 @@ body {
     overflow-y: hidden; /* 禁止垂直滾動 */
 }
 /* 创建伪元素作为背景覆盖层 */
+body {
+  width: 100vw;
+  height: 100vh;
+}
 body::before {
     content: "";
     position: absolute;

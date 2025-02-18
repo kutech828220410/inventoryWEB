@@ -746,7 +746,6 @@ async function allocate_func() {
 
   let cart_content = document.querySelector(".cart_content");
   let med_table_content = document.querySelector(".med_table_content");
-
   
   if(current_func == "allocate") {
     div_event_click_tri_able(cart_select_container);
