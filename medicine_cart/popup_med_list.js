@@ -650,8 +650,12 @@ async function set_post_data_to_check_dispense_for_med_list(m_guid, guid, status
 };
 
 function sort_med_list_data(array, current_func) {
+    
+    let sortedArray = array.sort((a, b) => a.name.localeCompare(b.name));
+    console.log("要名牌續", sortedArray);
+    
     if(current_func == "allocate") {
-        let sortedArray = array.sort((a, b) => {
+        sortedArray = array.sort((a, b) => {
             const getStatusCategory = (bedList) => {
                 const hasAllY = bedList.every(bed => bed.dispens_status === "Y");
                 const hasSomeY = bedList.some(bed => bed.dispens_status === "Y");
@@ -668,7 +672,7 @@ function sort_med_list_data(array, current_func) {
         console.log('sortedArray', sortedArray);
         return sortedArray;
     } else {
-        let sortedArray = array.sort((a, b) => {
+        sortedArray = array.sort((a, b) => {
             const getStatusCategory = (bedList) => {
                 const hasAllY = bedList.every(bed => bed.check_status === "Y");
                 const hasSomeY = bedList.some(bed => bed.check_status === "Y");

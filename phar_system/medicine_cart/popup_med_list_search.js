@@ -167,10 +167,11 @@ async function med_list_search_result() {
         }
     }
 
-    med_list_data = sort_med_list_data(med_list_data, current_func);;
+    med_list_data = sort_med_list_data(med_list_data, current_func);
+    med_list_data = sort_display_med_data(med_list_data);
 
     await set_pp_med_list_display();
-    await popup_med_list_search_div_close();
+    popup_med_list_search_div_close();
 }
 async function display_big_result() {
     let ppmls_table_select = document.querySelector(".ppmls_table_select");
@@ -180,8 +181,10 @@ async function display_big_result() {
         return item["dispens_name"] == "Y" && item["large"] == "L";
     });
 
-    med_list_data = sort_med_list_data(med_list_data, current_func);;
+    med_list_data = sort_med_list_data(med_list_data, current_func);
+
+    med_list_data = sort_display_med_data(med_list_data);
 
     await set_pp_med_list_display();
-    await popup_med_list_search_div_close();
+    popup_med_list_search_div_close();
 }

@@ -233,6 +233,9 @@
 .med_card_container:last-child {
     margin-bottom: 0px;
 }
+.card_pub_med_bgc {
+    background-color: #ffebeb;
+}
 .card_disable {
     background-color: #acacac;
 }

@@ -274,13 +274,12 @@ function get_p_bed_header() {
     med_cart_sum_list_btn.innerHTML = "藥品總量";
     med_cart_sum_list_btn.addEventListener("click", async () => {
         Set_main_div_enable(true);
-
         med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, "all");
         med_list_data = med_list_data.Data;
         med_list_data = sort_med_list_data(med_list_data, current_func);
         await set_pp_med_list_display();
 
-        await popup_med_list_div_open();
+        popup_med_list_div_open();
         Set_main_div_enable(false);
     });
 

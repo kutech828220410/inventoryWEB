@@ -156,7 +156,8 @@ function get_pp_med_list_header() {
     ppml_display_all_btn.addEventListener("click", async () => {
         med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, "all");
         med_list_data = med_list_data.Data;
-        med_list_data = sort_med_list_data(med_list_data, current_func);;
+        med_list_data = sort_med_list_data(med_list_data, current_func);
+        med_list_data = sort_display_med_data(med_list_data);
         await set_pp_med_list_display();
     });
 
@@ -197,7 +198,8 @@ function get_pp_med_list_footer() {
     ppml_display_all_btn.addEventListener("click", async () => {
         med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, "all");
         med_list_data = med_list_data.Data;
-        med_list_data = sort_med_list_data(med_list_data, current_func);;
+        med_list_data = sort_med_list_data(med_list_data, current_func);
+        med_list_data = sort_display_med_data(med_list_data);
         await set_pp_med_list_display();
     });
 
@@ -650,6 +652,9 @@ async function set_post_data_to_check_dispense_for_med_list(m_guid, guid, status
 };
 
 function sort_med_list_data(array, current_func) {
+
+    let sortedArray = array.sort((a, b) => a.name.localeCompare(b.name));
+
     if(current_func == "allocate") {
         let sortedArray = array.sort((a, b) => {
             const getStatusCategory = (bedList) => {
@@ -685,4 +690,14 @@ function sort_med_list_data(array, current_func) {
         console.log('sortedArray', sortedArray);
         return sortedArray;
     }
+}
+
+function sort_display_med_data(arr) {
+    let temp_arr = arr.sort((a, b) => {
+        const aHasLargeL = a.large === "L" ? 1 : 0;
+        const bHasLargeL = b.large === "L" ? 1 : 0;
+        return bHasLargeL - aHasLargeL; // 讓有 large: "L" 的排前面
+    });
+
+    return temp_arr;
 }

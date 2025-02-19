@@ -146,6 +146,13 @@ async function allocate_display_init(light_on) {
             console.log("first_load post_data", post_data);
             current_p_bed_data = await get_patient_GUID(post_data);
             current_p_bed_data = current_p_bed_data.Data;
+            current_p_bed_data.cpoe.sort((a, b) => {
+                const aHasPubMedY = a.pub_med == "Y" ? 1 : 0;
+                const bHasPubMedY = b.pub_med == "Y" ? 1 : 0;
+                return aHasPubMedY - bHasPubMedY; // 讓 pub_med 為 "Y" 的排到最後
+            });
+            
+
         // }
         // 這裡對預載入index做定位
         // 先將當前一床index定位為當前床index
@@ -278,9 +285,10 @@ function get_p_bed_header() {
         med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, "all");
         med_list_data = med_list_data.Data;
         med_list_data = sort_med_list_data(med_list_data, current_func);
+        med_list_data = sort_display_med_data(med_list_data);
         await set_pp_med_list_display();
 
-        await popup_med_list_div_open();
+        popup_med_list_div_open();
         Set_main_div_enable(false);
     });
 
@@ -701,6 +709,11 @@ function set_pbm_header_container() {
         
             current_p_bed_data = await get_patient_GUID(post_data);
             current_p_bed_data = current_p_bed_data.Data;
+            current_p_bed_data.cpoe.sort((a, b) => {
+                const aHasPubMedY = a.pub_med == "Y" ? 1 : 0;
+                const bHasPubMedY = b.pub_med == "Y" ? 1 : 0;
+                return aHasPubMedY - bHasPubMedY; // 讓 pub_med 為 "Y" 的排到最後
+            });
             await allocate_display_init("");
             alert(`第${current_p_bed_data.bednum}床，完成調劑`);
             Set_main_div_enable(false);
@@ -740,6 +753,10 @@ function set_pbm_main_container() {
     current_p_bed_data["cpoe"].forEach(element => {
         let med_card_container = document.createElement("div");
         med_card_container.classList.add("med_card_container");
+
+        if(element.pub_med == "Y") {
+            med_card_container.classList.add("card_pub_med_bgc");
+        }
 
         let med_card_title_container = document.createElement("div");
         med_card_title_container.classList.add("med_card_title_container");
@@ -1327,6 +1344,11 @@ function set_pbm_footer_container() {
         
             current_p_bed_data = await get_patient_GUID(post_data);
             current_p_bed_data = current_p_bed_data.Data;
+            current_p_bed_data.cpoe.sort((a, b) => {
+                const aHasPubMedY = a.pub_med == "Y" ? 1 : 0;
+                const bHasPubMedY = b.pub_med == "Y" ? 1 : 0;
+                return aHasPubMedY - bHasPubMedY; // 讓 pub_med 為 "Y" 的排到最後
+            });
             await allocate_display_init("");
             alert(`第${current_p_bed_data.bednum}床，完成調劑`);
             Set_main_div_enable(false);
