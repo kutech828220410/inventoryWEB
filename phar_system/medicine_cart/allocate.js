@@ -631,8 +631,14 @@ function set_pbm_header_container() {
                 }
 
                 // 大瓶藥品api參數設定追加
-                console.log(page_setting_params.big_bottle_exception.value == "True");
-                if(page_setting_params.big_bottle_exception.value == "True") {
+                let temp_check_isArray = page_setting_params?.big_bottle_exception?.value;
+                if(temp_check_isArray) {
+                    if(page_setting_params.big_bottle_exception.value == "True") {
+                        if(element.getAttribute("isBig") == "L") {
+                            element.checked = false;
+                        }
+                    }
+                } else {
                     if(element.getAttribute("isBig") == "L") {
                         element.checked = false;
                     }
@@ -753,6 +759,19 @@ function set_pbm_main_container() {
     current_p_bed_data["cpoe"].forEach(element => {
         let med_card_container = document.createElement("div");
         med_card_container.classList.add("med_card_container");
+
+        let temp_check_isArray = page_setting_params?.["display_public_medicine"]?.value;
+        if(temp_check_isArray) {
+            if(page_setting_params["display_public_medicine"].value == "False") {
+                if (element.pub_med == "Y") {
+                    med_card_container.style.display = "none";
+                }
+            }
+        } else {
+            if (element.pub_med == "Y") {
+                med_card_container.style.display = "none";
+            }
+        }
 
         if(element.pub_med == "Y") {
             med_card_container.classList.add("card_pub_med_bgc");
@@ -898,48 +917,57 @@ function set_pbm_main_container() {
         med_card_other_phar.classList.add("med_card_other_phar");
         med_card_other_phar.innerHTML = element.pharm_name;
 
-        for (let i = 0; i < page_setting_params["display_block"]["value"].length; i++) {
-            const item = page_setting_params["display_block"]["value"][i];
-            switch (item.name) {
-                case "ordseq":
-                    if(item.value == "True") med_card_info_container.appendChild(med_card_ordseq);
-                    break;
-                case "dosage":
-                    if(item.value == "True") med_card_info_container.appendChild(med_card_dosage);
-                    break;
-                case "dunit":
-                    if(item.value == "True") med_card_info_container.appendChild(med_card_unit);
-                    break;
-                case "freqn":
-                    if(item.value == "True") med_card_info_container.appendChild(med_card_freqn);
-                    break;
-                case "route":
-                    if(item.value == "True") med_card_info_container.appendChild(med_card_route);
-                    break;
-                case "code":
-                    if(item.value == "True") med_card_info_container.appendChild(med_card_code);
-                    break;
-                case "storage":
-                    if(item.value == "True") med_card_info_container.appendChild(med_card_storage);
-                    break;
-            
-                default:
-                    break;
+        temp_check_isArray = page_setting_params?.["display_block"]?.value;
+
+        if(temp_check_isArray) {
+            for (let i = 0; i < page_setting_params["display_block"]["value"].length; i++) {
+                const item = page_setting_params["display_block"]["value"][i];
+                switch (item.name) {
+                    case "ordseq":
+                        if(item.value == "True") med_card_info_container.appendChild(med_card_ordseq);
+                        break;
+                    case "dosage":
+                        if(item.value == "True") med_card_info_container.appendChild(med_card_dosage);
+                        break;
+                    case "dunit":
+                        if(item.value == "True") med_card_info_container.appendChild(med_card_unit);
+                        break;
+                    case "freqn":
+                        if(item.value == "True") med_card_info_container.appendChild(med_card_freqn);
+                        break;
+                    case "route":
+                        if(item.value == "True") med_card_info_container.appendChild(med_card_route);
+                        break;
+                    case "code":
+                        if(item.value == "True") med_card_info_container.appendChild(med_card_code);
+                        break;
+                    case "storage":
+                        if(item.value == "True") med_card_info_container.appendChild(med_card_storage);
+                        break;
+                
+                    default:
+                        break;
+                }
             }
+        } else {
+            med_card_info_container.appendChild(med_card_ordseq);
+            med_card_info_container.appendChild(med_card_dosage);
+            med_card_info_container.appendChild(med_card_unit);
+            med_card_info_container.appendChild(med_card_route);
+            med_card_info_container.appendChild(med_card_freqn);
+            med_card_info_container.appendChild(med_card_code);
         }
-        // med_card_info_container.appendChild(med_card_ordseq);
-        // med_card_info_container.appendChild(med_card_dosage);
-        // med_card_info_container.appendChild(med_card_unit);
-        // med_card_info_container.appendChild(med_card_route);
-        // med_card_info_container.appendChild(med_card_freqn);
-        // med_card_info_container.appendChild(med_card_code);
+            
         
         let med_name_card_container = document.createElement("div");
         med_name_card_container.classList.add("med_name_card_container");
 
         let med_card_name = document.createElement("div");
         med_card_name.classList.add("med_card_name");
-        med_card_name.style.fontSize = `${page_setting_params.med_name_font_size.value}px`;
+        temp_check_isArray = page_setting_params?.med_name_font_size?.value;
+        if(temp_check_isArray) {
+            med_card_name.style.fontSize = `${page_setting_params.med_name_font_size.value}px`;
+        }
         if(!element["med_cloud"][0]) {
             if(element.name == "") {
                 med_card_name.innerHTML = ``;
@@ -956,7 +984,10 @@ function set_pbm_main_container() {
 
         let med_card_cht_name = document.createElement("div");
         med_card_cht_name.classList.add("med_card_cht_name");
-        med_card_cht_name.style.fontSize = `${page_setting_params.med_cht_name_font_size.value}px`;
+        temp_check_isArray = page_setting_params?.med_cht_name_font_size?.value;
+        if(temp_check_isArray) {
+            med_card_cht_name.style.fontSize = `${page_setting_params.med_cht_name_font_size.value}px`;
+        }
         if(!element["med_cloud"][0]) {
             if(element.cht_name == "") {
                 med_card_cht_name.innerHTML = ``;
@@ -1598,6 +1629,9 @@ function open_med_detail_info() {
         let med_card_container = item.parentElement.parentElement;
         let temp_h = item.parentElement.clientHeight;
         let temp_h2 = item.parentElement.parentElement.childNodes[1].clientHeight + item.parentElement.parentElement.childNodes[2].clientHeight;
+        console.log("容器", med_card_container);
+        console.log("初始顯示", item.parentElement);
+        console.log("卡片高度", temp_h);
         med_card_container.style.height = `${temp_h}px`;
 
         item.addEventListener("click", () => {
