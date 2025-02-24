@@ -631,7 +631,8 @@ function set_pbm_header_container() {
                 }
 
                 // 大瓶藥品api參數設定追加
-                let temp_check_isArray = page_setting_params?.big_bottle_exception?.value;
+                let temp_check_isArray = page_setting_params && page_setting_params.big_bottle_exception && page_setting_params.big_bottle_exception.value;
+
                 if(temp_check_isArray) {
                     if(page_setting_params.big_bottle_exception.value == "True") {
                         if(element.getAttribute("isBig") == "L") {
@@ -760,7 +761,7 @@ function set_pbm_main_container() {
         let med_card_container = document.createElement("div");
         med_card_container.classList.add("med_card_container");
 
-        let temp_check_isArray = page_setting_params?.["display_public_medicine"]?.value;
+        let temp_check_isArray = page_setting_params && page_setting_params["display_public_medicine"] && page_setting_params["display_public_medicine"].value;
         if(temp_check_isArray) {
             if(page_setting_params["display_public_medicine"].value == "False") {
                 if (element.pub_med == "Y") {
@@ -917,7 +918,7 @@ function set_pbm_main_container() {
         med_card_other_phar.classList.add("med_card_other_phar");
         med_card_other_phar.innerHTML = element.pharm_name;
 
-        temp_check_isArray = page_setting_params?.["display_block"]?.value;
+        temp_check_isArray = page_setting_params && page_setting_params["display_block"] && page_setting_params["display_block"].value;
 
         if(temp_check_isArray) {
             for (let i = 0; i < page_setting_params["display_block"]["value"].length; i++) {
@@ -964,7 +965,7 @@ function set_pbm_main_container() {
 
         let med_card_name = document.createElement("div");
         med_card_name.classList.add("med_card_name");
-        temp_check_isArray = page_setting_params?.med_name_font_size?.value;
+        temp_check_isArray = page_setting_params && page_setting_params.med_name_font_size && page_setting_params.med_name_font_size.value;
         if(temp_check_isArray) {
             med_card_name.style.fontSize = `${page_setting_params.med_name_font_size.value}px`;
         }
@@ -984,7 +985,7 @@ function set_pbm_main_container() {
 
         let med_card_cht_name = document.createElement("div");
         med_card_cht_name.classList.add("med_card_cht_name");
-        temp_check_isArray = page_setting_params?.med_cht_name_font_size?.value;
+        temp_check_isArray = page_setting_params && page_setting_params.med_cht_name_font_size && page_setting_params.med_cht_name_font_size.value;
         if(temp_check_isArray) {
             med_card_cht_name.style.fontSize = `${page_setting_params.med_cht_name_font_size.value}px`;
         }
@@ -1729,8 +1730,10 @@ async function light_on_func(code, phar, type) {
     light_on_arr.ValueAry.push(code);
     light_on_arr.ValueAry.push(color_select.rgb);
     light_on_arr.ValueAry.push("600"); // 秒數設定
+
     light_on_arr.ServerName = phar;
     last_light_on_arr.ServerName = phar;
+    
     light_on_arr.ServerType = type;
     last_light_on_arr.ServerType = type;
 

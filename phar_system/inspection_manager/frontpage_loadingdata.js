@@ -1,8 +1,6 @@
 //#region [rgba(0, 0, 255, 0.05)] public Function
 function creat_row_div(_index , item) 
 {
-
-
     const all_div = document.createElement('div');
     My_Div.Init(all_div,`all_div${_index}`,'all_div', '99%','200px','');
     My_Div.Set_Block(all_div, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.CENTER);
@@ -229,8 +227,6 @@ async function lockbtn_Click(event)
     document.body.style.opacity = "0.5";
     temp = await creat_lock_by_IC_SN(IC_SN);
     document.body.style.opacity = "1";
-
-    
   }
   else 
   {
@@ -255,8 +251,8 @@ async function select_btn_Click(event)
   console.log(IC_SN);
   sessionStorage.setItem('IC_SN', IC_SN);
   await creat_update_startime_by_IC_SN(IC_SN);
-  // location.href = "../inspection/main.html"
-  location.href = "../../inspection/index.html?administrator"
+  // location.href = "../inspection/main.html";
+  location.href = "../../phar_system/inspection/index.html?administrator";
 }
 
 async function delete_btn_Click(event) {

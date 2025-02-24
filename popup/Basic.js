@@ -131,9 +131,9 @@ class Basic_popup_Div
         
         this.Set_Visible(false);
     }
-    onVisible;
-    onDisvisble;
-    _popup_div;
-    div;
+    // onVisible
+    // onDisvisble
+    // _popup_div
+    // div
 }
 customElements.define('basic-popup-div', Basic_popup_Div, { extends: 'div' });

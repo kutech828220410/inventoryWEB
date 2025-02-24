@@ -121,8 +121,8 @@ async function confirm_popup_input()
     const OP = sessionData.Name;
     //輸入盤點量後創造SUB內容
     sub_content_add(GUID , END_QTY , OP, VAL, LOT);
-    VAL_input_popup_input.value = ""
-    LOT_input_popup_input.value = ""
+    VAL_input_popup_input.value = "";
+    LOT_input_popup_input.value = "";
     hide_popup_input();
 }
 async function delete_row_popup_input(GUID , Master_GUID)

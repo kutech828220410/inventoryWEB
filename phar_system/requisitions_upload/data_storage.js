@@ -14,7 +14,8 @@ let user_log_data;
 const process_bar_status = {
   load: "Uploading...",
   anal: "Analysing..."
-}
+};
+let IC_SN = "";
 
 let test_data = [
   {

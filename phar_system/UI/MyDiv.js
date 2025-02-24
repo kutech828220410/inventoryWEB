@@ -231,7 +231,7 @@ class My_Div
         return div.style.visibility == "visible";
     }
 
-    div;
-    type;
+    // div
+    // type
 }
 customElements.define('my-div', My_Div, { extends: 'div' });

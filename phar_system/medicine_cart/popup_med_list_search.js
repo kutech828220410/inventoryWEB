@@ -107,13 +107,13 @@ function get_pp_med_list_search_footer() {
     ppmls_search_btn.innerHTML = "搜尋";
     ppmls_search_btn.onclick = med_list_search_result;
 
-    let ppmls_search_big_btn = document.createElement("div");
-    ppmls_search_big_btn.classList.add('ppmls_search_big_btn');
-    ppmls_search_big_btn.classList.add("btn");
-    ppmls_search_big_btn.innerHTML = "顯示大瓶藥品";
-    ppmls_search_big_btn.onclick = display_big_result;
+    // let ppmls_search_big_btn = document.createElement("div");
+    // ppmls_search_big_btn.classList.add('ppmls_search_big_btn');
+    // ppmls_search_big_btn.classList.add("btn");
+    // ppmls_search_big_btn.innerHTML = "顯示大瓶藥品";
+    // ppmls_search_big_btn.onclick = display_big_result;
 
-    ppmls_footer_container.appendChild(ppmls_search_big_btn);
+    // ppmls_footer_container.appendChild(ppmls_search_big_btn);
     ppmls_footer_container.appendChild(ppmls_search_btn);
 
     return ppmls_footer_container;
@@ -183,7 +183,7 @@ async function display_big_result() {
 
     med_list_data = sort_med_list_data(med_list_data, current_func);
 
-    med_list_data = sort_display_med_data(med_list_data);
+    // med_list_data = sort_display_med_data(med_list_data);
 
     await set_pp_med_list_display();
     popup_med_list_search_div_close();

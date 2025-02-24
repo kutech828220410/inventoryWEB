@@ -219,6 +219,13 @@ function set_main_init() {
                 set_process_bar_log(unanal_count, index_count, process_bar_status.anal);
                 index_count += 1;
                 repeat_count += 1;
+              } else if(return_data.Data[0].Code_status == -200) {
+                fail_file_count += 1;
+                console.log(return_data);
+                alert(`第${i + 1}張圖片，發生預料外錯誤，Result: ${return_data.Result}`);
+                set_process_bar_log(unanal_count, index_count, process_bar_status.anal);
+                
+                index_count += 1;
               }
             } else {
               fail_file_count += 1;

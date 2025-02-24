@@ -16,7 +16,7 @@ async function load()
     console.log("inventory_url",inventory_url);
 
     let permissions_arr = await get_permissions_arr();
-    console.log(permissions_arr);
+    console.log("權限設定陣列" ,permissions_arr);
 
     var loggedID = sessionStorage.getItem('loggedID');  
     var loggedName = sessionStorage.getItem('loggedName');  
@@ -112,7 +112,15 @@ function get_page_section(object, arr) {
       filp_btn.innerHTML = `${name_arr[index]}<img src="../image/fast-forward.png" alt="">`;
       filp_btn.classList.add("filp_btn");
       filp_btn.addEventListener("click", () => {
-        rotate_div.classList.toggle("rotate180");
+        let front_div = document.querySelector(".front_div");
+        let back_div = document.querySelector(".back_div");
+        if(element.name == "藥局") {
+          front_div.classList.add("opacity_div");
+          back_div.classList.remove("opacity_div");
+        } else {
+          back_div.classList.add("opacity_div");
+          front_div.classList.remove("opacity_div");
+        }
         // filp_btn.classList.toggle("img_rotate");
       });
     
@@ -158,11 +166,15 @@ function get_page_section(object, arr) {
 function get_page_icon(object, arr) {
   let page_card = document.createElement("div");
   page_card.classList.add('page_card');
+  // console.log(arr);
+  // console.log(object.html_ctName, object.html_name, object.html_url);
   if(arr == "error") {
     page_card.addEventListener("click", () => {
+      console.log("怪怪");
       window.location.href = object.html_url;
     })
   } else {
+    // console.log(front_page_display_logic(object.html_name, arr));
     if(front_page_display_logic(object.html_name, arr)) {
       page_card.classList.add('web_icon_disable');
       page_card.addEventListener("click", () => {
@@ -171,7 +183,7 @@ function get_page_icon(object, arr) {
     } else {
       page_card.addEventListener("click", () => {
         window.location.href = object.html_url;
-      })
+      });
     }
   }
 

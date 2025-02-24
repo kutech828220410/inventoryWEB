@@ -168,8 +168,37 @@ function get_pp_med_list_header() {
         popup_med_list_div_close();
     });
 
+    let head_sort_radio_container = document.createElement("div");
+    head_sort_radio_container.classList.add("head_sort_radio_container");
+
+    med_list_sort_radio_data.forEach(element => {
+        let input = document.createElement("input");
+        input.className = "sort_med_input";
+        input.name = "sort_med_input";
+        input.type = "radio";
+        input.value = element.value;
+        input.id = element.name;
+        if(element.value == "all") {
+            input.checked = true;
+        }
+        input.addEventListener("change", () => {
+            let ppml_main_container = document.querySelector(".ppml_main_container");
+            set_pp_med_list_display();
+            ppml_main_container.scrollTop = 0;
+        });
+
+        let label = document.createElement("label");
+        label.classList.add("sort_med_label");
+        label.innerHTML = element.cht_name;
+        label.setAttribute("for", element.name);
+
+        head_sort_radio_container.appendChild(input);
+        head_sort_radio_container.appendChild(label);
+    });
+
     ppml_header_container.appendChild(ppml_h_title);
     ppml_header_container.appendChild(ppml_h_close_btn);
+    ppml_header_container.appendChild(head_sort_radio_container);
 
     return ppml_header_container;
 }
@@ -426,7 +455,18 @@ async function set_pp_med_list_display() {
         element["bed_list"].forEach(item => {
             let ppml_bed_card = document.createElement("div");
             ppml_bed_card.classList.add("ppml_bed_card");
-            ppml_bed_card.innerHTML = `${item.bednum}<div class="ppml_bed_card_qty">${+item.lqnty}</div>`;
+            // PRN標示
+            let temp_str = item.freqn.toUpperCase();
+            // console.log(temp_str);
+            // console.log(temp_str.includes("PRN"));
+            if(temp_str.includes("PRN")) {
+                ppml_bed_card.innerHTML = `
+                <div class="ppml_bed_card_PRN">P</div>${item.bednum}<div class="ppml_bed_card_qty">${+item.lqnty}</div>
+                `;
+            } else {
+                ppml_bed_card.innerHTML = `${item.bednum}<div class="ppml_bed_card_qty">${+item.lqnty}</div>`;
+            }
+            // ppml_bed_card.innerHTML = `${item.bednum}<div class="ppml_bed_card_qty">${+item.lqnty}</div>`;
             ppml_bed_card.setAttribute("m_guid", item.Master_GUID);
             ppml_bed_card.setAttribute("guid", item.GUID);
 
@@ -596,8 +636,28 @@ async function set_pp_med_list_display() {
         ppml_card_container.appendChild(ppml_card_info_container);
         ppml_card_container.appendChild(ppml_hr);
         ppml_card_container.appendChild(ppml_bed_list_container);
-
-        ppml_main_container.appendChild(ppml_card_container);
+        
+        let radio_checked_input = document.querySelector('.sort_med_input:checked');
+        // 這邊調整radio大瓶、針劑顯示
+        if(radio_checked_input.value == "all") {
+            ppml_main_container.appendChild(ppml_card_container);
+        } else if(radio_checked_input.value == "bottle") {
+            if(element.large == "L") {
+                ppml_main_container.appendChild(ppml_card_container);
+            }
+        } else if(radio_checked_input.value == "injection") {
+            if(element.injection == "Y") {
+                ppml_main_container.appendChild(ppml_card_container);
+            }
+        } else if(radio_checked_input.value == "oral") {
+            if(element.oral == "Y") {
+                ppml_main_container.appendChild(ppml_card_container);
+            }
+        } else if(radio_checked_input.value == "ice") {
+            if(element.ice == "Y") {
+                ppml_main_container.appendChild(ppml_card_container);
+            }
+        }
     });
 }
 
@@ -686,18 +746,19 @@ function sort_med_list_data(array, current_func) {
             return aStatus - bStatus;
         });
     
-    
         console.log('sortedArray', sortedArray);
         return sortedArray;
     }
 }
 
 function sort_display_med_data(arr) {
-    let temp_arr = arr.sort((a, b) => {
-        const aHasLargeL = a.large === "L" ? 1 : 0;
-        const bHasLargeL = b.large === "L" ? 1 : 0;
-        return bHasLargeL - aHasLargeL; // 讓有 large: "L" 的排前面
-    });
+    // let temp_arr = arr.sort((a, b) => {
+    //     const aHasLargeL = a.large === "L" ? 1 : 0;
+    //     const bHasLargeL = b.large === "L" ? 1 : 0;
+    //     return bHasLargeL - aHasLargeL; // 讓有 large: "L" 的排前面
+    // });
+    // let temp_arr = arr.sort((a, b) => a.name.localeCompare(b.name));
+    let temp_arr = arr;
 
     return temp_arr;
 }
