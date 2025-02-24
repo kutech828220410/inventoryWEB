@@ -90,7 +90,7 @@ async function creat_update_startime_by_IC_SN(ICSN)
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
-async function creat_get_by_CT_TIME_ST_END(date_ST,date_END)
+async function creat_get_by_CT_TIME_ST_END(date_ST, date_END)
 {
   const post_data = 
   {

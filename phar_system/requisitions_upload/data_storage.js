@@ -16,6 +16,7 @@ const process_bar_status = {
   anal: "Analysing..."
 };
 let IC_SN = "";
+let get_ic_sn_return_data;
 
 let test_data = [
   {

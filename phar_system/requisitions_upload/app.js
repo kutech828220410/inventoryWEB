@@ -274,9 +274,9 @@ function set_main_init() {
         return;
       }
 
-      handleFileInput();
+      popup_confrim_IC_SN_open();
     } else if(user_log.Code == 202) {
-      handleFileInput();
+      popup_confrim_IC_SN_open();
     } else if(user_log.Code == -200){
       console.error(user_log.Result);
     }
@@ -330,8 +330,7 @@ function set_main_header_btn_container() {
   let mhb_new_btn_container = document.createElement("div");
   mhb_new_btn_container.classList.add("mhb_new_btn_container");
   mhb_new_btn_container.addEventListener("click", () => {
-    let pic_input = document.getElementById("pic_input");
-    pic_input.click();
+    popup_confrim_IC_SN_open();
   })
 
   let mhb_new_img = document.createElement("img");
@@ -1073,7 +1072,8 @@ function set_input_file_event() {
             op_id: loggedID,
             op_name: loggedName,
             base64: base64,
-            batch_id: batch_id
+            batch_id: batch_id,
+            IC_SN: IC_SN
           }
         ]
       };

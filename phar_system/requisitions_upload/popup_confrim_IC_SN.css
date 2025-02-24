@@ -1,0 +1,40 @@
+.popup_confrim_IC_SN {
+    width: 320px;
+}
+
+.ppcis_header_container {
+    width: 100%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+.ppcis_h_title {
+    padding: 4px 48px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    background-color: rgb(222, 222, 222);
+    color: #000000;
+    border-radius: 5px;
+}
+.ppcis_h_close_btn {
+    position: absolute;
+    cursor: pointer;
+    display: block;
+    width: 36px;
+    top: 0px;
+    right: 0px;
+}
+.ppcis_main_container {
+    margin-bottom: 24px;
+}
+.ppcis_select {
+    padding: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    width: 100%;
+    border: 1px solid #000000;
+    border-radius: 5px;
+}
