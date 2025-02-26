@@ -572,11 +572,11 @@ function set_p_bed_med_container() {
 
     let pbm_header_container = set_pbm_header_container();
     let pbm_main_container = set_pbm_main_container();
-    let pbm_footer_container = set_pbm_footer_container();
+    // let pbm_footer_container = set_pbm_footer_container();
 
     p_bed_med_container.appendChild(pbm_header_container);
     p_bed_med_container.appendChild(pbm_main_container);
-    p_bed_med_container.appendChild(pbm_footer_container);
+    // p_bed_med_container.appendChild(pbm_footer_container);
 
     return p_bed_med_container;
 }
@@ -914,9 +914,9 @@ function set_pbm_main_container() {
         med_card_storage.classList.add("med_card_storage");
         med_card_storage.innerHTML = `儲位：${element.store_position}`;
 
-        let med_card_other_phar = document.createElement("div");
-        med_card_other_phar.classList.add("med_card_other_phar");
-        med_card_other_phar.innerHTML = element.pharm_name;
+        // let med_card_other_phar = document.createElement("div");
+        // med_card_other_phar.classList.add("med_card_other_phar");
+        // med_card_other_phar.innerHTML = element.pharm_name;
 
         temp_check_isArray = page_setting_params && page_setting_params["display_block"] && page_setting_params["display_block"].value;
 
@@ -1056,6 +1056,28 @@ function set_pbm_main_container() {
         med_card_open_tigger.src = "../image/left-arrow.png";
         med_card_open_tigger.setAttribute("trigger", false);
 
+        let med_card_mid_display_container = document.createElement("div");
+        med_card_mid_display_container.classList.add("med_card_mid_display_container");
+
+        let med_card_light_btn_for_bed = document.createElement("div");
+        med_card_light_btn_for_bed.classList.add("med_card_light_btn_for_bed");
+        med_card_light_btn_for_bed.innerHTML = "亮燈";
+        // med_card_light_btn_for_bed.setAttribute("code");
+        // med_card_light_btn_for_bed.setAttribute("name");
+        // med_card_light_btn_for_bed.setAttribute("cht_name");
+        med_card_light_btn_for_bed.addEventListener("click", async () => {
+            if(current_med_table == "all") {
+                await set_light_table(element.code, element.name, element.cht_name);
+                popup_light_table_select_div_open();
+            } else if(current_med_table == "") {
+                await set_light_table(element.code, element.name, element.cht_name);
+                popup_light_table_select_div_open();
+            } else {
+                await light_off_func();
+                await light_on_func(element.code, current_med_table.name, current_med_table.name.type);
+            }
+        });
+
         let med_card_qty = document.createElement("div");
         med_card_qty.classList.add("med_card_qty");
         let temp_qty = +element.qty
@@ -1063,6 +1085,9 @@ function set_pbm_main_container() {
             <div>總量</div>
             <div>${temp_qty}</div>
         `;
+
+        med_card_mid_display_container.appendChild(med_card_light_btn_for_bed);
+        med_card_mid_display_container.appendChild(med_card_qty);
 
         let med_cart_warnning_container = document.createElement("div");
         med_cart_warnning_container.classList.add("med_cart_warnning_container");
@@ -1100,12 +1125,12 @@ function set_pbm_main_container() {
 
         med_card_main_display_container.appendChild(med_cart_warnning_container);
 
-        if(element.pharm_code != "") {
-            med_card_main_display_container.appendChild(med_card_other_phar);
-        }
+        // if(element.pharm_code != "") {
+        //     med_card_main_display_container.appendChild(med_card_other_phar);
+        // }
         med_card_title_container.appendChild(med_card_checkbox_label);
         med_card_title_container.appendChild(med_card_main_display_container);
-        med_card_title_container.appendChild(med_card_qty);
+        med_card_title_container.appendChild(med_card_mid_display_container);
         med_card_title_container.appendChild(med_card_big_bottle_icon);
         med_card_title_container.appendChild(med_card_open_tigger);
 
@@ -1630,9 +1655,9 @@ function open_med_detail_info() {
         let med_card_container = item.parentElement.parentElement;
         let temp_h = item.parentElement.clientHeight;
         let temp_h2 = item.parentElement.parentElement.childNodes[1].clientHeight + item.parentElement.parentElement.childNodes[2].clientHeight;
-        console.log("容器", med_card_container);
-        console.log("初始顯示", item.parentElement);
-        console.log("卡片高度", temp_h);
+        // console.log("容器", med_card_container);
+        // console.log("初始顯示", item.parentElement);
+        // console.log("卡片高度", temp_h);
         med_card_container.style.height = `${temp_h}px`;
 
         item.addEventListener("click", () => {
@@ -1724,7 +1749,7 @@ async function light_off_func() {
 
 async function light_on_func(code, phar, type) {
     await light_off_func();
-    console.log("開始亮燈");
+    console.log("開始亮燈+++++++++++++++++++++++++++++");
     light_on_arr.ValueAry = [];
 
     light_on_arr.ValueAry.push(code);

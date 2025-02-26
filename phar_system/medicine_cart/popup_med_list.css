@@ -45,17 +45,35 @@
     top: 0px;
     left: 0px;
 }
-.head_sort_radio_container {
+
+.ppml_head_sort_container {
+    width: 100%;
+}
+.ppml_head_sort_title {
+    margin-bottom: 12px;
+    font-weight: 600;
+    font-size: 20px;
+}
+.head_sort_radio_container,
+.head_med_table_filter_container {
     width: 100%;
     display: grid;
-    grid-template-columns: 30% 30% 30%;
+    grid-template-columns: 23% 23% 23% 23%;
     gap: 12px;
     justify-content: space-between;
 }
-.sort_med_input {
+.head_med_table_filter_line {
+    height: 1px;
+    width: 100%;
+    background-color: #3e3e3e;
+    margin: 12px 0px;
+}
+.sort_med_input,
+.filter_med_table_input {
     display: none;
 }
-.sort_med_label {
+.sort_med_label,
+.filter_med_label {
     border-radius: 4px;
     padding: 4px;
     width: 100%;
@@ -65,7 +83,8 @@
     border: 1px solid #000;
     cursor: pointer;
 }
-.head_sort_radio_container input[type="radio"]:checked + label {
+.head_sort_radio_container input[type="radio"]:checked + label,
+.head_med_table_filter_container input[type="radio"]:checked + label  {
     background-color: #5e5e5e;
     transition: all 0.2sease-out;
     color: #ffffff;
@@ -155,6 +174,10 @@
     display: grid;
     grid-template-columns: 20% 30% 30%;
 }
+.ppml_bed_card_num {
+    font-size: 20px;
+    font-weight: 600;
+}
 .ppml_ci_info_container {
     text-align: center;
 }
@@ -204,16 +227,17 @@
     justify-content: center;
     align-items: center;
     position: absolute;
-    width: 20px;
-    height: 20px;
+    min-width: 26px;
+    height: 26px;
     background-color: #f7b875;
-    border-radius: 10px;
-    right: -4px;
-    top: -6px;
+    border-radius: 13px;
+    right: -6px;
+    top: -8px;
     color: #000;
     padding-left: 1px;
     padding-bottom: 1px;
     font-weight: 600;
+    font-size: 18px;
 }
 .ppml_bed_card_PRN {
     top: -6px;
@@ -255,6 +279,17 @@
     /* .popup_med_list_div {
         width: 360px;
     } */
+    .ppml_h_title {
+        width: 80%;
+    }
+    .head_sort_radio_container,
+    .head_med_table_filter_container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 30% 30% 30%;
+        gap: 12px;
+        justify-content: space-between;
+    }
     .ppml_card_info_container {
         display: flex;
         flex-wrap: wrap;
@@ -269,7 +304,7 @@
         flex-grow: 1;
     }
     .ppml_bed_list_container {
-        grid-template-columns: 25% 25% 25% 25%;
+        grid-template-columns: 30% 30% 30%;
     }
     .ppml_light_btn_container {
         display: grid;

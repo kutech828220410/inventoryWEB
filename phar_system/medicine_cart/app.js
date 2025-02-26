@@ -613,6 +613,8 @@ async function get_cart_list_and_med_table() {
 
   let temp_table_list = await get_serversetting_by_department_type(current_pharmacy.phar_name);
   med_table = temp_table_list.Data;
+  //  插入藥品總量選單條及台選單
+  set_med_table_filter_radio();
   console.log(med_table);
 
   let cart_option_container = document.querySelector(".cart_option_container");

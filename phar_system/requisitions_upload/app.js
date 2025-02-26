@@ -150,13 +150,13 @@ function set_main_init() {
   let new_add_pic_btn = document.createElement("div");
   new_add_pic_btn.classList.add("new_add_pic_btn");
   new_add_pic_btn.addEventListener("click", async () => {
-    Set_main_div_enable(true);
     // 索取回執
     // let pic_input = document.getElementById("pic_input");
     console.log(user_log);
     if(user_log.Code == 201) {
       // 確認回執
       if(confirm("尚有未辨識完成或未完成輸入單據，是否恢復？")) {
+        Set_main_div_enable(true);
         let loggedID = sessionStorage.getItem('loggedID'); 
         let post_data = {
           ValueAry: [loggedID],
