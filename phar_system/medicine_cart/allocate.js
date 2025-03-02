@@ -1074,7 +1074,7 @@ function set_pbm_main_container() {
                 popup_light_table_select_div_open();
             } else {
                 await light_off_func();
-                await light_on_func(element.code, current_med_table.name, current_med_table.name.type);
+                await light_on_func(element.code, current_med_table.name, current_med_table.type);
             }
         });
 

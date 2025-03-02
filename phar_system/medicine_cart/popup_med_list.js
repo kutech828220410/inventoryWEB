@@ -493,11 +493,16 @@ async function set_pp_med_list_display() {
             // console.log(temp_str.includes("PRN"));
             if(temp_str.includes("PRN")) {
                 ppml_bed_card.innerHTML = `
-                <div class="ppml_bed_card_PRN">P</div><span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}</div>
+                <span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}P</div>
                 `;
             } else {
                 ppml_bed_card.innerHTML = `<span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}</div>`;
             }
+            // else if(item.freqn == "PRN") {
+            //     ppml_bed_card.innerHTML = `
+            //     <div class="ppml_bed_card_PRN">P</div><span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}</div>
+            //     `;
+            // }
             // ppml_bed_card.innerHTML = `<span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}</div>`;
             ppml_bed_card.setAttribute("m_guid", item.Master_GUID);
             ppml_bed_card.setAttribute("guid", item.GUID);
@@ -803,7 +808,16 @@ function sort_display_med_data(arr) {
     //     return bHasLargeL - aHasLargeL; // 讓有 large: "L" 的排前面
     // });
     // let temp_arr = arr.sort((a, b) => a.name.localeCompare(b.name));
-    let temp_arr = arr;
+    // for (let i = 0; i < arr.length; i++) {
+    //     const element = arr[i];
+    //     if(element.dispens_name != "Y") {
+    //         console.log("element.dispens_name", element.dispens_name);
+    //         console.log("排除～～～～");
+    //     }
+    // }
+    let temp_arr = arr.filter(item => item.dispens_name == "Y");
+    // let temp_arr = arr;
+    console.log("排序過濾後", temp_arr);
 
     return temp_arr;
 }
