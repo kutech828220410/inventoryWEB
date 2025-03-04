@@ -59,7 +59,8 @@
     /* width: 500px; */
     justify-content: flex-end;
 }
-.pb_list_btn {
+.pb_list_btn,
+.ppmcl_btn {
     position: relative;
 }
 .pb_list_notice {

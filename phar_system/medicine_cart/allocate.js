@@ -224,6 +224,30 @@ async function allocate_display_init(light_on) {
         });
         console.log("回到最上面done");
 
+        post_data = [current_cart.phar, current_cart.hnursta];
+        console.log(post_data);
+    
+        med_change_data = await get_patient_with_NOdispense(post_data);
+        med_change_data = med_change_data.Data;
+        med_change_data = med_change_data.filter((e) => {
+            return e.cpoe_change_status != "";
+        });
+    
+        med_change_data = med_change_data.filter((e) => {
+            return e.cpoe.length != 0;
+        });
+    
+        console.log("藥品異動確認", med_change_data);
+        console.log(med_change_data.length);
+        if(med_change_data.length != 0) {
+            console.log("加入驚嘆號");
+            let ppmcl_btn = document.querySelector(".ppmcl_btn");
+            ppmcl_btn.innerHTML = `藥品異動<img class="pb_list_notice" src="../image/notice_mark.png">`;
+        } else {
+            console.log("去除驚嘆號");
+            ppmcl_btn.innerHTML = `藥品異動`;
+        }
+
         Set_main_div_enable(false);
     }
 }
