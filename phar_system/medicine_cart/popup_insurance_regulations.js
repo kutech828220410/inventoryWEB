@@ -62,6 +62,7 @@ async function popup_insurance_regulations_div_open() {
     popup_insurance_regulations_div.Set_Visible(true);
 }
 async function set_ppir_func(content) {
+    console.log(content);
     let temp_div = document.querySelector(`.ppir_main_content`);
     if(content == "") {
         temp_div.innerHTML = "無資料";

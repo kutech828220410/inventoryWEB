@@ -19,7 +19,6 @@ async function signalR_init()
 
     connection.on("ReceiveMessage", function (user ,message)
     {
-        
         triggerReceivedEvent(user, message);
     });
     

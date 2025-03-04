@@ -58,8 +58,7 @@
 .head_med_table_filter_container {
     width: 100%;
     display: grid;
-    grid-template-columns: 23% 23% 23% 23%;
-    gap: 12px;
+    grid-template-columns: 19% 19% 19% 19% 19%;
     justify-content: space-between;
 }
 .head_med_table_filter_line {
@@ -76,17 +75,16 @@
 .filter_med_label {
     border-radius: 4px;
     padding: 4px;
-    width: 100%;
     text-align: center;
     background-color: #d7d7d7;
-    transition: all 0.2sease-out;
+    transition: all 0.2s ease-out;
     border: 1px solid #000;
     cursor: pointer;
 }
 .head_sort_radio_container input[type="radio"]:checked + label,
 .head_med_table_filter_container input[type="radio"]:checked + label  {
     background-color: #5e5e5e;
-    transition: all 0.2sease-out;
+    transition: all 0.2s ease-out;
     color: #ffffff;
 }
 .ppml_footer_container {

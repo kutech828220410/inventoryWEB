@@ -87,7 +87,7 @@ async function confirm_popup_input()
     END_QTY_input.value = '';
     const OP = sessionData.Name;
     //輸入盤點量後創造SUB內容
-    sub_content_add(GUID , END_QTY , OP, CODE);
+    sub_content_add(GUID, END_QTY , OP, CODE);
     hide_popup_input();
 }
 async function delete_row_popup_input(GUID , Master_GUID)

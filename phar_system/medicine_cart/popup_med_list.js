@@ -488,12 +488,14 @@ async function set_pp_med_list_display() {
             let ppml_bed_card = document.createElement("div");
             ppml_bed_card.classList.add("ppml_bed_card");
             // PRN標示
-            let temp_str = item.freqn.toUpperCase();
+            // let temp_str = item.freqn.toUpperCase();
             // console.log(temp_str);
             // console.log(temp_str.includes("PRN"));
-            if(temp_str.includes("PRN")) {
+            if(item.selfPRN == "Y") {
+                // 調整自費PRN顯示
+                // ppml_bed_card.innerHTML = `<span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}</div>`;
                 ppml_bed_card.innerHTML = `
-                <span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}P</div>
+                <div class="ppml_bed_card_PRN">P</div><span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}</div>
                 `;
             } else {
                 ppml_bed_card.innerHTML = `<span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}</div>`;

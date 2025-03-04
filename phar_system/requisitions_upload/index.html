@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="../UI/style/navBar.css">
   <link rel="stylesheet" href="process_bar.css">
   <link rel="stylesheet" href="popup_retake.css">
+  <link rel="stylesheet" href="popup_update_info.css?v=1.4">
   <script src="../Function/Basic.js?v=1.14"></script>
   <script>
     (async function() 
@@ -35,6 +36,7 @@
           loadScript("popup_login.js");
           loadScript("popup_input_po_num.js");
           loadScript("popup_confrim_IC_SN.js");
+          loadScript("popup_update_info.js");
           loadScript("../UI/navBar.js");
           loadScript("../api/web_permissions.js");
           loadScript("popup_retake.js");
@@ -92,7 +94,6 @@
     await popup_login_init();
     
     popup_login_finishedEvent.push(popup_login_finished);
-    
 
     if(!IsLogged) {
       await popup_login_div.Show();
@@ -101,6 +102,9 @@
 
     get_popup_retake();
     popup_retake_div.Set_Visible(false);
+
+    get_popup_update_info();
+    popup_update_info_div.Set_Visible(false);
 
     get_popup_confrim_IC_SN();
     popup_confrim_IC_SN.Set_Visible(false);
@@ -114,6 +118,56 @@
   //   popup_creatSelect_finished();
   // }
   })();
+
+  signalR_init(`${api_ip}chatHub`);
+  ChathubReceivedEvent = ChathubReceived;
+  function ChathubReceived(user, message)
+  {
+    var jsonObject = JSON.parse(message); 
+    console.log('ReceivedEvent',jsonObject);
+    if(jsonObject.Method == 'sub_content_add' || jsonObject.Method == 'sub_contents_delete_by_GUID')
+    {
+       if(jsonObject.Data.IC_SN == current_IC_SN)
+       {
+          Replace_data_by_content(jsonObject);
+          if(popup_input_div.Get_Visible())
+          {
+              if(popup_input_div_Content.GUID == jsonObject.Data.GUID) show_popup_input(jsonObject.Data);                     
+          }
+     
+       } 
+    } else if (jsonObject.Method == 'creat_lock_by_IC_SN') {
+      if (jsonObject.Data.IC_SN == data['Data'][0].IC_SN) {
+        alert(`此驗收單已被鎖定，即將退出${data['Data'][0].IC_NAME}驗收單`);
+        popup_creatSelect_div.Show();
+      }
+    }
+  };
+  ChathubErrorEvent = ChathubError;
+  function ChathubError()
+  {
+    // alert("連線斷開,重新整理");
+    // location.reload();
+    signalR_init(`${api_ip}chatHub`);
+    console.log("reconnect....");
+  }
+
+
+  BarcodeKeyinEvent = BarcodeKeyin;
+  async function BarcodeKeyin(parsedCode)
+  {
+     const header_serch_text = document.querySelector("#header_serch_text");
+     console.log(`[${arguments.callee.name}]`,State);
+     if (header_serch_text.contains(document.activeElement) == false && Header_state.textContent == StateType.等待條碼刷入)
+     {
+        if(Header_state.textContent == StateType.等待條碼刷入)
+        {
+            console.log("BarcodeKeyin" , "顯示藥品資料")
+            serch_CODE_input_enter(parsedCode);
+        }
+      
+     }
+  }
   
   var barcode_value = '';
     // 監聽頁面的keydown事件

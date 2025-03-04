@@ -1,46 +1,80 @@
 let popup_prescription_info_div;
+// let ppp_info_label_data = [
+//     {
+//         name: "id",
+//         title: "序號"
+//     },
+//     {
+//         name: "name",
+//         title: "藥名"
+//     },
+//     {
+//         name: "classno",
+//         title: "分類號"
+//     },
+//     {
+//         name: "classname",
+//         title: "類別名"
+//     },
+//     {
+//         name: "trade",
+//         title: "藥品商品名"
+//     },
+//     {
+//         name: "class",
+//         title: "藥品分類"
+//     },
+//     {
+//         name: "txclass",
+//         title: "藥品治療分類"
+//     },
+//     {
+//         name: "indic",
+//         title: "適應症"
+//     },
+//     {
+//         name: "dosage_info",
+//         title: "用法劑量"
+//     },
+// ];
 let ppp_info_label_data = [
     {
-        name: "id",
+        name: "PHARMACOLOGICAL_SEQ",
         title: "序號"
     },
     {
-        name: "name",
+        name: "NAME",
         title: "藥名"
     },
     {
-        name: "classno",
+        name: "PHARMACOLOGICAL_CODE",
         title: "分類號"
     },
     {
-        name: "classname",
+        name: "PHARMACOLOGICAL_NAME",
         title: "類別名"
     },
     {
-        name: "generic",
-        title: "藥品通名"
-    },
-    {
-        name: "trade",
+        name: "DIANAME",
         title: "藥品商品名"
     },
     {
-        name: "class",
+        name: "TYPE",
         title: "藥品分類"
     },
     {
-        name: "txclass",
+        name: "TREATMENT_CATEGORY_CODE",
         title: "藥品治療分類"
     },
     {
-        name: "indic",
+        name: "INDICATION",
         title: "適應症"
     },
     {
-        name: "dosage_info",
+        name: "INSTRUCTIONS",
         title: "用法劑量"
     },
-]
+];
 
 function get_popup_prescription_info() {
     popup_prescription_info_div = new Basic_popup_Div('popup_prescription_info_div','popup_prescription_info_div','','');
@@ -112,6 +146,7 @@ async function popup_prescription_info_div_open() {
     popup_prescription_info_div.Set_Visible(true);
 }
 async function set_ppp_info_func(element) { 
+    console.log(element);
     ppp_info_label_data.forEach(item => {
         let temp_div = document.querySelector(`.ppp_info_main_content_${item.name}`);
         if(element == "") {

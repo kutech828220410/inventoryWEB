@@ -42,7 +42,14 @@ function get_pp_confrim_IC_SN_main() {
     ppcis_select.classList.add("ppcis_select");
     ppcis_select.id = "ppcis_select";
 
+    let ppcis_input = document.createElement("input");
+    ppcis_input.classList.add("ppcis_input");
+    ppcis_input.id = "ppcis_input";
+    ppcis_input.type = "text";
+    ppcis_input.placeholder = "請輸入驗收單號";
+
     ppcis_main_container.appendChild(ppcis_select);
+    // ppcis_main_container.appendChild(ppcis_input);
 
     return ppcis_main_container;
 }
@@ -56,6 +63,7 @@ function get_pp_confrim_IC_SN_footer() {
     ppcis_f_select_btn.innerHTML = `確認`;
     ppcis_f_select_btn.addEventListener("click", async () => {
         let ppcis_select = document.querySelector(".ppcis_select");
+        // let ppcis_input = document.querySelector(".ppcis_input");
         if(ppcis_select.value == "none") {
             alert("未選取請購單號");
             return;
@@ -64,6 +72,15 @@ function get_pp_confrim_IC_SN_footer() {
             popup_confrim_IC_SN_close();
             handleFileInput();
         }
+
+        // if(!ppcis_input.value) {
+        //     alert("未選取請購單號");
+        //     return;
+        // } else {
+        //     IC_SN = ppcis_input.value;
+        //     popup_confrim_IC_SN_close();
+        //     handleFileInput();
+        // }
     });
 
     ppcis_footer_container.appendChild(ppcis_f_select_btn);
@@ -81,7 +98,7 @@ async function popup_confrim_IC_SN_open() {
 async function get_all_IC_SN() {
     let currentDate = new Date();
     let date_end = DateTimeAddDays(currentDate, 1);
-    let date_start = DateTimeAddDays(currentDate, -30);
+    let date_start = DateTimeAddDays(currentDate, -7);
     date_start = getDateStr(date_start);
     date_end = getDateStr(date_end);
     

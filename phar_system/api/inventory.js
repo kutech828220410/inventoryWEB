@@ -422,6 +422,7 @@ async function sub_content_add_single(_Master_GUID, _END_QTY, _OP)
 // 引數 _OP: 操作人
 async function sub_content_add(_Master_GUID, _END_QTY, _OP)
 {
+  console.log("================================");
   const post_data = 
   {
     "Data": {

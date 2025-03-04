@@ -134,6 +134,8 @@ function popup_med_list_search_div_open() {
 }
 async function med_list_search_result() {
     let ppmls_table_select = document.querySelector(".ppmls_table_select");
+    let filter_med_table_input = document.querySelector(`.filter_med_table_input[value="${ppmls_table_select.value}"]`);
+    filter_med_table_input.checked = true;
     med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, ppmls_table_select.value);
     med_list_data = med_list_data.Data;
     med_list_data = med_list_data.filter((item) => {

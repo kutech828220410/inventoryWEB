@@ -1,26 +1,48 @@
 let popup_similar_drugs_div;
+// let ppsd_label_data = [
+//     {
+//         name: "name",
+//         title: "藥品名"
+//     },
+//     {
+//         name: "price",
+//         title: "健保價"
+//     },
+//     {
+//         name: "cost",
+//         title: "售價"
+//     },
+//     {
+//         name: "freqn",
+//         title: "頻次代號"
+//     },
+//     {
+//         name: "dosage",
+//         title: "劑量"
+//     },
+// ];
 let ppsd_label_data = [
     {
-        name: "name",
+        name: "NAME",
         title: "藥品名"
     },
     {
-        name: "price",
+        name: "HealthInsurancePrice",
         title: "健保價"
     },
     {
-        name: "cost",
+        name: "SalePrice",
         title: "售價"
     },
     {
-        name: "freqn",
+        name: "SUGGESTED_FREQUENCY",
         title: "頻次代號"
     },
     {
-        name: "dosage",
+        name: "SUGGESTED_DOSE",
         title: "劑量"
     },
-]
+];
 
 function get_popup_similar_drugs() {
     popup_similar_drugs_div = new Basic_popup_Div('popup_similar_drugs_div','popup_similar_drugs_div','','');
@@ -91,10 +113,17 @@ function popup_similar_drugs_div_close() {
 async function popup_similar_drugs_div_open() {
     popup_similar_drugs_div.Set_Visible(true);
 }
-async function set_ppsd_func(element) {
+async function set_ppsd_func(element, params) {
+    let temp_info = element
+    if(params == "" || params == undefined) {
+        
+    } else {
+        Object.assign(temp_info, params);
+    }
+    console.log(element);
     ppsd_label_data.forEach(item => {
         let temp_div = document.querySelector(`.ppsd_main_content_${item.name}`);
-        if(element == "") {
+        if(element == "" || element == undefined) {
             temp_div.innerHTML = "無資料";
         } else {
             temp_div.innerHTML = element[`${item.name}`];

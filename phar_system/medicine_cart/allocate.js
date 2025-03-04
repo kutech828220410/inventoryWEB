@@ -94,7 +94,6 @@ async function allocate_display_init(light_on) {
         function_display_container.appendChild(no_data_div);
         Set_main_div_enable(false);
     } else {
-
         // 定位第一床與最後一床
         first_patient_bed_index = -1;
         final_patient_bed_index = med_cart_beds_data.length;
@@ -122,20 +121,26 @@ async function allocate_display_init(light_on) {
 
         // if(pre_patient_bed_index == -1 && next_patient_bed_index == -1) {
             // 第一次載入病床資料
+            // 預設調劑台為全部
             let post_data;
             if(current_med_table == "" || current_med_table == "all") {
-    
                 if(current_func == "allocate") {
                     current_med_table = "all";
                     last_current_med_table = "all";
                     let med_table_content = document.querySelector(".med_table_content");
                     med_table_content.innerHTML = "全部";
+
+                    post_data = {
+                        Value: current_med_table,
+                        ValueAry: [med_cart_beds_data[patient_bed_index].GUID]
+                    }
+                } else if (current_func == "review") {
+                    post_data = {
+                        Value: "all",
+                        ValueAry: [med_cart_beds_data[patient_bed_index].GUID]
+                    }
                 }
     
-                post_data = {
-                    Value: current_med_table,
-                    ValueAry: [med_cart_beds_data[patient_bed_index].GUID]
-                }
             } else {
                 post_data = {
                     Value: current_med_table.name,
@@ -977,7 +982,7 @@ function set_pbm_main_container() {
             }
         } else {
             if(!element["med_cloud"][0].NAME) {
-                med_card_name.innerHTML = ``;
+                med_card_name.innerHTML = `${element.name}`;
             } else {
                 med_card_name.innerHTML = `${element["med_cloud"][0].NAME}`;
             }
@@ -997,7 +1002,7 @@ function set_pbm_main_container() {
             }
         } else {
             if(!element["med_cloud"][0].CHT_NAME) {
-                med_card_cht_name.innerHTML = ``;
+                med_card_cht_name.innerHTML = `${element.cht_name}`;
             } else {
                 med_card_cht_name.innerHTML = `${element["med_cloud"][0].CHT_NAME}`;
             }
@@ -1147,11 +1152,12 @@ function set_pbm_main_container() {
             switch (item.short_name) {
                 case "處方":
                     med_detail_info_div.addEventListener("click", () => {
-                        if(element.med_info.length == 0) {
+                        console.log(element.med_cloud);
+                        if(element.med_cloud.length == 0) {
                             set_ppp_info_func("");
                             popup_prescription_info_div_open();
                         } else {
-                            set_ppp_info_func(element.med_info[0]);
+                            set_ppp_info_func(element.med_cloud[0]);
                             popup_prescription_info_div_open();
                         }
                     })
@@ -1176,31 +1182,33 @@ function set_pbm_main_container() {
                     break;
                 case "仿單":
                     med_detail_info_div.addEventListener("click", () => {
-                        if(element.med_info.length == 0) {
+                        if(element.med_cloud.length == 0) {
                             alert("無連接資料");
                         } else {
-                            window.open(element.med_info[0].med_packeage, '_blank');
+                            window.open(element.med_cloud[0].PIL_URL, '_blank');
+                            // window.open(element.med_cloud[0].med_packeage, '_blank');
                         }
                     })
                     break;
                 case "同類":
                     med_detail_info_div.addEventListener("click", () => {
-                        if(element.med_info.length == 0) {
+                        if(element.med_cloud.length == 0) {
                             set_ppsd_func("");
                             popup_similar_drugs_div_open();
                         } else {
-                            set_ppsd_func(element.med_info[0]);
+                            set_ppsd_func(element.med_cloud[0], element.medprice[0]);
                             popup_similar_drugs_div_open();
                         }
                     })
                     break;
                 case "規範":
                     med_detail_info_div.addEventListener("click", () => {
-                        if(element.med_info.length == 0) {
+                        if(element.med_cloud.length == 0) {
                             set_ppir_func("");
                             popup_insurance_regulations_div_open();
                         } else {
-                            let temp_text = element.med_info[0].spec.replace(/\n/g, '<br><br>')
+                            let temp_text = element.med_cloud[0].HI_REGULATION.replace(/\n/g, '<br><br>');
+                            // let temp_text = element.med_cloud[0].spec.replace(/\n/g, '<br><br>');
                             set_ppir_func(temp_text);
                             popup_insurance_regulations_div_open();
                         }
@@ -1208,11 +1216,12 @@ function set_pbm_main_container() {
                     break;
                 case "註解":
                     med_detail_info_div.addEventListener("click", () => {
-                       if(element.med_info.length == 0) {
+                       if(element.med_cloud.length == 0) {
                         set_pppns_func("");
                         popup_physician_notes_div_open();
                        } else {
-                           set_pppns_func(element.med_info[0].note);
+                           set_pppns_func(element.med_cloud[0].NOTE);
+                        //    set_pppns_func(element.med_cloud[0].note);
                            popup_physician_notes_div_open();
                        }
                     })
@@ -1598,8 +1607,11 @@ async function set_post_data_to_check_dispense() {
     let return_data;
     let post_data = {
         Value: bed_guid,
-        ValueAry: []
+        ValueAry: [],
+        ServerName: "",
+        ServerType: ""
     }
+
     let post_data2 = {
         Data: [
             {
@@ -1608,7 +1620,19 @@ async function set_post_data_to_check_dispense() {
             }
         ],
         ValueAry: [],
-        Value: ""
+        Value: "",
+        ServerName: "",
+        ServerType: ""
+    }
+
+    console.log("調劑", current_med_table);
+    if(current_med_table == "all" || current_med_table == "") {
+
+    } else {
+        post_data.ServerName = current_med_table.name;
+        post_data.ServerType = current_med_table.type;
+        post_data2.ServerName = current_med_table.name;
+        post_data2.ServerType = current_med_table.type;
     }
 
     med_card_checkbox.forEach(element => {
@@ -1630,7 +1654,7 @@ async function set_post_data_to_check_dispense() {
     } else {
         post_data.ValueAry[0] = "";
     }
-    console.log(post_data);
+    console.log("調劑post_data", post_data);
     if(current_func == "allocate") {
         return_data = await api_med_cart_check_dispense(post_data);
     } else {
@@ -1640,7 +1664,7 @@ async function set_post_data_to_check_dispense() {
     
     if(med_log_arr.length > 0) {
         post_data2.ValueAry[0] = med_log_arr.join(";");
-        console.log(post_data2);
+        console.log("調劑log post_data", post_data2);
         await add_med_inventory_log(post_data2);
         
         med_log_arr = [];

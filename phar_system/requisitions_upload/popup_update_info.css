@@ -1,0 +1,104 @@
+.popup_update_info_div {
+    width: 480px;
+}
+
+.ppui_header_container {
+    width: 100%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+.ppui_h_title {
+    padding: 4px 48px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    background-color: rgb(222, 222, 222);
+    color: #000000;
+    border-radius: 5px;
+}
+.ppui_h_close_btn {
+    position: absolute;
+    cursor: pointer;
+    display: block;
+    width: 36px;
+    top: 0px;
+    right: 0px;
+}
+.ppui_h_cart_name {
+    padding: 0px 10px;
+    font-size: 24px;
+    font-weight: 600;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.ppui_po_num_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.ppui_content_container {
+    display: grid;
+    grid-template-columns: 100%;
+    gap: 8px;
+}
+.ppui_text_container {
+    display: flex;
+}
+.ppui_label {
+    font-size: 16px;
+    font-weight: 600;
+    margin-right: 12px;
+    padding: 2px 12px;
+    border-radius: 5px;
+    background-color: rgb(195, 195, 195);
+    display: block;
+    text-align: center;
+    min-width: 88px;
+}
+
+.ppui_input {
+    flex-grow: 1;
+    padding: 2px 6px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 5px;
+    border: 1px solid rgb(0, 0, 0);
+}
+.ppui_img {
+    display: block;
+    width: 100%;
+    margin-bottom: 12px;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+.ppui_po_num_div {
+    flex-grow: 1;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 5px;
+    margin-right: 12px;
+}
+.ppui_po_num_div_update_btn {
+    padding: 2px 16px;
+    flex-shrink: 1;
+}
+
+.ppui_footer_container {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+}
+.ppui_f_btn {
+    width: 100%;
+}
+
+@media screen and (max-width: 550px) {
+    .popup_update_info_div {
+        width: 340px;
+    }
+}

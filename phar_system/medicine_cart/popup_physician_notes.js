@@ -62,6 +62,7 @@ async function popup_physician_notes_div_open() {
     popup_physician_notes_div.Set_Visible(true);
 }
 async function set_pppns_func(content) {
+    console.log(content);
     let temp_div = document.querySelector(`.pppns_main_content`);
     if(content == "") {
         temp_div.innerHTML = "無資料";

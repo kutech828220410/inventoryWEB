@@ -122,3 +122,35 @@ let test_data = [
     Result: "查無對應單號資料",
   },
 ];
+let ppui_label_data = [
+  {
+    name: "藥名",
+    value: "name",
+    type: "text",
+  },
+  {
+    name: "中文名",
+    value: "cht_name",
+    type: "text",
+  },
+  {
+    name: "單號",
+    value: "po_num",
+    type: "update",
+  },
+  {
+    name: "批號",
+    value: "batch_num",
+    type: "input",
+  },
+  {
+    name: "效期",
+    value: "expirydate",
+    type: "date",
+  },
+  {
+    name: "數量",
+    value: "qty",
+    type: "input",
+  },
+]

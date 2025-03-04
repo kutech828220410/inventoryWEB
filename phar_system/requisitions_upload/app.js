@@ -941,7 +941,10 @@ function set_card(data) {
       card_bottom.addEventListener("click", async (event) => {
         Set_main_div_enable(true);
         
-        await set_popup_input_po_num(card_bottom.getAttribute("guid"));
+        // await set_popup_input_po_num(card_bottom.getAttribute("guid"));
+        await popup_update_info_div_open(card_bottom.getAttribute("guid"));
+
+        Set_main_div_enable(false);
       })
     }
   
@@ -1079,6 +1082,7 @@ function set_input_file_event() {
       };
 
       let return_data = await img_presave(post_data);
+      console.log("presave return data", return_data);
       if(return_data.Code == 200) {
         set_process_bar_log(files_length, i - fail_file_count, process_bar_status.load);
         batch_id_return.push(return_data.Data[0]);
@@ -1109,6 +1113,7 @@ function set_input_file_event() {
         if(return_data.Data[0].Code_status == 200 || return_data.Data[0].Code_status == -2 || return_data.Data[0].Code_status == -1) {
           console.log("驗收單辨識完成", return_data);
           orgin_list_data.push(return_data.Data[0]);
+
           set_process_bar_log(batch_id_return.length, i - fail_file_count, process_bar_status.anal);
           set_upload_data_display(return_data.Data[0]);
         } else if(return_data.Data[0].Code_status == -4) {
@@ -1446,7 +1451,8 @@ function update_card(div, data) {
       card_bottom.addEventListener("click", async (event) => {
         Set_main_div_enable(true);
         
-        await set_popup_input_po_num(card_bottom.getAttribute("guid"));
+        // await set_popup_input_po_num(card_bottom.getAttribute("guid"));
+        await popup_update_info_div_open(card_bottom.getAttribute("guid"));
 
         Set_main_div_enable(false);
       })
@@ -1567,15 +1573,54 @@ async function batch_check() {
   }
   let return_data = await po_check_api(post_data);
   console.log(return_data);
+  let temp_obj = {};
+  orgin_list_data.forEach(element => {
+    temp_obj[element.GUID] = element;
+  });
   if(return_data.Code == 200) {
-    return_data["Data"].forEach(element => {
+    return_data["Data"].forEach(async element => {
       let object_exist = replaceDataByGUID(orgin_list_data, element);
       if(object_exist) {
         let card_container = document.querySelector(`.card_container[guid="${element.GUID}"]`)
         update_card(card_container, element);
       }
+
+      // 發出請購單操作頁面
+      let master_GUID = temp_obj[element.GUID].Master_GUID;
+      let end_qty = temp_obj[element.GUID].qty;
+      let op = temp_obj[element.GUID].op_name;
+      let val = temp_obj[element.GUID].expirydate;
+      let lot = temp_obj[element.GUID].batch_num;
+      await sub_content_add(master_GUID, end_qty, op, val, lot);
+
+      // orgin_list_data.forEach(async item => {
+      //   if(item.GUID == element.GUID) {
+      //     let master_GUID = item.Master_GUID;
+      //     let end_qty = item.qty;
+      //     let op = item.op_name;
+      //     let val = item.expirydate;
+      //     let lot = item.batch_num;
+  
+      //     await sub_content_add(master_GUID, end_qty, op, val, lot);
+      //   }
+      // });
     });
   }
+
+  // temp_post_arr.forEach(element => {
+  //   orgin_list_data.forEach(async item => {
+  //     if(item.GUID == element) {
+  //       let master_GUID = item.Master_GUID;
+  //       let end_qty = item.qty;
+  //       let op = item.op_name;
+  //       let val = item.expirydate;
+  //       let lot = item.batch_num;
+
+  //       await sub_content_add(master_GUID, end_qty, op, val, lot);
+  //     }
+  //   });
+  // });
+
   Set_main_div_enable(false);
 }
 
@@ -1603,4 +1648,31 @@ function set_rechecked(array) {
     let check_box = document.querySelector(`.card_checkbox[guid="${element}"]`);
     check_box.checked = true;
   });
+}
+
+async function sub_content_add(_Master_GUID, _END_QTY, _OP, _VAL, _LOT) {
+  const post_data = 
+  {
+    "Data": {
+      "Master_GUID": `${_Master_GUID}`,
+      "END_QTY": `${_END_QTY}`,
+      "OP": `${_OP}`,
+      "VAL": `${_VAL}`,
+      "LOT": `${_LOT}`
+    },
+    "Master_GUID": 0,
+    "TableName":``,
+    "Result": "",
+    "Value": "",
+    "ServerName" : ServerName,
+    "ServerType" : ServerType,
+    "TableName" : TableName,
+    "TimeTaken": ""
+  };
+  var _url = `${inspection_url}/sub_content_add`;
+  console.log(`Url [${arguments.callee.name}]` , _url);
+  console.log(`Post_data [${arguments.callee.name}]`,post_data);
+  let response = await postDataToAPI(`${_url}`,post_data);
+  await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
+  return response;
 }

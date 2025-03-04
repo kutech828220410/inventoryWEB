@@ -5,5 +5,5 @@ var DeviceTableName = "";
 var DbName = "";
 
 
-loadScript("../../api/med_page.js");
-loadScript("../../api/inventory.js");
+loadScript("../api/med_page.js");
+loadScript("../api/inventory.js");

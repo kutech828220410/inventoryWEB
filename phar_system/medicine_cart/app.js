@@ -570,7 +570,7 @@ function get_func_logic() {
 // 100 初始話畫面，載入藥車、調劑台清單
 // 200 功能畫面配對
 // 400 啥事都不會發生
-async function get_all_select_option_logic(num) {
+function get_all_select_option_logic(num) {
   // let hos_block_select_container = document.querySelector(".hos_block_select_container");
   // let func_select_container = document.querySelector(".func_select_container");
   // let cart_select_container = document.querySelector(".cart_select_container");
