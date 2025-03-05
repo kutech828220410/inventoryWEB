@@ -224,28 +224,31 @@ async function allocate_display_init(light_on) {
         });
         console.log("回到最上面done");
 
-        post_data = [current_cart.phar, current_cart.hnursta];
-        console.log(post_data);
-    
-        med_change_data = await get_patient_with_NOdispense(post_data);
-        med_change_data = med_change_data.Data;
-        med_change_data = med_change_data.filter((e) => {
-            return e.cpoe_change_status != "";
-        });
-    
-        med_change_data = med_change_data.filter((e) => {
-            return e.cpoe.length != 0;
-        });
-    
-        console.log("藥品異動確認", med_change_data);
-        console.log(med_change_data.length);
-        if(med_change_data.length != 0) {
-            console.log("加入驚嘆號");
-            let ppmcl_btn = document.querySelector(".ppmcl_btn");
-            ppmcl_btn.innerHTML = `藥品異動<img class="pb_list_notice" src="../image/notice_mark.png">`;
-        } else {
-            console.log("去除驚嘆號");
-            ppmcl_btn.innerHTML = `藥品異動`;
+        if(current_func == "allocate") {
+            post_data = [current_cart.phar, current_cart.hnursta];
+            console.log(post_data);
+        
+            med_change_data = await get_patient_with_NOdispense(post_data);
+            med_change_data = med_change_data.Data;
+            med_change_data = med_change_data.filter((e) => {
+                return e.cpoe_change_status != "";
+            });
+        
+            med_change_data = med_change_data.filter((e) => {
+                return e.cpoe.length != 0;
+            });
+        
+            console.log("藥品異動確認", med_change_data);
+            console.log(med_change_data.length);
+            if(med_change_data.length != 0) {
+                console.log("加入驚嘆號");
+                let ppmcl_btn = document.querySelector(".ppmcl_btn");
+                ppmcl_btn.innerHTML = `藥品異動<img class="pb_list_notice" src="../image/notice_mark.png">`;
+            } else {
+                console.log("去除驚嘆號");
+                let ppmcl_btn = document.querySelector(".ppmcl_btn");
+                ppmcl_btn.innerHTML = `藥品異動`;
+            }
         }
 
         Set_main_div_enable(false);
@@ -1102,7 +1105,6 @@ function set_pbm_main_container() {
                 await set_light_table(element.code, element.name, element.cht_name);
                 popup_light_table_select_div_open();
             } else {
-                await light_off_func();
                 await light_on_func(element.code, current_med_table.name, current_med_table.type);
             }
         });
@@ -1749,10 +1751,11 @@ async function light_switch_func() {
         } else {
             return;
         }
+    } else {
+        await light_off_func();
     }
 
-    await light_off_func();
-
+    await delay_func(500);
     console.log("開始亮燈");
     let temp_arr = [];
     light_on_arr.ValueAry = []; 
@@ -1766,19 +1769,18 @@ async function light_switch_func() {
 
     light_on_arr.ValueAry.push(temp_arr.join(","));
     light_on_arr.ValueAry.push(color_select.rgb);
-    light_on_arr.ValueAry.push("600"); // 秒數設定
+    light_on_arr.ValueAry.push("180"); // 秒數設定
     light_on_arr.ServerName = current_med_table.name;
     last_light_on_arr.ServerName = current_med_table.name;
     light_on_arr.ServerType = current_med_table.type;
     last_light_on_arr.ServerType = current_med_table.type;
 
     console.log("light_on_arr", light_on_arr);
-
     await light_on_by_code(light_on_arr);
     
     last_light_on_arr.ValueAry.push(temp_arr.join(","));
     last_light_on_arr.ValueAry.push("0,0,0");
-    last_light_on_arr.ValueAry.push("2");
+    last_light_on_arr.ValueAry.push("1");
     console.log("last_light_on_arr", last_light_on_arr);
 }
 async function light_off_func() {
@@ -1797,12 +1799,13 @@ async function light_off_func() {
 
 async function light_on_func(code, phar, type) {
     await light_off_func();
+    await delay_func(500);
     console.log("開始亮燈+++++++++++++++++++++++++++++");
     light_on_arr.ValueAry = [];
 
     light_on_arr.ValueAry.push(code);
     light_on_arr.ValueAry.push(color_select.rgb);
-    light_on_arr.ValueAry.push("600"); // 秒數設定
+    light_on_arr.ValueAry.push("180"); // 秒數設定
 
     light_on_arr.ServerName = phar;
     last_light_on_arr.ServerName = phar;
@@ -1811,11 +1814,22 @@ async function light_on_func(code, phar, type) {
     last_light_on_arr.ServerType = type;
 
     console.log("light_on_arr", light_on_arr);
+    await delay_func(500);
     await light_on_by_code(light_on_arr);
     last_light_on_arr.ValueAry.push(code);
     last_light_on_arr.ValueAry.push("0,0,0");
-    last_light_on_arr.ValueAry.push("2");
+    last_light_on_arr.ValueAry.push("1");
     console.log("last_light_on_arr", last_light_on_arr);
+}
+
+// 延遲函式(毫秒)
+function delay_func(ms) {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            console.log(`等 ${ms} 毫秒`);
+            resolve(); // 讓 Promise 變成成功狀態
+        }, ms);
+    });
 }
 
 // // 設置每五分鐘預處理的函式

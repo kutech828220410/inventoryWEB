@@ -120,7 +120,6 @@ async function set_light_table(code, name, cht_name) {
         light_on_table.innerHTML = element.server_name;
         light_on_table.setAttribute("code", code);
         light_on_table.addEventListener("click", async () => {
-            await light_off_func();
             await light_on_func(code, element.server_name, element.server_type);
         });
 
