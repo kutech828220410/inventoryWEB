@@ -1495,7 +1495,7 @@ function update_card(div, data) {
       let card_qty = document.createElement("div");
       card_qty.classList.add("card_qty");
       card_qty.innerHTML = data.qty;
-  
+      
       card_bottom_right.appendChild(card_qty);
     
       card_bottom.appendChild(card_bottom_left);
@@ -1630,7 +1630,7 @@ function scroll_fixed_events() {
   const mdc_container = document.querySelector(".mdc_container");
 
   // 取得 container 與頂部的距離
-  const stickyOffset = main_display_btn_container.offsetTop + main_display_btn_container.offsetHeight;
+  const stickyOffset = main_display_btn_container.offsetTop + main_display_btn_container.offsetHeight + 40;
 
   // 監聽滾動事件
   window.addEventListener('scroll', () => {

@@ -8,7 +8,6 @@ var popup_med_serch_PageIndex = 0;
 var popup_med_serch_MaxfPage = 0;
 async function popup_med_serch_load()
 { 
-   
     popup_med_serch_div.Clear();
     const title = popup_med_serch_title_init();
     const content = popup_med_serch_content_init();
@@ -255,14 +254,18 @@ function popup_med_serch_typeSerch(text)
     if(med != null)
     {
         const content_serch_result_div = document.querySelector("#content_serch_result_div");
-        for(var i = 0 ; i < med.length; i ++)
-        {
-            const row = popup_med_serch_get_row(med[i] , i + 1);
-            popup_med_serch_rows_div.push(row);
-            
-           
+        if(med.length == 0) {
+            alert("查無資料");
+        } else {
+            for(var i = 0 ; i < med.length; i ++)
+            {
+                const row = popup_med_serch_get_row(med[i] , i + 1);
+                popup_med_serch_rows_div.push(row);
+                
+               
+            }
+            popup_med_serch_refresh_rows();
         }
-        popup_med_serch_refresh_rows();
     }
     
 }

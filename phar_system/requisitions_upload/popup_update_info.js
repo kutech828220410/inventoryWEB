@@ -108,8 +108,9 @@ function get_pp_update_info_main() {
             ppui_po_num_div_update_btn.addEventListener("click", async () => {
                 // 這邊開啟編輯單號更新功能
                 Set_main_div_enable(true);
-
-                // await set_popup_input_po_num(GUID);
+                let ppui_f_btn = document.querySelector(".ppui_f_btn");
+                let GUID = ppui_f_btn.getAttribute("guid");
+                await set_popup_input_po_num(GUID);
         
                 Set_main_div_enable(false);
             });
@@ -133,8 +134,34 @@ function get_pp_update_info_footer() {
     let ppui_f_btn = document.createElement("div");
     ppui_f_btn.classList.add("ppui_f_btn");
     ppui_f_btn.classList.add("btn");
+    ppui_f_btn.setAttribute("guid", "");
     ppui_f_btn.innerHTML = "更新";
-    ppui_f_btn.addEventListener("click", async () => {});
+    ppui_f_btn.addEventListener("click", async () => {
+        let ppui_po_num_div = document.querySelector(".ppui_po_num_div");
+        let ppui_batch_num = document.querySelector(".ppui_batch_num_input");
+        let ppui_expirydate = document.querySelector(".ppui_expirydate_input");
+        let ppui_qty = document.querySelector(".ppui_qty_input");
+
+
+        let GUID = ppui_f_btn.getAttribute("guid");
+        let BATCH_NUM = ppui_batch_num.value;
+        let QTY = ppui_qty.value;
+        let expirydate = ppui_expirydate.value;
+        let formattedDate = expirydate.replace(/-/g, "/");
+        let DATE_TIME = formattedDate + " 00:00:00";
+
+        let post_data = {
+            Data: {
+                batch_num: BATCH_NUM,
+                qty: QTY,
+                expirydate: DATE_TIME,
+            },
+            Value: "",
+            ValueAry:[GUID]
+        };
+
+        console.log(post_data);
+    });
 
     ppui_footer_container.appendChild(ppui_f_btn);
 
@@ -156,6 +183,7 @@ async function popup_update_info_div_open(guid) {
 
 async function set_update_info(element) {
     let ppui_img = document.querySelector(".ppui_img");
+    let ppui_f_btn = document.querySelector(".ppui_f_btn");
     let ppui_po_num_div = document.querySelector(".ppui_po_num_div");
     let ppui_name = document.querySelector(".ppui_name");
     let ppui_cht_name = document.querySelector(".ppui_cht_name");
@@ -188,6 +216,8 @@ async function set_update_info(element) {
         ppui_img.src = rotatedBase64;
     };
     
+    ppui_f_btn.setAttribute("guid", element.GUID);
+
     let expirydate = element.expirydate;
     let formattedDate = expirydate.split(" ")[0].replace(/\//g, "-");
 

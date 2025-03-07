@@ -1814,7 +1814,7 @@ async function light_on_func(code, phar, type) {
     last_light_on_arr.ServerType = type;
 
     console.log("light_on_arr", light_on_arr);
-    await delay_func(500);
+    // await delay_func(500);
     await light_on_by_code(light_on_arr);
     last_light_on_arr.ValueAry.push(code);
     last_light_on_arr.ValueAry.push("0,0,0");

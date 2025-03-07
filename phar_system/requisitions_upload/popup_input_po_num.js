@@ -101,6 +101,7 @@ async function update_by_GUID_po_num() {
         if(return_data.Data[0].Code_status == 200) {
             update_card(card_container, return_data.Data[0]);
             trigger_popup_input_po_num(false);
+            await set_update_info(return_data.Data[0]);
             alert("更新完成");
         }
         Set_main_div_enable(false);

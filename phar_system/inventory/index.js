@@ -18,6 +18,7 @@ var IsCreatSelected = (function()
 
 var State = "-----------";
 let data = [];
+let med_cloud_object = {};
 let allrows = [];
 let medicine_page = [];
 Window.load = load;
@@ -182,8 +183,31 @@ async function init()
     medicine_page = await get_medicine_cloud();
     console.log(medicine_page);
     popup_med_serch_medclass = medicine_page.Data;
+    let temp_lock_med = popup_med_serch_medclass.filter(item => {
+      return item.FILE_STATUS != "開檔中";
+    });
+    console.log("鎖檔藥品", temp_lock_med);
+    popup_med_serch_medclass = popup_med_serch_medclass.filter(item => {
+      return item.FILE_STATUS == "開檔中";
+    });
+    if(Array.isArray(popup_med_serch_medclass)) {
+      popup_med_serch_medclass.forEach(element => {
+        med_cloud_object[`MED_${element.CODE}`] = element;
+      });
+    }
+    console.log("過濾鎖檔藥品搜尋", popup_med_serch_medclass);
     data = await creat_get_by_IC_SN(IC_SN);
     console.log("盤點單資料" , data);
+    let temp_contents = data.Data[0].Contents;
+    console.log("過濾錢", temp_contents);
+    temp_contents = temp_contents.filter(item => {
+      if(med_cloud_object[`MED_${item.CODE}`] != undefined) {
+        return item;
+      }
+    });
+    console.log("過濾後的contents", temp_contents);
+    data.Data[0].Contents = temp_contents;
+    console.log("過濾盤點單藥品鎖檔" , data);
     State = StateType.等待條碼刷入;
 
     await page_Init(data);
