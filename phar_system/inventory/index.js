@@ -184,11 +184,11 @@ async function init()
     console.log(medicine_page);
     popup_med_serch_medclass = medicine_page.Data;
     let temp_lock_med = popup_med_serch_medclass.filter(item => {
-      return item.FILE_STATUS != "開檔中";
+      return item.FILE_STATUS == "關檔中";
     });
     console.log("鎖檔藥品", temp_lock_med);
     popup_med_serch_medclass = popup_med_serch_medclass.filter(item => {
-      return item.FILE_STATUS == "開檔中";
+      return item.FILE_STATUS != "關檔中";
     });
     if(Array.isArray(popup_med_serch_medclass)) {
       popup_med_serch_medclass.forEach(element => {

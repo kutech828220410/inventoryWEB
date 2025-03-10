@@ -137,6 +137,7 @@ function get_pp_update_info_footer() {
     ppui_f_btn.setAttribute("guid", "");
     ppui_f_btn.innerHTML = "更新";
     ppui_f_btn.addEventListener("click", async () => {
+        Set_main_div_enable(true);
         let ppui_po_num_div = document.querySelector(".ppui_po_num_div");
         let ppui_batch_num = document.querySelector(".ppui_batch_num_input");
         let ppui_expirydate = document.querySelector(".ppui_expirydate_input");
@@ -150,17 +151,39 @@ function get_pp_update_info_footer() {
         let formattedDate = expirydate.replace(/-/g, "/");
         let DATE_TIME = formattedDate + " 00:00:00";
 
+        let card_container = document.querySelector(`.card_container[guid="${GUID}"]`);
+
         let post_data = {
             Data: {
-                batch_num: BATCH_NUM,
+                GUID: GUID,
                 qty: QTY,
+                batch_num: BATCH_NUM,
                 expirydate: DATE_TIME,
             },
-            Value: "",
-            ValueAry:[GUID]
         };
 
-        console.log(post_data);
+        let return_data = await update_po_by_GUID(post_data);
+        console.log("回饋資料", return_data);
+
+        if(return_data.Data[0].Code_status == -5 || return_data.Data[0].Code_status == -4 || return_data.Data[0].Code_status == -2 || return_data.Data[0].Code_status == -1) {
+            alert(`${return_data.Data[0].Result}`);
+            Set_main_div_enable(false);
+            return;
+        } else {
+            console.log("以單號更新", return_data);
+            orgin_list_data = change_object_by_GUID(orgin_list_data, return_data);
+        
+            if(return_data.Data[0].Code_status == 200) {
+                update_card(card_container, return_data.Data[0]);
+                // trigger_popup_input_po_num(false);
+                popup_update_info_div_close();
+                await set_update_info(return_data.Data[0]);
+                alert("更新完成");
+            }
+            Set_main_div_enable(false);
+            return;
+        }
+
     });
 
     ppui_footer_container.appendChild(ppui_f_btn);

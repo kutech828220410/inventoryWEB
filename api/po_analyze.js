@@ -274,3 +274,43 @@ async function update_pic_by_GUID(data) {
         return err_data;
     }
 }
+async function update_po_by_GUID(data) {
+    // {
+    //     "Data":
+    //         {
+    //             "GUID":""
+    //             "qty":"數量"
+    //             "batch_num":"批號"
+    //             "expirydate":"效期"
+    //         }
+    // }
+    
+    try {
+        let start_p = performance.now();
+        console.log("進入api取得資料");
+        console.log(data);
+        console.log(`${api_ip}api/pcmpo/update`);
+        let temp_data = await fetch(`${api_ip}api/pcmpo/update`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+        .then((response) => {
+            console.log("取得資料ＪＳＯＮ格式");
+            return response.json();
+        });
+
+        let end_p = performance.now();
+        console.log("資料分析api效能", end_p - start_p);
+    
+        return temp_data;
+    } catch(err) {
+        let err_data = {
+            Code: -200,
+            Result: `網路錯誤：${err}`
+        }
+        return err_data;
+    }
+}
