@@ -299,7 +299,7 @@ function get_p_bed_header() {
     pb_list_notice.classList.add("display_none");
     for (let i = 0; i < med_cart_beds_data.length; i++) {
         const element = med_cart_beds_data[i];
-        if(element.cpoe_change_status == "Y") {
+        if(element.change == "Y") {
             pb_list_notice.classList.remove("display_none");
             break;
         };
@@ -946,9 +946,9 @@ function set_pbm_main_container() {
         med_card_storage.classList.add("med_card_storage");
         med_card_storage.innerHTML = `儲位：${element.store_position}`;
 
-        // let med_card_other_phar = document.createElement("div");
-        // med_card_other_phar.classList.add("med_card_other_phar");
-        // med_card_other_phar.innerHTML = element.pharm_name;
+        let med_card_other_phar = document.createElement("div");
+        med_card_other_phar.classList.add("med_card_other_phar");
+        med_card_other_phar.innerHTML = element.pharm_name;
 
         temp_check_isArray = page_setting_params && page_setting_params["display_block"] && page_setting_params["display_block"].value;
 
@@ -1156,9 +1156,9 @@ function set_pbm_main_container() {
 
         med_card_main_display_container.appendChild(med_cart_warnning_container);
 
-        // if(element.pharm_code != "") {
-        //     med_card_main_display_container.appendChild(med_card_other_phar);
-        // }
+        if(element.pharm_code != "") {
+            med_card_main_display_container.appendChild(med_card_other_phar);
+        }
         med_card_title_container.appendChild(med_card_checkbox_label);
         med_card_title_container.appendChild(med_card_main_display_container);
         med_card_title_container.appendChild(med_card_mid_display_container);

@@ -283,9 +283,10 @@ async function set_ppmcl_main_info() {
         ppmcl_bed_card.classList.add("ppmcl_bed_card");
         ppmcl_bed_card.setAttribute("Master_Guid", element.GUID);
 
-        let temp_cpoe = element.cpoe.filter(e => {
-            return e.dispens_change == "Y";
-        });
+        // let temp_cpoe = element.cpoe.filter(e => {
+        //     return e.dispens_change == "Y";
+        // });
+        let temp_cpoe = element.cpoe;
 
         if(temp_cpoe.length == 0) ppmcl_bed_card_container.style.display = "none";
 

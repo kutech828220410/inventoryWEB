@@ -165,6 +165,11 @@ function get_pp_update_info_footer() {
         let return_data = await update_po_by_GUID(post_data);
         console.log("回饋資料", return_data);
 
+        if(return_data.Code == -200) {
+            alert("伺服器錯誤，請稍後再試", return_data.Result);
+            Set_main_div_enable(false);
+            return;
+        }
         if(return_data.Data[0].Code_status == -5 || return_data.Data[0].Code_status == -4 || return_data.Data[0].Code_status == -2 || return_data.Data[0].Code_status == -1) {
             alert(`${return_data.Data[0].Result}`);
             Set_main_div_enable(false);
