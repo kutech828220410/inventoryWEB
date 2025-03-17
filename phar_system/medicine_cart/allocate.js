@@ -822,7 +822,7 @@ function set_pbm_main_container() {
         med_card_checkbox.id = `${element.GUID}`;
         med_card_checkbox.setAttribute("isBig", element.large);
         let temp_str_code = element.code;
-        temp_str_code = temp_str_code.toUpperCase
+        temp_str_code = temp_str_code.toUpperCase();
         med_card_checkbox.setAttribute("CODE", temp_str_code);
         med_card_checkbox.type = "checkbox";
         if(current_func == "allocate") {

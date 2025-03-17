@@ -139,6 +139,7 @@
   })();
 
   // var barcode_value = '';
+  window.removeEventListener('keydown', barcode_keydown);
     // 監聽頁面的keydown事件
   window.addEventListener('keydown', function(event) 
   {
@@ -184,6 +185,8 @@
   }
   function barcode_check_toggle(barcode) {
     let med_card_checkbox = document.querySelector(`.med_card_checkbox[code="${barcode}"]`);
+    // console.log(med_card_checkbox);
+    // console.log(barcode);
     if (!med_card_checkbox) {
         alert("此床無該藥品");
     } else if (med_card_checkbox.classList.contains("med_card_checkbox_disabled")) {

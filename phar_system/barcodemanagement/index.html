@@ -79,13 +79,14 @@
   };
   var barcode_value = '';
   var barcode_keydown_datetime;
+  window.removeEventListener('keydown', barcode_keydown);
     // 監聽頁面的keydown事件
   window.addEventListener('keydown', function(event) 
   {
-     barcode_keydown(event);
+    barcode_keydown_2(event);
   });
 
-  async function barcode_keydown(event)
+  async function barcode_keydown_2(event)
   {
     // if(popup_input_div.Get_Visible())
     // {
