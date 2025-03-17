@@ -211,20 +211,21 @@ function popup_mbf_main_th_get() {
     let pp_mbf_main_th_container = document.createElement("div");
     pp_mbf_main_th_container.classList.add("pp_mbf_main_th_container");
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 11; i++) {
         let pp_mbf_th = document.createElement("div");
         pp_mbf_th.classList.add(`pp_mbf_th_${i}`);
         pp_mbf_th.classList.add(`pp_mbf_th_style`);
             if (i == 0) pp_mbf_th.innerHTML = "序號";
             if (i == 1)pp_mbf_th.innerHTML = "日期時間";
-            if (i == 2)pp_mbf_th.innerHTML = "領藥號/病房";
+            if (i == 2)pp_mbf_th.innerHTML = "領藥號 / 病房";
             if (i == 3)pp_mbf_th.innerHTML = "類別";
             if (i == 4)pp_mbf_th.innerHTML = "病人姓名";
             if (i == 5)pp_mbf_th.innerHTML = "病歷號";
             if (i == 6)pp_mbf_th.innerHTML = "調劑人";
             if (i == 7)pp_mbf_th.innerHTML = "收支";
             if (i == 8)pp_mbf_th.innerHTML = "結存";
-            if (i == 9)pp_mbf_th.innerHTML = "收支原因";
+            if (i == 9)pp_mbf_th.innerHTML = "來源";
+            if (i == 10)pp_mbf_th.innerHTML = "收支原因";
             
         pp_mbf_main_th_container.appendChild(pp_mbf_th);
     }
@@ -316,7 +317,12 @@ function popup_mgf_get_form_item(data, index) {
     let pp_mgf_main_tr_9 = document.createElement("div");
     pp_mgf_main_tr_9.classList.add("pp_mgf_main_tr_9");
     pp_mgf_main_tr_9.classList.add("pp_mgf_main_tr");
-    pp_mgf_main_tr_9.innerHTML = data.RSN;
+    pp_mgf_main_tr_9.innerHTML = data.STOREHOUSE;
+
+    let pp_mgf_main_tr_10 = document.createElement("div");
+    pp_mgf_main_tr_10.classList.add("pp_mgf_main_tr_10");
+    pp_mgf_main_tr_10.classList.add("pp_mgf_main_tr");
+    pp_mgf_main_tr_10.innerHTML = data.RSN;
 
     if(index % 2 == 1) {
         pp_mgf_main_tr_0.classList.add("pp_mgf_main_tr_bgc");
@@ -329,6 +335,7 @@ function popup_mgf_get_form_item(data, index) {
         pp_mgf_main_tr_7.classList.add("pp_mgf_main_tr_bgc");
         pp_mgf_main_tr_8.classList.add("pp_mgf_main_tr_bgc");
         pp_mgf_main_tr_9.classList.add("pp_mgf_main_tr_bgc");
+        pp_mgf_main_tr_10.classList.add("pp_mgf_main_tr_bgc");
     }
 
     pp_mgf_main_td_container.appendChild(pp_mgf_main_tr_0);
@@ -341,6 +348,7 @@ function popup_mgf_get_form_item(data, index) {
     pp_mgf_main_td_container.appendChild(pp_mgf_main_tr_7);
     pp_mgf_main_td_container.appendChild(pp_mgf_main_tr_8);
     pp_mgf_main_td_container.appendChild(pp_mgf_main_tr_9);
+    pp_mgf_main_td_container.appendChild(pp_mgf_main_tr_10);
 
     pp_mbf_main_table_container.appendChild(pp_mgf_main_td_container);
 }

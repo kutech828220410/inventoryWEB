@@ -36,6 +36,8 @@ async function postDataToAPI_NoneReturn(url, data)
         throw new Error('请求失败');
       }
  
+      const responseData = await response.json();
+      console.log(responseData);
     } catch (error) {
       console.error(error);
       //throw error;

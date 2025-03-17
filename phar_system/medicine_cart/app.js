@@ -26,6 +26,9 @@ async function load()
   // console.log(permissions);
 
   await page_check_permissions("medicine_cart");
+  med_data = await get_medicine_cloud();
+  med_data = med_data.Data;
+  console.log("雲端藥品資料", med_data);
   let post_data = {
     ValueAry: ["medicine_cart"]
   }

@@ -138,27 +138,31 @@
     // }
   })();
 
-  var barcode_value = '';
+  // var barcode_value = '';
     // 監聽頁面的keydown事件
   window.addEventListener('keydown', function(event) 
   {
     // 判斷按下的按鍵是否是Tab鍵或Enter鍵
-    console.log(event.key);
-    if (event.key === 'Tab' || event.key === 'Enter') {
+    if (event.key == 'Tab' || event.key == 'Enter') {
     // 防止頁面重新載入
         event.preventDefault();
         const parsedCode = parseBarcode(barcode_value);
+
+        console.log("barcode_in", barcode_value);
+        console.log("parsedCode", parsedCode);
+        // barcode_check_toggle(barcode_value);
         
         // 取得輸入框的值
         barcode_value = '';
         // 解析藍牙掃描器返回的數據
         if(parsedCode != '')
         {
-   
+          barcode_check_toggle(parsedCode);
         }         
     }
     else
     {
+        console.log(event.key);
         const isValid = /^[a-zA-Z0-9]+$/.test(event.key);
         const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
         const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);
@@ -176,7 +180,29 @@
   {
     const delimiter = /[\n\r]/g;
     const matches = scannedCode.split(delimiter);
-    return matches[0];
+    return matches[0].toUpperCase();
+  }
+  function barcode_check_toggle(barcode) {
+    let med_card_checkbox = document.querySelector(`.med_card_checkbox[code="${barcode}"]`);
+    if (!med_card_checkbox) {
+        alert("此床無該藥品");
+    } else if (med_card_checkbox.classList.contains("med_card_checkbox_disabled")) {
+        alert("尚未完成調劑，無法進行覆核");
+    } else {
+        // 切換 checkbox 的 checked 狀態
+        med_card_checkbox.checked = !med_card_checkbox.checked;
+        let checkbox_guid = med_card_checkbox.getAttribute("guid");
+        if(med_card_checkbox.checked) {
+            med_log_arr.push(checkbox_guid);
+        } else {
+            let index = med_log_arr.indexOf(checkbox_guid);  // 找到 "orange" 的索引位置
+
+            if (index !== -1) {
+                med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+            }
+        }
+        console.log(med_log_arr);
+    }
   }
 
 </script>

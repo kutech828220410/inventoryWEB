@@ -366,7 +366,9 @@ function captureImage() {
     console.log("傳圖繪製", capture_time, "ms");
 
     api_sp = performance.now();
-    // `${api_ip}api/medCount/medCountAnalyze`
+    // `${api_ip}api/medCount/medCountAnalyze`;
+    console.log("辨識AI api_url", ai_api_ip);
+    // let temp_test = "https://www.kutech.tw:3000/pill_rec_fast";
     fetch(ai_api_ip, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

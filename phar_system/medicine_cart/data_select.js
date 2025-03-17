@@ -170,4 +170,4 @@ let med_list_sort_radio_data = [
         cht_name: "冰箱",
     },
 ];
-
+let med_data;

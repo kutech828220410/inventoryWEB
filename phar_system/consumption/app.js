@@ -337,7 +337,7 @@ function get_select_block_func(arr) {
   });
 }
 function get_main_div_table_th_init() {
-  let th_data = ["","動作","診別","庫別", "藥品碼","藥品名稱","領藥號","庫存量","交易量","結存量","盤點量","操作人","病人姓名","病歷號","病房號","操作時間","開方時間","收支原因",'備註'];
+  let th_data = ["","動作","診別","庫別", "藥品碼","藥品名稱","領藥號","庫存量","交易量","結存量","盤點量","操作人","病人姓名","病歷號","病房號","操作時間","開方時間", "來源", "收支原因",'備註'];
   let main_div_table_th_container = document.querySelector(".main_div_table_th_container");
 
   th_data.forEach((element, index) => {
@@ -350,7 +350,7 @@ function get_main_div_table_th_init() {
   });
 }
 function get_info_init() {
-  let th_data = ["","動作","診別","庫別","藥品碼","藥品名稱","領藥號","庫存量","交易量","結存量","盤點量","操作人","病人姓名","病歷號","病房號","操作時間","開方時間","收支原因",'備註'];
+  let th_data = ["","動作","診別","庫別","藥品碼","藥品名稱","領藥號","庫存量","交易量","結存量","盤點量","操作人","病人姓名","病歷號","病房號","操作時間","開方時間", "來源","收支原因",'備註'];
 
   console.log(data_information);
 
@@ -428,9 +428,12 @@ function get_info_init() {
             td.innerHTML = element.RX_TIME;
             break;
           case 17:
-            td.innerHTML = element.RSN;
+            td.innerHTML = element.STOREHOUSE;
             break;
           case 18:
+            td.innerHTML = element.RSN;
+            break;
+          case 19:
             td.innerHTML = element.NOTE;
             break;
           

@@ -97,7 +97,8 @@
 
 .pp_mbf_main_th_container,
 .pp_mgf_main_td_container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 40px 180px 80px 50px 120px 100px 100px 60px 80px 80px 120px;
 }
 .pp_mbf_th_style,
 .pp_mgf_main_tr {
@@ -116,7 +117,7 @@
 .pp_mgf_main_tr_bgc {
     background-color: #d9d9d9;
 }
-.pp_mbf_th_0,
+/* .pp_mbf_th_0,
 .pp_mgf_main_tr_0 {
     width: 40px;
 }
@@ -151,9 +152,9 @@
 .pp_mbf_th_8,
 .pp_mgf_main_tr_8 {
     width: 80px;
-}
-.pp_mbf_th_9,
-.pp_mgf_main_tr_9 {
-    width: 120px;
+} */
+.pp_mbf_th_10,
+.pp_mgf_main_tr_10 {
+    /* width: 120px; */
     border-right: 1px solid #4e4e4d;
 }
