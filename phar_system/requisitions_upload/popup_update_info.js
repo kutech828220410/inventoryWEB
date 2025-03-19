@@ -44,7 +44,22 @@ function get_pp_update_info_main() {
     let ppui_img = document.createElement("img");
     ppui_img.classList.add("ppui_img");
 
+    let ppui_img_zoom_container = document.createElement("div");
+    ppui_img_zoom_container.classList.add("ppui_img_zoom_container");
+
+    let ppui_img_zoom_in = document.createElement("div");
+    ppui_img_zoom_in.classList.add("ppui_img_zoom_in");
+    ppui_img_zoom_in.innerHTML = `大<img src="" alt="zoom in">`;
+
+    let ppui_img_zoom_out = document.createElement("div");
+    ppui_img_zoom_out.classList.add("ppui_img_zoom_out");
+    ppui_img_zoom_out.innerHTML = `小<img src="" alt="zoom out">`;
+
+    ppui_img_zoom_container.appendChild(ppui_img_zoom_in);
+    ppui_img_zoom_container.appendChild(ppui_img_zoom_out);
+
     ppui_img_container.appendChild(ppui_img);
+    ppui_img_container.appendChild(ppui_img_zoom_container);
 
     let ppui_content_container = document.createElement("div");
     ppui_content_container.classList.add("ppui_content_container");
@@ -219,25 +234,42 @@ async function set_update_info(element) {
     let ppui_expirydate = document.querySelector(".ppui_expirydate_input");
     let ppui_qty = document.querySelector(".ppui_qty_input");
 
-    // 創建一個 Image 對象
     const img = new Image();
     img.src = element.base64;
 
     img.onload = () => {
+        const degree = parseInt(element.degree, 10) || 0; // 取得旋轉角度並轉為數字
+        const radians = (degree * Math.PI) / 180; // 角度轉換為弧度
+
         // 創建 canvas 並設置大小
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
 
-        // 設置 canvas 的寬高為旋轉後的尺寸
-        canvas.width = img.height;
-        canvas.height = img.width;
+        // 根據旋轉角度設定 canvas 寬高
+        if (degree === 90 || degree === 270) {
+            canvas.width = img.height;
+            canvas.height = img.width;
+        } else {
+            canvas.width = img.width;
+            canvas.height = img.height;
+        }
 
         // 旋轉畫布
         ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.rotate(-Math.PI / 2); // 逆時針旋轉90度
-        ctx.drawImage(img, -img.width / 2, -img.height / 2);
+        ctx.rotate(radians);
+        
+        // 設定正確的繪製偏移量
+        if (degree === 90) {
+            ctx.drawImage(img, -img.width / 2, -img.height / 2, img.width, img.height);
+        } else if (degree === 180) {
+            ctx.drawImage(img, -img.width / 2, -img.height / 2, img.width, img.height);
+        } else if (degree === 270) {
+            ctx.drawImage(img, -img.width / 2, -img.height / 2, img.width, img.height);
+        } else {
+            ctx.drawImage(img, -img.width / 2, -img.height / 2, img.width, img.height);
+        }
 
-        // 將旋轉後的圖像轉為 Base64
+        // 轉為 Base64
         const rotatedBase64 = canvas.toDataURL();
 
         // 將旋轉後的 Base64 圖片放入 img 元素

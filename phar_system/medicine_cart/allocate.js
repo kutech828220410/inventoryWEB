@@ -5,6 +5,7 @@ let current_p_bed_data;
 // let setUpdateInterval;
 let last_p_bed_data;
 let med_log_arr = [];
+let stickyOffset;
 let med_double_check_arr = [];
 let fake_icon_popup_data = [
     {
@@ -70,12 +71,29 @@ async function allocate_diplay_logic() {
     return;
 }
 
+function pbm_header_scroll() {
+    let pbm_header_container = document.querySelector(".pbm_header_container");
+    let pbm_main_container = document.querySelector(".pbm_main_container");
+
+    // console.log(window.scrollY, "======", stickyOffset, "=======", pbm_header_container);
+    if (window.scrollY >= stickyOffset) {
+        pbm_header_container.classList.add('fixed');
+        pbm_main_container.classList.add('pbm_main_container_fixed');
+    } else {
+        pbm_header_container.classList.remove('fixed');
+        pbm_main_container.classList.remove('pbm_main_container_fixed');
+    }
+}
+
 // 產生調劑台畫面
 async function allocate_display_init(light_on) {
     Set_main_div_enable(true);
 
     med_cart_beds_data = await get_bed_list_by_cart(current_pharmacy.phar, current_cart.hnursta);
     med_cart_beds_data = med_cart_beds_data.Data;
+
+    // 移除監聽滾動事件
+    window.removeEventListener('scroll', pbm_header_scroll);
 
     console.log("調劑功能畫面產生");
     console.log(med_cart_beds_data);
@@ -250,6 +268,12 @@ async function allocate_display_init(light_on) {
                 ppmcl_btn.innerHTML = `藥品異動`;
             }
         }
+
+        // 監聽滾動事件
+        let pbm_header_container = document.querySelector(".pbm_header_container");
+        // 取得 container 與頂部的距離
+        stickyOffset = pbm_header_container.offsetTop + pbm_header_container.offsetHeight;
+        window.addEventListener('scroll', pbm_header_scroll);
 
         Set_main_div_enable(false);
     }
@@ -789,9 +813,15 @@ function set_pbm_main_container() {
         return pbm_main_container;
     }
 
-    current_p_bed_data["cpoe"].forEach(element => {
+    current_p_bed_data["cpoe"].forEach((element, index) => {
         let med_card_container = document.createElement("div");
         med_card_container.classList.add("med_card_container");
+
+        console.log("頁面設定", page_setting_params);
+
+        // if(index % 2 == 0) {
+        //     med_card_container.classList.add("med_card_container_odd");
+        // }
 
         let temp_check_isArray = page_setting_params && page_setting_params["display_public_medicine"] && page_setting_params["display_public_medicine"].value;
         if(temp_check_isArray) {

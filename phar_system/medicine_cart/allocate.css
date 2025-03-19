@@ -150,7 +150,7 @@
     width: 100%;
 }
 .pbm_header_container {
-    position: sticky;
+    /* position: sticky; */
     top: 0;
     background-color: white; /* 確保背景色，避免透明影響 */
     z-index: 6;
@@ -160,6 +160,13 @@
     align-items: center;
     justify-content: flex-end;
     width: 100%;
+    position: relative;
+}
+.fixed {
+    position: fixed;
+    max-width: 1120px;
+    margin: 0px auto;
+    padding: 0px 0px;
 }
 .pbm_footer_container {
     margin-top: 16px;
@@ -227,22 +234,28 @@
     background-color: rgb(236, 236, 236);
     padding: 10px;
 }
+.pbm_main_container_fixed {
+    margin-top: 60px;
+}
 .med_card_container {
     margin-bottom: 10px;
     border-radius: 5px;
     border: 1px solid #000000;
-    background-color: #efefef;
+    background-color: rgb(228, 228, 228);
     overflow: hidden;
     transition: all 0.3s;
 }
 .med_card_container:last-child {
     margin-bottom: 0px;
 }
+.med_card_container_odd {
+    background-color: #ffffff;
+}
 .card_pub_med_bgc {
     background-color: #ffebeb;
 }
 .card_disable {
-    background-color: #acacac;
+    background-color: #8f8f8f;
 }
 .med_card_title_container {
     padding: 10px;
@@ -529,6 +542,10 @@
         padding: 4px 12px;
         box-shadow: 1px 1px 4px 1px #00000067;
     }
+    .fixed {
+        margin-top: 0px;
+        padding: 0px 80px;
+    }
 }
 @media screen and (max-width: 700px) {
     .p_bed_header {
@@ -644,5 +661,9 @@
     .med_card_qty {
         font-size: 20px;
         flex-direction: row;
+    }
+    .fixed {
+        margin-top: 0px;
+        padding: 0px 40px;
     }
 }
