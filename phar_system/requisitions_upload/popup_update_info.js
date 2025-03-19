@@ -49,11 +49,11 @@ function get_pp_update_info_main() {
 
     let ppui_img_zoom_in = document.createElement("div");
     ppui_img_zoom_in.classList.add("ppui_img_zoom_in");
-    ppui_img_zoom_in.innerHTML = `大<img src="" alt="zoom in">`;
+    ppui_img_zoom_in.innerHTML = `<img class="ppui_img_zoom_in_pic" src="../image/plus.png" alt="zoom in">`;
 
     let ppui_img_zoom_out = document.createElement("div");
     ppui_img_zoom_out.classList.add("ppui_img_zoom_out");
-    ppui_img_zoom_out.innerHTML = `小<img src="" alt="zoom out">`;
+    ppui_img_zoom_out.innerHTML = `<img class="ppui_img_zoom_out_pic" src="../image/minimize-sign.png" alt="zoom out">`;
 
     ppui_img_zoom_container.appendChild(ppui_img_zoom_in);
     ppui_img_zoom_container.appendChild(ppui_img_zoom_out);
@@ -288,4 +288,99 @@ async function set_update_info(element) {
     ppui_batch_num.value = element.batch_num;
     ppui_expirydate.value = formattedDate;
     ppui_qty.value = element.qty;
+}
+function initializeImageZoom_ppui() {
+    let container_ppui = document.querySelector('.ppui_img_container');
+    let img_ppui = container_ppui.querySelector('.ppui_img');
+    let zoomInBtn_ppui = container_ppui.querySelector('.ppui_img_zoom_in');
+    let zoomOutBtn_ppui = container_ppui.querySelector('.ppui_img_zoom_out');
+
+    let scaleLevels = [1, 1.75, 2.5, 3.5]; // 可能的縮放比例
+    let currentScaleIndex = 0; // 預設大小
+    let scale = scaleLevels[currentScaleIndex];
+
+    let isDragging = false;
+    let startX, startY, translateX = 0, translateY = 0;
+
+    // 限制圖片邊界
+    function limitBounds() {
+        const maxOffsetX = (scale - 1) * container_ppui.clientWidth / 2;
+        const maxOffsetY = (scale - 1) * container_ppui.clientHeight / 2;
+        translateX = Math.min(Math.max(translateX, -maxOffsetX), maxOffsetX);
+        translateY = Math.min(Math.max(translateY, -maxOffsetY), maxOffsetY);
+    }
+
+    // 更新圖片縮放與位置
+    function updateTransform() {
+        img_ppui.style.transform = `scale(${scale}) translate(${translateX / scale}px, ${translateY / scale}px)`;
+    }
+
+    // 放大
+    zoomInBtn_ppui.addEventListener('click', () => {
+        if (currentScaleIndex < scaleLevels.length - 1) {
+            currentScaleIndex++;
+            scale = scaleLevels[currentScaleIndex];
+            translateX = 0;
+            translateY = 0;
+            updateTransform();
+        }
+    });
+
+    // 縮小
+    zoomOutBtn_ppui.addEventListener('click', () => {
+        if (currentScaleIndex > 0) {
+            currentScaleIndex--;
+            scale = scaleLevels[currentScaleIndex];
+            translateX = 0;
+            translateY = 0;
+            updateTransform();
+        }
+    });
+
+    // **電腦滑鼠拖曳**
+    container_ppui.addEventListener('mousedown', (e) => {
+        if (currentScaleIndex === 0) return; // 預設大小不允許拖曳
+        isDragging = true;
+        startX = e.clientX - translateX;
+        startY = e.clientY - translateY;
+        img_ppui.style.cursor = "grabbing";
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        translateX = e.clientX - startX;
+        translateY = e.clientY - startY;
+        limitBounds();
+        updateTransform();
+    });
+
+    window.addEventListener('mouseup', () => {
+        isDragging = false;
+        img_ppui.style.cursor = "grab";
+    });
+
+    // **手機觸控拖曳**
+    container_ppui.addEventListener('touchstart', (e) => {
+        if (currentScaleIndex === 0) return;
+        isDragging = true;
+        let touch = e.touches[0];
+        startX = touch.clientX - translateX;
+        startY = touch.clientY - translateY;
+    });
+
+    container_ppui.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        let touch = e.touches[0];
+        translateX = touch.clientX - startX;
+        translateY = touch.clientY - startY;
+        limitBounds();
+        updateTransform();
+    });
+
+    container_ppui.addEventListener('touchend', () => {
+        isDragging = false;
+    });
+
+    // 初始化
+    updateTransform();
 }

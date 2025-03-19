@@ -24,6 +24,7 @@ async function set_popup_input_po_num(guid) {
     }
     let return_data = await get_by_GUID(post_data);
     console.log(return_data);
+    temp_object_aa = return_data.Data[0];
     let ppipn_main_img = document.querySelector(".ppipn_main_img");
     if(return_data.Code == 200) {
          // // 創建一個 Image 對象
@@ -159,4 +160,99 @@ async function update_by_GUID_po_num() {
         Set_main_div_enable(false);
         return;
     }
+}
+function initializeImageZoom() {
+    const container = document.querySelector('.ppipn_img_container');
+    const img = container.querySelector('.ppipn_main_img');
+    const zoomInBtn = container.querySelector('.ppipn_img_zoom_in');
+    const zoomOutBtn = container.querySelector('.ppipn_img_zoom_out');
+
+    let scaleLevels = [1, 1.75, 2.5, 3.5]; // 可能的縮放比例
+    let currentScaleIndex = 0; // 預設大小
+    let scale = scaleLevels[currentScaleIndex];
+
+    let isDragging = false;
+    let startX, startY, translateX = 0, translateY = 0;
+
+    // 限制圖片邊界
+    function limitBounds() {
+        const maxOffsetX = (scale - 1) * container.clientWidth / 2;
+        const maxOffsetY = (scale - 1) * container.clientHeight / 2;
+        translateX = Math.min(Math.max(translateX, -maxOffsetX), maxOffsetX);
+        translateY = Math.min(Math.max(translateY, -maxOffsetY), maxOffsetY);
+    }
+
+    // 更新圖片縮放與位置
+    function updateTransform() {
+        img.style.transform = `scale(${scale}) translate(${translateX / scale}px, ${translateY / scale}px)`;
+    }
+
+    // 放大
+    zoomInBtn.addEventListener('click', () => {
+        if (currentScaleIndex < scaleLevels.length - 1) {
+            currentScaleIndex++;
+            scale = scaleLevels[currentScaleIndex];
+            translateX = 0;
+            translateY = 0;
+            updateTransform();
+        }
+    });
+
+    // 縮小
+    zoomOutBtn.addEventListener('click', () => {
+        if (currentScaleIndex > 0) {
+            currentScaleIndex--;
+            scale = scaleLevels[currentScaleIndex];
+            translateX = 0;
+            translateY = 0;
+            updateTransform();
+        }
+    });
+
+    // **電腦滑鼠拖曳**
+    container.addEventListener('mousedown', (e) => {
+        if (currentScaleIndex === 0) return; // 預設大小不允許拖曳
+        isDragging = true;
+        startX = e.clientX - translateX;
+        startY = e.clientY - translateY;
+        img.style.cursor = "grabbing";
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        translateX = e.clientX - startX;
+        translateY = e.clientY - startY;
+        limitBounds();
+        updateTransform();
+    });
+
+    window.addEventListener('mouseup', () => {
+        isDragging = false;
+        img.style.cursor = "grab";
+    });
+
+    // **手機觸控拖曳**
+    container.addEventListener('touchstart', (e) => {
+        if (currentScaleIndex === 0) return;
+        isDragging = true;
+        let touch = e.touches[0];
+        startX = touch.clientX - translateX;
+        startY = touch.clientY - translateY;
+    });
+
+    container.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        let touch = e.touches[0];
+        translateX = touch.clientX - startX;
+        translateY = touch.clientY - startY;
+        limitBounds();
+        updateTransform();
+    });
+
+    container.addEventListener('touchend', () => {
+        isDragging = false;
+    });
+
+    // 初始化
+    updateTransform();
 }

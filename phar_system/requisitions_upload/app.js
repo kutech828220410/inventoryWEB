@@ -1,6 +1,7 @@
 window.onload = load;
 // window.addEventListener('resize', handleResize);
 let medicine_page = [];
+let temp_object_aa = {};
 var IsLogged = (function() 
 {
   return (sessionData.Name != null && sessionData.Name != "");
@@ -58,6 +59,8 @@ async function load()
   set_input_file_event();
 
   // set_main_card_display();
+  initializeImageZoom();
+  initializeImageZoom_ppui();
 
   Set_main_div_enable(false);
 }

@@ -71,9 +71,7 @@
 }
 .ppui_img {
     display: block;
-    width: 100%;
-    margin-bottom: 12px;
-    aspect-ratio: 4 / 3;
+    height: 100%;
     object-fit: cover;
 }
 .ppui_po_num_div {

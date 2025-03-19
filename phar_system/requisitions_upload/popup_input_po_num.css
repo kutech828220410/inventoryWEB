@@ -66,8 +66,7 @@
 }
 .ppipn_main_img {
     display: block;
-    width: 100%;
-    aspect-ratio: 4/3;
+    height: 100%;
     object-fit: cover;
 }
 .ppipn_img_container {
@@ -75,8 +74,12 @@
 }
 .ppipn_img_container,
 .ppui_img_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
     width: 100%;
+    aspect-ratio: 4/3;
     overflow: hidden;
 }
 .ppipn_img_zoom_container,
@@ -87,18 +90,31 @@
     bottom: 0px;
 }
 .ppipn_img_zoom_in,
-.ppipn_img_zoom_out {
+.ppipn_img_zoom_out,
+.ppui_img_zoom_in,
+.ppui_img_zoom_out {
     width: 36px;
     height: 36px;
     cursor: pointer;
-    padding: 4px;
+    padding: 8px;
     background-color: #c4c4c48a;
     border-radius: 5px;
     margin: 8px 0px;
     transition: all 0.2s ease-in-out;
 }
 .ppipn_img_zoom_in:hover,
-.ppipn_img_zoom_out:hover {
+.ppipn_img_zoom_out:hover,
+.ppui_img_zoom_in:hover,
+.ppui_img_zoom_out:hover {
     background-color: #e9e9e98a;
     transition: all 0.2s ease-in-out;
+}
+.ppipn_img_zoom_in_pic,
+.ppipn_img_zoom_out_pic,
+.ppui_img_zoom_in_pic,
+.ppui_img_zoom_out_pic {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
