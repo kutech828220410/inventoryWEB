@@ -155,6 +155,7 @@ async function popup_login_content_submit_button_click(event)
     sessionStorage.setItem('loggedEmployer', session_login.Data.Employer);
     sessionStorage.setItem('loggedlevel', session_login.Data.level);
     sessionStorage.setItem('loggedTime', session_login.Data.loginTime);
+    sessionStorage.setItem('loggedID', session_login.Data.ID);
     sessionStorage.setItem('color', session_login.Data.color);
     const greeting = `${session_login.Data.Name} 登入成功!`;
     alert(greeting);

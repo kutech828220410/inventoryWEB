@@ -8,6 +8,7 @@ async function get_popup_pharmacy_select()
     popup_pharmacy_select_div._popup_div.style.border = '10px solid white';
 
     let pharmacy_table_data = await get_serversetting_by_type();
+    console.log("調劑台資料",pharmacy_table_data);
     console.log(pharmacy_table_data["Data"]);
 
     temp_table_data = [

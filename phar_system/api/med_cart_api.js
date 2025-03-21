@@ -117,27 +117,36 @@ async function get_patient_GUID(data) {
 
 // 取得藥品總量
 async function get_all_med_qty(phar, med_cart, table) {
-    let start_p = performance.now();
-    let temp_doman = transform_api_ip_4433(api_ip);
-    let temp_data = await fetch(`${temp_doman}api/med_cart/get_med_qty`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            Value: table,
-            ValueAry:[phar, med_cart]
-        }),
-    })
-    .then((response) => {
-        return response.json();
-    })
+    try {
+        let start_p = performance.now();
+        let temp_doman = transform_api_ip_4433(api_ip);
+        
+        let temp_data = await fetch(`${temp_doman}api/med_cart/get_med_qty`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                Value: table,
+                ValueAry:[phar, med_cart]
+            }),
+        })
+        .then((response) => {
+            return response.json();
+        })
 
-    let end_p = performance.now();
-    console.log(end_p - start_p);
-    console.log(temp_data);
+        let end_p = performance.now();
+        console.log(end_p - start_p);
+        console.log(temp_data);
 
-    return temp_data;
+        return temp_data;
+    } catch (error) {
+        let err_data = {
+            Code: -200,
+            Result: `網路錯誤：${error}`
+        }
+        return err_data;
+    }
 }
 
 // 取得藥品異動清單

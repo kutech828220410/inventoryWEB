@@ -251,6 +251,15 @@
 .med_card_container_odd {
     background-color: #ffffff;
 }
+.med_card_container_ice {
+    background-color: #c4f5fe;
+}
+.med_card_container_injection {
+    background-color: #f8f4d3;
+}
+.med_card_container_oral {
+    background-color: #d7fdd3;
+}
 .card_pub_med_bgc {
     background-color: #ffebeb;
 }

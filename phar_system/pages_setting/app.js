@@ -265,8 +265,12 @@ function set_setting_radio(element) {
 
     let setting_radio_label = document.createElement("label");
     setting_radio_label.setAttribute("for", `${element.name}_${item}`);
-    setting_radio_label.innerHTML = `${item} Pixel`;
-    setting_radio_label.style.fontSize = `${item}px`;
+    if(element.name.includes("font_size")) {
+      setting_radio_label.innerHTML = `${item} Pixel`;
+      setting_radio_label.style.fontSize = `${item}px`;
+    } else {
+      setting_radio_label.innerHTML = `${item}`;
+    }
     setting_radio_label.classList = "setting_label";
 
     radio_item_container.appendChild(setting_radio);

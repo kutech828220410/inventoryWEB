@@ -260,6 +260,7 @@ async function captureAndSend() {
   
       result_content_div.textContent = `辨識結果：${return_data.Result}`;
       show_result_div(true);
+      Set_main_div_enable(false);
     }
 
     Set_main_div_enable(false);
@@ -392,6 +393,7 @@ function createUpdatedUI() {
   trigger_reset.innerHTML = `<img src="../../image/reset_white.png" alt="">`;
   trigger_reset.addEventListener("click", async () => {
     show_result_div(false);
+    Set_main_div_enable(false);
     await result_div_init();
     await startCamera();
   })
@@ -587,7 +589,7 @@ function createUpdatedUI() {
       //   // alert("刪除辨識資料失敗");
       // }
 
-      
+      Set_main_div_enable(false);
       show_result_div(false);
       await result_div_init();
       await startCamera();

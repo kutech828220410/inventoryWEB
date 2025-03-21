@@ -153,8 +153,8 @@ async function popup_login_content_submit_button_click(event)
     Set_main_div_enable(true);
     console.log(session_login.Data.ID);
     sessionStorage.setItem("login_json",JSON.stringify(session_login.Data));
-    sessionStorage.setItem('GUuser', session_login.Data.GUuser);
-    sessionStorage.setItem('loggeduser', session_login.Data.user);
+    sessionStorage.setItem('GUuser', session_login.Data.ID);
+    sessionStorage.setItem('loggeduser', session_login.Data.ID);
     sessionStorage.setItem('loggedPassword', session_login.Data.Password);
     sessionStorage.setItem('loggedName', session_login.Data.Name); 
     sessionStorage.setItem('loggedEmployer', session_login.Data.Employer);

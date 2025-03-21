@@ -339,13 +339,18 @@ function get_p_bed_header() {
         Set_main_div_enable(true);
 
         med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, "all");
-        med_list_data = med_list_data.Data;
-        med_list_data = sort_med_list_data(med_list_data, current_func);
-        med_list_data = sort_display_med_data(med_list_data);
-        await set_pp_med_list_display();
-
-        popup_med_list_div_open();
-        Set_main_div_enable(false);
+        if(med_list_data.Code != 200) {
+            alert("藥品總量資料錯誤", med_list_data.Result);
+            Set_main_div_enable(false);
+        } else {
+            med_list_data = med_list_data.Data;
+            med_list_data = sort_med_list_data(med_list_data, current_func);
+            med_list_data = sort_display_med_data(med_list_data);
+            await set_pp_med_list_display();
+    
+            popup_med_list_div_open();
+            Set_main_div_enable(false);
+        }
     });
 
     let dc_new_btn = document.createElement("div");
@@ -813,15 +818,27 @@ function set_pbm_main_container() {
         return pbm_main_container;
     }
 
+    console.log("頁面設定", page_setting_params);
+
     current_p_bed_data["cpoe"].forEach((element, index) => {
         let med_card_container = document.createElement("div");
         med_card_container.classList.add("med_card_container");
 
-        console.log("頁面設定", page_setting_params);
-
-        // if(index % 2 == 0) {
-        //     med_card_container.classList.add("med_card_container_odd");
-        // }
+        if(page_setting_params.order_display_mode) {
+            if(page_setting_params.order_display_mode.value == "雙色") {
+                if(index % 2 == 0) {
+                    med_card_container.classList.add("med_card_container_odd");
+                }
+            } else if(page_setting_params.order_display_mode.value == "種類區分(口服、針劑)") {
+                if(element.ice == "Y") {
+                    // med_card_container.classList.add("med_card_container_ice");
+                } else if(element.injection == "Y") {
+                    med_card_container.classList.add("med_card_container_injection");
+                } else if(element.oral == "Y") {
+                    med_card_container.classList.add("med_card_container_oral");
+                }
+            }
+        }
 
         let temp_check_isArray = page_setting_params && page_setting_params["display_public_medicine"] && page_setting_params["display_public_medicine"].value;
         if(temp_check_isArray) {
