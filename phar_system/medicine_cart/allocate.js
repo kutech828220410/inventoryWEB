@@ -1,5 +1,6 @@
 let med_cart_beds_data;
 let current_p_bed_data;
+let med_list_timer;
 // let pre_p_bed_data;
 // let next_p_bed_data;
 // let setUpdateInterval;
@@ -337,9 +338,16 @@ function get_p_bed_header() {
     med_cart_sum_list_btn.innerHTML = "藥品總量";
     med_cart_sum_list_btn.addEventListener("click", async () => {
         Set_main_div_enable(true);
-
+        clearTimeout(med_list_timer);
+        med_list_timer = await setTimeout(() => {
+            Set_main_div_enable(false);
+            alert("連線超時，請重新點選");
+            return;
+        }, 6000);
         med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, "all");
         if(med_list_data.Code != 200) {
+            clearTimeout(med_list_timer);
+
             alert("藥品總量資料錯誤", med_list_data.Result);
             Set_main_div_enable(false);
         } else {
@@ -347,7 +355,9 @@ function get_p_bed_header() {
             med_list_data = sort_med_list_data(med_list_data, current_func);
             med_list_data = sort_display_med_data(med_list_data);
             await set_pp_med_list_display();
-    
+
+            clearTimeout(med_list_timer);
+
             popup_med_list_div_open();
             Set_main_div_enable(false);
         }
@@ -1685,7 +1695,8 @@ async function set_post_data_to_check_dispense() {
         Value: bed_guid,
         ValueAry: [],
         ServerName: "",
-        ServerType: ""
+        ServerType: "",
+        UserName: loggedName.Name,
     }
 
     let post_data2 = {
@@ -1880,6 +1891,9 @@ function delay_func(ms) {
             resolve(); // 讓 Promise 變成成功狀態
         }, ms);
     });
+}
+function name(params) {
+    
 }
 
 // // 設置每五分鐘預處理的函式

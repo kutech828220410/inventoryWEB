@@ -630,10 +630,11 @@ async function pic_analyze_api(base64_data, training_trigger) {
     
     if(training_trigger =="True") {
         temp_url = `${api_ip}api/medCount/medCountAnalyze`;
+        console.log("採樣上傳post_data", temp_url);
     } else {
         temp_url = ai_api_ip;
+        console.log("一般辨識", temp_url);
     }
-    console.log(temp_url);
     let return_data = await fetch(temp_url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

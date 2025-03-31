@@ -1,6 +1,5 @@
 let temp_pages_array = [
     {
-        guid: "none",
         name: "none",
         cht: "請選擇頁面",
     },

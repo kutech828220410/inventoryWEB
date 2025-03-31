@@ -100,6 +100,7 @@ function get_main_div() {
       }
 
       let return_data = await get_by_page_name(post_data);
+      console.log("頁面參數", return_data);
       med_cart_return_data = return_data.Data;
       temp_med_cart_return_data = return_data.Data;
 
@@ -453,7 +454,7 @@ async function compare_params() {
       reset_setting_container();
       return;
     };
-    let post_data =     {
+    let post_data = {
       ValueAry: [main_div_pages_search_select.value]
     }
 

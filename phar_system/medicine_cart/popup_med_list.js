@@ -279,6 +279,8 @@ async function set_pp_med_list_display() {
     let ppml_h_title_span = document.querySelector(".ppml_h_title_span");
     ppml_h_title_span.innerHTML = current_cart.hnursta;
 
+    console.log("med_list_data", med_list_data);
+
     med_list_data.forEach(element => {
         let ppml_card_container = document.createElement("div");
         ppml_card_container.classList.add("ppml_card_container");
@@ -689,26 +691,26 @@ async function set_pp_med_list_display() {
 
         // 這邊調整radio大瓶、針劑顯示
         // 藥品總量為0時不顯示
-        if(+total_qty != 0) {
-            if(radio_checked_input.value == "all") {
+        if(radio_checked_input.value == "all") {
+            ppml_main_container.appendChild(ppml_card_container);
+        } else if(radio_checked_input.value == "bottle") {
+            if(element.large == "L") {
                 ppml_main_container.appendChild(ppml_card_container);
-            } else if(radio_checked_input.value == "bottle") {
-                if(element.large == "L") {
-                    ppml_main_container.appendChild(ppml_card_container);
-                }
-            } else if(radio_checked_input.value == "injection") {
-                if(element.injection == "Y") {
-                    ppml_main_container.appendChild(ppml_card_container);
-                }
-            } else if(radio_checked_input.value == "oral") {
-                if(element.oral == "Y") {
-                    ppml_main_container.appendChild(ppml_card_container);
-                }
-            } else if(radio_checked_input.value == "ice") {
-                if(element.ice == "Y") {
-                    ppml_main_container.appendChild(ppml_card_container);
-                }
             }
+        } else if(radio_checked_input.value == "injection") {
+            if(element.injection == "Y") {
+                ppml_main_container.appendChild(ppml_card_container);
+            }
+        } else if(radio_checked_input.value == "oral") {
+            if(element.oral == "Y") {
+                ppml_main_container.appendChild(ppml_card_container);
+            }
+        } else if(radio_checked_input.value == "ice") {
+            if(element.ice == "Y") {
+                ppml_main_container.appendChild(ppml_card_container);
+            }
+        }
+        if(+total_qty != 0) {
         }
     });
 }

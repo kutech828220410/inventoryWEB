@@ -89,22 +89,25 @@ select {
 .search_btn {
     margin-right: 32px;
 }
-.main_div_table_th_container {
-    margin-top: 40px;
+.main_div_table_th_container,
+.table_info_container {
     display: grid;
+    max-width: 1200px;
+    width: 100%;
+    grid-template-columns: 3% 7% 10% 5% 10% 15% 10% 10% 15% 15%;
+}
+.main_div_table_th_container {
+    margin: 40px auto 0 auto;
     justify-content: center;
-    grid-template-columns: 32px 80px 120px 60px 120px 160px 80px 140px 180px 180px;
 }
 .table_info_container {
     margin: auto;
-    width: 1152px;
-    display: grid;
     min-height: 60px;
     justify-content: center;
-    grid-template-columns: 32px 80px 120px 60px 120px 160px 80px 140px 180px 180px;
     transition: all 0.2s ease ;
     cursor: pointer;
 }
+
 .table_th {
     background-color: #595959;
     color: #ffffff;

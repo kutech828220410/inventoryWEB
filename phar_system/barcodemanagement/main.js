@@ -181,7 +181,7 @@ function get_header()
   // header_contorls_div.appendChild(header_contorls_allsvg);
 
   let downLoadPDF = document.createElement("a");
-  downLoadPDF.href = '../條碼刷錯問題.pdf'; // 替換為實際的 PDF 檔案路徑
+  downLoadPDF.href = '../../條碼刷錯問題.pdf'; // 替換為實際的 PDF 檔案路徑
   downLoadPDF.download = '條碼刷錯問題.pdf';
   downLoadPDF.style.display = "none";
 

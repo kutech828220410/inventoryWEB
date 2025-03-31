@@ -115,6 +115,7 @@ function get_header(test_user_data) {
       let start_date = document.querySelector(".time_line_st").innerHTML;
       let end_date = document.querySelector(".time_line_end").innerHTML;
       if(typeof data_information == "object") {
+        console.log("匯出資料", data_information);
         await download_datas_excel(data_information, start_date, end_date);
       }
       Set_main_div_enable(false);
@@ -352,7 +353,7 @@ function get_main_div_table_th_init() {
 function get_info_init() {
   let th_data = ["","動作","診別","庫別","藥品碼","藥品名稱","領藥號","庫存量","交易量","結存量","盤點量","操作人","病人姓名","病歷號","病房號","操作時間","開方時間", "來源","收支原因",'備註'];
 
-  console.log(data_information);
+  console.log("資料產生", data_information);
 
   let main_list_num_sum = document.querySelector(".main_list_num_sum");
   main_list_num_sum.innerHTML = data_information.length;

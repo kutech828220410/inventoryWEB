@@ -250,6 +250,7 @@ async function get_search_container() {
 
   let temp_med_group_data = await groups_manage_get_data();
   med_group_select.innerHTML = "";
+  console.log(temp_med_group_data);
   med_group_data = temp_med_group_data.Data;
   med_group_select.innerHTML = `<option value="">藥品群組</option>`
   med_group_data.forEach(element => {
@@ -448,7 +449,7 @@ function table_form_page_init() {
 }
 
 async function groups_manage_get_data() {
-  console.log("api_ip",api_ip);
+  console.log("藥品群組api_ip", `${api_ip}api/medGroup/get_all_group`);
   let data = await fetch(`${api_ip}api/medGroup/get_all_group`, {
       method: "POST",
       headers: {
