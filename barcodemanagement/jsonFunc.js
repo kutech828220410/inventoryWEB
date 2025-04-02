@@ -61,7 +61,7 @@ async function serch_by_BarCode(barcode)
     "TimeTaken": ""
   };
   console.log("post_data",post_data);
-  let response = await postDataToAPI(`${MED_page_url}/serch_by_BarCode`,post_data);
+  let response = await postDataToAPI(`${MED_page_url}/serch_by_BarCode`, post_data);
   return response;
 }
 //#endregion

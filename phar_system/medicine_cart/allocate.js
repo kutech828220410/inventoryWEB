@@ -169,6 +169,11 @@ async function allocate_display_init(light_on) {
     
             console.log("first_load post_data", post_data);
             current_p_bed_data = await get_patient_GUID(post_data);
+            if(current_p_bed_data.Code != 200) {
+                alert("病床資料錯誤", current_p_bed_data.Result);
+                Set_main_div_enable(false);
+                return;
+            }
             current_p_bed_data = current_p_bed_data.Data;
             current_p_bed_data.cpoe.sort((a, b) => {
                 const aHasPubMedY = a.pub_med == "Y" ? 1 : 0;
@@ -351,15 +356,27 @@ function get_p_bed_header() {
             alert("藥品總量資料錯誤", med_list_data.Result);
             Set_main_div_enable(false);
         } else {
-            med_list_data = med_list_data.Data;
-            med_list_data = sort_med_list_data(med_list_data, current_func);
-            med_list_data = sort_display_med_data(med_list_data);
-            await set_pp_med_list_display();
-
-            clearTimeout(med_list_timer);
-
-            popup_med_list_div_open();
-            Set_main_div_enable(false);
+            if(Array.isArray(med_list_data.Data)) {
+                med_list_data = med_list_data.Data;
+                med_list_data = sort_med_list_data(med_list_data, current_func);
+                med_list_data = sort_display_med_data(med_list_data);
+                await set_pp_med_list_display();
+    
+                clearTimeout(med_list_timer);
+                
+                popup_med_list_div_open();
+                Set_main_div_enable(false);
+            } else {
+                console.log("藥品總量，資料格式錯誤", med_list_data.Data);
+                med_list_data.Data = [];
+                med_list_data = med_list_data.Data;
+                med_list_data = sort_med_list_data(med_list_data, current_func);
+                med_list_data = sort_display_med_data(med_list_data);
+                await set_pp_med_list_display();
+                
+                clearTimeout(med_list_timer);
+                Set_main_div_enable(false);
+            }
         }
     });
 

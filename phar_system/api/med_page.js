@@ -16,9 +16,9 @@ async function get_medicine_cloud()
     "TimeTaken": ""
   };
   const _url = `${MED_page_url}/get_by_apiserver`;
-  console.log(`Url [${arguments.callee.name}]` , _url);
-  console.log(`Post_data [${arguments.callee.name}]`,post_data);
-  let response = await postDataToAPI(_url,post_data);
+  console.log(`Url [${arguments.callee.name}]`, _url);
+  console.log(`Post_data [${arguments.callee.name}]`, post_data);
+  let response = await postDataToAPI(_url, post_data);
   return response;
 }
 

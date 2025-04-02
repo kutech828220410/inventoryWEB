@@ -141,6 +141,9 @@ async function set_ppmcl_main_info() {
                 
                 let ppmcl_bed_card_container = document.querySelector(`.ppmcl_bed_card_container[Master_Guid="${element}"]`);
                 let ppmcl_bed_card_container_arr = document.querySelectorAll(".ppmcl_bed_card_container");
+                if(ppmcl_bed_card_container == null) {
+                    continue;
+                }
                 ppmcl_bed_card_container.remove();
 
                 if(ppmcl_bed_card_container_arr.length > 0) {
@@ -346,7 +349,7 @@ async function set_ppmcl_main_info() {
                 ppmcl_cpoe_med_check_btn.setAttribute("Master_GUID", item.Master_GUID);
                 ppmcl_cpoe_med_check_btn.addEventListener("click", async () => {
                     Set_main_div_enable(true);
-                    let return_data = await set_post_data_to_check_dispense_for_med_list(element.GUID, item.GUID, "Y");
+                    let return_data = await set_post_data_to_check_dispense_for_med_list(element.GUID, item.GUID, "Y", true);
 
                     if(return_data.Code == 200) {
                         let ppmcl_cpoe_container = document.querySelector(`.ppmcl_cpoe_container[guid="${item.GUID}"]`);
@@ -391,8 +394,20 @@ async function set_post_data_to_dispensed_by_GUID(guid_arr, master_guid) {
     temp_str = guid_arr.join(";");
 
     let post_data = {
+        ServerName: "",
+        ServerType: "",
+        UserName: loggedName.Name,
         ValueAry: []
     };
+
+    if(current_med_table != "all") {
+        post_data = {
+            ServerName: current_med_table.name,
+            ServerType: current_med_table.type,
+            UserName: loggedName.Name,
+            ValueAry: []
+        };
+    }
 
     post_data.ValueAry[0] = temp_str;
     post_data.ValueAry[1] = master_guid;
@@ -417,8 +432,14 @@ async function set_post_data_to_dispensed_by_GUID(guid_arr, master_guid) {
                     op_name: loggedName.Name
                 }
             ],
+            ServerName: "",
+            ServerType: "",
             ValueAry: [element],
             Value: ""
+        }
+        if(current_med_table != "all") {
+            post_data2.ServerName = current_med_table.name;
+            post_data2.ServerType = current_med_table.type;
         }
 
         if(current_func == "allocate") {

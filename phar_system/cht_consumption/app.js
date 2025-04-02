@@ -8,7 +8,7 @@ let temp_form_data = [];
 window.onload = load;
 // window.addEventListener('resize', handleResize);
 
-function handleResize() 
+function handleResize()
 {
    //Set_popup_find_position();
 }

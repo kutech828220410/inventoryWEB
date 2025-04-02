@@ -419,7 +419,7 @@ async function set_pp_med_list_display() {
             for (let index = 0; index < element["bed_list"].length; index++) {
                 const item = element["bed_list"][index];
                 if(item.dispens_status != "Y") {
-                    let return_data = await set_post_data_to_check_dispense_for_med_list(item.Master_GUID, item.GUID, "Y");
+                    let return_data = await set_post_data_to_check_dispense_for_med_list(item.Master_GUID, item.GUID, "Y", false);
                     console.log(return_data);
                     if(return_data.Code == "-200") {
                         fail_count++;
@@ -527,7 +527,7 @@ async function set_pp_med_list_display() {
                             let master_guid = ppml_bed_card.getAttribute("m_guid");
                             let guid = ppml_bed_card.getAttribute("guid");
         
-                            await set_post_data_to_check_dispense_for_med_list(master_guid, guid, "");
+                            await set_post_data_to_check_dispense_for_med_list(master_guid, guid, "", false);
         
                             let filter_med_table_input = document.querySelector('.filter_med_table_input:checked');
 
@@ -553,7 +553,7 @@ async function set_pp_med_list_display() {
                         let master_guid = ppml_bed_card.getAttribute("m_guid");
                         let guid = ppml_bed_card.getAttribute("guid");
     
-                        await set_post_data_to_check_dispense_for_med_list(master_guid, guid, "Y");
+                        await set_post_data_to_check_dispense_for_med_list(master_guid, guid, "Y", false);
     
                         let filter_med_table_input = document.querySelector('.filter_med_table_input:checked');
 
@@ -619,7 +619,7 @@ async function set_pp_med_list_display() {
                                 let master_guid = ppml_bed_card.getAttribute("m_guid");
                                 let guid = ppml_bed_card.getAttribute("guid");
             
-                                await set_post_data_to_check_dispense_for_med_list(master_guid, guid, "");
+                                await set_post_data_to_check_dispense_for_med_list(master_guid, guid, "", false);
                                 let filter_med_table_input = document.querySelector('.filter_med_table_input:checked');
 
                                 med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, filter_med_table_input.value);
@@ -644,7 +644,7 @@ async function set_pp_med_list_display() {
                             let master_guid = ppml_bed_card.getAttribute("m_guid");
                             let guid = ppml_bed_card.getAttribute("guid");
         
-                            await set_post_data_to_check_dispense_for_med_list(master_guid, guid, "Y");
+                            await set_post_data_to_check_dispense_for_med_list(master_guid, guid, "Y", false);
                             let filter_med_table_input = document.querySelector('.filter_med_table_input:checked');
                            
                             med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, filter_med_table_input.value);
@@ -714,14 +714,35 @@ async function set_pp_med_list_display() {
         }
     });
 }
-async function set_post_data_to_check_dispense_for_med_list(m_guid, guid, status) {
+async function set_post_data_to_check_dispense_for_med_list(m_guid, guid, status, med_change) {
+    let checkedRadio = document.querySelector('input[name="filter_med_table_input"]:checked');
+    let temp_table = checkedRadio.value
+
     let loggedName = sessionStorage.getItem('login_json');
     loggedName = JSON.parse(loggedName);
     let med_card_checkbox = document.querySelectorAll(".med_card_checkbox");
     let check_status = status;
     let return_data;
     let post_data = {
+        ServerName: "",
+        ServerType: "",
+        UserName: loggedName.Name,
         ValueAry: [m_guid, guid, check_status]
+    }
+    if(temp_table != "all" && !med_change) {
+        post_data = {
+            ServerName: temp_table,
+            ServerType: "調劑台",
+            UserName: loggedName.Name,
+            ValueAry: [m_guid, guid, check_status]
+        }
+    } else if(med_change) {
+        post_data = {
+            ServerName: current_med_table.name,
+            ServerType: current_med_table.type,
+            UserName: loggedName.Name,
+            ValueAry: [m_guid, guid, check_status]
+        }
     }
     let post_data2 = {
         Data: [
@@ -731,7 +752,39 @@ async function set_post_data_to_check_dispense_for_med_list(m_guid, guid, status
             }
         ],
         ValueAry: [guid],
-        Value: ""
+        Value: "",
+        ServerName: "",
+        ServerType: "",
+        UserName: loggedName.Name
+    }
+    if(temp_table != "all" && !med_change) {
+        post_data2 = {
+            Data: [
+                {
+                    op_id: loggedName.ID,
+                    op_name: loggedName.Name
+                }
+            ],
+            ValueAry: [guid],
+            Value: "",
+            ServerName: temp_table,
+            ServerType: "調劑台",
+            UserName: loggedName.Name
+        }
+    } else if(med_change) {
+        post_data2 = {
+            Data: [
+                {
+                    op_id: loggedName.ID,
+                    op_name: loggedName.Name
+                }
+            ],
+            ValueAry: [guid],
+            Value: "",
+            ServerName: current_med_table.name,
+            ServerType: current_med_table.type,
+            UserName: loggedName.Name
+        }
     }
 
     if(current_func == "allocate") {
