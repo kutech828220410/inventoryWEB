@@ -404,47 +404,101 @@ async function set_pp_med_list_display() {
             Set_main_div_enable(true);
             let check_count = 0;
             let guid_arr = [];
-            let fail_count= 0;
-            let confirm_arr = [];
-            let temp_coonfirm_text = "";
+            // let confirm_arr = [];
+            // let temp_coonfirm_text = "";
 
-            element["bed_list"].forEach(item => {
-                if(item.dispens_status != "Y") {
-                    confirm_arr.push(item.bednum);
-                }
-            });
+            // if(current_func == "allocate") {
+            //     element["bed_list"].forEach(item => {
+            //         if(item.dispens_status != "Y") {
+            //             confirm_arr.push(item.bednum);
+            //         }
+            //     });
+            // } else if(current_func == "review") {
+            //     element["bed_list"].forEach(item => {
+            //         if(item.check_status != "Y") {
+            //             confirm_arr.push(item.bednum);
+            //         }
+            //     });
+            // }
 
-            temp_coonfirm_text = `第${confirm_arr.join("、")}病床\n${element.name}藥品是否全部調劑？`;
+            // temp_coonfirm_text = `第${confirm_arr.join("、")}病床\n${element.name}藥品是否全部調劑？`;
 
             for (let index = 0; index < element["bed_list"].length; index++) {
                 const item = element["bed_list"][index];
-                if(item.dispens_status != "Y") {
-                    let return_data = await set_post_data_to_check_dispense_for_med_list(item.Master_GUID, item.GUID, "Y", false);
-                    console.log(return_data);
-                    if(return_data.Code == "-200") {
-                        fail_count++;
-                    } else {
+
+                if(current_func == "allocate") {
+                    if(item.dispens_status != "Y") {
+                        // let return_data = await set_post_data_to_check_dispense_for_med_list(item.Master_GUID, item.GUID, "Y", false);
+                        // console.log(return_data);
+                        // if(return_data.Code == "-200") {
+                        //     fail_count++;
+                        // } else {
+                        // }
+                        guid_arr.push(item.GUID);
+                        check_count++;
+                    }
+                } else if(current_func == "review") {
+                    if(item.check_status != "Y" && item.dispens_status == "Y") {
+                        // let return_data = await set_post_data_to_check_dispense_for_med_list(item.Master_GUID, item.GUID, "Y", false);
+                        // console.log(return_data);
+                        // if(return_data.Code == "-200") {
+                        //     fail_count++;
+                        // } else {
+                        // }
                         guid_arr.push(item.GUID);
                         check_count++;
                     }
                 }
             }
-
-            guid_arr.forEach(guid => {
-                let ppml_bed_card = document.querySelector(`.ppml_bed_card[guid="${guid}"]`);
-                ppml_bed_card.classList.add("ppml_bed_done");
-            });
             
             if(check_count == 0) {
                 if(current_func == "allocate") {
                     alert("無可調劑藥品");
+                    Set_main_div_enable(false);
+                    return;
                 } else {
                     alert("無可覆核藥品");
+                    Set_main_div_enable(false);
+                    return;
                 }
             }
 
-            if(fail_count > 0) {
-                alert("部分藥品調劑失敗");
+            let checkedRadio = document.querySelector('input[name="filter_med_table_input"]:checked');
+            let temp_table = checkedRadio.value;
+        
+            let loggedName = sessionStorage.getItem('login_json');
+            loggedName = JSON.parse(loggedName);
+
+            let post_data = {
+                ServerName: "",
+                ServerType: "",
+                UserName: loggedName.Name,
+                ValueAry: [guid_arr.join(";"), current_cart.hnursta]
+            }
+
+            if(temp_table != "all") {
+                post_data.ServerName = temp_table;
+                post_data.ServerType = "調劑台";
+            }
+
+            console.log("藥品全部調劑post_data", post_data);
+
+            let return_data;
+            if(current_func == "allocate") {
+                return_data = await api_med_cart_dispensed_by_cart(post_data);
+            } else if(current_func == "review") {
+                alert("覆核功能?");
+                Set_main_div_enable(false);
+                return;
+            }
+
+            if(return_data.Code == 200) {
+                guid_arr.forEach(guid => {
+                    let ppml_bed_card = document.querySelector(`.ppml_bed_card[guid="${guid}"]`);
+                    ppml_bed_card.classList.add("ppml_bed_done");
+                });
+            } else {
+                alert("操作失敗 Result:", return_data.Result);
             }
 
             let filter_med_table_input = document.querySelector('.filter_med_table_input:checked');
@@ -468,7 +522,24 @@ async function set_pp_med_list_display() {
             popup_light_table_select_div_open();
         });
 
-        ppml_light_btn_container.appendChild(ppml_light_all_check_btn);
+        let check_count = 0;
+        for (let index = 0; index < element["bed_list"].length; index++) {
+            const item = element["bed_list"][index];
+
+            if(current_func == "allocate") {
+                if(item.dispens_status != "Y") {
+                    check_count++;
+                }
+            } else if(current_func == "review") {
+                if(item.check_status != "Y" && item.dispens_status == "Y") {
+                    check_count++;
+                }
+            }
+        }
+
+        if(check_count != 0) {
+            ppml_light_btn_container.appendChild(ppml_light_all_check_btn);
+        }
         ppml_light_btn_container.appendChild(ppml_light_on_btn);
 
         ppml_card_info_container.appendChild(ppml_ci_1_div);
