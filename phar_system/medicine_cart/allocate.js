@@ -517,12 +517,12 @@ function set_p_bed_info_container() {
     // 體重
     let pbsc_ngtube = document.createElement("div");
     pbsc_ngtube.classList.add("pbsc_info");
-    pbsc_ngtube.innerHTML = `鼻胃管`;
+    if(current_p_bed_data.ngtube == "Y") pbsc_ngtube.innerHTML = `鼻胃管`;
 
     // 身高
     let pbsc_tube = document.createElement("div");
     pbsc_tube.classList.add("pbsc_info");
-    pbsc_tube.innerHTML = `管灌餐`;
+    if(current_p_bed_data.tube == "Y") pbsc_tube.innerHTML = `管灌餐`;
 
     // 體表面積
     let pbsc_hallergy = document.createElement("div");
@@ -530,9 +530,9 @@ function set_p_bed_info_container() {
     // pbsc_hallergy.innerHTML = `BSA：${+current_p_bed_data.hallergy}㎡`;
     pbsc_hallergy.innerHTML = `過敏史：${current_p_bed_data.hallergy}`;
 
-    if(current_p_bed_data.ngtube == "Y") div_grid_4.appendChild(pbsc_ngtube);
-    if(current_p_bed_data.tube == "Y") div_grid_4.appendChild(pbsc_tube);
-    if(current_p_bed_data.hallergy == "" || current_p_bed_data.hallergy == null) {
+    div_grid_4.appendChild(pbsc_ngtube);
+    div_grid_4.appendChild(pbsc_tube);
+    if(current_p_bed_data.hallergy == "") {
     } else {
         div_grid_4.appendChild(pbsc_hallergy);
     }

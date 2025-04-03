@@ -110,9 +110,10 @@ function popup_bed_change_div_close() {
 }
 async function popup_bed_change_div_open() {
     let post_data = {
-        ValueAry:[""]
+        ValueAry:[current_pharmacy.phar, current_cart.hnursta],
     };
 
+    console.log(post_data);
     let return_data = await get_bed_status(post_data);
 
     let temp_arr = return_data.Data
