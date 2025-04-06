@@ -481,15 +481,13 @@ async function set_pp_med_list_display() {
                 post_data.ServerType = "調劑台";
             }
 
-            console.log("藥品全部調劑post_data", post_data);
-
             let return_data;
             if(current_func == "allocate") {
+                console.log("藥品全部調劑post_data", post_data);
                 return_data = await api_med_cart_dispensed_by_cart(post_data);
             } else if(current_func == "review") {
-                alert("覆核功能?");
-                Set_main_div_enable(false);
-                return;
+                console.log("藥品全部複合post_data", post_data);
+                return_data = await api_med_cart_check_by_cart(post_data);
             }
 
             if(return_data.Code == 200) {
@@ -499,6 +497,8 @@ async function set_pp_med_list_display() {
                 });
             } else {
                 alert("操作失敗 Result:", return_data.Result);
+                Set_main_div_enable(false);
+                return;
             }
 
             let filter_med_table_input = document.querySelector('.filter_med_table_input:checked');

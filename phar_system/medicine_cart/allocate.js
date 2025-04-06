@@ -398,9 +398,7 @@ function get_p_bed_header() {
         popup_bed_change_div_open()
     });
 
-    if(current_func == "allocate") {
-        pb_btn_container.appendChild(ppmcl_btn);
-    }
+    pb_btn_container.appendChild(ppmcl_btn);
     pb_btn_container.appendChild(dc_new_btn);
     pb_btn_container.appendChild(med_cart_sum_list_btn);
     pb_btn_container.appendChild(pb_list_btn);

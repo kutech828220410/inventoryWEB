@@ -173,6 +173,30 @@ async function get_patient_with_NOdispense(data) {
     return temp_data;
 }
 
+// 取得藥品異動清單
+async function get_patient_with_NOcheck(data) {
+    let start_p = performance.now();
+    let temp_doman = transform_api_ip_4433(api_ip);
+    let temp_data = await fetch(`${temp_doman}api/med_cart/get_patient_with_NOcheck`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            ValueAry: data
+        }),
+    })
+    .then((response) => {
+        return response.json();
+    })
+
+    let end_p = performance.now();
+    console.log(end_p - start_p);
+    console.log(temp_data);
+
+    return temp_data;
+}
+
 // 依藥局取得調劑台
 async function get_serversetting_by_department_type(phar) {
     let start_p = performance.now();
@@ -342,6 +366,34 @@ async function api_med_cart_dispensed_by_cart(data) {
     console.log(end_p - start_p);
     console.log(temp_data);
     return temp_data
+}
+// 調劑狀態確認（未調藥品）
+async function api_med_cart_check_by_cart(data) {
+    try {
+        let start_p = performance.now();
+        let temp_doman = transform_api_ip_4433(api_ip);
+        let temp_data = await fetch(`${temp_doman}api/med_cart/check_by_cart`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+        .then((response) => {
+            return response.json();
+        })
+    
+        let end_p = performance.now();
+        console.log(end_p - start_p);
+        console.log(temp_data);
+        return temp_data
+    } catch (error) {
+        let err_data = {
+            Code: -200,
+            Result: `網路錯誤：${error}`
+        }
+        return err_data;
+    }
 }
 
 // 初盤紀錄log
