@@ -170,7 +170,7 @@
 .ppml_ci_bottom_container {
     margin: 4px 0px;
     display: grid;
-    grid-template-columns: 20% 30% 30%;
+    grid-template-columns: 20% 20% 20% 20%;
 }
 .ppml_bed_card_num {
     font-size: 20px;
@@ -296,7 +296,7 @@
     .ppml_ci_bottom_container {
         margin: 4px 0px;
         display: grid;
-        grid-template-columns: 25% 50% 25%;
+        grid-template-columns: 20% 20% 40% 20%;
     }
     .ppml_ci_1_div {
         flex-grow: 1;

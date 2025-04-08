@@ -20,7 +20,7 @@ function get_ppmcl_header() {
 
     let ppmcl_h_title = document.createElement("div");
     ppmcl_h_title.classList.add("ppmcl_h_title");
-    ppmcl_h_title.innerText = "藥品異動";
+    ppmcl_h_title.innerText = "未調藥品";
 
     let ppmcl_h_close_btn = document.createElement("img");
     ppmcl_h_close_btn.classList.add("ppmcl_h_close_btn");
@@ -57,9 +57,9 @@ async function popup_med_change_list_div_open() {
         med_change_data = await get_patient_with_NOdispense(post_data);
         med_change_data = med_change_data.Data;
 
-        med_change_data = med_change_data.filter((e) => {
-            return e.cpoe_change_status != "";
-        });
+        // med_change_data = med_change_data.filter((e) => {
+        //     return e.cpoe_change_status != "";
+        // });
     } else {
         med_change_data = await get_patient_with_NOcheck(post_data);
         med_change_data = med_change_data.Data;
@@ -297,7 +297,7 @@ async function set_ppmcl_main_info() {
 
         let ppmcl_bed_name_title = document.createElement("div");
         ppmcl_bed_name_title.classList.add("ppmcl_bed_name_title");
-        ppmcl_bed_name_title.innerHTML = `${element.bednum} 號病床`;
+        ppmcl_bed_name_title.innerHTML = `${element.bednum} 號病床 - ${element.pnamec}`;
         ppmcl_bed_name_title.addEventListener("click", () => {
             let temp_index = -1;
             for (let index = 0; index < med_cart_beds_data.length; index++) {
@@ -568,12 +568,19 @@ async function set_ppmcl_main_info() {
                 let ppmcl_cpoe_dunit = document.createElement("div");
                 ppmcl_cpoe_dunit.classList.add("ppmcl_cpoe_dunit");
                 ppmcl_cpoe_dunit.innerHTML = `單位：${item.dunit}`;
+
+                let ppmcl_cpoe_storage = document.createElement("div");
+                ppmcl_cpoe_storage.classList.add("ppmcl_cpoe_storage");
+                ppmcl_cpoe_storage.innerHTML = `儲位：${item.store_position}`;
     
                 let ppmcl_cpoe_qty = document.createElement("div");
                 ppmcl_cpoe_qty.classList.add("ppmcl_cpoe_qty");
                 ppmcl_cpoe_qty.innerHTML = `總量：${+item.qty}`;
     
                 ppmcl_cpoe_med_info2.appendChild(ppmcl_cpoe_dunit);
+                if(page_setting_params.med_unCheck_display_loc.value == "True") {
+                    ppmcl_cpoe_med_info2.appendChild(ppmcl_cpoe_storage);
+                }
                 ppmcl_cpoe_med_info2.appendChild(ppmcl_cpoe_qty);
                 
                 ppmcl_cpoe_med_info_container.appendChild(ppmcl_cpoe_name);
@@ -715,9 +722,9 @@ async function set_ppmcl_main_info() {
                 ppmcl_cpoe_container.appendChild(ppmcl_cpoe_right_container);
     
                 if(current_func == "allocate") {
-                    if(item.dispens_change != "") {
-                        ppmcl_bed_card.appendChild(ppmcl_cpoe_container);
-                    }
+                    ppmcl_bed_card.appendChild(ppmcl_cpoe_container);
+                    // if(item.dispens_change != "") {
+                    // }
                 } else {
                     if(item.check_status != "Y") {
                         ppmcl_bed_card.appendChild(ppmcl_cpoe_container);
@@ -730,18 +737,20 @@ async function set_ppmcl_main_info() {
         ppmcl_bed_card_container.appendChild(ppmcl_bed_card);
 
         if(current_func == "allocate") {
-            let temp_cpoe2 = temp_cpoe.filter(e => {
-                return e.dispens_change != "";
-            });
+            let temp_cpoe2 = temp_cpoe;
+            // .filter(e => {
+            //     return e.dispens_change != "";
+            // });
             if(temp_cpoe2.length != 0) {
                 ppmcl_main_container.appendChild(ppmcl_bed_card_container);
                 temp_count_bed++;
             }
         } else {
             if(temp_cpoe.length != 0) {
-                let temp_cpoe2 = temp_cpoe.filter(e => {
-                    return e.check_status != "Y";
-                });
+                let temp_cpoe2 = temp_cpoe;
+                // .filter(e => {
+                //     return e.check_status != "Y";
+                // });
                 console.log(temp_cpoe2);
                 if(temp_cpoe2.length != 0) {
                     ppmcl_main_container.appendChild(ppmcl_bed_card_container);

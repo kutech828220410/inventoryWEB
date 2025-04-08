@@ -255,7 +255,7 @@ async function allocate_display_init(light_on) {
             med_change_data = await get_patient_with_NOdispense(post_data);
             med_change_data = med_change_data.Data;
             med_change_data = med_change_data.filter((e) => {
-                return e.cpoe_change_status != "";
+                return e.dispens_status != "Y";
             });
         
             med_change_data = med_change_data.filter((e) => {
@@ -267,11 +267,36 @@ async function allocate_display_init(light_on) {
             if(med_change_data.length != 0) {
                 console.log("加入驚嘆號");
                 let ppmcl_btn = document.querySelector(".ppmcl_btn");
-                ppmcl_btn.innerHTML = `藥品異動<img class="pb_list_notice" src="../image/notice_mark.png">`;
+                ppmcl_btn.innerHTML = `未調藥品<img class="pb_list_notice" src="../image/notice_mark.png">`;
             } else {
                 console.log("去除驚嘆號");
                 let ppmcl_btn = document.querySelector(".ppmcl_btn");
-                ppmcl_btn.innerHTML = `藥品異動`;
+                ppmcl_btn.innerHTML = `未調藥品`;
+            }
+        } else {
+            post_data = [current_cart.phar, current_cart.hnursta];
+            console.log(post_data);
+        
+            med_change_data = await get_patient_with_NOdispense(post_data);
+            med_change_data = med_change_data.Data;
+            med_change_data = med_change_data.filter((e) => {
+                return e.check_status != "Y";
+            });
+        
+            med_change_data = med_change_data.filter((e) => {
+                return e.cpoe.length != 0;
+            });
+        
+            console.log("藥品異動確認", med_change_data);
+            console.log(med_change_data.length);
+            if(med_change_data.length != 0) {
+                console.log("加入驚嘆號");
+                let ppmcl_btn = document.querySelector(".ppmcl_btn");
+                ppmcl_btn.innerHTML = `未調藥品<img class="pb_list_notice" src="../image/notice_mark.png">`;
+            } else {
+                console.log("去除驚嘆號");
+                let ppmcl_btn = document.querySelector(".ppmcl_btn");
+                ppmcl_btn.innerHTML = `未調藥品`;
             }
         }
 
@@ -309,7 +334,7 @@ function get_p_bed_header() {
     let ppmcl_btn = document.createElement("div");
     ppmcl_btn.classList.add("btn");
     ppmcl_btn.classList.add("ppmcl_btn");
-    ppmcl_btn.innerHTML = "藥品異動";
+    ppmcl_btn.innerHTML = "未調藥品";
     ppmcl_btn.addEventListener("click", () => {
         popup_med_change_list_div_open();
     })

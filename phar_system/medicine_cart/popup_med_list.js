@@ -341,6 +341,24 @@ async function set_pp_med_list_display() {
         infoContainer1.appendChild(infoLabel1);
         infoContainer1.appendChild(infoCode1);
         bottomContainer.appendChild(infoContainer1);
+        
+        let infoContainer4 = document.createElement('div');
+        infoContainer4.className = 'ppml_ci_info_container';
+
+        let infoLabel4 = document.createElement('div');
+        infoLabel4.className = 'ppml_ci_info_label';
+        infoLabel4.textContent = '儲位';
+
+        let infoCode4 = document.createElement('div');
+        infoCode4.className = 'ppml_ci_info ppml_ci_info_code';
+        infoCode4.textContent = element.store_position;
+
+        if(page_setting_params.med_qty_display_loc.value == "True") {
+            infoContainer4.appendChild(infoLabel4);
+            infoContainer4.appendChild(infoCode4);
+            bottomContainer.appendChild(infoContainer4);
+        }
+
 
         let infoContainer2 = document.createElement('div');
         infoContainer2.className = 'ppml_ci_info_container';

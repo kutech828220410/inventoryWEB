@@ -1,118 +1,127 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>相機串流與拍照</title>
-    <style>
-    </style>
+  <meta charset="UTF-8">
+  <title>條碼掃描器監聽（掃描與手動輸入切換）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+    }
+
+    #scannerInput {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      height: 0;
+      width: 0;
+      z-index: -1;
+    }
+
+    .output {
+      font-size: 1.5rem;
+      color: green;
+      margin-top: 1rem;
+    }
+
+    .history {
+      margin-top: 2rem;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .history ul {
+      padding-left: 1.2rem;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-    <div id="container" style="width: 300px; height: 400px; overflow: hidden; position: relative; border: 1px solid black;">
-        <canvas id="myCanvas" width="600" height="800" style="position: absolute; left: 0; top: 0;"></canvas>
-    </div>
-    
+  <h1>條碼掃描結果：</h1>
+  <div class="output" id="output">請掃描條碼...</div>
 
-    <script>
-        // 取得 DOM 元素
-const container = document.getElementById('container'); // 包含 canvas 的 div
-const canvas = document.getElementById('myCanvas'); // 畫布元素
-const ctx = canvas.getContext('2d'); // canvas 繪圖上下文
+  <button onclick="enableManualInput()">我要手動輸入</button>
 
-// 變數初始化
-let scale = 1; // 當前的縮放比例，初始為 1
-let baseScale = 1; // 原始大小的縮放比例
-let maxScale = 2.5; // 最大縮放比例為 2.5 倍
-let offsetX = 0; // 畫布在 X 軸上的平移偏移量
-let offsetY = 0; // 畫布在 Y 軸上的平移偏移量
-let isDragging = false; // 是否正在拖曳畫布
-let lastX, lastY; // 記錄最後的滑鼠或觸控位置
-let lastDist; // 雙指觸控的距離，用於縮放計算
+  <div class="history">
+    <h2>歷史紀錄：</h2>
+    <ul id="historyList"></ul>
+  </div>
 
-// 初始化畫布尺寸與比例
-function initCanvas() {
-    const cssWidth = container.offsetWidth; // 容器的顯示寬度
-    const cssHeight = container.offsetHeight; // 容器的顯示高度
+  <!-- 隱藏/切換用的輸入欄位 -->
+  <input
+    id="scannerInput"
+    type="text"
+    inputmode="none"
+    readonly
+    autocomplete="off"
+  />
 
-    // 設定 CSS 顯示大小，保證 canvas 填滿 div
-    canvas.style.width = `${cssWidth}px`;
-    canvas.style.height = `${cssHeight}px`;
+  <script>
+    const input = document.getElementById('scannerInput');
+    const output = document.getElementById('output');
+    const historyList = document.getElementById('historyList');
 
-    // 初始偏移量（將畫布居中）
-    offsetX = (cssWidth - canvas.width * baseScale) / 2;
-    offsetY = (cssHeight - canvas.height * baseScale) / 2;
+    let buffer = '';
+    let timeout = null;
 
-    updateCanvas(); // 更新畫布位置與縮放
-    drawCanvas(); // 繪製畫布內容
-}
+    // 初始 focus 並設為 readonly（掃碼模式）
+    input.readOnly = true;
+    input.inputMode = 'none';
+    input.focus();
 
-// 更新畫布的位置與縮放
-function updateCanvas() {
-    const scaledWidth = canvas.width * scale; // 縮放後的畫布寬度
-    const scaledHeight = canvas.height * scale; // 縮放後的畫布高度
+    // 維持 focus（掃碼時）
+    setInterval(() => {
+      if (document.activeElement !== input && input.readOnly) {
+        // 初始 focus 並設為 readonly（掃碼模式）
+        input.readOnly = true;
+        input.inputMode = 'none';
+        input.focus();
+      }
+    }, 500);
 
-    // 限制畫布的偏移範圍，確保不超出 div 的邊界
-    offsetX = Math.min(0, Math.max(container.offsetWidth - scaledWidth, offsetX));
-    offsetY = Math.min(0, Math.max(container.offsetHeight - scaledHeight, offsetY));
+    // 掃描或手動輸入監聽
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        if (buffer.length > 0) {
+          output.textContent = '掃描結果：' + buffer;
 
-    // 使用 CSS transform 控制畫布的平移與縮放
-    canvas.style.transformOrigin = '0 0'; // 確保變形起點為左上角
-    canvas.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
-}
+          const li = document.createElement('li');
+          li.textContent = buffer;
+          historyList.prepend(li);
 
-// 繪製畫布內容
-function drawCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // 清空畫布
-    ctx.fillStyle = 'lightblue';
-    ctx.fillRect(0, 0, canvas.width, canvas.height); // 填充背景
-    ctx.fillStyle = 'black';
-    ctx.font = '100px Arial';
-    ctx.fillText('Canvas Content', 500, 500); // 添加文字內容
-}
+          buffer = '';
+        }
+        e.preventDefault();
+        return;
+      }
 
-// 事件：滑鼠按下開始拖曳
-canvas.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    lastX = e.clientX; // 記錄滑鼠的 X 座標
-    lastY = e.clientY; // 記錄滑鼠的 Y 座標
-});
+      // 僅記錄正常字元
+      if (e.key.length === 1) {
+        buffer += e.key;
+        console.log(buffer);
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          buffer = '';
+        }, 2000);
+      }
+    });
 
-// 事件：滑鼠移動時拖曳畫布
-canvas.addEventListener('mousemove', (e) => {
-    if (isDragging) {
-        offsetX += (e.clientX - lastX) / scale; // 根據滑鼠移動量計算偏移
-        offsetY += (e.clientY - lastY) / scale;
-        lastX = e.clientX; // 更新滑鼠的最後位置
-        lastY = e.clientY;
-        updateCanvas(); // 更新畫布位置
+    // 切換為手動輸入
+    function enableManualInput() {
+      input.readOnly = false;
+      input.inputMode = 'text';
+      input.style.opacity = 1; // 可視化輸入框（可選）
+      input.style.position = 'static';
+      input.style.pointerEvents = 'auto';
+      input.focus();
     }
-});
-
-// 事件：滑鼠釋放時停止拖曳
-canvas.addEventListener('mouseup', () => {
-    isDragging = false;
-});
-
-// 事件：滑鼠移出容器時停止拖曳
-container.addEventListener('mouseleave', () => {
-    isDragging = false; // 如果滑鼠移出 container，則停止拖曳
-});
-
-// 事件：雙擊放大或縮小
-canvas.addEventListener('dblclick', (e) => {
-    if (scale < maxScale) {
-        scale = maxScale; // 放大至最大比例
-    } else {
-        scale = baseScale; // 縮小回初始比例
-        offsetX = (container.offsetWidth - canvas.width * scale) / 2; // 重設偏移量
-        offsetY = (container.offsetHeight - canvas.height * scale) / 2;
-    }
-    updateCanvas(); // 更新畫布
-});
-
-// 初始化畫布
-initCanvas();
-
-    </script>
+  </script>
 </body>
 </html>

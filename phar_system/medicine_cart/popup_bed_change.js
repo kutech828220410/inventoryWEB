@@ -138,7 +138,7 @@ function set_ppbc_display() {
     let ppbc_display_container = document.querySelector(".ppbc_display_container");
     ppbc_display_container.innerHTML = '';
 
-    if(dispaly_bed_change_data.length == 0) dispaly_bed_change_data = bed_change_data;
+    dispaly_bed_change_data = bed_change_data;
 
     dispaly_bed_change_data.forEach(element => {
         let ppbc_card_container = document.createElement("div");
