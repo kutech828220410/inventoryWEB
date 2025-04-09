@@ -65,9 +65,8 @@
     margin-bottom: 8px;
 }
 .ppmcl_bed_name_title {
-    width: 120px;
     text-align: center;
-    padding: 4px;
+    padding: 4px 8px;
     border-radius: 5px;
     background-color: rgb(120, 120, 120);
     color: aliceblue;

@@ -257,6 +257,10 @@ async function allocate_display_init(light_on) {
             med_change_data = med_change_data.filter((e) => {
                 return e.dispens_status != "Y";
             });
+
+            med_change_data = med_change_data.filter((e) => {
+                return Array.isArray(e.cpoe);
+            });
         
             med_change_data = med_change_data.filter((e) => {
                 return e.cpoe.length != 0;
@@ -281,6 +285,10 @@ async function allocate_display_init(light_on) {
             med_change_data = med_change_data.Data;
             med_change_data = med_change_data.filter((e) => {
                 return e.check_status != "Y";
+            });
+
+            med_change_data = med_change_data.filter((e) => {
+                return Array.isArray(e.cpoe);
             });
         
             med_change_data = med_change_data.filter((e) => {

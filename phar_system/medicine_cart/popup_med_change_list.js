@@ -297,7 +297,7 @@ async function set_ppmcl_main_info() {
 
         let ppmcl_bed_name_title = document.createElement("div");
         ppmcl_bed_name_title.classList.add("ppmcl_bed_name_title");
-        ppmcl_bed_name_title.innerHTML = `${element.bednum} 號病床 - ${element.pnamec}`;
+        ppmcl_bed_name_title.innerHTML = `${element.bednum} 床 - ${element.pnamec}`;
         ppmcl_bed_name_title.addEventListener("click", () => {
             let temp_index = -1;
             for (let index = 0; index < med_cart_beds_data.length; index++) {
@@ -578,8 +578,10 @@ async function set_ppmcl_main_info() {
                 ppmcl_cpoe_qty.innerHTML = `總量：${+item.qty}`;
     
                 ppmcl_cpoe_med_info2.appendChild(ppmcl_cpoe_dunit);
-                if(page_setting_params.med_unCheck_display_loc.value == "True") {
-                    ppmcl_cpoe_med_info2.appendChild(ppmcl_cpoe_storage);
+                if(page_setting_params.med_unCheck_display_loc) {
+                    if(page_setting_params.med_unCheck_display_loc.value == "True") {
+                        ppmcl_cpoe_med_info2.appendChild(ppmcl_cpoe_storage);
+                    }
                 }
                 ppmcl_cpoe_med_info2.appendChild(ppmcl_cpoe_qty);
                 

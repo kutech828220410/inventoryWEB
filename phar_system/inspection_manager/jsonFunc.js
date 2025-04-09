@@ -414,10 +414,10 @@ async function download_excel_by_IC_SN(IC_SN, API_inspection_excel_download)
     "TableName" : TableName,
     "TimeTaken": ""
   };
-  var _url = `${API_inspection_excel_download[0].server}`;
-  console.log(`Url [${arguments.callee.name}]` , _url);
+  // var _url = `${API_inspection_excel_download[0].server}`;
+  console.log(`Url`, `${API_inspection_excel_download}api/inspection/download_excel_by_IC_SN`);
   console.log(`Post_data [${arguments.callee.name}]`,post_data);
-  await downloadExcel(_url, post_data, `${IC_SN}_驗收單`);
+  await downloadExcel(`${API_inspection_excel_download}api/inspection/download_excel_by_IC_SN`, post_data, `${IC_SN}_驗收單`);
 }
 //#endregion
 //#region API Device

@@ -406,6 +406,21 @@ async function get_main_search_result() {
     console.log(arr_data);
   }
   med_order_list_form_data = arr_data;
+
+    // 計算 PRI_KEY 的出現次數
+  let countMap = med_order_list_form_data.reduce((acc, item) => {
+    acc[item.PRI_KEY] = (acc[item.PRI_KEY] || 0) + 1;
+    return acc;
+  }, {});
+
+  // 加入 COUNT 欄位，保留原本陣列內容
+  let result = med_order_list_form_data.map(item => ({
+    ...item,
+    COUNT: countMap[item.PRI_KEY]
+  }));
+
+  med_order_list_form_data = result;
+
   console.log(med_order_list_form_data);
   
   // 根據搜尋結果建構畫面展示
@@ -488,7 +503,7 @@ async function set_search_result() {
             td.innerHTML = element.DAYS;
             break;
           case 7:
-            td.innerHTML = element.INV_QTY;
+            td.innerHTML = element.COUNT;
             break;
           case 8:
             if(element.STATE == "未過帳") {
