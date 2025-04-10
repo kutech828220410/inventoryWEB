@@ -492,5 +492,6 @@ async function download_excel_by_IC_SN(IC_SN)
   var _url = `${inventory_url}/download_excel_by_IC_SN`;
   console.log(`Url [${arguments.callee.name}]` , _url);
   console.log(`Post_data [${arguments.callee.name}]`,post_data);
+  console.log(api_ip);
   await downloadExcel(_url,post_data, `${IC_SN}_盤點管理`);
 }

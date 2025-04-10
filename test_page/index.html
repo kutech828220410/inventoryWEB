@@ -2,126 +2,44 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>條碼掃描器監聽（掃描與手動輸入切換）</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 2rem;
-    }
-
-    #scannerInput {
-      position: absolute;
-      opacity: 0;
-      pointer-events: none;
-      height: 0;
-      width: 0;
-      z-index: -1;
-    }
-
-    .output {
-      font-size: 1.5rem;
-      color: green;
-      margin-top: 1rem;
-    }
-
-    .history {
-      margin-top: 2rem;
-      font-size: 1rem;
-      color: #333;
-    }
-
-    .history ul {
-      padding-left: 1.2rem;
-    }
-
-    button {
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-      margin-top: 1rem;
-      cursor: pointer;
-    }
-  </style>
+  <title>GATT 條碼掃描接收</title>
 </head>
 <body>
-  <h1>條碼掃描結果：</h1>
-  <div class="output" id="output">請掃描條碼...</div>
-
-  <button onclick="enableManualInput()">我要手動輸入</button>
-
-  <div class="history">
-    <h2>歷史紀錄：</h2>
-    <ul id="historyList"></ul>
-  </div>
-
-  <!-- 隱藏/切換用的輸入欄位 -->
-  <input
-    id="scannerInput"
-    type="text"
-    inputmode="none"
-    readonly
-    autocomplete="off"
-  />
+  <h1>GATT 模式接收條碼資料</h1>
+  <button id="connect">連接條碼機</button>
+  <div id="status">尚未連接</div>
+  <div id="data">等待資料...</div>
 
   <script>
-    const input = document.getElementById('scannerInput');
-    const output = document.getElementById('output');
-    const historyList = document.getElementById('historyList');
+    const status = document.getElementById('status');
+    const data = document.getElementById('data');
 
-    let buffer = '';
-    let timeout = null;
+    document.getElementById('connect').addEventListener('click', async () => {
+      try {
+        const device = await navigator.bluetooth.requestDevice({
+          filters: [{ namePrefix: 'Barcode' }], // 或直接用 name, services 等
+          optionalServices: ['battery_service', '0000ffe0-0000-1000-8000-00805f9b34fb'] // 你的條碼機服務 UUID
+        });
 
-    // 初始 focus 並設為 readonly（掃碼模式）
-    input.readOnly = true;
-    input.inputMode = 'none';
-    input.focus();
+        status.textContent = `已選擇裝置：${device.name}`;
 
-    // 維持 focus（掃碼時）
-    setInterval(() => {
-      if (document.activeElement !== input && input.readOnly) {
-        // 初始 focus 並設為 readonly（掃碼模式）
-        input.readOnly = true;
-        input.inputMode = 'none';
-        input.focus();
-      }
-    }, 500);
+        const server = await device.gatt.connect();
+        const service = await server.getPrimaryService('0000ffe0-0000-1000-8000-00805f9b34fb'); // 請替換成你條碼機的 Service UUID
+        const characteristic = await service.getCharacteristic('0000ffe1-0000-1000-8000-00805f9b34fb'); // 請替換成接收資料的 Characteristic UUID
 
-    // 掃描或手動輸入監聽
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        if (buffer.length > 0) {
-          output.textContent = '掃描結果：' + buffer;
+        await characteristic.startNotifications();
+        status.textContent = `已連接，等待條碼資料...`;
 
-          const li = document.createElement('li');
-          li.textContent = buffer;
-          historyList.prepend(li);
-
-          buffer = '';
-        }
-        e.preventDefault();
-        return;
-      }
-
-      // 僅記錄正常字元
-      if (e.key.length === 1) {
-        buffer += e.key;
-        console.log(buffer);
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-          buffer = '';
-        }, 2000);
+        characteristic.addEventListener('characteristicvaluechanged', (event) => {
+          const value = new TextDecoder().decode(event.target.value);
+          console.log('接收到條碼：', value);
+          data.textContent = `掃描資料：${value}`;
+        });
+      } catch (err) {
+        console.error(err);
+        status.textContent = `錯誤：${err.message}`;
       }
     });
-
-    // 切換為手動輸入
-    function enableManualInput() {
-      input.readOnly = false;
-      input.inputMode = 'text';
-      input.style.opacity = 1; // 可視化輸入框（可選）
-      input.style.position = 'static';
-      input.style.pointerEvents = 'auto';
-      input.focus();
-    }
   </script>
 </body>
 </html>

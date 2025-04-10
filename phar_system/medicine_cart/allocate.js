@@ -1940,9 +1940,6 @@ function delay_func(ms) {
         }, ms);
     });
 }
-function name(params) {
-    
-}
 
 // // 設置每五分鐘預處理的函式
 // async function setPreprocessingInterval() {

@@ -223,7 +223,7 @@ async function get_serversetting_by_department_type(phar) {
 // 依藥局&護理站確認可否交車
 async function med_cart_handover(phar, med_cart) {
     let start_p = performance.now();
-    let temp_doman = transform_api_ip(api_ip);
+    let temp_doman = transform_api_ip_4433(api_ip);
     let temp_data = await fetch(`${temp_doman}api/med_cart/handover`, {
         method: "POST",
         headers: {

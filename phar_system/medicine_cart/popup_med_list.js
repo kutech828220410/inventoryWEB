@@ -537,8 +537,19 @@ async function set_pp_med_list_display() {
         ppml_light_on_btn.setAttribute("code", element.code);
         ppml_light_on_btn.innerHTML = "亮燈";
         ppml_light_on_btn.addEventListener("click", async () => {
-            await set_light_table(element.code, element.name, element.cht_name);
-            popup_light_table_select_div_open();
+            let checkedRadio = document.querySelector('input[name="filter_med_table_input"]:checked');
+
+            if(checkedRadio.value != "all") {
+                // await light_off_func();
+                await light_on_func(element.code, checkedRadio.value, "調劑台");
+            } else {
+                alert("請選擇調劑台");
+            }
+
+            // console.log(checkedRadio);
+
+            // await set_light_table(element.code, element.name, element.cht_name);
+            // popup_light_table_select_div_open();
         });
 
         let check_count = 0;
