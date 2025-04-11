@@ -2,43 +2,147 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>GATT 條碼掃描接收</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
+  <title>條碼掃描接收器</title>
+  <style>
+    html, body {
+      width: 90svw;
+      margin: 0;
+      padding: 0;
+      font-family: "Helvetica Neue", sans-serif;
+      background: #f5f5f5;
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      text-align: center;
+    }
+
+    p {
+      font-size: 1rem;
+      text-align: center;
+      color: #666;
+    }
+
+    #scanner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      border: none;
+      font-size: 16px; /* 防止 iOS 放大畫面 */
+    }
+
+    #result {
+      margin-top: 2rem;
+      font-size: 1.25rem;
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      word-break: break-all;
+    }
+
+    #refocusBtn {
+      display: block;
+      margin: 1.5rem auto 0;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      width: 100%;
+      max-width: 280px;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      #result {
+        font-size: 1.1rem;
+      }
+
+      #refocusBtn {
+        font-size: 0.95rem;
+        padding: 0.6rem 1.2rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>GATT 模式接收條碼資料</h1>
-  <button id="connect">連接條碼機</button>
-  <div id="status">尚未連接</div>
-  <div id="data">等待資料...</div>
+  <div class="container">
+    <h1>條碼掃描模式</h1>
+    <p>請使用藍牙條碼機掃描，掃描結果將顯示於下方。</p>
+
+    <input id="scanner" type="text" 
+           inputmode="none"
+           autocomplete="off"
+           autocorrect="off"
+           autocapitalize="off"
+           />
+
+    <button id="refocusBtn">請點擊以啟用掃描</button>
+
+    <div id="result">等待掃描資料...</div>
+  </div>
 
   <script>
-    const status = document.getElementById('status');
-    const data = document.getElementById('data');
+    const scanner = document.getElementById('scanner');
+    const result = document.getElementById('result');
+    const refocusBtn = document.getElementById('refocusBtn');
 
-    document.getElementById('connect').addEventListener('click', async () => {
-      try {
-        const device = await navigator.bluetooth.requestDevice({
-          filters: [{ namePrefix: 'Barcode' }], // 或直接用 name, services 等
-          optionalServices: ['battery_service', '0000ffe0-0000-1000-8000-00805f9b34fb'] // 你的條碼機服務 UUID
-        });
+    let buffer = '';
+    let lastKeyTime = Date.now();
 
-        status.textContent = `已選擇裝置：${device.name}`;
+    scanner.addEventListener('keydown', (e) => {
+      const now = Date.now();
+      if (now - lastKeyTime > 1000) buffer = '';
 
-        const server = await device.gatt.connect();
-        const service = await server.getPrimaryService('0000ffe0-0000-1000-8000-00805f9b34fb'); // 請替換成你條碼機的 Service UUID
-        const characteristic = await service.getCharacteristic('0000ffe1-0000-1000-8000-00805f9b34fb'); // 請替換成接收資料的 Characteristic UUID
-
-        await characteristic.startNotifications();
-        status.textContent = `已連接，等待條碼資料...`;
-
-        characteristic.addEventListener('characteristicvaluechanged', (event) => {
-          const value = new TextDecoder().decode(event.target.value);
-          console.log('接收到條碼：', value);
-          data.textContent = `掃描資料：${value}`;
-        });
-      } catch (err) {
-        console.error(err);
-        status.textContent = `錯誤：${err.message}`;
+      if (e.key === 'Enter') {
+        if (buffer) {
+          result.textContent = `掃描結果：${buffer}`;
+          buffer = '';
+          scanner.value = '';
+        }
+      } else {
+        buffer += e.key;
+        console.log(buffer);
       }
+
+      lastKeyTime = now;
+    });
+
+    window.addEventListener('load', () => {
+      scanner.focus();
+    });
+
+    refocusBtn.addEventListener('click', () => {
+      scanner.focus();
+    });
+
+    scanner.addEventListener('focus', () => {
+      refocusBtn.textContent = '掃描中（點我可重新啟用）';
+    });
+
+    scanner.addEventListener('blur', () => {
+      refocusBtn.textContent = '點我啟用掃描模式';
     });
   </script>
 </body>
