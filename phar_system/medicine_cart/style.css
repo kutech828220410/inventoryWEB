@@ -241,6 +241,17 @@
     justify-content: center;
 }
 
+.header_btn_div {
+    display: flex;
+}
+.function_btn_container {
+    margin: auto;
+    max-width: 1200px;
+    padding: 0px 40px;
+    margin-bottom: 16px;
+    display: flex;
+}
+
 
 
 
@@ -261,7 +272,8 @@
 }
 
 @media screen and (max-width: 1200px) {
-    .function_menu_container {
+    .function_menu_container,
+    .function_btn_container {
         padding: 0px 40px 0px 20px;
     }
     .d_carts_list_contaienr {
@@ -283,7 +295,8 @@
     .main_div {
         margin-top: 10px;
     }
-    .function_menu_container {
+    .function_menu_container,
+    .function_btn_container {
         padding: 0px 20px;
         margin-top: 0px;
         flex-direction: column;

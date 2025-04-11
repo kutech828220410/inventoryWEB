@@ -20,7 +20,50 @@ function get_ppmcl_header() {
 
     let ppmcl_h_title = document.createElement("div");
     ppmcl_h_title.classList.add("ppmcl_h_title");
-    ppmcl_h_title.innerText = "未調藥品";
+
+    let ppmcl_h_current_cart_select = document.createElement("select");
+    ppmcl_h_current_cart_select.classList.add("ppmcl_h_current_cart_select");
+    ppmcl_h_current_cart_select.addEventListener("change", async () => {
+        Set_main_div_enable(true);
+        let post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
+        console.log(post_data);
+        if(current_func == "allocate") {
+            med_change_data = await get_patient_with_NOdispense(post_data);
+            med_change_data = med_change_data.Data;
+    
+            // med_change_data = med_change_data.filter((e) => {
+            //     return e.cpoe_change_status != "";
+            // });
+        } else {
+            med_change_data = await get_patient_with_NOcheck(post_data);
+            med_change_data = med_change_data.Data;
+        }
+    
+        console.log(med_change_data);
+    
+        med_change_data = med_change_data.filter((e) => {
+            return Array.isArray(e.cpoe) && e.cpoe.length != 0;
+        });
+    
+        console.log(med_change_data);
+    
+        if(med_change_data.length > 0) {
+            med_change_data.sort((a, b) => +a.bednum - +b.bednum);
+        }
+    
+        console.log("++++++++++++++++++++", med_change_data);
+        await set_ppmcl_main_info();
+        
+        // popup_med_change_list_div.Set_Visible(true);
+        Set_main_div_enable(false);
+    });
+
+    let ppmcl_h_title_content = document.createElement("div");
+    ppmcl_h_title_content.classList.add("ppmcl_h_title_content");
+    ppmcl_h_title_content.innerHTML = `未調藥品`;
+
+    ppmcl_h_title.appendChild(ppmcl_h_current_cart_select);
+    ppmcl_h_title.appendChild(ppmcl_h_title_content);
 
     let ppmcl_h_close_btn = document.createElement("img");
     ppmcl_h_close_btn.classList.add("ppmcl_h_close_btn");
@@ -29,8 +72,22 @@ function get_ppmcl_header() {
         popup_med_change_list_div_close();
     });
 
+    let ppmcl_head_sort_container = document.createElement("div");
+    ppmcl_head_sort_container.classList.add("ppmcl_head_sort_container");
+
+    let ppmcl_head_sort_title = document.createElement("div");
+    ppmcl_head_sort_title.classList.add("ppmcl_head_sort_title");
+    ppmcl_head_sort_title.innerHTML = "調劑台";
+
+    let ppmcl_head_med_table_filter_container = document.createElement("div");
+    ppmcl_head_med_table_filter_container.classList.add("ppmcl_head_med_table_filter_container");
+
+    ppmcl_head_sort_container.appendChild(ppmcl_head_sort_title)
+    ppmcl_head_sort_container.appendChild(ppmcl_head_med_table_filter_container);
+
     ppmcl_header_container.appendChild(ppmcl_h_title);
     ppmcl_header_container.appendChild(ppmcl_h_close_btn);
+    ppmcl_header_container.appendChild(ppmcl_head_sort_container);
 
     return ppmcl_header_container;
 }
@@ -50,8 +107,22 @@ function popup_med_change_list_div_close() {
     popup_med_change_list_div.Set_Visible(false);
 }
 async function popup_med_change_list_div_open() {
+    if(!current_pharmacy.phar) {
+        alert("請先選擇藥局");
+        return;
+    }
+    if(current_func == "" || current_func == "deliver") {
+        alert("請選擇調劑 / 覆核");
+        return;    
+    }
+
+    let ppmcl_h_current_cart_select = document.querySelector(".ppmcl_h_current_cart_select");
+    if(current_cart.hnursta && ppmcl_h_current_cart_select.value != current_cart.hnursta) {
+        ppmcl_h_current_cart_select.value = current_cart.hnursta;
+    }
+
     Set_main_div_enable(true);
-    let post_data = [current_cart.phar, current_cart.hnursta];
+    let post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
     console.log(post_data);
     if(current_func == "allocate") {
         med_change_data = await get_patient_with_NOdispense(post_data);
@@ -86,11 +157,12 @@ async function popup_med_change_list_div_open() {
 
 async function set_ppmcl_main_info() {
     let ppmcl_main_container = document.querySelector(".ppmcl_main_container");
+    let ppmcl_h_current_cart_select = document.querySelector(".ppmcl_h_current_cart_select");
     console.log("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
     ppmcl_main_container.innerHTML = "";
     console.log("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
     if(med_change_data.length == 0) {
-        ppmcl_main_container.innerHTML = `<div class="ppmcl_main_no_info">${current_cart.hnursta} 處方無異動</div>`;
+        ppmcl_main_container.innerHTML = `<div class="ppmcl_main_no_info">${ppmcl_h_current_cart_select.value} 處方無異動</div>`;
         return;
     }
 
@@ -153,7 +225,7 @@ async function set_ppmcl_main_info() {
                     ppmcl_bed_card_container.remove();
     
                     if(ppmcl_bed_card_container_arr.length > 0) {
-                        let post_data = [current_cart.phar, current_cart.hnursta];
+                        let post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
                         console.log(post_data);
                     
                         med_change_data = await get_patient_with_NOdispense(post_data);
@@ -206,7 +278,7 @@ async function set_ppmcl_main_info() {
                     ServerName: "",
                     ServerType: "",
                     UserName: loggedName.Name,
-                    ValueAry: [temp_guid_arr.join(";"), current_cart.hnursta]
+                    ValueAry: [temp_guid_arr.join(";"), ppmcl_h_current_cart_select.value]
                 }
 
                 // if(temp_table != "all") {
@@ -245,7 +317,7 @@ async function set_ppmcl_main_info() {
                     });
     
                     
-                    post_data = [current_cart.phar, current_cart.hnursta];
+                    post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
                     console.log(post_data);
                     if(current_func == "allocate") {
                         med_change_data = await get_patient_with_NOdispense(post_data);
@@ -337,7 +409,7 @@ async function set_ppmcl_main_info() {
                     Set_main_div_enable(true);
                     let temp_guid_arr = [];
     
-                    let post_data = [current_cart.phar, current_cart.hnursta];
+                    let post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
                     console.log(post_data);
                 
                     med_change_data = await get_patient_with_NOdispense(post_data);
@@ -351,6 +423,11 @@ async function set_ppmcl_main_info() {
                 
                     console.log(med_change_data);
                     console.log(temp_result);
+
+                    if(!temp_result) {
+                        alert("資料異常，請重新整理");
+                        return;
+                    }
     
                     temp_result.cpoe.forEach(async item => {
                         if(item.dispens_status == "") {
@@ -388,7 +465,7 @@ async function set_ppmcl_main_info() {
                             }
                         }
 
-                        post_data = [current_cart.phar, current_cart.hnursta];
+                        post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
                         console.log(post_data);
                         if(current_func == "allocate") {
                             med_change_data = await get_patient_with_NOdispense(post_data);
@@ -440,7 +517,7 @@ async function set_ppmcl_main_info() {
                         ServerName: "",
                         ServerType: "",
                         UserName: loggedName.Name,
-                        ValueAry: [temp_guid_arr.join(";"), current_cart.hnursta]
+                        ValueAry: [temp_guid_arr.join(";"), ppmcl_h_current_cart_select.value]
                     }
 
                     // if(temp_table != "all") {
@@ -493,7 +570,7 @@ async function set_ppmcl_main_info() {
                     });
 
                     
-                    post_data = [current_cart.phar, current_cart.hnursta];
+                    post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
                     console.log(post_data);
                     if(current_func == "allocate") {
                         med_change_data = await get_patient_with_NOdispense(post_data);
@@ -622,7 +699,7 @@ async function set_ppmcl_main_info() {
                             ppmcl_bed_card_container.remove();
                         }
     
-                        post_data = [current_cart.phar, current_cart.hnursta];
+                        post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
                         console.log(post_data);
                         if(current_func == "allocate") {
                             med_change_data = await get_patient_with_NOdispense(post_data);
@@ -675,7 +752,7 @@ async function set_ppmcl_main_info() {
                                 ppmcl_bed_card_container.remove();
                             }
         
-                            post_data = [current_cart.phar, current_cart.hnursta];
+                            post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
                             console.log(post_data);
                             if(current_func == "allocate") {
                                 med_change_data = await get_patient_with_NOdispense(post_data);
@@ -763,11 +840,12 @@ async function set_ppmcl_main_info() {
     });
 
     if(temp_count_bed == 0) {
-        ppmcl_main_container.innerHTML = `<div class="ppmcl_main_no_info">${current_cart.hnursta} 處方無異動</div>`;
+        ppmcl_main_container.innerHTML = `<div class="ppmcl_main_no_info">${ppmcl_h_current_cart_select.value} 處方無異動</div>`;
     }
 }
 
 async function set_post_data_to_dispensed_by_GUID(guid_arr, master_guid) {
+    let checkedRadio = document.querySelector('input[name="ppmcl_filter_med_table_input"]:checked');
     let loggedName = sessionStorage.getItem('login_json');
     loggedName = JSON.parse(loggedName);
     let med_card_checkbox = document.querySelectorAll(".med_card_checkbox");
@@ -782,10 +860,10 @@ async function set_post_data_to_dispensed_by_GUID(guid_arr, master_guid) {
         ValueAry: []
     };
 
-    if(current_med_table != "all") {
+    if(checkedRadio.value != "all") {
         post_data = {
-            ServerName: current_med_table.name,
-            ServerType: current_med_table.type,
+            ServerName: checkedRadio.value,
+            ServerType: "調劑台",
             UserName: loggedName.Name,
             ValueAry: []
         };
@@ -820,8 +898,8 @@ async function set_post_data_to_dispensed_by_GUID(guid_arr, master_guid) {
             Value: ""
         }
         if(current_med_table != "all") {
-            post_data2.ServerName = current_med_table.name;
-            post_data2.ServerType = current_med_table.type;
+            post_data2.ServerName = checkedRadio.value;
+            post_data2.ServerType = "調劑台";
         }
 
         if(current_func == "allocate") {
@@ -835,3 +913,61 @@ async function set_post_data_to_dispensed_by_GUID(guid_arr, master_guid) {
 
     return return_data;
 };
+
+function ppmcl_set_med_table_filter_radio() {
+    let head_med_table_filter_container = document.querySelector(".ppmcl_head_med_table_filter_container");
+    head_med_table_filter_container.innerHTML = "";
+
+    let all_input = document.createElement("input");
+    all_input.className = "ppmcl_filter_med_table_input";
+    all_input.name = "ppmcl_filter_med_table_input";
+    all_input.type = "radio";
+    all_input.value = "all";
+    all_input.id = "ppmcl_filter_med_table_all";
+    all_input.checked = true;
+    // all_input.addEventListener("change", async (e) => {
+    //     let ppml_main_container = document.querySelector(".ppml_main_container");
+    //     med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, e.target.value);
+    //     med_list_data = med_list_data.Data;
+    //     med_list_data = sort_med_list_data(med_list_data, current_func);
+    //     med_list_data = sort_display_med_data(med_list_data);
+    //     await set_pp_med_list_display();
+    //     ppml_main_container.scrollTop = 0;
+    // });
+
+    let all_label = document.createElement("label");
+    all_label.classList.add("ppmcl_filter_med_label");
+    all_label.innerHTML = "全部";
+    all_label.setAttribute("for", "ppmcl_filter_med_table_all");
+
+    head_med_table_filter_container.appendChild(all_input);
+    head_med_table_filter_container.appendChild(all_label);
+
+    if(med_table.length == 0) return;
+
+    med_table.forEach(element => {
+        let input = document.createElement("input");
+        input.className = "ppmcl_filter_med_table_input";
+        input.name = "ppmcl_filter_med_table_input";
+        input.type = "radio";
+        input.value = element.name;
+        input.id = `ppmcl_guid_${element.GUID}`;
+        // input.addEventListener("change", async (e) => {
+        //     let ppml_main_container = document.querySelector(".ppml_main_container");
+        //     med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, e.target.value);
+        //     med_list_data = med_list_data.Data;
+        //     med_list_data = sort_med_list_data(med_list_data, current_func);
+        //     med_list_data = sort_display_med_data(med_list_data);
+        //     await set_pp_med_list_display();
+        //     ppml_main_container.scrollTop = 0;
+        // });
+
+        let label = document.createElement("label");
+        label.classList.add("ppmcl_filter_med_label");
+        label.innerHTML = element.name;
+        label.setAttribute("for", `ppmcl_guid_${element.GUID}`);
+
+        head_med_table_filter_container.appendChild(input);
+        head_med_table_filter_container.appendChild(label);
+    });
+}

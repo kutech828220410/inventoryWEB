@@ -20,7 +20,38 @@ function get_pp_bed_change_header() {
 
     let ppbc_h_title = document.createElement("div");
     ppbc_h_title.classList.add("ppbc_h_title");
-    ppbc_h_title.innerHTML = `病床異動`;
+    
+    let ppbc_h_current_cart_select = document.createElement("select");
+    ppbc_h_current_cart_select.classList.add("ppbc_h_current_cart_select");
+    ppbc_h_current_cart_select.addEventListener("change", async () => {
+        let post_data = {
+            ValueAry:[current_pharmacy.phar, ppbc_h_current_cart_select.value],
+        };
+    
+        console.log(post_data);
+        let return_data = await get_bed_status(post_data);
+    
+        let temp_arr = return_data.Data
+    
+        temp_arr.sort((a, b) => {
+            let nameCompare = a.name.localeCompare(b.name, 'und', { sensitivity: 'base' });
+            if (nameCompare === 0) {
+                return new Date(a.move_time) - new Date(b.move_time); // 如果 name 相同，按照 move_time 排序
+            }
+            return nameCompare;
+        });
+    
+        bed_change_data = temp_arr;
+        console.log(bed_change_data);
+        set_ppbc_display();
+    });
+
+    let ppbc_h_title_content = document.createElement("div");
+    ppbc_h_title_content.classList.add("ppbc_h_title_content");
+    ppbc_h_title_content.innerHTML = `病床異動`;
+
+    ppbc_h_title.appendChild(ppbc_h_current_cart_select);
+    ppbc_h_title.appendChild(ppbc_h_title_content);
 
     let ppbc_h_close_btn = document.createElement("img");
     ppbc_h_close_btn.classList.add("ppbc_h_close_btn");
@@ -109,8 +140,17 @@ function popup_bed_change_div_close() {
     popup_bed_change_div.Set_Visible(false);
 }
 async function popup_bed_change_div_open() {
+    if(!current_pharmacy.phar) {
+        alert("請先選擇藥局");
+        return;
+    }
+    let ppbc_h_current_cart_select = document.querySelector(".ppbc_h_current_cart_select");
+    if(current_cart.hnursta && ppbc_h_current_cart_select.value != current_cart.hnursta) {
+        ppbc_h_current_cart_select.value = current_cart.hnursta;
+    }
+
     let post_data = {
-        ValueAry:[current_pharmacy.phar, current_cart.hnursta],
+        ValueAry:[current_pharmacy.phar, ppbc_h_current_cart_select.value],
     };
 
     console.log(post_data);

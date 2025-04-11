@@ -7,9 +7,11 @@
     position: relative;
     justify-content: center;
     margin-bottom: 16px;
+    flex-direction: column;
+    align-items: center;
 }
 .ppmcl_h_title {
-    padding: 4px 24px;
+    padding: 8px 24px;
     text-align: center;
     font-size: 18px;
     font-weight: 600;
@@ -17,6 +19,21 @@
     background-color: rgb(222, 222, 222);
     color: #000000;
     border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+}
+.ppmcl_h_title_content {
+    padding-left: 12px;
+}
+.ppmcl_h_current_cart_select {
+    border-radius: 5px;
+    padding: 2px 6px;
+    border: none;
+    font-size: 16px;
+    width: 140px;
+    text-align: center;
 }
 .ppmcl_h_close_btn {
     position: absolute;
@@ -25,6 +42,37 @@
     width: 36px;
     top: 0px;
     right: 0px;
+}
+.ppmcl_head_sort_container {
+    width: 100%;
+} 
+.ppmcl_head_sort_title {
+    margin-bottom: 12px;
+    font-weight: 600;
+    font-size: 20px;
+}
+.ppmcl_head_med_table_filter_container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 19% 19% 19% 19% 19%;
+    justify-content: space-between;
+}
+.ppmcl_filter_med_table_input {
+    display: none;
+}
+.ppmcl_filter_med_label {
+    border-radius: 4px;
+    padding: 4px;
+    text-align: center;
+    background-color: #d7d7d7;
+    transition: all 0.2s ease-out;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+.ppmcl_head_med_table_filter_container input[type="radio"]:checked + label  {
+    background-color: #5e5e5e;
+    transition: all 0.2s ease-out;
+    color: #ffffff;
 }
 .ppmcl_main_container {
     max-height: 520px;

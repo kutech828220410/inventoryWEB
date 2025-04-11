@@ -345,7 +345,7 @@ function get_p_bed_header() {
     ppmcl_btn.innerHTML = "未調藥品";
     ppmcl_btn.addEventListener("click", () => {
         popup_med_change_list_div_open();
-    })
+    });
 
     let pb_list_btn = document.createElement("div");
     pb_list_btn.classList.add("btn");
@@ -431,11 +431,11 @@ function get_p_bed_header() {
         popup_bed_change_div_open()
     });
 
-    pb_btn_container.appendChild(ppmcl_btn);
+    // pb_btn_container.appendChild(ppmcl_btn);
     pb_btn_container.appendChild(dc_new_btn);
-    pb_btn_container.appendChild(med_cart_sum_list_btn);
+    // pb_btn_container.appendChild(med_cart_sum_list_btn);
     pb_btn_container.appendChild(pb_list_btn);
-    pb_btn_container.appendChild(bed_change_btn);
+    // pb_btn_container.appendChild(bed_change_btn);
 
     // pb_btn_container.appendChild();
     // pb_btn_container.appendChild();

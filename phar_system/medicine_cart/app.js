@@ -130,6 +130,9 @@ function get_header(test_user_data) {
     header_display_div.appendChild(header_title_container);
     header_display_div.appendChild(light_color_select_div);
 
+    let header_btn_div = document.createElement("div");
+    header_btn_div.classList.add("header_btn_div");
+
     let header_logout_btn = document.createElement("div");
     header_logout_btn.classList.add("header_logout_btn");
     header_logout_btn.classList.add("btn");
@@ -145,8 +148,10 @@ function get_header(test_user_data) {
       }
     })
 
+    header_btn_div.appendChild(header_logout_btn);
+
     header.appendChild(header_display_div);
-    header.appendChild(header_logout_btn);
+    header.appendChild(header_btn_div);
     body.appendChild(header);
 }
 
@@ -161,12 +166,94 @@ function get_main_div() {
 function get_main_ui() {
   let main_div = document.querySelector('.main_div');
 
+  let function_btn_container = document.createElement("div");
+  function_btn_container.classList.add("function_btn_container");
+
+  let ppmcl_btn = document.createElement("div");
+  ppmcl_btn.classList.add("btn");
+  ppmcl_btn.classList.add("ppmcl_btn");
+  ppmcl_btn.innerHTML = "未調藥品";
+  ppmcl_btn.addEventListener("click", () => {
+      popup_med_change_list_div_open();
+  });
+
+  let med_cart_sum_list_btn = document.createElement("div");
+  med_cart_sum_list_btn.classList.add("btn");
+  med_cart_sum_list_btn.classList.add("med_cart_sum_list_btn");
+  med_cart_sum_list_btn.innerHTML = "藥品總量";
+  med_cart_sum_list_btn.addEventListener("click", async () => {
+    if(!current_pharmacy.phar) {
+        alert("請先選擇藥局");
+        return;
+    }
+    if(current_func == "" || current_func == "deliver") {
+        alert("請選擇調劑 / 覆核");
+        return;    
+    }
+    
+    let ppml_h_current_cart_select = document.querySelector(".ppml_h_current_cart_select");
+    if(current_cart.hnursta && ppml_h_current_cart_select.value != current_cart.hnursta) {
+        ppml_h_current_cart_select.value = current_cart.hnursta;
+    }
+
+    Set_main_div_enable(true);
+    clearTimeout(med_list_timer);
+    med_list_timer = setTimeout(() => {
+        Set_main_div_enable(false);
+        alert("連線超時，請重新點選");
+        return;
+    }, 6000);
+    med_list_data = await get_all_med_qty(current_pharmacy.phar, ppml_h_current_cart_select.value, "all");
+    if(med_list_data.Code != 200) {
+        clearTimeout(med_list_timer);
+
+        alert("藥品總量資料錯誤", med_list_data.Result);
+        Set_main_div_enable(false);
+    } else {
+        if(Array.isArray(med_list_data.Data)) {
+            med_list_data = med_list_data.Data;
+            med_list_data = sort_med_list_data(med_list_data, current_func);
+            med_list_data = sort_display_med_data(med_list_data);
+            await set_pp_med_list_display();
+
+            clearTimeout(med_list_timer);
+            
+            popup_med_list_div_open();
+            Set_main_div_enable(false);
+        } else {
+            console.log("藥品總量，資料格式錯誤", med_list_data.Data);
+            med_list_data.Data = [];
+            med_list_data = med_list_data.Data;
+            med_list_data = sort_med_list_data(med_list_data, current_func);
+            med_list_data = sort_display_med_data(med_list_data);
+            await set_pp_med_list_display();
+            
+            clearTimeout(med_list_timer);
+            Set_main_div_enable(false);
+        }
+    }
+      
+  });
+
+  let bed_change_btn = document.createElement("div");
+  bed_change_btn.classList.add("btn");
+  bed_change_btn.classList.add("bed_change_btn");
+  bed_change_btn.innerHTML = "病床異動";
+  bed_change_btn.addEventListener("click", () => {
+      popup_bed_change_div_open()
+  });
+
+  function_btn_container.appendChild(ppmcl_btn);
+  function_btn_container.appendChild(med_cart_sum_list_btn);
+  function_btn_container.appendChild(bed_change_btn);
+
   let function_menu_container = document.createElement("div");
   function_menu_container.classList.add("function_menu_container");
 
   let function_display_container = document.createElement("div");
   function_display_container.classList.add("function_display_container");
 
+  main_div.appendChild(function_btn_container);
   main_div.appendChild(function_menu_container);
   main_div.appendChild(function_display_container);
 }
@@ -618,6 +705,7 @@ async function get_cart_list_and_med_table() {
   med_table = temp_table_list.Data;
   //  插入藥品總量選單條及台選單
   set_med_table_filter_radio();
+  ppmcl_set_med_table_filter_radio();
   console.log(med_table);
 
   let cart_option_container = document.querySelector(".cart_option_container");
@@ -644,9 +732,32 @@ async function get_cart_list_and_med_table() {
         last_current_cart = current_cart;
       }
     });
-    
 
     cart_option_container.appendChild(cart_option_div);
+
+    // 未調藥品加入彈窗select
+    let ppmcl_h_current_cart_select = document.querySelector(".ppmcl_h_current_cart_select");
+    let ppmcl_h_current_cart_option = document.createElement("option");
+    ppmcl_h_current_cart_option.value = element.hnursta;
+    ppmcl_h_current_cart_option.innerHTML = element.hnursta;
+
+    ppmcl_h_current_cart_select.appendChild(ppmcl_h_current_cart_option);
+
+    // 藥品總量加入彈窗select
+    let ppml_h_current_cart_select = document.querySelector(".ppml_h_current_cart_select");
+    let ppml_h_current_cart_option = document.createElement("option");
+    ppml_h_current_cart_option.value = element.hnursta;
+    ppml_h_current_cart_option.innerHTML = element.hnursta;
+
+    ppml_h_current_cart_select.appendChild(ppml_h_current_cart_option);
+
+    // 病床異動加入彈窗select
+    let ppbc_h_current_cart_select = document.querySelector(".ppbc_h_current_cart_select");
+    let ppbc_h_current_cart_option = document.createElement("option");
+    ppbc_h_current_cart_option.value = element.hnursta;
+    ppbc_h_current_cart_option.innerHTML = element.hnursta;
+
+    ppbc_h_current_cart_select.appendChild(ppbc_h_current_cart_option);
   });
 
   let med_table_option_container = document.querySelector(".med_table_option_container");
