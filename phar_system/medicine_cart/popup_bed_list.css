@@ -117,6 +117,19 @@
     font-size: 12px;
     color: #000000;
 }
+.pp_logout_bed::before {
+    content: "出院";
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #9a9a9a;
+    border-radius: 0px 0px 5px 5px;
+    width: 100%;
+    bottom: 0px;
+    font-size: 12px;
+    color: #000000;
+}
 .ppbl_footer_container {
     display: flex;
     justify-content: space-between;

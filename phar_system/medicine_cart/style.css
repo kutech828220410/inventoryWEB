@@ -93,10 +93,16 @@
   border-radius: 5px;
   transition: all 0.2s ease-out;
   background-color: black;
+  text-align: center;
 }
 .btn:hover {
   background-color: #6B6B63;
   transition: all 0.2s ease-out;
+}
+
+.display_done {
+    background-color: #cfcfcf;
+    color: black;
 }
 
 .no_selected_display {
@@ -300,6 +306,10 @@
         padding: 0px 20px;
         margin-top: 0px;
         flex-direction: column;
+    }
+    .function_btn_container  {
+        display: grid;
+        grid-template-columns: 50% 50%;
     }
     .select_container {
         margin-bottom: 20px;

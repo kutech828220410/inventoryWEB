@@ -174,7 +174,7 @@ function get_main_ui() {
   ppmcl_btn.classList.add("ppmcl_btn");
   ppmcl_btn.innerHTML = "未調藥品";
   ppmcl_btn.addEventListener("click", () => {
-      popup_med_change_list_div_open();
+    popup_med_change_list_div_open();
   });
 
   let med_cart_sum_list_btn = document.createElement("div");
@@ -183,12 +183,12 @@ function get_main_ui() {
   med_cart_sum_list_btn.innerHTML = "藥品總量";
   med_cart_sum_list_btn.addEventListener("click", async () => {
     if(!current_pharmacy.phar) {
-        alert("請先選擇藥局");
-        return;
+      alert("請先選擇藥局");
+      return;
     }
     if(current_func == "" || current_func == "deliver") {
-        alert("請選擇調劑 / 覆核");
-        return;    
+      alert("請選擇調劑 / 覆核");
+      return;    
     }
     
     let ppml_h_current_cart_select = document.querySelector(".ppml_h_current_cart_select");
@@ -199,40 +199,97 @@ function get_main_ui() {
     Set_main_div_enable(true);
     clearTimeout(med_list_timer);
     med_list_timer = setTimeout(() => {
-        Set_main_div_enable(false);
-        alert("連線超時，請重新點選");
-        return;
+      Set_main_div_enable(false);
+      alert("連線超時，請重新點選");
+      return;
     }, 6000);
     med_list_data = await get_all_med_qty(current_pharmacy.phar, ppml_h_current_cart_select.value, "all");
     if(med_list_data.Code != 200) {
-        clearTimeout(med_list_timer);
+      clearTimeout(med_list_timer);
 
-        alert("藥品總量資料錯誤", med_list_data.Result);
-        Set_main_div_enable(false);
+      alert("藥品總量資料錯誤", med_list_data.Result);
+      Set_main_div_enable(false);
     } else {
-        if(Array.isArray(med_list_data.Data)) {
-            med_list_data = med_list_data.Data;
-            med_list_data = sort_med_list_data(med_list_data, current_func);
-            med_list_data = sort_display_med_data(med_list_data);
-            await set_pp_med_list_display();
+      if(Array.isArray(med_list_data.Data)) {
+        med_list_data = med_list_data.Data;
+        med_list_data = sort_med_list_data(med_list_data, current_func);
+        med_list_data = sort_display_med_data(med_list_data);
+        await set_pp_med_list_display();
 
-            clearTimeout(med_list_timer);
-            
-            popup_med_list_div_open();
-            Set_main_div_enable(false);
-        } else {
-            console.log("藥品總量，資料格式錯誤", med_list_data.Data);
-            med_list_data.Data = [];
-            med_list_data = med_list_data.Data;
-            med_list_data = sort_med_list_data(med_list_data, current_func);
-            med_list_data = sort_display_med_data(med_list_data);
-            await set_pp_med_list_display();
-            
-            clearTimeout(med_list_timer);
-            Set_main_div_enable(false);
-        }
+        clearTimeout(med_list_timer);
+        
+        popup_med_list_div_open();
+        Set_main_div_enable(false);
+      } else {
+        console.log("藥品總量，資料格式錯誤", med_list_data.Data);
+        med_list_data.Data = [];
+        med_list_data = med_list_data.Data;
+        med_list_data = sort_med_list_data(med_list_data, current_func);
+        med_list_data = sort_display_med_data(med_list_data);
+        await set_pp_med_list_display();
+        
+        clearTimeout(med_list_timer);
+        Set_main_div_enable(false);
+      }
     }
-      
+  });
+
+  let discharged_btn = document.createElement("div");
+  discharged_btn.classList.add("btn");
+  discharged_btn.classList.add("discharged_btn");
+  discharged_btn.innerHTML = "出院退藥";
+  discharged_btn.addEventListener("click", async () => {
+    if(!current_pharmacy.phar) {
+      alert("請先選擇藥局");
+      return;
+    }
+    Set_main_div_enable(true);
+
+    let post_data = {
+      Value: "調劑台",
+      ValueAry:[current_pharmacy.phar]
+    }
+
+    console.log("出院api", post_data);
+    let return_data = await get_all_cart_discharge(post_data);
+    if(return_data.Code != 200) {
+      alert("出院退藥資料錯誤", return_data.Result);
+      Set_main_div_enable(false);
+    } else {
+      let ppdl_h_current_cart_select_option = document.querySelectorAll(".ppdl_h_current_cart_select option");
+      ppdl_h_current_cart_select_option.forEach(element => {
+        let temp_arr = return_data.Data;
+        if(temp_arr.includes(element.value)) {
+          element.innerHTML = `${element.value} (出院)`;
+        } else {
+          element.innerHTML = element.value;
+        }
+      });
+    }
+
+    let ppdl_h_current_cart_select = document.querySelector(".ppdl_h_current_cart_select");
+
+    if(current_cart && ppdl_h_current_cart_select.value != current_cart.hnursta) {
+      ppdl_h_current_cart_select.value = current_cart.hnursta;
+    }
+
+    post_data = {
+      Value: "調劑台",
+      ValueAry:  [current_pharmacy.phar, ppdl_h_current_cart_select.value]
+    };
+
+    console.log("出院處方退藥api",post_data);
+    return_data = await get_patient_discharge(post_data);
+    if(return_data.Code != 200) {
+      alert("出院處方資料錯誤", return_data.Result);
+      Set_main_div_enable(false);
+    } else {  
+      discharged_data = return_data.Data;
+      set_discharged_data_display();
+      Set_main_div_enable(false);
+    }
+
+    popup_discharged_list_div_open();
   });
 
   let bed_change_btn = document.createElement("div");
@@ -240,11 +297,12 @@ function get_main_ui() {
   bed_change_btn.classList.add("bed_change_btn");
   bed_change_btn.innerHTML = "病床異動";
   bed_change_btn.addEventListener("click", () => {
-      popup_bed_change_div_open()
+      popup_bed_change_div_open();
   });
 
   function_btn_container.appendChild(ppmcl_btn);
   function_btn_container.appendChild(med_cart_sum_list_btn);
+  function_btn_container.appendChild(discharged_btn);
   function_btn_container.appendChild(bed_change_btn);
 
   let function_menu_container = document.createElement("div");
@@ -286,7 +344,7 @@ async function get_function_menu() {
     pharmacy_option_div.classList.add("pharmacy_option_div");
     pharmacy_option_div.setAttribute("pharmacy", element.phar);
     pharmacy_option_div.innerHTML = element.phar_name;
-    pharmacy_option_div.addEventListener("click", () => {
+    pharmacy_option_div.addEventListener("click", async () => {
       hos_block_content.innerHTML = pharmacy_option_div.innerHTML;
       current_pharmacy = element;
       if(last_current_pharmacy == current_pharmacy) {
@@ -298,6 +356,7 @@ async function get_function_menu() {
         get_all_select_option_logic(temp_logic);
         last_current_pharmacy = current_pharmacy;
         close_pharmacy_list();
+        await check_cart_dispense();
       }
     });
 
@@ -758,6 +817,14 @@ async function get_cart_list_and_med_table() {
     ppbc_h_current_cart_option.innerHTML = element.hnursta;
 
     ppbc_h_current_cart_select.appendChild(ppbc_h_current_cart_option);
+
+    // 病床異動加入彈窗select
+    let ppdl_h_current_cart_select = document.querySelector(".ppdl_h_current_cart_select");
+    let ppdl_h_current_cart_option = document.createElement("option");
+    ppdl_h_current_cart_option.value = element.hnursta;
+    ppdl_h_current_cart_option.innerHTML = element.hnursta;
+
+    ppdl_h_current_cart_select.appendChild(ppdl_h_current_cart_option);
   });
 
   let med_table_option_container = document.querySelector(".med_table_option_container");

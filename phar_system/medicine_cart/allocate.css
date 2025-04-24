@@ -112,6 +112,12 @@
     grid-template-columns: 28% 30% 41%;
     justify-content: space-between;
 }
+.grid_100 {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 100%;
+    justify-content: space-between;
+}
 .pbsc_doctor {
     width: 100%;
     display: grid;
@@ -319,6 +325,16 @@
     display: grid;
     grid-template-columns: 30% 30% 40%;
     justify-content: space-between;
+}
+
+.med_card_note_container {
+    /* background-color: #FFF8DC; */
+    padding: 6px 0px;
+    color: #d60101;
+    /* font-weight: 600; */
+    border-radius: 6px;
+    font-size: 1rem;
+    margin: 6px 0px;
 }
 .med_card_main_display_container {
     flex-grow: 1;

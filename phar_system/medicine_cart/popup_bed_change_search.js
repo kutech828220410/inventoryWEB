@@ -121,9 +121,11 @@ function get_pp_bed_change_search_footer() {
     return ppbcs_footer_container;
 }
 function popup_bed_change_search_div_close() {
+    check_cart_dispense();
     popup_bed_change_search_div.Set_Visible(false);
 }
 async function popup_bed_change_search_div_open() {
+    await check_cart_dispense();
     popup_bed_change_search_div.Set_Visible(true);
 }
 function ppbcs_seacrh_result() {

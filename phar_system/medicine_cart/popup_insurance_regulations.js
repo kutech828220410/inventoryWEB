@@ -56,9 +56,11 @@ function get_ppir_footer() {
     return ppir_footer_container;
 }
 function popup_insurance_regulations_div_close() {
+    check_cart_dispense();
     popup_insurance_regulations_div.Set_Visible(false);
 }
 async function popup_insurance_regulations_div_open() {
+    await check_cart_dispense();
     popup_insurance_regulations_div.Set_Visible(true);
 }
 async function set_ppir_func(content) {

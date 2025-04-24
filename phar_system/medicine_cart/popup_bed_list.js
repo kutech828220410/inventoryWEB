@@ -48,13 +48,15 @@ function get_pp_bed_list_footer() {
     return ppbl_footer_container;
 }
 function popup_bed_list_div_close() {
+    check_cart_dispense();
     popup_bed_list_div.Set_Visible(false);
 }
 async function popup_bed_list_div_open() {
     // await allocate_display_init();
     med_cart_beds_data = await get_bed_list_by_cart(current_pharmacy.phar, current_cart.hnursta);
     med_cart_beds_data = med_cart_beds_data.Data;
-    await set_pp_bed_list_info();
+    set_pp_bed_list_info();
+    await check_cart_dispense();
     popup_bed_list_div.Set_Visible(true);
 }
 
@@ -71,12 +73,13 @@ function set_pp_bed_list_info() {
         if(index == patient_bed_index) pp_bed_card.classList.add("pp_current_bed");
         if(index == last_patient_bed_index) pp_bed_card.classList.add("pp_last_selected_bed");
         if(current_func == "allocate") {
-            if(element.dispens_status != "") pp_bed_card.classList.add("pp_done_bed");
+            if(element.dispens_status != "" && element.bed_status != "已出院") pp_bed_card.classList.add("pp_done_bed");
         } else {
-            if(element.check_status != "") pp_bed_card.classList.add("pp_done_bed");
+            if(element.check_status != "" && element.bed_status != "已出院") pp_bed_card.classList.add("pp_done_bed");
         }
         // if(element["cpoe"].length == 0) pp_bed_card.classList.add("pp_done_bed");
-        if(element.bed_status != "已佔床") pp_bed_card.classList.add("pp_nouse_bed");
+        if(element.bed_status == "") pp_bed_card.classList.add("pp_nouse_bed");
+        if(element.bed_status == "已出院") pp_bed_card.classList.add("pp_logout_bed");
         // console.log(element);
 
         pp_bed_card.innerHTML = element.bednum;

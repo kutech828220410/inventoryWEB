@@ -425,8 +425,8 @@ async function get_download_excel_form_func() {
     let start_hour = document.querySelector("#pp_mms_start_hour_input").value;
     let start_min = document.querySelector("#pp_mms_start_minute_input").value;
     let end_date = document.querySelector("#pp_mms_end_date_input").value;
-    let end_hour = document.querySelector("#pp_mms_start_hour_input").value;
-    let end_min = document.querySelector("#pp_mms_start_minute_input").value;
+    let end_hour = document.querySelector("#pp_mms_end_hour_input").value;
+    let end_min = document.querySelector("#pp_mms_end_minute_input").value;
     let start_datetime = `${start_date} ${start_hour}:${start_min}:00`;
     let end_datetime = `${end_date} ${end_hour}:${end_min}:00`;
     let med_arr_str = "";

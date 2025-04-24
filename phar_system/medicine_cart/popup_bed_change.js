@@ -137,6 +137,7 @@ function get_pp_bed_change_footer() {
     return ppbc_footer_container;
 }
 function popup_bed_change_div_close() {
+    check_cart_dispense();
     popup_bed_change_div.Set_Visible(false);
 }
 async function popup_bed_change_div_open() {
@@ -144,6 +145,9 @@ async function popup_bed_change_div_open() {
         alert("請先選擇藥局");
         return;
     }
+
+    await check_cart_dispense();
+
     let ppbc_h_current_cart_select = document.querySelector(".ppbc_h_current_cart_select");
     if(current_cart.hnursta && ppbc_h_current_cart_select.value != current_cart.hnursta) {
         ppbc_h_current_cart_select.value = current_cart.hnursta;

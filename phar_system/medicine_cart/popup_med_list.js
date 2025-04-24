@@ -313,8 +313,10 @@ function get_pp_med_list_footer() {
 }
 function popup_med_list_div_close() {
     popup_med_list_div.Set_Visible(false);
+    check_cart_dispense();
 }
 function popup_med_list_div_open() {
+    check_cart_dispense();
     popup_med_list_div.Set_Visible(true);
 }
 
@@ -527,6 +529,7 @@ async function set_pp_med_list_display() {
 
             let checkedRadio = document.querySelector('input[name="filter_med_table_input"]:checked');
             let temp_table = checkedRadio.value;
+            let ppml_h_current_cart_select = document.querySelector(".ppml_h_current_cart_select");
         
             let loggedName = sessionStorage.getItem('login_json');
             loggedName = JSON.parse(loggedName);
@@ -535,7 +538,7 @@ async function set_pp_med_list_display() {
                 ServerName: "",
                 ServerType: "",
                 UserName: loggedName.Name,
-                ValueAry: [guid_arr.join(";"), current_cart.hnursta]
+                ValueAry: [guid_arr.join(";"), ppml_h_current_cart_select.value]
             }
 
             if(temp_table != "all") {

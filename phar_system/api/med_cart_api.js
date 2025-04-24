@@ -579,6 +579,99 @@ async function get_bed_status(data) {
     return temp_data
 }
 
+// 取得出院紀錄
+async function get_all_cart_discharge(data) {
+    try {
+        let start_p = performance.now();
+        let temp_doman = transform_api_ip_4433(api_ip);
+        
+        let temp_data = await fetch(`${temp_doman}api/med_cart/get_cart_discharge`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+        .then((response) => {
+            return response.json();
+        })
+
+        let end_p = performance.now();
+        console.log(end_p - start_p);
+        console.log(temp_data);
+
+        return temp_data;
+    } catch (error) {
+        let err_data = {
+            Code: -200,
+            Result: `網路錯誤：${error}`
+        }
+        return err_data;
+    }
+}
+
+// 取得未調藥車紀錄
+async function get_cart_with_NOdispense(data) {
+    try {
+        let start_p = performance.now();
+        let temp_doman = transform_api_ip_4433(api_ip);
+        
+        let temp_data = await fetch(`${temp_doman}api/med_cart/get_cart_with_NOdispense`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+        .then((response) => {
+            return response.json();
+        })
+
+        let end_p = performance.now();
+        console.log(end_p - start_p);
+        console.log(temp_data);
+
+        return temp_data;
+    } catch (error) {
+        let err_data = {
+            Code: -200,
+            Result: `網路錯誤：${error}`
+        }
+        return err_data;
+    }
+}
+
+// 取得出院藥車退藥紀錄
+async function get_patient_discharge(data) {
+    try {
+        let start_p = performance.now();
+        let temp_doman = transform_api_ip_4433(api_ip);
+        
+        let temp_data = await fetch(`${temp_doman}api/med_cart/get_patient_discharge`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+        .then((response) => {
+            return response.json();
+        })
+
+        let end_p = performance.now();
+        console.log(end_p - start_p);
+        console.log(temp_data);
+
+        return temp_data;
+    } catch (error) {
+        let err_data = {
+            Code: -200,
+            Result: `網路錯誤：${error}`
+        }
+        return err_data;
+    }
+}
+
 function transform_api_ip(ip) {
     let temp_url = serch_APIServer("Main", "網頁", "med_cart_vm_api");
     // console.log(temp_url);
