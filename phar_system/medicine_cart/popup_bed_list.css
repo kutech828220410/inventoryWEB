@@ -118,7 +118,7 @@
     color: #000000;
 }
 .pp_logout_bed::before {
-    content: "出院";
+    content: "轉出";
     position: absolute;
     display: flex;
     align-items: center;
