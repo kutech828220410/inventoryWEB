@@ -130,6 +130,24 @@ function front_page_display_logic(str, arr) {
 
     return boolean;
 }
+function user_permission_check(arr, page_name) {
+    // front_page icon禁用
+    let temp_str = "";
+    switch (str) {
+        case "inventory":
+            temp_str = "inventory_list";
+            break;
+    
+        default:
+            temp_str = str;
+            break;
+    }
+    // console.log(temp_str);
+
+    let boolean = arr.includes(temp_str);
+
+    return boolean;
+}
 async function get_web_peremeter_name() {
     try {
         let data = {

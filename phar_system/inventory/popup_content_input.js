@@ -87,8 +87,31 @@ async function confirm_popup_input()
     END_QTY_input.value = '';
     const OP = sessionData.Name;
     //輸入盤點量後創造SUB內容
-    sub_content_add(GUID, END_QTY , OP, CODE);
-    hide_popup_input();
+    let res_data = await sub_content_add(GUID, END_QTY , OP, CODE);
+    console.log(res_data);
+    if(res_data.Code == 200) {
+        notice_popup_sub_result(`加入成功，盤點數量：${END_QTY}`, true);
+        hide_popup_input();
+    } else {
+        notice_popup_sub_result(`加入失敗，盤點數量：${END_QTY}`, false);
+    };
+    // hide_popup_input();
+}
+function notice_popup_sub_result(msg, status) {
+    let popup_notice_for_sub_container = document.querySelector('.popup_notice_for_sub_container');
+    let ppnfs_content = document.querySelector('.ppnfs_content');
+
+    ppnfs_content.innerHTML = msg;
+    if(status) {
+        popup_notice_for_sub_container.style.backgroundColor = "#00b718";
+    } else {
+        popup_notice_for_sub_container.style.backgroundColor = "#fe6262";
+    }
+
+    popup_notice_for_sub_container.style.right = "10px";
+    setTimeout(function() {
+        popup_notice_for_sub_container.style.right = "-300px";
+    }, 5000);
 }
 async function delete_row_popup_input(GUID , Master_GUID)
 {

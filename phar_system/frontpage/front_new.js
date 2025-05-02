@@ -1,4 +1,5 @@
 window.onload = load;
+let user_permission_data;
 async function load()
 {
     const serverName ="";
@@ -17,6 +18,18 @@ async function load()
 
     let permissions_arr = await get_permissions_arr();
     console.log("權限設定陣列" ,permissions_arr);
+
+    let user_sessecion = JSON.parse(sessionStorage.getItem('user_session'));
+
+    let post_data =   {
+      Data: {},
+      ValueAry:[user_sessecion.level, "網頁"]
+    }
+
+    console.log(post_data);
+
+    user_permission_data = await get_user_permissions(post_data);
+    console.log("權限參數", user_permission_data.Data);
 
     var loggedID = sessionStorage.getItem('loggedID');  
     var loggedName = sessionStorage.getItem('loggedName');  
@@ -53,15 +66,18 @@ function get_page_section(object, arr) {
   
     let pages_icon_container = document.createElement("div");
     pages_icon_container.classList.add("pages_icon_container");
+    
+    let user_sessecion = JSON.parse(sessionStorage.getItem('user_session'))
+    console.log(user_sessecion);
 
     if(arr == "error") {
         object['branch'][0]["pages"].forEach(element => {
-          let temp_div = get_page_icon(element, arr);
+          let temp_div = get_page_icon(element, arr, user_sessecion.level);
           pages_icon_container.appendChild(temp_div);
         });
     } else {      
         object['branch'][0]["pages"].forEach(element => {
-          let temp_div = get_page_icon(element, arr);
+          let temp_div = get_page_icon(element, arr, user_sessecion.level);
           if(!front_page_display_logic(element.html_name, arr)) {
             console.log(element.html_name);
             console.log(front_page_display_logic(element.html_name, arr));
@@ -71,7 +87,7 @@ function get_page_section(object, arr) {
     
         // 將禁止頁面放置後方
         object['branch'][0]["pages"].forEach(element => {
-          let temp_div = get_page_icon(element, arr);
+          let temp_div = get_page_icon(element, arr, user_sessecion.level);
           if(front_page_display_logic(element.html_name, arr)) {
             console.log(element.html_name);
             console.log(front_page_display_logic(element.html_name, arr));
@@ -88,6 +104,7 @@ function get_page_section(object, arr) {
   } else {
     let rotate_div = document.createElement("div");
     rotate_div.classList.add("rotate_div");
+    let user_sessecion = JSON.parse(sessionStorage.getItem('user_session'))
 
     let name_arr = ["中藥局", "藥局"];
 
@@ -130,12 +147,12 @@ function get_page_section(object, arr) {
 
       if(arr == "error") {
         element["pages"].forEach(element => {
-          let temp_div = get_page_icon(element, arr);
+          let temp_div = get_page_icon(element, arr, user_sessecion.level);
           pages_icon_container.appendChild(temp_div);
         });
       } else {
         element["pages"].forEach(element => {
-          let temp_div = get_page_icon(element, arr);
+          let temp_div = get_page_icon(element, arr, user_sessecion.level);
           if(!front_page_display_logic(element.html_name, arr)) { 
             console.log(element.html_name);
             console.log(front_page_display_logic(element.html_name, arr));
@@ -145,8 +162,8 @@ function get_page_section(object, arr) {
   
         // 將禁止頁面放置後方
         element["pages"].forEach(element => {
-          let temp_div = get_page_icon(element, arr);
-          if(front_page_display_logic(element.html_name, arr)) {
+          let temp_div = get_page_icon(element, arr, user_sessecion.level);
+          if(front_page_display_logic(element.html_name, arr, user_sessecion.level)) {
             console.log(element.html_name);
             console.log(front_page_display_logic(element.html_name, arr));
             pages_icon_container.appendChild(temp_div);
@@ -163,7 +180,7 @@ function get_page_section(object, arr) {
   }
 }
 
-function get_page_icon(object, arr) {
+function get_page_icon(object, arr, level) {
   let page_card = document.createElement("div");
   page_card.classList.add('page_card');
   // console.log(arr);
@@ -181,9 +198,17 @@ function get_page_icon(object, arr) {
         alert("尚未啟用該功能");
       })
     } else {
-      page_card.addEventListener("click", () => {
-        window.location.href = object.html_url;
-      });
+      console.log(object.html_ctName);
+      if(user_permission_check(user_permission_data.Data, object["html_ctName"], level)) {
+        page_card.addEventListener("click", () => {
+          window.location.href = object.html_url;
+        });
+      } else {
+        page_card.classList.add('web_icon_disable');
+        page_card.addEventListener("click", () => {
+          alert("帳號權限不足，無法使用該功能");
+        });
+      }
     }
   }
 

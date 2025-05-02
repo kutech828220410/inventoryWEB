@@ -568,7 +568,7 @@ async function set_pp_med_list_display() {
 
             let filter_med_table_input = document.querySelector('.filter_med_table_input:checked');
 
-            med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, filter_med_table_input.value);
+            med_list_data = await get_all_med_qty(current_pharmacy.phar, ppml_h_current_cart_select.value, filter_med_table_input.value);
             med_list_data = med_list_data.Data;
             med_list_data = sort_med_list_data(med_list_data, current_func);
             med_list_data = sort_display_med_data(med_list_data);

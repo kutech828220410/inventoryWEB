@@ -98,6 +98,7 @@ async function verifyUser(event)
         sessionStorage.setItem('loggedlevel', session_login.Data.level);
         sessionStorage.setItem('loggedTime', session_login.Data.loginTime);
         sessionStorage.setItem('color', session_login.Data.color);
+        sessionStorage.setItem('user_session', JSON.stringify(session_login.Data));
         // window.location.href = "frontpage/main.html"; // 跳轉到 frontpage.html 頁面
         window.location.href = "../phar_system/frontpage/"; // 跳轉到 frontpage.html 頁面
     }
@@ -118,6 +119,7 @@ async function showConfirm()
     sessionStorage.setItem('loggedlevel', session_login.Data.level);
     sessionStorage.setItem('loggedTime', session_login.Data.loginTime);
     sessionStorage.setItem('color', session_login.Data.color);
+    sessionStorage.setItem('user_session', JSON.stringify(session_login.Data));
 
     window.location.href = "frontpage/main.html"; // 跳轉到 frontpage.html 頁面
     // if (confirm("帳號已登入,是否強制登出?")) 

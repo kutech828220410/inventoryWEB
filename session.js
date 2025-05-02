@@ -140,6 +140,7 @@ async function update_session(ID , GUID)
     console.log(data);
 
     sessionStorage.clear();
+    // sessionStorage.setItem('user_session', await data.Data);
 //   window.location.href = "login.html";
      return data;
 }

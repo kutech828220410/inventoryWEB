@@ -279,7 +279,7 @@ async function get_search_container() {
 }
 
 function get_main_div_table_th_init() {
-  let th_data = ["","藥品碼","藥名","消耗量","庫存量"];
+  let th_data = ["","藥品碼","藥名","消耗量", "實調量","庫存量"];
   let main_div_table_th_container = document.querySelector(".main_div_table_th_container");
 
   th_data.forEach((element, index) => {
@@ -310,7 +310,7 @@ function get_info_init() {
     let table_info_container = document.createElement("div");
     table_info_container.classList.add("table_info_container");
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 6; i++) {
       let td = document.createElement("p");
       td.classList.add("table_td");
       td.classList.add(`td_${i}`);
@@ -328,10 +328,26 @@ function get_info_init() {
           td.innerHTML = element.NAME;
           break;
         case 3:
-          td.innerHTML = element.TXN_QTY;
+          if(element.CONSUMPTION) {
+            td.innerHTML = element.CONSUMPTION;
+          } else {
+            td.innerHTML = 0;
+          }
+
           break;
         case 4:
-          td.innerHTML = element.INV_QTY;
+          if(element.DISPENSED) {
+            td.innerHTML = element.DISPENSED;
+          } else {
+            td.innerHTML = 0;
+          }
+          break;
+        case 5:
+          if(element.STOCK) {
+            td.innerHTML = element.STOCK;
+          } else {
+            td.innerHTML = 0;
+          }
           break;
         
         default:

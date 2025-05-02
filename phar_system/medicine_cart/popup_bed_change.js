@@ -33,13 +33,13 @@ function get_pp_bed_change_header() {
     
         let temp_arr = return_data.Data
     
-        temp_arr.sort((a, b) => {
-            let nameCompare = a.name.localeCompare(b.name, 'und', { sensitivity: 'base' });
-            if (nameCompare === 0) {
-                return new Date(a.move_time) - new Date(b.move_time); // 如果 name 相同，按照 move_time 排序
-            }
-            return nameCompare;
-        });
+        // temp_arr.sort((a, b) => {
+        //     let nameCompare = a.name.localeCompare(b.name, 'und', { sensitivity: 'base' });
+        //     if (nameCompare === 0) {
+        //         return new Date(a.move_time) - new Date(b.move_time); // 如果 name 相同，按照 move_time 排序
+        //     }
+        //     return nameCompare;
+        // });
     
         bed_change_data = temp_arr;
         console.log(bed_change_data);
@@ -162,13 +162,13 @@ async function popup_bed_change_div_open() {
 
     let temp_arr = return_data.Data
 
-    temp_arr.sort((a, b) => {
-        let nameCompare = a.name.localeCompare(b.name, 'und', { sensitivity: 'base' });
-        if (nameCompare === 0) {
-            return new Date(a.move_time) - new Date(b.move_time); // 如果 name 相同，按照 move_time 排序
-        }
-        return nameCompare;
-    });
+    // temp_arr.sort((a, b) => {
+    //     let nameCompare = a.name.localeCompare(b.name, 'und', { sensitivity: 'base' });
+    //     if (nameCompare === 0) {
+    //         return new Date(a.move_time) - new Date(b.move_time); // 如果 name 相同，按照 move_time 排序
+    //     }
+    //     return nameCompare;
+    // });
 
     bed_change_data = temp_arr;
     console.log(bed_change_data);

@@ -48,6 +48,13 @@ let html_pages = [
                         html_url: "../../phar_system/pages_setting",
                         icon_url: "../../image/icon/staff_icon.png",
                         icon_big_url: "../../image/icon/staff_big_icon.png"
+                    },
+                    {
+                        html_name: "permission_settings",
+                        html_ctName: "權限設定",
+                        html_url: "../../phar_system/permission_settings",
+                        icon_url: "../../image/icon/staff_icon.png",
+                        icon_big_url: "../../image/icon/staff_big_icon.png"
                     }
                 ]
             },

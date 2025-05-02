@@ -442,7 +442,9 @@ async function sub_content_add(_Master_GUID, _END_QTY, _OP)
   var _url = `${inventory_url}/sub_content_add`;
   console.log(`Url [${arguments.callee.name}]` , _url);
   console.log(`Post_data [${arguments.callee.name}]`,post_data);
+  // 送出資料
   let response = await postDataToAPI(`${_url}`,post_data);
+  // 廣播到所有站台
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
   if(response.Code != 200)
   {

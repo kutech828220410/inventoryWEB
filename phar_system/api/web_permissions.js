@@ -131,6 +131,27 @@ function front_page_display_logic(str, arr) {
 
     return boolean;
 }
+function user_permission_check(arr, page_name, level) {
+    // 權限判定邏輯
+    let boolean = false;
+    if(page_name == "權限設定") {
+        if(+level > 19) {
+            boolean = true;
+        }
+        console.log("==========權限設定=========", boolean);
+    } else {
+        arr.forEach(element => {
+            if(element.name == page_name) {
+                console.log("權限state", element.state);
+                console.log(element.name, "======", page_name);
+                boolean = element.state;
+                // console.log(level);
+            }
+        });
+    }
+
+    return boolean;
+}
 async function get_web_peremeter_name() {
     try {
         let data = {
@@ -207,5 +228,35 @@ async function page_check_permissions(str) {
           alert('權限未開放');
           window.location.href = '../../frontpage';
       };
+    }
+}
+async function get_user_permissions(data) {
+    try {
+        let start_p = performance.now();
+        console.log("進入api取得資料");
+        console.log(data);
+        console.log(`${api_ip}api/session/get_setting_by_type`);
+        let temp_data = await fetch(`${api_ip}api/session/get_setting_by_type`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+        .then((response) => {
+            console.log("取得資料ＪＳＯＮ格式");
+            return response.json();
+        });
+        
+        let end_p = performance.now();
+        console.log("資料分析api效能", end_p - start_p);
+    
+        return temp_data;
+    } catch(err) {
+        let err_data = {
+            Code: -200,
+            Result: `網路錯誤：${err}`
+        }
+        return err_data;
     }
 }

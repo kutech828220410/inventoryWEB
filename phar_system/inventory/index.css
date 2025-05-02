@@ -4,6 +4,7 @@ body {
   width: 100%;
   height: 100%;
   min-height: 100vh;
+  max-width: 100svw;
 }
 html, body {
   touch-action: manipulation;
@@ -96,5 +97,21 @@ html, body {
 }
 .creatSelect_button {
   min-height: 50px !important;
+}
+
+.popup_notice_for_sub_container{
+  position: fixed;
+  display: flex;
+  max-width: 260px;
+  z-index: 100000000;
+  top: 24px;
+  padding: 8px 20px;
+  border-radius: 12px;
+  transition: all 0.3s ease-in-out;
+  right: -300px;
+  /* right: 10px; */
+  background-color: #fe6262;
+  /* background-color: #00b718; */
+  color: #fff;
 }
 
