@@ -171,6 +171,13 @@ let html_pages = [
                         icon_url: "../../image/icon/assortment.png",
                         icon_big_url: "../../image/icon/picking_big_icon.png"
                     },
+                    {
+                        html_name: "suspiciousRxLog",
+                        html_ctName: "醫師處方疑義",
+                        html_url: "../../phar_system/suspiciousRxLog",
+                        icon_url: "../../image/icon/assortment.png",
+                        icon_big_url: "../../image/icon/picking_big_icon.png"
+                    },
                 ]
             },
             {

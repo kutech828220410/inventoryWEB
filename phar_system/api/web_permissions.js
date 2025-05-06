@@ -133,7 +133,7 @@ function front_page_display_logic(str, arr) {
 }
 function user_permission_check(arr, page_name, level) {
     // 權限判定邏輯
-    let boolean = false;
+    let boolean = true;
     if(page_name == "權限設定") {
         if(+level > 19) {
             boolean = true;

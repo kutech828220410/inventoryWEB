@@ -55,7 +55,7 @@ function hide_popup_input()
     window.addEventListener('keydown', get_barcode_input_event);
     popup_input_div.Close();
     
-    focus_barcode_input_func();
+    // focus_barcode_input_func();
 }
 
 function next_page_popup_input() 
@@ -270,6 +270,8 @@ function get_title_popup_input()
     undo_SVG.onclick = function()
     {
         hide_popup_input();
+        let header_serch_text = document.querySelector('#header_serch_text');
+        header_serch_text.focus();
     };
     undo_div.appendChild(undo_SVG);
     title_text_div.appendChild(undo_div);
@@ -420,6 +422,8 @@ function get_underline_popup_input()
     END_QTY_input_Confirm.addEventListener('click', function()
     {
         confirm_popup_input();
+        let header_serch_text = document.querySelector('#header_serch_text');
+        header_serch_text.focus();
     });
     END_QTY_input_div.appendChild(END_QTY_input);
     END_QTY_input_div.appendChild(END_QTY_input_Confirm);

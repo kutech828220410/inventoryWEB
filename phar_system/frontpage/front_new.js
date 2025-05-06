@@ -1,5 +1,6 @@
 window.onload = load;
-let user_permission_data;
+let user_permission_data = [];
+let user_sessecion;
 async function load()
 {
     const serverName ="";
@@ -19,7 +20,11 @@ async function load()
     let permissions_arr = await get_permissions_arr();
     console.log("權限設定陣列" ,permissions_arr);
 
-    let user_sessecion = JSON.parse(sessionStorage.getItem('user_session'));
+    user_sessecion = JSON.parse(sessionStorage.getItem('user_session'));
+    if(user_sessecion == null) {
+      alert("請先登入系統");
+      window.location.href = "../../";
+    }
 
     let post_data =   {
       Data: {},
@@ -28,8 +33,15 @@ async function load()
 
     console.log(post_data);
 
+    // user_sessecion["Permissions"].forEach(element => {
+    //   if(element.type == "網頁") {
+    //     user_permission_data.push(element);
+    //   }
+    // });
+
     user_permission_data = await get_user_permissions(post_data);
-    console.log("權限參數", user_permission_data.Data);
+    user_permission_data = user_permission_data.Data;
+    console.log("權限參數", user_permission_data);
 
     var loggedID = sessionStorage.getItem('loggedID');  
     var loggedName = sessionStorage.getItem('loggedName');  
@@ -199,15 +211,74 @@ function get_page_icon(object, arr, level) {
       })
     } else {
       console.log(object.html_ctName);
-      if(user_permission_check(user_permission_data.Data, object["html_ctName"], level)) {
-        page_card.addEventListener("click", () => {
-          window.location.href = object.html_url;
-        });
+      if(object.html_ctName == "權限設定") {
+        if(+level > 19) {
+          page_card.addEventListener("click", () => {
+            window.location.href = object.html_url;
+          });
+        } else {
+          page_card.classList.add('web_icon_disable');
+          page_card.addEventListener("click", () => {
+            const CORRECT_CODE = "66437068";
+            const MAX_kutech_attempts = 3;
+            const LOCK_DURATION = 15 * 60 * 1000; // 15分鐘 (毫秒)
+
+            const now = Date.now();
+            const kutech_lockUntil = parseInt(localStorage.getItem('kutech_lockUntil')) || 0;
+            let kutech_ID = localStorage.getItem('kutech_ID') || "";
+
+            if(user_sessecion.ID != kutech_ID && kutech_ID != "") {
+              localStorage.removeItem('kutech_attempts');
+              localStorage.removeItem('kutech_lockUntil');
+              localStorage.removeItem('kutech_ID');
+            } else {
+              // 判斷是否在鎖定中
+              if (now < kutech_lockUntil) {
+                alert("暫時鎖定，請等候15分鐘再嘗試");
+                return;
+              }
+            }
+
+            // 檢查錯誤次數
+            let kutech_attempts = parseInt(localStorage.getItem('kutech_attempts')) || 0;
+
+            const input = prompt("請輸入驗證碼：");
+            if (input === null) return; // 使用者取消輸入
+
+            if (input === CORRECT_CODE) {
+              alert("驗證成功！");
+              // ✅ 成功後重置
+              localStorage.removeItem('kutech_attempts');
+              localStorage.removeItem('kutech_lockUntil');
+              localStorage.removeItem('kutech_ID');
+              window.location.href = object.html_url;
+              // 在這裡做成功後的動作
+            } else {
+              kutech_attempts++;
+              localStorage.setItem('kutech_attempts', kutech_attempts);
+              localStorage.setItem('kutech_ID', user_sessecion.ID);
+              
+              if (kutech_attempts >= MAX_kutech_attempts) {
+                const lockTime = Date.now() + LOCK_DURATION;
+                localStorage.setItem('kutech_lockUntil', lockTime);
+                alert("錯誤次數過多，功能已鎖定15分鐘");
+              } else {
+                alert(`輸入錯誤（已錯誤 ${kutech_attempts} 次）`);
+              }
+            }
+          });
+        }
       } else {
-        page_card.classList.add('web_icon_disable');
-        page_card.addEventListener("click", () => {
-          alert("帳號權限不足，無法使用該功能");
-        });
+        if(user_permission_check(user_permission_data, object["html_ctName"], level)) {
+          page_card.addEventListener("click", () => {
+            window.location.href = object.html_url;
+          });
+        } else {
+          page_card.classList.add('web_icon_disable');
+          page_card.addEventListener("click", () => {
+            alert("帳號權限不足，無法使用該功能");
+          });
+        }
       }
     }
   }

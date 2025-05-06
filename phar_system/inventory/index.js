@@ -212,6 +212,8 @@ async function init()
 
     await page_Init(data);
     hideLoadingPopup();
+    let header_serch_text = document.querySelector('#header_serch_text');
+    header_serch_text.focus();
 }
 async function page_Init(data)
 {
