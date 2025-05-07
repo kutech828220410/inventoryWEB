@@ -54,7 +54,7 @@ let html_pages = [
                         html_ctName: "權限設定",
                         html_url: "../../phar_system/permission_settings",
                         icon_url: "../../image/icon/staff_icon.png",
-                        icon_big_url: "../../image/icon/staff_big_icon.png"
+                        icon_big_url: "../../image/icon/settings.png"
                     }
                 ]
             },
@@ -175,8 +175,8 @@ let html_pages = [
                         html_name: "suspiciousRxLog",
                         html_ctName: "醫師處方疑義",
                         html_url: "../../phar_system/suspiciousRxLog",
-                        icon_url: "../../image/icon/assortment.png",
-                        icon_big_url: "../../image/icon/picking_big_icon.png"
+                        icon_url: "../../image/icon/doctorMiss.png",
+                        icon_big_url: "../../image/icon/doctorMiss.png"
                     },
                 ]
             },
