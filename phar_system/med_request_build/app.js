@@ -344,6 +344,10 @@ function set_choose_item(params) {
     return e[`${target.toUpperCase()}`].toUpperCase().includes(value.toUpperCase());
   });
 
+  temp_med_data = temp_med_data.filter(e => {
+    return e.FILE_STATUS != "關檔中";
+  });
+
   temp_med_data.forEach(element => {
     let choose_item = document.createElement("div");
     choose_item.innerHTML = element[`${target.toUpperCase()}`];

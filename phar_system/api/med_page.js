@@ -19,6 +19,7 @@ async function get_medicine_cloud()
   console.log(`Url [${arguments.callee.name}]`, _url);
   console.log(`Post_data [${arguments.callee.name}]`, post_data);
   let response = await postDataToAPI(_url, post_data);
+  console.log(response);
   return response;
 }
 

@@ -28,12 +28,21 @@ async function barcode_keydown(event)
   }
   else
   {
-    const isValid = /^[a-zA-Z0-9<>+_,.*?-]+$/.test(event.key);
-    const isValid2 = /^[<>+\\\-_,.*?]+$/.test(event.key);
-    const controlKeys = [16, 17, 18, 20, 27, 91, 93]; // 例如: Shift, Ctrl, Alt, CapsLock, Escape, Left Command/Windows, Right Command/Menu
-    const isControlKey = controlKeys.includes(event.keyCode);
-    const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);    
-    if ((isValid || isValid2) && (!isControlKey||isNumPadlKey)) 
+    // const isValid = /^[a-zA-Z0-9<>+_,.*?-]+$/.test(event.key);
+    // const isValid2 = /^[<>+\\\-_,.*?]+$/.test(event.key);
+    // const controlKeys = [16, 17, 18, 20, 27, 91, 93]; // 例如: Shift, Ctrl, Alt, CapsLock, Escape, Left Command/Windows, Right Command/Menu
+    // const isControlKey = controlKeys.includes(event.keyCode);
+    // const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);
+    
+    const allowedKeys = [
+      "Backspace", "Delete", "ArrowLeft", "ArrowRight", "Home", "End", "Tab"
+    ];
+    
+    const isValid = /^[a-zA-Z0-9 !#$%&'()*+,\-.:;<=>?@[\]^_`|~]+$/.test(event.key);
+    const isControlKey = event.ctrlKey || event.metaKey || event.altKey || ["Shift", "Control", "Alt", "Meta", "CapsLock", "Escape"].includes(event.key);
+    const isNumPadlKey = allowedKeys.includes(event.key);
+
+    if (isValid && !isControlKey && !isNumPadlKey)
     {
       if (barcode_keydown_datetime == null) 
       {

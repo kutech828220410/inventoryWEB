@@ -145,6 +145,7 @@ async function show_d_o(_IC_SN, _GUID)
     let GUID = _GUID;
     // let IC_SN = e.target.getAttribute("IC_SN");
     let data_by_IC_SN = await get_all_d_o(IC_SN);
+    console.log("盤點人料", data_by_IC_SN);
     let all_d_o = data_by_IC_SN["Data"].DEFAULT_OP;
     let temp_d_o_arr = all_d_o.split(',');
     let title_add_d_o_div = document.querySelector(".title_add_d_o_div");

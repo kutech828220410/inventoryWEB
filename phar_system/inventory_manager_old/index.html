@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>盤點單管理</title>
+    <link rel="stylesheet" href="list.css">
+    <link rel="stylesheet" href="merge.css">
+    <link rel="stylesheet" href="../UI/style/navBar.css">
+    <script src="../Function/Basic.js?v=1.0"></script>
+    <script>
+      (async function() 
+          {
+            loadScript("../api/map.js");
+            loadScript("../../../ApiURL.js");
+            loadScript("../../../ChatHub.js");
+            loadScript("../svg/mySVG.js");
+            loadScript("../UI/map.js");
+            loadScript("../popup/map.js");    
+            loadScript("../dist/JsBarcode.all.js");
+            loadScript("../../../session_check.js");
+            loadScript("../../../session.js");
+            loadScript("./list.js");
+            loadScript("./list_loadingdata.js");
+            loadScript("./list_popup_add.js");
+            loadScript("./list_popup_serch.js");
+            loadScript("./list_popup_upload.js");
+            loadScript("./list_popup_add_default_op.js");
+            loadScript("./list_popup_setting.js");
+            loadScript("./list_popup_set_add_med.js");
+            loadScript("../UI/navBar.js");
+            loadScript("./merge.js");
+            loadScript("../api/web_permissions.js");
+          })();
+  
+    </script>
+    
+</head>
+<body>
+    <script>
+    
+     const header_div = get_header();
+     document.body.appendChild(header_div);
+
+     const main_div = get_main();
+     document.body.appendChild(main_div);
+
+      let pp_input_select_index = -1;
+
+     get_popup_serch();
+     get_popup_add();
+     get_popup_upload();
+     get_popup_add_OP();
+     get_popup_setting();
+     get_popup_add_med();
+     popup_merge_add();
+     popup_merge_create();
+     document.body.appendChild(popup_serch_div.div);
+
+     popup_serch_div.Set_Visible(false);
+     popup_add_div.Set_Visible(false);
+     popup_upload_div.Set_Visible(false);
+     popup_add_OP_div.Set_Visible(false);
+     pop_setting_div.Set_Visible(false);
+     popup_add_med_div.Set_Visible(false);
+
+     
+    </script>
+<div class="bottom_gm_nav_container">
+  <div class="bottom_gm_nav_card_container">
+    <div class="bottom_gm_nav_card">管理</div>
+    <div class="bottom_gm_nav_card">合併</div>
+  </div>
+</div>
+<div class="under-line">
+  <B> Copyright ©2024 鴻森智能科技 </B>
+</div>
+<script>
+
+   $(function()
+   {
+        $('.find_start_date_input').focus(function(event) 
+        {
+          /* Act on the event */
+          $(this).date(
+          {
+            beginyear : 2022,
+            curdate:true
+          },function()
+          {
+            //按下確定
+          },function()
+          {
+            //按下取消
+          });
+        });
+        $('.find_end_date_input').focus(function(event) 
+        {
+          /* Act on the event */
+          $(this).date(
+          {
+            beginyear : 2022,
+            curdate:true
+          },function()
+          {
+            //按下確定
+          },function()
+          {
+            //按下取消
+          });
+        });
+  }) 
+  
+
+
+  signalR_init(`${api_ip}chatHub`);
+  document.addEventListener('ReceivedEvent', function (event) 
+  {   
+     var jsonObject = JSON.parse(event.detail.message); 
+     console.log('ReceivedEvent',jsonObject);
+     console.log('ReceivedEvent',event);
+
+     const GUID = jsonObject.Data.GUID;  
+     if(jsonObject.Method == "creat_lock_by_IC_SN" || jsonObject.Method == "creat_unlock_by_IC_SN")
+     {
+        for (var i = 0; i < data.Data.length; i++)
+        {
+            if (data.Data[i].GUID == GUID)
+            {
+              data.Data[i] = { ...jsonObject.Data };
+            }
+        } 
+        page_Init(data);
+     }
+     if(jsonObject.Method == "creat_delete_by_IC_SN" || jsonObject.Method == "creat_add")
+     {
+        page_Init(data);
+        location.reload();
+        return;
+     }
+     
+  }); 
+
+</script>
+</body>
+
+</html>

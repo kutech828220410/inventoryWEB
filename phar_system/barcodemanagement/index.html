@@ -88,6 +88,11 @@
 
   async function barcode_keydown_2(event)
   {
+    let BarCode_input = document.getElementById("BarCode_input_popup_input");
+
+    // let ppadd_CODE_input = document.querySelector("#ppadd_CODE_input");
+    if(document.activeElement == BarCode_input) return;
+
     // if(popup_input_div.Get_Visible())
     // {
     //   barcode_value = '';
@@ -130,10 +135,19 @@
     else
     {
 
-      const isValid = /^[a-zA-Z0-9<>+\-_,.*?]+$/.test(event.key);
-      const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
-      const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);      
-      if (isValid && (!isControlKey||isNumPadlKey)) 
+      // const isValid = /^[a-zA-Z0-9<>+\-_,.*?]+$/.test(event.key);
+      // const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
+      // const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);
+
+      const allowedKeys = [
+        "Backspace", "Delete", "ArrowLeft", "ArrowRight", "Home", "End", "Tab"
+      ];
+      
+      const isValid = /^[a-zA-Z0-9 !#$%&'()*+,\-.:;<=>?@[\]^_`|~]+$/.test(event.key);
+      const isControlKey = event.ctrlKey || event.metaKey || event.altKey || ["Shift", "Control", "Alt", "Meta", "CapsLock", "Escape"].includes(event.key);
+      const isNumPadlKey = allowedKeys.includes(event.key);
+      // if (isValid && (!isControlKey||isNumPadlKey)) 
+      if (isValid && !isControlKey && !isNumPadlKey)
       {
         if (barcode_keydown_datetime == null) 
         {

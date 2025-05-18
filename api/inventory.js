@@ -247,6 +247,7 @@ async function creat_lock_by_IC_SN(IC_SN)
   console.log(`Url [${arguments.callee.name}]` , _url);
   console.log(`Post_data [${arguments.callee.name}]`,post_data);
   let response = await postDataToAPI(`${_url}`,post_data);
+  console.log(response);
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
   return response;
 }

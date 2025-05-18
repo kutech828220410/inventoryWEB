@@ -324,8 +324,8 @@ async function delete_btn_Click(event) {
   const confirmResult = confirm(`確定刪除盤點單 [${IC_SN}]?`);
   if (confirmResult) {
     Set_main_div_enable(true);
-    await creat_delete_by_IC_SN(IC_SN);
-    
+    let res = await creat_delete_by_IC_SN(IC_SN);
+    console.log(res);
     Set_main_div_enable(false);
   }
 }

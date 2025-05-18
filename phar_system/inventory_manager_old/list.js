@@ -364,7 +364,7 @@ async function get_excel_header()
     // 创建下载链接
     let downloadLink = document.createElement('a');
     downloadLink.href = window.URL.createObjectURL(blob);
-    downloadLink.download = `範例表格.xls`;
+    downloadLink.download = `範例表格.xlxs`;
     downloadLink.click();
   } catch (error) {
     console.error(error);

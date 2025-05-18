@@ -44,6 +44,7 @@ async function signalR_init()
 }
 function SendMessage(msg)
 {
+    console.log("=============send message", msg);
     connection.invoke("SendMessage","", msg);
 }
 var ChathubReceivedEvent;

@@ -94,6 +94,7 @@ function confirm_popup_serch()
             }
             return;
         }
+        console.log("testtt========");
         const ratio_button_byNormal_input = document.querySelector('#ratio_button_byNormal_input_popup_serch');
         const ratio_button_bylike_input = document.querySelector('#ratio_button_bylike_input_popup_serch');
         const ratio_button_bystartWith_input = document.querySelector('#ratio_button_bystartWith_input_popup_serch');
@@ -231,6 +232,7 @@ function popup_serch_ByLike()
     }
 
     console.log("這裡BYLOKE");
+    // console.log(allrows);
    
     for(var i = 0; i < allrows.length ; i++)
     {
@@ -243,7 +245,7 @@ function popup_serch_ByLike()
         allrows[i].style.display = "none";
         allrows[i].style.visibility = "hidden";
 
-        if(serch_value1 == serch_value0) 
+        if(serch_value1.includes(serch_value0)) 
         {
             if(west_med.checked && east_med.checked) {
                 allrows[i].style.display = "inline-block";

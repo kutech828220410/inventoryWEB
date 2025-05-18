@@ -215,6 +215,7 @@ async function gm_content_show(guid, temp_group_all_data, append_div, all_g_data
     med_data["Data"].forEach(element => {
         temp_med_data[element.CODE] = element
     });
+    console.log(med_data);
     console.log(med_data.Data);
     console.log(temp_med_data);
 

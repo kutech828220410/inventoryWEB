@@ -360,6 +360,7 @@ async function content_add_by_IC_SN(add_data) {
         Data: {Contents: [ temp_data ] },
         Value : `${_IC_SN}`
     };
+    console.log(temp_data);
     temp_data = JSON.stringify(temp_data);
     console.log(temp_data);
 

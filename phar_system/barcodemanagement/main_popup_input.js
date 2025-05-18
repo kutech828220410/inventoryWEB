@@ -45,7 +45,14 @@ async function confirm_popup_input()
 {
     const BarCode_input = document.querySelector('#BarCode_input_popup_input');
     // console.log("測試" + BarCode_input.value);
-    if (/^[a-zA-Z0-9]+$/.test(BarCode_input.value)) {
+
+    const isAsciiVisible = /^[a-zA-Z0-9 !#$%&'()*+,\-.:;<=>?@[\]^_`|~]+$/.test(BarCode_input.value);
+    // const isJsonSensitive = /["\\{}\/]/.test(BarCode_input.value); // 禁止這 4 個符號
+
+    console.log("isAsciiVisible", isAsciiVisible);
+    // console.log("isJsonSensitive", !isJsonSensitive);
+
+    if (isAsciiVisible) {
         console.log("有效輸入：" + BarCode_input.value);
     } else if (BarCode_input.value == "") {
         return
@@ -404,7 +411,7 @@ function get_block1_popup_input(Barcode)
     block1_barcodenum.style.letterSpacing = "0.2em";
     
     var barcodeCanvas = document.createElement("img");
-    if(/^[a-zA-Z0-9]+$/.test(Barcode)) {
+    if(/^[a-zA-Z0-9 !"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]+$/.test(Barcode)) {
         if(Barcode != "")
             {
                 if(!isDesktop) 
