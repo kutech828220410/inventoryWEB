@@ -1,0 +1,103 @@
+.popup_med_take_div {
+    width: 1000px;
+}
+
+.ppmt_header_container {
+    width: 100%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+.ppmt_h_title {
+    padding: 4px 48px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    background-color: rgb(222, 222, 222);
+    color: #000000;
+    border-radius: 5px;
+}
+.ppmt_h_close_btn {
+    position: absolute;
+    cursor: pointer;
+    display: block;
+    width: 36px;
+    top: 0px;
+    right: 0px;
+}
+.ppmt_h_cart_name {
+    padding: 0px 10px;
+    font-size: 24px;
+    font-weight: 600;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.ppmt_main_container {
+    margin-bottom: 24px;
+    padding: 0px 2px;
+    height: 380px;
+    overflow-y: auto;
+    /* box-shadow: 0px 0px 4px #00000042; */
+}
+.ppmt_footer_container {
+    display: flex;
+    justify-content: space-between;
+}
+.disable_btn {
+    cursor: not-allowed;
+    background-color: #989898;
+}
+.disable_btn:hover {
+    background-color: #989898;
+}
+.ppmt_main_table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.ppmt_p_bed_name {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    background-color: #d7d7d7;
+}
+.ppmt_med_td,
+.ppmt_med_th,
+.ppmt_p_bed_name {
+    border: 1px solid black;
+    padding: 4px;
+}
+.td_1,
+.td_2 {
+    text-align: left;
+}
+.td_3 {
+    min-width: 70px;
+}
+.td_4,
+.td_5 {
+    min-width: 50px;
+}
+.ppmt_med_th_container {
+    background-color: #989898;
+}
+.bgc_light {
+    background-color: #d7d7d7;
+}
+@media screen and (max-width: 1200px) {
+    .popup_med_take_div {
+        width: 600px;
+    }
+}
+@media screen and (max-width: 550px) {
+    .popup_med_take_div {
+        width: 360px;
+    }
+    .ppmt_main_table {
+        width: 100%;
+        font-size: 12px;
+    }
+}

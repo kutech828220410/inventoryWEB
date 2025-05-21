@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="allocate.css?v=1.9">
   <link rel="stylesheet" href="review.css">
   <link rel="stylesheet" href="popup_dc_new.css">
+  <link rel="stylesheet" href="popup_med_take.css">
   <link rel="stylesheet" href="popup_bed_list.css?v=1.5">
   <link rel="stylesheet" href="popup_med_list.css?v=14.0">
   <link rel="stylesheet" href="popup_med_list_search.css">
@@ -54,6 +55,7 @@
           loadScript("review.js");
           loadScript("../UI/navBar.js");
           loadScript("popup_dc_new.js");
+          loadScript("popup_med_take.js");
           loadScript("popup_bed_list.js");
           loadScript("popup_med_list.js");
           loadScript("popup_med_list_search.js");
@@ -114,6 +116,9 @@
 
     get_popup_discharged_list();
     popup_discharged_list_div.Set_Visible(false);
+
+    get_popup_med_take();
+    popup_med_take_div.Set_Visible(false);
   </script>
 
   <div class="under-line">
@@ -193,7 +198,7 @@
     // console.log(med_card_checkbox);
     // console.log(barcode);
     if (!med_card_checkbox) {
-        alert("此床無該藥品");
+        // alert("此床無該藥品");
     } else if (med_card_checkbox.classList.contains("med_card_checkbox_disabled")) {
         alert("尚未完成調劑，無法進行覆核");
     } else {

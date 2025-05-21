@@ -433,7 +433,16 @@ function get_p_bed_header() {
         popup_bed_change_div_open()
     });
 
+    let med_take_btn = document.createElement("div");
+    med_take_btn.classList.add("btn");
+    med_take_btn.classList.add("med_take_btn");
+    med_take_btn.innerHTML = "撈藥清單";
+    med_take_btn.addEventListener("click", () => {
+        popup_med_take_div_open();
+    });
+
     // pb_btn_container.appendChild(ppmcl_btn);
+    pb_btn_container.appendChild(med_take_btn);
     pb_btn_container.appendChild(dc_new_btn);
     // pb_btn_container.appendChild(med_cart_sum_list_btn);
     pb_btn_container.appendChild(pb_list_btn);
@@ -1734,7 +1743,9 @@ async function pre_bed_func() {
         temp_none_bed_num_arr.sort((a, b) => a - b);
 
         temp_none_bed_num_arr.forEach(element => {
-            temp_arr_none_bed.push(`第${med_cart_beds_data[+element].bednum}床`); 
+            if(!temp_arr_none_bed.includes(`第${med_cart_beds_data[+element].bednum}床`)) {
+                temp_arr_none_bed.push(`第${med_cart_beds_data[+element].bednum}床`); 
+            }
         });
 
         if(temp_arr_none_bed != 0) {
@@ -1772,7 +1783,9 @@ async function next_bed_func() {
     do {
         temp_p_bed_index++;
         if(med_cart_beds_data[temp_p_bed_index]["bed_status"] != "已佔床") {
-            temp_arr_none_bed.push(`第${med_cart_beds_data[temp_p_bed_index].bednum}床`);
+            if(!temp_arr_none_bed.includes(`第${med_cart_beds_data[temp_p_bed_index].bednum}床`)) {
+                temp_arr_none_bed.push(`第${med_cart_beds_data[temp_p_bed_index].bednum}床`);
+            }
         }
     } while(med_cart_beds_data[temp_p_bed_index]["bed_status"] != "已佔床");
 

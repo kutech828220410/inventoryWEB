@@ -78,7 +78,7 @@ function set_pp_bed_list_info() {
             if(element.check_status != "" && element.bed_status != "已出院") pp_bed_card.classList.add("pp_done_bed");
         }
         // if(element["cpoe"].length == 0) pp_bed_card.classList.add("pp_done_bed");
-        if(element.bed_status == "") pp_bed_card.classList.add("pp_nouse_bed");
+        if(element.bed_status == "" || element.bed_status == "已出院") pp_bed_card.classList.add("pp_nouse_bed");
         if(element.bed_status == "已出院") pp_bed_card.classList.add("pp_logout_bed");
         // console.log(element);
 

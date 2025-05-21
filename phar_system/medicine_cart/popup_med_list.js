@@ -354,7 +354,7 @@ async function set_pp_med_list_display() {
 
         let chtNameDiv = document.createElement('div');
         chtNameDiv.className = 'ppml_ci_content';
-        chtNameDiv.textContent = element.cht_name;
+        chtNameDiv.textContent = element.CHT_NAME;
         
         nameDiv_container.appendChild(nameDiv);
         if(element.cht_name) nameDiv_container.appendChild(chtNameDiv);
