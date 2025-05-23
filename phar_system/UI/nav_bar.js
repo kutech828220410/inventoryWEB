@@ -105,18 +105,18 @@ let html_pages = [
                     },
                     {
                         html_name: "requisitions_upload",
-                        html_ctName: "單據辨識(批次)",
+                        html_ctName: "單據辨識",
                         html_url: "../../phar_system/requisitions_upload",
                         icon_url: "../../phar_system/phar_system/image/icon/assortment.png",
                         icon_big_url: "../../phar_system/image/icon/requisitions_upload.png"
                     },
-                    {
-                        html_name: "requisitions_upload",
-                        html_ctName: "單據辨識",
-                        html_url: "../../phar_system/requisitions_upload_new",
-                        icon_url: "../../phar_system/image/icon/assortment.png",
-                        icon_big_url: "../../phar_system/image/icon/requisitions_upload.png"
-                    }
+                    // {
+                    //     html_name: "requisitions_upload",
+                    //     html_ctName: "單據辨識",
+                    //     html_url: "../../phar_system/requisitions_upload_new",
+                    //     icon_url: "../../phar_system/image/icon/assortment.png",
+                    //     icon_big_url: "../../phar_system/image/icon/requisitions_upload.png"
+                    // }
                 ]
             }
         ]
@@ -177,6 +177,13 @@ let html_pages = [
                         html_url: "../../phar_system/suspiciousRxLog",
                         icon_url: "../../phar_system/image/icon/doctorMiss.png",
                         icon_big_url: "../../phar_system/image/icon/doctorMiss.png"
+                    },
+                    {
+                        html_name: "cpoe_query",
+                        html_ctName: "醫令查詢",
+                        html_url: "../../phar_system/cpoe_query",
+                        icon_url: "../../phar_system/image/icon/compliance.png",
+                        icon_big_url: "../../phar_system/image/icon/controlled_big_icon.png"
                     },
                 ]
             },

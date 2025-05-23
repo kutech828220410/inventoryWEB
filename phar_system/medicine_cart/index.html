@@ -13,7 +13,8 @@
   <link rel="stylesheet" href="allocate.css?v=1.9">
   <link rel="stylesheet" href="review.css">
   <link rel="stylesheet" href="popup_dc_new.css">
-  <link rel="stylesheet" href="popup_med_take.css">
+  <link rel="stylesheet" href="popup_med_take.css?v=1.4">
+  <link rel="stylesheet" href="popup_med_take_time.css?v=1.3">
   <link rel="stylesheet" href="popup_bed_list.css?v=1.5">
   <link rel="stylesheet" href="popup_med_list.css?v=14.0">
   <link rel="stylesheet" href="popup_med_list_search.css">
@@ -56,6 +57,7 @@
           loadScript("../UI/navBar.js");
           loadScript("popup_dc_new.js");
           loadScript("popup_med_take.js");
+          loadScript("popup_med_take_time.js");
           loadScript("popup_bed_list.js");
           loadScript("popup_med_list.js");
           loadScript("popup_med_list_search.js");
@@ -119,6 +121,9 @@
 
     get_popup_med_take();
     popup_med_take_div.Set_Visible(false);
+
+    get_popup_med_take_time();
+    popup_med_take_time_div.Set_Visible(false);
   </script>
 
   <div class="under-line">

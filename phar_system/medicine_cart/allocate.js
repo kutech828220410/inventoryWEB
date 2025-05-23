@@ -445,7 +445,9 @@ function get_p_bed_header() {
     pb_btn_container.appendChild(med_take_btn);
     pb_btn_container.appendChild(dc_new_btn);
     // pb_btn_container.appendChild(med_cart_sum_list_btn);
-    pb_btn_container.appendChild(pb_list_btn);
+    if(page_setting_params && page_setting_params.pick_medicine.value == "True") {
+        pb_btn_container.appendChild(pb_list_btn);
+    }
     // pb_btn_container.appendChild(bed_change_btn);
 
     // pb_btn_container.appendChild();

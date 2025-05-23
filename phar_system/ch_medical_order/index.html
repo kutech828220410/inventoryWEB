@@ -1,105 +1,16 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="pragma" content="no-cache">
-  <meta http-equiv="expires" content="0">
-  <title>次世代藥局管理系統</title>
-  <!-- <link rel="stylesheet" href="main.css"> -->
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="../UI/style/navBar.css">
-  <link rel="stylesheet" href="popup_content.css">
-  <script src="../Function/Basic.js?v=1.14"></script>
-
-  <script>
-    (async function() 
-        {
-          loadScript("../../ApiURL.js");
-          loadScript("../../ChatHub.js");
-          loadScript("../../session_check.js");
-          loadScript("../../session.js");
-          loadScript("../svg/mySVG.js");
-          loadScript("../UI/map.js");
-          loadScript("../popup/map.js");    
-          loadScript("../dist/JsBarcode.all.js");
-          loadScript("../api/transaction.js");
-          loadScript("../Function/WebApiFunc.js");
-          loadScript("app.js");
-          // loadScript("popup_pharmacy_select.js");
-          loadScript("popup_content.js");
-          loadScript("jsonFunc.js");
-          loadScript("../UI/navBar.js");
-          loadScript("../api/web_permissions.js");
-        })();
-
-  </script>
-</head>
-<body>
-      <script>
-
-          
-          // document.body.style.position = 'absolute';
-          // const header_div = get_header();
-          // document.body.appendChild(header_div);
-          // const main_div = get_main();
-          // document.body.appendChild(main_div);  
-
-          get_popup_cht_med_content();
-          popup_cht_med_content_div.Set_Visible(false);
-          
-          // const popup_find_div = get_popup_serch();
-          // document.body.appendChild(popup_find_div.div);
-          // popup_find_div.Set_Visible(false);
-      </script>
-  <div class="under-line">
-    <B> Copyright ©2024 鴻森智能科技 </B>
-  </div>
-  
-  <script>
-  var barcode_value = '';
-    // 監聽頁面的keydown事件
-  window.addEventListener('keydown', function(event) 
-  {
-    // 判斷按下的按鍵是否是Tab鍵或Enter鍵
-    console.log(event.key);
-    if (event.key === 'Tab' || event.key === 'Enter') {
-    // 防止頁面重新載入
-        event.preventDefault();
-        const parsedCode = parseBarcode(barcode_value);
-        
-        // 取得輸入框的值
-        barcode_value = '';
-        // 解析藍牙掃描器返回的數據
-        if(parsedCode != '')
-        {
-   
-        }         
-    }
-    else
-    {
-        const isValid = /^[a-zA-Z0-9]+$/.test(event.key);
-        const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
-        const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);
-        
-
-        if (isValid && (!isControlKey||isNumPadlKey)) {
-            // 將解析後的條碼值設定為輸入框的值
-            barcode_value += event.key;
-        } 
-    }
-});
-
-// 解析帶有分隔符的字符串
-function parseBarcode(scannedCode) 
-{
-  const delimiter = /[\n\r]/g;
-  const matches = scannedCode.split(delimiter);
-  return matches[0];
-}
-
-</script>
-  
-</body>
+  <head>
+    <meta charset="UTF-8" />
+        <link rel="icon" href="../../favicon.ico" >
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="192x192">
+    <link rel="icon" type="image/png" sizes="192x192" href="android-touch-icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>中藥醫令</title>
+    <script type="module" crossorigin src="./assets/main-OMTg-P_7.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/main-ChjssBSF.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>

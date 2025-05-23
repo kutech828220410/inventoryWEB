@@ -492,6 +492,23 @@ async function get_medChange_by_GUID(data) {
 
     return temp_data
 }
+// 根據病床GUID給出DC/NEW資料
+async function get_medChange_by_ST_EN(data) {
+    let temp_doman = transform_api_ip_4433(api_ip);
+    let temp_data = await fetch(`${temp_doman}api/med_cart/get_medChange_by_ST_EN`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then((response) => {
+        return response.json();
+    })
+    console.log(temp_data);
+
+    return temp_data
+}
 // 根據處方GUID變更大瓶點滴狀態
 async function update_large_in_med_cpoe(data) {
     let temp_doman = transform_api_ip_4433(api_ip);

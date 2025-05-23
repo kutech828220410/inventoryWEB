@@ -22,7 +22,7 @@ function get_pp_med_take_header() {
 
     let ppmt_h_title = document.createElement("div");
     ppmt_h_title.classList.add("ppmt_h_title");
-    ppmt_h_title.innerText = "撈藥清單";
+    ppmt_h_title.innerHTML = `<span class="ppmt_h_title_span">C0XX</span>撈藥清單`;
 
     let ppmt_h_close_btn = document.createElement("img");
     ppmt_h_close_btn.classList.add("ppmt_h_close_btn");
@@ -33,7 +33,11 @@ function get_pp_med_take_header() {
 
     let ppmt_h_cart_name = document.createElement("div");
     ppmt_h_cart_name.classList.add("ppmt_h_cart_name");
-    ppmt_h_cart_name.innerHTML = "C069";
+    ppmt_h_cart_name.classList.add("btn");
+    ppmt_h_cart_name.innerHTML = "時間設定";
+    ppmt_h_cart_name.addEventListener("click", () => {
+        popup_med_take_time_div_open();
+    });
 
     ppmt_header_container.appendChild(ppmt_h_title);
     ppmt_header_container.appendChild(ppmt_h_close_btn);
@@ -81,12 +85,17 @@ function popup_med_take_div_open() {
     popup_med_take_div.Set_Visible(true);
 }
 function set_med_take_info_table() {
-    let bed_name = med_take_data[0].bednum;
-    let med_array = med_take_data[0].cpoe_change;
-    let table_th_arr = ["序號", "藥名", "（中）", "DC/NEW", "數量", "單位", "頻次", "更新時間"];
-
     let ppmt_main_container = document.querySelector(".ppmt_main_container");
     ppmt_main_container.innerHTML = "";
+    
+    if(med_take_data.length == 0) {
+        ppmt_main_container.innerHTML = `<span class="ppmt_main_no_data_span">無撈藥資料</span>`;
+        return;
+    }
+    let bed_name = med_take_data[temp_pp_mt_index].bednum;
+    let med_array = med_take_data[temp_pp_mt_index].cpoes;
+    let table_th_arr = ["序號", "藥名", "（中）", "DC/NEW", "數量", "單位", "頻次", "更新時間"];
+
 
     let ppmt_main_table = document.createElement("table");
     ppmt_main_table.classList.add("ppmt_main_table");
@@ -143,9 +152,11 @@ function set_med_take_info_table() {
                     case 2:
                         // 中文名
                         if(element.cht_name == "") {
-                            ppmt_med_td.innerHTML = "無";
+                            ppmt_med_td.innerHTML = "--";
+                            ppmt_med_td.style.textAlign = "center";
                         } else {
                             ppmt_med_td.innerHTML = element.cht_name;
+                            ppmt_med_td.style.textAlign = "left";
                         }
                         break;
                     case 3:
@@ -180,37 +191,46 @@ function set_med_take_info_table() {
         });
     }
 
-
     ppmt_main_container.appendChild(ppmt_main_table);
 }
 async function open_med_take_func() {
-    let ppmt_h_cart_name = document.querySelector(".ppmt_h_cart_name");
-    ppmt_h_cart_name.innerHTML = current_cart.hnursta;
+    let ppmt_h_title_span = document.querySelector(".ppmt_h_title_span");
+    let ppmtt_start_time_input = document.querySelector("#ppmtt_start_time_input");
+    let ppmtt_end_time_input = document.querySelector("#ppmtt_end_time_input");
+
+    ppmt_h_title_span.innerHTML = current_cart.hnursta;
     let post_data = {
-        ValueAry: [current_p_bed_data.GUID]
+        ValueAry: [current_pharmacy.phar, current_cart.hnursta, ppmtt_start_time_input.value, ppmtt_end_time_input.value]
     };
-    med_take_data = await get_medChange_by_GUID(post_data);
+    med_take_data = await get_medChange_by_ST_EN(post_data);
     med_take_data = med_take_data.Data;
-    console.log("asdf");
+    console.log(med_take_data);
+    med_take_data = set_med_data(med_take_data);
+    console.log(med_take_data);
 
-    for (let index = 0; index < med_cart_beds_data.length; index++) {
-        let element = med_cart_beds_data[index];
-        if(current_p_bed_data.GUID == element.GUID) {
-            temp_pp_mt_index = index;
-            break;
-        }
-    }
-
+    let temp_current_bed_num = +current_p_bed_data.bednum;
+    
+    let temp_find_index = findIndexByBednum(med_take_data, temp_current_bed_num);
+    if(temp_find_index != -1) temp_pp_mt_index = temp_find_index;
+    console.log(temp_current_bed_num);
+    console.log(temp_find_index);
+    console.log(temp_pp_mt_index);
+    
     let ppmt_next_bed_btn = document.querySelector(".ppmt_next_bed_btn");
     let ppmt_pre_bed_btn = document.querySelector(".ppmt_pre_bed_btn");
     ppmt_pre_bed_btn.classList.remove("disable_btn");
     ppmt_next_bed_btn.classList.remove("disable_btn");
 
-    if(final_patient_bed_index == temp_pp_mt_index) {
+    if(med_take_data.length - 1 == temp_pp_mt_index || med_take_data.length == 0) {
         ppmt_next_bed_btn.classList.add("disable_btn");
     } 
-    if(first_patient_bed_index == temp_pp_mt_index) {
+    if(0 == temp_pp_mt_index) {
         ppmt_pre_bed_btn.classList.add("disable_btn");
+    }
+    
+    if(med_take_data.length == 0) {
+        ppmt_pre_bed_btn.classList.add("disable_btn");
+        ppmt_next_bed_btn.classList.add("disable_btn");
     }
 
     set_med_take_info_table();
@@ -220,17 +240,20 @@ async function pp_med_take_next() {
     let ppmt_pre_bed_btn = document.querySelector(".ppmt_pre_bed_btn");
     if(ppmt_next_bed_btn.classList.contains("disable_btn")) return;
 
-    do {
-        temp_pp_mt_index++;
-    } while(med_cart_beds_data[temp_pp_mt_index]["bed_status"] != "已佔床");
-    let post_data = {
-        ValueAry: [med_cart_beds_data[temp_pp_mt_index].GUID]
-    };
+    // let ppmtt_start_time_input = document.querySelector("#ppmtt_start_time_input");
+    // let ppmtt_end_time_input = document.querySelector("#ppmtt_end_time_input");
 
-    med_take_data = await get_medChange_by_GUID(post_data);
-    med_take_data = med_take_data.Data;
+    // let post_data = {
+    //     ValueAry: [current_pharmacy.phar, current_cart.hnursta, ppmtt_start_time_input.value, ppmtt_end_time_input.value]
+    // };
+    
+    // med_take_data = await get_medChange_by_ST_EN(post_data);
+    // med_take_data = med_take_data.Data;
+    // med_take_data = set_med_data(med_take_data);
 
-    if(final_patient_bed_index == temp_pp_mt_index) {
+    temp_pp_mt_index++;
+
+    if(med_take_data.length - 1 == temp_pp_mt_index) {
         ppmt_next_bed_btn.classList.add("disable_btn");
         ppmt_pre_bed_btn.classList.remove("disable_btn");
     } else {
@@ -245,15 +268,19 @@ async function pp_med_take_pre() {
     let ppmt_pre_bed_btn = document.querySelector(".ppmt_pre_bed_btn");
     if(ppmt_pre_bed_btn.classList.contains("disable_btn")) return;
 
-    do {
-        temp_pp_mt_index--;
-    } while(med_cart_beds_data[temp_pp_mt_index]["bed_status"] != "已佔床");
-    let post_data = {
-        ValueAry: [med_cart_beds_data[temp_pp_mt_index].GUID]
-    };
+    
+    // let ppmtt_start_time_input = document.querySelector("#ppmtt_start_time_input");
+    // let ppmtt_end_time_input = document.querySelector("#ppmtt_end_time_input");
 
-    med_take_data = await get_medChange_by_GUID(post_data);
-    med_take_data = med_take_data.Data;
+    // let post_data = {
+    //     ValueAry: [current_pharmacy.phar, current_cart.hnursta, ppmtt_start_time_input.value, ppmtt_end_time_input.value]
+    // };
+
+    // med_take_data = await get_medChange_by_ST_EN(post_data);
+    // med_take_data = med_take_data.Data;
+    // med_take_data = set_med_data(med_take_data);
+
+    temp_pp_mt_index = temp_pp_mt_index - 1;
 
     if(first_patient_bed_index == temp_pp_mt_index) {
         ppmt_next_bed_btn.classList.remove("disable_btn");
@@ -263,4 +290,30 @@ async function pp_med_take_pre() {
     }
 
     set_med_take_info_table();
+}
+
+function set_med_data(arr) {
+    const data = arr;
+
+    const groupedData = Object.values(data.reduce((acc, item) => {
+        const key = item.MAster_GUID;
+        if (!acc[key]) {
+        acc[key] = {
+            MAster_GUID: key,
+            bednum: item.bednum,
+            caseno: item.caseno,
+            cpoes: [],
+        };
+        }
+        acc[key].cpoes.push(item);
+        return acc;
+    }, {})
+    );
+
+    return groupedData;
+}
+
+function findIndexByBednum(dataArray, targetBednum) {
+  const index = dataArray.findIndex(item => +item.bednum === +targetBednum);
+  return index !== -1 ? index : -1;
 }
