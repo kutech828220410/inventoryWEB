@@ -376,44 +376,45 @@ function get_p_bed_header() {
     med_cart_sum_list_btn.classList.add("btn");
     med_cart_sum_list_btn.classList.add("med_cart_sum_list_btn");
     med_cart_sum_list_btn.innerHTML = "藥品總量";
-    med_cart_sum_list_btn.addEventListener("click", async () => {
-        Set_main_div_enable(true);
-        clearTimeout(med_list_timer);
-        med_list_timer = await setTimeout(() => {
-            Set_main_div_enable(false);
-            alert("連線超時，請重新點選");
-            return;
-        }, 6000);
-        med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, "all");
-        if(med_list_data.Code != 200) {
-            clearTimeout(med_list_timer);
+    // med_cart_sum_list_btn.addEventListener("click", async () => {
+    //     Set_main_div_enable(true);
+    //     clearTimeout(med_list_timer);
+    //     med_list_timer = await setTimeout(() => {
+    //         Set_main_div_enable(false);
+    //         alert("連線超時，請重新點選");
+    //         return;
+    //     }, 6000);
+    //     console.log("112312321213231123123");
+    //     med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, "all");
+    //     if(med_list_data.Code != 200) {
+    //         clearTimeout(med_list_timer);
 
-            alert("藥品總量資料錯誤", med_list_data.Result);
-            Set_main_div_enable(false);
-        } else {
-            if(Array.isArray(med_list_data.Data)) {
-                med_list_data = med_list_data.Data;
-                med_list_data = sort_med_list_data(med_list_data, current_func);
-                med_list_data = sort_display_med_data(med_list_data);
-                await set_pp_med_list_display();
+    //         alert("藥品總量資料錯誤", med_list_data.Result);
+    //         Set_main_div_enable(false);
+    //     } else {
+    //         if(Array.isArray(med_list_data.Data)) {
+    //             med_list_data = med_list_data.Data;
+    //             med_list_data = sort_med_list_data(med_list_data, current_func);
+    //             med_list_data = sort_display_med_data(med_list_data);
+    //             await set_pp_med_list_display();
     
-                clearTimeout(med_list_timer);
+    //             clearTimeout(med_list_timer);
                 
-                popup_med_list_div_open();
-                Set_main_div_enable(false);
-            } else {
-                console.log("藥品總量，資料格式錯誤", med_list_data.Data);
-                med_list_data.Data = [];
-                med_list_data = med_list_data.Data;
-                med_list_data = sort_med_list_data(med_list_data, current_func);
-                med_list_data = sort_display_med_data(med_list_data);
-                await set_pp_med_list_display();
+    //             popup_med_list_div_open();
+    //             Set_main_div_enable(false);
+    //         } else {
+    //             console.log("藥品總量，資料格式錯誤", med_list_data.Data);
+    //             med_list_data.Data = [];
+    //             med_list_data = med_list_data.Data;
+    //             med_list_data = sort_med_list_data(med_list_data, current_func);
+    //             med_list_data = sort_display_med_data(med_list_data);
+    //             await set_pp_med_list_display();
                 
-                clearTimeout(med_list_timer);
-                Set_main_div_enable(false);
-            }
-        }
-    });
+    //             clearTimeout(med_list_timer);
+    //             Set_main_div_enable(false);
+    //         }
+    //     }
+    // });
 
     let dc_new_btn = document.createElement("div");
     dc_new_btn.classList.add("btn");
@@ -1933,14 +1934,23 @@ async function set_post_data_to_check_dispense() {
         }
     });
 
-    console.log(med_arr);
-    console.log(med_log_arr);
-    console.log(med_nodis_log_arr);
+    console.log("med_log_arr", med_log_arr);
+    console.log("med_nodis_log_arr", med_nodis_log_arr);
+    med_arr = med_arr.filter(GUID => !med_nodis_log_arr.includes(GUID));
+    console.log("med_arr", med_arr);
+
+    let post_data3 = post_data2;
 
     if(current_func == "allocate") {
         post_data2.Value = "調劑"
+        if(med_nodis_log_arr.length > 0) {
+            post_data3.Value = "取消調劑";
+        }
     } else if(current_func == "review") {
         post_data2.Value = "覆核"
+        if(med_nodis_log_arr.length > 0) {
+            post_data3.Value = "取消覆核";
+        }
     }
 
     if(med_arr.length > 0) {
@@ -1962,6 +1972,13 @@ async function set_post_data_to_check_dispense() {
         await add_med_inventory_log(post_data2);
         
         med_log_arr = [];
+    }
+    if(med_nodis_log_arr.length > 0) {
+        post_data3.ValueAry[0] = med_nodis_log_arr.join(";");
+        console.log("取消 log post_data", post_data3);
+        await add_med_inventory_no_log(post_data3);
+        
+        med_nodis_log_arr = [];
     }
 
     return return_data;

@@ -147,27 +147,27 @@ let med_list_sort_radio_data = [
     {
         value: "all",
         name: "sort_all",
-        cht_name: "全部",
+        CHT_NAME: "全部",
     },
     {
         value: "bottle",
         name: "sort_bottle",
-        cht_name: "大瓶",
+        CHT_NAME: "大瓶",
     },
     {
         value: "injection",
         name: "sort_injection",
-        cht_name: "針劑",
+        CHT_NAME: "針劑",
     },
     {
         value: "oral",
         name: "sort_oral",
-        cht_name: "口服",
+        CHT_NAME: "口服",
     },
     {
         value: "ice",
         name: "sort_ice",
-        cht_name: "冰箱",
+        CHT_NAME: "冰箱",
     },
 ];
 let med_data;

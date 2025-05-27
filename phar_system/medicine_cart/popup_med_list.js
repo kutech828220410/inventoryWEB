@@ -242,7 +242,7 @@ function get_pp_med_list_header() {
 
         let label = document.createElement("label");
         label.classList.add("sort_med_label");
-        label.innerHTML = element.cht_name;
+        label.innerHTML = element.CHT_NAME;
         label.setAttribute("for", element.name);
 
         head_sort_radio_container.appendChild(input);
@@ -299,7 +299,8 @@ function get_pp_med_list_footer() {
     ppml_display_all_btn.classList.add("btn");
     ppml_display_all_btn.innerHTML = `全部顯示`;
     ppml_display_all_btn.addEventListener("click", async () => {
-        med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, "all");
+        let ppml_h_current_cart_select = document.querySelector(".ppml_h_current_cart_select");
+        med_list_data = await get_all_med_qty(current_pharmacy.phar, ppml_h_current_cart_select.value, "all");
         med_list_data = med_list_data.Data;
         med_list_data = sort_med_list_data(med_list_data, current_func);
         med_list_data = sort_display_med_data(med_list_data);
@@ -331,7 +332,7 @@ async function set_pp_med_list_display() {
         ppml_card_container.classList.add("ppml_card_container");
         ppml_card_container.setAttribute("code", element.code);
         ppml_card_container.setAttribute("name", element.name);
-        ppml_card_container.setAttribute("cht_name", element.cht_name);
+        ppml_card_container.setAttribute("CHT_NAME", element.CHT_NAME);
         ppml_card_container.setAttribute("skdiacode", element.SKDIACODE);
 
         let ppml_card_info_container = document.createElement("div");
@@ -357,7 +358,7 @@ async function set_pp_med_list_display() {
         chtNameDiv.textContent = element.CHT_NAME;
         
         nameDiv_container.appendChild(nameDiv);
-        if(element.cht_name) nameDiv_container.appendChild(chtNameDiv);
+        if(element.CHT_NAME) nameDiv_container.appendChild(chtNameDiv);
 
         ppml_ci_top.appendChild(nameDiv_container);
         if(element.large == "L") {
@@ -541,10 +542,33 @@ async function set_pp_med_list_display() {
                 ValueAry: [guid_arr.join(";"), ppml_h_current_cart_select.value]
             }
 
+            let post_data2 = {
+                Data: [
+                    {
+                        op_id: loggedName.ID,
+                        op_name: loggedName.Name
+                    }
+                ],
+                ValueAry: [guid_arr.join(";")],
+                Value: "",
+                ServerName: "",
+                ServerType: "",
+                UserName: loggedName.Name
+            }
+
+            if(current_func == "allocate") {
+                post_data2.Value = "調劑";
+            } else if(current_func == "review") {
+                post_data2.Value = "覆核";
+            }
+
             if(temp_table != "all") {
                 post_data.ServerName = temp_table;
                 post_data.ServerType = "調劑台";
             }
+
+            console.log("post_data", post_data);
+            console.log("post_log_data", post_data2);
 
             let return_data;
             if(current_func == "allocate") {
@@ -560,6 +584,8 @@ async function set_pp_med_list_display() {
                     let ppml_bed_card = document.querySelector(`.ppml_bed_card[guid="${guid}"]`);
                     ppml_bed_card.classList.add("ppml_bed_done");
                 });
+
+                await add_med_inventory_log(post_data2);
             } else {
                 alert("操作失敗 Result:", return_data.Result);
                 Set_main_div_enable(false);
@@ -677,8 +703,8 @@ async function set_pp_med_list_display() {
                             await set_post_data_to_check_dispense_for_med_list(master_guid, guid, "", false);
         
                             let filter_med_table_input = document.querySelector('.filter_med_table_input:checked');
-
-                            med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, filter_med_table_input.value);
+                            let ppml_h_current_cart_select = document.querySelector(".ppml_h_current_cart_select");
+                            med_list_data = await get_all_med_qty(current_pharmacy.phar, ppml_h_current_cart_select.value, filter_med_table_input.value);
                             med_list_data = med_list_data.Data;
                             med_list_data = sort_med_list_data(med_list_data, current_func);
                             med_list_data = sort_display_med_data(med_list_data);
@@ -703,8 +729,9 @@ async function set_pp_med_list_display() {
                         await set_post_data_to_check_dispense_for_med_list(master_guid, guid, "Y", false);
     
                         let filter_med_table_input = document.querySelector('.filter_med_table_input:checked');
-
-                        med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, filter_med_table_input.value);
+                        let ppml_h_current_cart_select = document.querySelector(".ppml_h_current_cart_select");
+                        
+                        med_list_data = await get_all_med_qty(current_pharmacy.phar, ppml_h_current_cart_select.value, filter_med_table_input.value);
                         med_list_data = med_list_data.Data;
                         med_list_data = sort_med_list_data(med_list_data, current_func);
                         med_list_data = sort_display_med_data(med_list_data);
@@ -936,11 +963,20 @@ async function set_post_data_to_check_dispense_for_med_list(m_guid, guid, status
     }
 
     if(current_func == "allocate") {
-        post_data2.Value = "調劑"
+        if(status  == "Y") {
+            post_data2.Value = "調劑"
+        } else {
+            post_data2.Value = "取消調劑"
+        }
     } else if(current_func == "review") {
-        post_data2.Value = "覆核"
+        if(status  == "Y") {
+            post_data2.Value = "覆核"
+        } else {
+            post_data2.Value = "取消覆核"
+        }
     }
     console.log("post_data", post_data);
+    console.log("post_log_data", post_data2);
 
     med_card_checkbox.forEach(element => {
         if(element.id == guid) {
@@ -957,8 +993,6 @@ async function set_post_data_to_check_dispense_for_med_list(m_guid, guid, status
     } else {
         return_data = await api_med_cart_double_check_by_GUID(post_data);
     }
-
-    console.log(post_data2);
 
     await add_med_inventory_log(post_data2);
 

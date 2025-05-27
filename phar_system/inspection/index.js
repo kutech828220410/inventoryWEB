@@ -23,6 +23,8 @@ let medicine_page = [];
 let list_data;
 Window.load = load;
 var Header_state;
+let med_cloud_object = {};
+
 setInterval(function() 
 {
    refresh_Header_state();
@@ -129,8 +131,6 @@ async function init()
     console.log("API01",API01);
     console.log("API02",API02);
     await check_ip(API01[0].server,API02[0].server);
-    console.log("inventory_url",inventory_url);
-    console.log("inspection_url",inspection_url);
 
     await page_check_permissions("inspection");
 
@@ -139,8 +139,22 @@ async function init()
     var IC_SN = sessionStorage.getItem('IC_SN');  
     current_IC_SN = IC_SN;
     medicine_page = await get_medicine_cloud();
+    console.log(medicine_page);
     popup_med_serch_medclass = medicine_page.Data;
-    console.log(medicine_page.Data);
+    let temp_lock_med = popup_med_serch_medclass.filter(item => {
+      return item.FILE_STATUS == "關檔中";
+    });
+    console.log("鎖檔藥品", temp_lock_med);
+    popup_med_serch_medclass = popup_med_serch_medclass.filter(item => {
+      return item.FILE_STATUS != "關檔中";
+    });
+    if(Array.isArray(popup_med_serch_medclass)) {
+      popup_med_serch_medclass.forEach(element => {
+        med_cloud_object[`MED_${element.CODE}`] = element;
+      });
+    }
+    console.log("過濾鎖檔藥品搜尋", popup_med_serch_medclass);
+    
     temp_med_data = {}
     popup_med_serch_medclass.forEach(element => {
       temp_med_data[element.CODE] = element
@@ -148,6 +162,33 @@ async function init()
     // console.log(temp_med_data);
     data = await creat_get_by_IC_SN(IC_SN);
     console.log("驗收單資料" , data);
+    let temp_contents = data.Data[0].Contents;
+        let temp_shift_contents = temp_contents;
+    temp_contents = temp_contents.filter(item => {
+      if(med_cloud_object[`MED_${item.CODE}`] != undefined) {
+        return item;
+      }
+    });
+    console.log("過濾後的contents", temp_contents);
+
+    let temp_filter_done_contents = temp_contents.map(item => item.GUID);
+
+    temp_shift_contents = temp_shift_contents.filter(item => !temp_filter_done_contents.includes(item.GUID));
+
+    console.log("被過濾的", temp_shift_contents);
+
+    let temp_shift_contents_names_arr = temp_shift_contents.map(item => item.NAME);
+    let temp_str_shift_contents_names = temp_shift_contents_names_arr.join("\n");
+
+    if(temp_shift_contents.length < 10) {
+      alert(`共計 ${temp_shift_contents.length} 項藥品因鎖檔被過濾。\n${temp_str_shift_contents_names}`);
+    } else {
+      alert(`共計 ${temp_shift_contents.length} 項藥品因鎖檔被過濾。`);
+    }
+
+    data.Data[0].Contents = temp_contents;
+    console.log("過濾盤點單藥品鎖檔" , data);
+
     list_data = data["Data"][0]["Contents"];
     State = StateType.等待條碼刷入;
 
@@ -159,6 +200,8 @@ async function init()
     await page_Init(data);
     hideLoadingPopup();
     // light_all_on_trigger_func(data);
+    let header_serch_text = document.querySelector('#header_serch_text');
+    header_serch_text.focus();
 }
 async function page_Init(data) 
 {

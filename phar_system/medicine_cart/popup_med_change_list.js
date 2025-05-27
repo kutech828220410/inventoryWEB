@@ -201,12 +201,33 @@ async function set_ppmcl_main_info() {
                     ValueAry: [guid_arr.join(";"), ppmcl_h_current_cart_select.value]
                 }
 
+                let post_data2 = {
+                    Data: [
+                        {
+                            op_id: loggedName.ID,
+                            op_name: loggedName.Name
+                        }
+                    ],
+                    ValueAry: [guid_arr.join(";")],
+                    Value: "",
+                    ServerName: "",
+                    ServerType: "",
+                    UserName: loggedName.Name
+                }
+
+                if(current_func == "allocate") {
+                    post_data2.Value = "調劑";
+                } else if(current_func == "review") {
+                    post_data2.Value = "覆核";
+                }
+
                 if(temp_table != "all") {
                     post_data.ServerName = temp_table;
                     post_data.ServerType = "調劑台";
                 }
 
                 console.log("未條藥品總調劑", post_data);
+                console.log("未條藥品總調劑log", post_data2);
                 let return_data = await api_med_cart_dispensed_by_cart(post_data);
 
                 if(return_data.Code != 200) {
@@ -214,6 +235,8 @@ async function set_ppmcl_main_info() {
                     Set_main_div_enable(false);
                     return;
                 }
+
+                await add_med_inventory_log(post_data2);
 
                 post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
                 console.log(post_data);
@@ -272,41 +295,36 @@ async function set_ppmcl_main_info() {
                     ValueAry: [guid_arr.join(";"), ppmcl_h_current_cart_select.value]
                 }
 
+                let post_data2 = {
+                    Data: [
+                        {
+                            op_id: loggedName.ID,
+                            op_name: loggedName.Name
+                        }
+                    ],
+                    ValueAry: [guid_arr.join(";")],
+                    Value: "",
+                    ServerName: "",
+                    ServerType: "",
+                    UserName: loggedName.Name
+                }
+
+                if(current_func == "allocate") {
+                    post_data2.Value = "調劑";
+                } else if(current_func == "review") {
+                    post_data2.Value = "覆核";
+                }
+
                 if(temp_table != "all") {
                     post_data.ServerName = temp_table;
                     post_data.ServerType = "調劑台";
                 }
 
                 console.log("未條藥品總調劑", post_data);
+                console.log("未條藥品總調劑log", post_data2);
                 let return_data = await api_med_cart_check_by_cart(post_data);
                 if(return_data.Code == 200) {
-                    temp_guid_arr.forEach(async item => {      
-                        let post_data2 = {
-                            Data: [
-                                {
-                                    op_id: loggedName.ID,
-                                    op_name: loggedName.Name
-                                }
-                            ],
-                            ServerName: "",
-                            ServerType: "",
-                            ValueAry: [item],
-                            Value: ""
-                        }
-                        // if(current_med_table != "all") {
-                        //     post_data2.ServerName = current_med_table.name;
-                        //     post_data2.ServerType = current_med_table.type;
-                        // }
-                
-                        if(current_func == "allocate") {
-                            post_data2.Value = "調劑"
-                        } else if(current_func == "review") {
-                            post_data2.Value = "覆核"
-                        }
-                    
-                        await add_med_inventory_log(post_data2);
-                    });
-    
+                    await add_med_inventory_log(post_data2);
                     
                     post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
                     console.log(post_data);
@@ -549,32 +567,31 @@ async function set_ppmcl_main_info() {
                         }
                     }
 
-                    temp_guid_arr.forEach(async item => {      
-                        let post_data2 = {
-                            Data: [
-                                {
-                                    op_id: loggedName.ID,
-                                    op_name: loggedName.Name
-                                }
-                            ],
-                            ServerName: "",
-                            ServerType: "",
-                            ValueAry: [item],
-                            Value: ""
-                        }
-                        // if(current_med_table != "all") {
-                        //     post_data2.ServerName = current_med_table.name;
-                        //     post_data2.ServerType = current_med_table.type;
-                        // }
+                    let post_data2 = {
+                        Data: [
+                            {
+                                op_id: loggedName.ID,
+                                op_name: loggedName.Name
+                            }
+                        ],
+                        ServerName: "",
+                        ServerType: "",
+                        ValueAry: [temp_guid_arr.join(";")],
+                        Value: ""
+                    }
+                    // if(current_med_table != "all") {
+                    //     post_data2.ServerName = current_med_table.name;
+                    //     post_data2.ServerType = current_med_table.type;
+                    // }
+            
+                    if(current_func == "allocate") {
+                        post_data2.Value = "調劑"
+                    } else if(current_func == "review") {
+                        post_data2.Value = "覆核"
+                    }
                 
-                        if(current_func == "allocate") {
-                            post_data2.Value = "調劑"
-                        } else if(current_func == "review") {
-                            post_data2.Value = "覆核"
-                        }
-                    
-                        await add_med_inventory_log(post_data2);
-                    });
+                    await add_med_inventory_log(post_data2);
+                    console.log("藥品異動逐床全部複合post_data2", post_data2);
 
                     
                     post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
@@ -891,32 +908,32 @@ async function set_post_data_to_dispensed_by_GUID(guid_arr, master_guid) {
         return_data = await api_med_cart_dispensed_by_GUID(post_data);
     };
 
-    await guid_arr.forEach(async element => {
-        let post_data2 = {
-            Data: [
-                {
-                    op_id: loggedName.ID,
-                    op_name: loggedName.Name
-                }
-            ],
-            ServerName: "",
-            ServerType: "",
-            ValueAry: [element],
-            Value: ""
-        }
-        if(current_med_table != "all") {
-            post_data2.ServerName = checkedRadio.value;
-            post_data2.ServerType = "調劑台";
-        }
+    let post_data2 = {
+        Data: [
+            {
+                op_id: loggedName.ID,
+                op_name: loggedName.Name
+            }
+        ],
+        ServerName: "",
+        ServerType: "",
+        ValueAry: [temp_str],
+        Value: ""
+    }
+    if(current_med_table != "all") {
+        post_data2.ServerName = checkedRadio.value;
+        post_data2.ServerType = "調劑台";
+    }
 
-        if(current_func == "allocate") {
-            post_data2.Value = "調劑"
-        } else if(current_func == "review") {
-            post_data2.Value = "覆核"
-        }
-    
-        await add_med_inventory_log(post_data2);
-    });
+    if(current_func == "allocate") {
+        post_data2.Value = "調劑"
+    } else if(current_func == "review") {
+        post_data2.Value = "覆核"
+    }
+
+    console.log("post_data2", post_data2);
+
+    await add_med_inventory_log(post_data2);
 
     return return_data;
 };
