@@ -235,6 +235,8 @@ async function set_ppmcl_main_info() {
                     Set_main_div_enable(false);
                     return;
                 }
+                
+                show_popup_notice(return_data.Result, true)
 
                 await add_med_inventory_log(post_data2);
 
@@ -324,6 +326,8 @@ async function set_ppmcl_main_info() {
                 console.log("未條藥品總調劑log", post_data2);
                 let return_data = await api_med_cart_check_by_cart(post_data);
                 if(return_data.Code == 200) {
+                    show_popup_notice(return_data.Result, true);
+
                     await add_med_inventory_log(post_data2);
                     
                     post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
@@ -357,7 +361,7 @@ async function set_ppmcl_main_info() {
                     await set_ppmcl_main_info();
                     Set_main_div_enable(false);
                 } else {
-
+                    show_popup_notice(return_data.Result, false);
                     Set_main_div_enable(false);
                 }
             }
@@ -590,8 +594,13 @@ async function set_ppmcl_main_info() {
                         post_data2.Value = "覆核"
                     }
                 
-                    await add_med_inventory_log(post_data2);
-                    console.log("藥品異動逐床全部複合post_data2", post_data2);
+                    if(return_data.Code == 200) {
+                        show_popup_notice(return_data.Result, true);
+                        await add_med_inventory_log(post_data2);
+                        console.log("藥品異動逐床全部複合post_data2", post_data2);
+                    } else {
+                        show_popup_notice(return_data.Result, false);
+                    }
 
                     
                     post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
@@ -933,7 +942,12 @@ async function set_post_data_to_dispensed_by_GUID(guid_arr, master_guid) {
 
     console.log("post_data2", post_data2);
 
-    await add_med_inventory_log(post_data2);
+    if(return_data.Code == 200) {
+        await add_med_inventory_log(post_data2);
+        show_popup_notice(return_data.Result, true);
+    } else {
+        show_popup_notice(return_data.Result, false);
+    }
 
     return return_data;
 };

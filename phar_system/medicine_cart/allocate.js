@@ -443,12 +443,13 @@ function get_p_bed_header() {
     });
 
     // pb_btn_container.appendChild(ppmcl_btn);
+    // if(page_setting_params && page_setting_params.pick_medicine.value == "True") {
+    //     pb_btn_container.appendChild(med_take_btn);
+    // }
     pb_btn_container.appendChild(med_take_btn);
     pb_btn_container.appendChild(dc_new_btn);
     // pb_btn_container.appendChild(med_cart_sum_list_btn);
-    if(page_setting_params && page_setting_params.pick_medicine.value == "True") {
-        pb_btn_container.appendChild(pb_list_btn);
-    }
+    pb_btn_container.appendChild(pb_list_btn);
     // pb_btn_container.appendChild(bed_change_btn);
 
     // pb_btn_container.appendChild();
@@ -756,59 +757,172 @@ function set_pbm_header_container() {
         let tirgger = e.target.getAttribute("checked");
         let pbmh_checked_trigger_label = document.querySelectorAll(".pbmh_checked_trigger_label");
         let med_card_checkbox = document.querySelectorAll(".med_card_checkbox");
+        let temp_check_isArray = page_setting_params && page_setting_params.big_bottle_exception && page_setting_params.big_bottle_exception.value;
+        // 大瓶藥品api參數設定追加
         if(tirgger == "false") {
             // 點選後全選
             med_card_checkbox.forEach(element => {
                 let temp_boolean = element.classList.contains("med_card_checkbox_disabled");
+                // 可勾選條件
                 if(!element.disabled && !temp_boolean) {
-                    element.checked = true;
+                    // 是否有條件資料
+                    if(temp_check_isArray) {
+                        // 如果是大瓶藥品，且設定為例外，則略過大瓶藥品
+                        if(page_setting_params.big_bottle_exception.value == "True") {
+                            // 判斷是否為大瓶藥品，進行check
+                            if(element.getAttribute("isBig") != "L") {
+                                element.checked = true;
+
+                                med_log_arr.push(element.id);
+
+                                let index = med_nodis_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+
+                                if (index !== -1) {
+                                    med_nodis_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                                }
+                            }
+                        } else {
+                            element.checked = true;
+                            med_log_arr.push(element.id);
+
+                            let index = med_nodis_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+
+                            if (index !== -1) {
+                                med_nodis_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                            } 
+                        }
+
+                    } else {
+                        element.checked = true;
+                        med_log_arr.push(element.id);
+
+                        let index = med_nodis_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+
+                        if (index !== -1) {
+                            med_nodis_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                        }
+                    }
+
                     pbmh_checked_trigger_label.forEach(item => {
                         item.innerHTML = "取消全選";
                         item.setAttribute("checked", true);
                     });
-                    med_log_arr.push(element.id);
-
-                    let index = med_nodis_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
-
-                    if (index !== -1) {
-                        med_nodis_log_arr.splice(index, 1);  // 移除索引位置的那個元素
-                    }
-                }
-
-                // 大瓶藥品api參數設定追加
-                let temp_check_isArray = page_setting_params && page_setting_params.big_bottle_exception && page_setting_params.big_bottle_exception.value;
-
-                if(temp_check_isArray) {
-                    if(page_setting_params.big_bottle_exception.value == "True") {
-                        if(element.getAttribute("isBig") == "L") {
-                            element.checked = false;
-                        }
-                    }
-                } else {
-                    if(element.getAttribute("isBig") == "L") {
-                        element.checked = false;
-                    }
                 }
 
                 console.log(med_log_arr);
                 console.log(med_nodis_log_arr);
             });
+
+
         } else {
             med_card_checkbox.forEach(element => {
                 let temp_boolean = element.classList.contains("med_card_checkbox_disabled");
+                // if(!element.disabled && !temp_boolean) {
+                //     element.checked = false;
+                //     pbmh_checked_trigger_label.forEach(item => {
+                //         item.innerHTML = "全選";
+                //         item.setAttribute("checked", false);
+                //     });
+                //     let index = med_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+
+                //     if (index !== -1) {
+                //         med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                //     }
+
+                //     if(!element.disabled && !temp_boolean) {
+                //         // 是否有條件資料
+                //         if(temp_check_isArray) {
+                //             // 如果是大瓶藥品，且設定為例外，則略過大瓶藥品
+                //             if(page_setting_params.big_bottle_exception.value == "True") {
+                //                 // 判斷是否為大瓶藥品，進行check
+                //                 if(element.getAttribute("isBig") != "L") {
+                //                     element.checked = false;
+
+                //                     med_nodis_log_arr.push(element.id);
+                //                     // med_log_arr.push(element.id);
+
+                //                     // let index = med_nodis_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+                //                     let index = med_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+
+                //                     if (index !== -1) {
+                //                         med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                //                     }
+                //                 }
+                //             } else {
+                //                 element.checked = false;
+                //                 // med_log_arr.push(element.id);
+                //                 med_nodis_log_arr.push(element.id);
+
+                //                 let index = med_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+
+                //                 if (index !== -1) {
+                //                     med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                //                 } 
+                //             }
+
+                //         } else {
+                //             element.checked = false;
+                //             med_nodis_log_arr.push(element.id);
+
+                //             let index = med_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+
+                //             if (index !== -1) {
+                //                 med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                //             }
+                //         }
+
+                //         pbmh_checked_trigger_label.forEach(item => {
+                //             item.innerHTML = "取消全選";
+                //             item.setAttribute("checked", true);
+                //         });
+                //     }
+                // }
                 if(!element.disabled && !temp_boolean) {
-                    element.checked = false;
+                    // 是否有條件資料
+                    if(temp_check_isArray) {
+                        // 如果是大瓶藥品，且設定為例外，則略過大瓶藥品
+                        if(page_setting_params.big_bottle_exception.value == "True") {
+                            // 判斷是否為大瓶藥品，進行check
+                            if(element.getAttribute("isBig") != "L") {
+                                element.checked = false;
+
+                                med_nodis_log_arr.push(element.id);
+                                // med_log_arr.push(element.id);
+
+                                // let index = med_nodis_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+                                let index = med_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+
+                                if (index !== -1) {
+                                    med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                                }
+                            }
+                        } else {
+                            element.checked = false;
+                            // med_log_arr.push(element.id);
+                            med_nodis_log_arr.push(element.id);
+
+                            let index = med_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+
+                            if (index !== -1) {
+                                med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                            } 
+                        }
+
+                    } else {
+                        element.checked = false;
+                        med_nodis_log_arr.push(element.id);
+
+                        let index = med_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+
+                        if (index !== -1) {
+                            med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                        }
+                    }
+
                     pbmh_checked_trigger_label.forEach(item => {
                         item.innerHTML = "全選";
                         item.setAttribute("checked", false);
                     });
-                    let index = med_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
-
-                    if (index !== -1) {
-                        med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
-                    }
-
-                    med_nodis_log_arr.push(element.id);
                 }
             });
 
@@ -1433,9 +1547,15 @@ function set_pbm_main_container() {
         let temp_arr = [];
 
         if(element.med_inve_log.length > 0) {
-            temp_arr = element.med_inve_log.filter((e) => {
-                return e.op_act == "調劑";
-            })
+            if(current_func == "allocate") {
+                temp_arr = element.med_inve_log.filter((e) => {
+                    return e.op_act.includes("調劑");
+                })
+            } else {
+                temp_arr = element.med_inve_log.filter((e) => {
+                    return e.op_act.includes("覆核");
+                })
+            }
         };
 
         if(temp_arr.length > 0) {
@@ -1462,15 +1582,21 @@ function set_pbm_main_container() {
             inve_log_time_title.classList.add("inve_log_info");
             inve_log_time_title.innerHTML = `時間`;
 
+            let inve_log_act_title = document.createElement("div");
+            inve_log_act_title.classList.add("inve_log_act_title");
+            inve_log_act_title.classList.add("inve_log_info");
+            inve_log_act_title.innerHTML = `動作`;
+
             inve_log_card.appendChild(inve_log_op_title);
             inve_log_card.appendChild(inve_log_qty_title);
             // inve_log_card.appendChild(inve_log_unit_title);
             inve_log_card.appendChild(inve_log_time_title);
+            inve_log_card.appendChild(inve_log_act_title);
 
             med_inve_log_container.appendChild(inve_log_card);
 
             element.med_inve_log.forEach(item => {
-                if(item.op_act == "調劑") {
+                if(item.op_act) {
                     let inve_log_card = document.createElement("div");
                     inve_log_card.classList.add("inve_log_card");
         
@@ -1501,11 +1627,19 @@ function set_pbm_main_container() {
                     inve_log_time.innerHTML = `
                         ${item.op_time}
                     `;
+
+                    let inve_log_act = document.createElement("div");
+                    inve_log_act.classList.add("inve_log_act");
+                    inve_log_act.classList.add("inve_log_info");
+                    inve_log_act.innerHTML = `
+                        ${item.op_act}
+                    `;
     
                     inve_log_card.appendChild(inve_log_op);
                     inve_log_card.appendChild(inve_log_qty);
                     // inve_log_card.appendChild(inve_log_unit);
                     inve_log_card.appendChild(inve_log_time);
+                    inve_log_card.appendChild(inve_log_act);
         
                     med_inve_log_container.appendChild(inve_log_card);
                 }
@@ -1965,20 +2099,27 @@ async function set_post_data_to_check_dispense() {
         return_data = await api_med_cart_double_check(post_data);
     }
     console.log(med_arr);
-    
-    if(med_log_arr.length > 0) {
-        post_data2.ValueAry[0] = med_log_arr.join(";");
-        console.log("調劑log post_data", post_data2);
-        await add_med_inventory_log(post_data2);
-        
-        med_log_arr = [];
-    }
-    if(med_nodis_log_arr.length > 0) {
-        post_data3.ValueAry[0] = med_nodis_log_arr.join(";");
-        console.log("取消 log post_data", post_data3);
-        await add_med_inventory_no_log(post_data3);
-        
-        med_nodis_log_arr = [];
+
+    if(return_data.Code == 200) {
+        if(med_log_arr.length > 0 || med_nodis_log_arr.length > 0) {
+            show_popup_notice(return_data.Result, true)
+        }
+        if(med_log_arr.length > 0) {
+            post_data2.ValueAry[0] = med_log_arr.join(";");
+            console.log("調劑log post_data", post_data2);
+            await add_med_inventory_log(post_data2);
+            
+            med_log_arr = [];
+        }
+        if(med_nodis_log_arr.length > 0) {
+            post_data3.ValueAry[0] = med_nodis_log_arr.join(";");
+            console.log("取消 log post_data", post_data3);
+            await add_med_inventory_log(post_data3);
+            
+            med_nodis_log_arr = [];
+        }
+    } else {
+        show_popup_notice(return_data.Result, false)
     }
 
     return return_data;

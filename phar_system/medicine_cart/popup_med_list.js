@@ -585,6 +585,7 @@ async function set_pp_med_list_display() {
                     ppml_bed_card.classList.add("ppml_bed_done");
                 });
 
+                show_popup_notice(return_data.Result, true);
                 await add_med_inventory_log(post_data2);
             } else {
                 alert("操作失敗 Result:", return_data.Result);
@@ -672,9 +673,12 @@ async function set_pp_med_list_display() {
                 ppml_bed_card.innerHTML = `
                 <div class="ppml_bed_card_PRN">P</div><span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}</div>
                 `;
+            } else if(item.selfPRN != "Y" && item.freqn.toUpperCase().includes("PRN")) {
+                ppml_bed_card.innerHTML = `<div class="ppml_bed_card_PRN_noself">P</div><span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}</div>`;
             } else {
                 ppml_bed_card.innerHTML = `<span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}</div>`;
             }
+
             // else if(item.freqn == "PRN") {
             //     ppml_bed_card.innerHTML = `
             //     <div class="ppml_bed_card_PRN">P</div><span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}</div>
@@ -994,7 +998,12 @@ async function set_post_data_to_check_dispense_for_med_list(m_guid, guid, status
         return_data = await api_med_cart_double_check_by_GUID(post_data);
     }
 
-    await add_med_inventory_log(post_data2);
+    if(return_data.Code == "200") {
+        show_popup_notice(return_data.Result, true);
+        await add_med_inventory_log(post_data2);
+    } else {
+        show_popup_notice(return_data.Result, false);
+    }
 
     return return_data;
 };

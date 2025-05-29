@@ -263,6 +263,18 @@
     background-color: #ff9292;
     border-radius: 10px;
 }
+.ppml_bed_card_PRN_noself {
+    top: -6px;
+    left: -4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #f7b875;
+    border-radius: 10px;
+}
 .ppml_bed_done {
     background-color: #C1EA69;
     color: #000;

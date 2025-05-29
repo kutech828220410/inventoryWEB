@@ -1,6 +1,7 @@
 async function merge_page_init(data) {
     let records_data = await get_all_records();
     let combine_data = await get_combine_list();
+    console.log("records_data", records_data);
     console.log("combine_data", combine_data);
 
     let header_title_text = document.querySelector("#header_title_text")
@@ -293,7 +294,7 @@ function popup_merge_create() {
 
         let temp_INV_SN = await get_new_IC_SN();
         let temp_arr = "[]";
-        console.log(temp_INV_SN.Value);
+        console.log(temp_INV_SN);
         await inv_creat_update(merge_create_name.value, temp_INV_SN.Value, get_logedName(), temp_arr);
 
         // 重製畫面
@@ -960,6 +961,8 @@ async function inv_creat_update(NAME, SN, CT, data) {
         console.log("SN", CT);
         console.log("records_Ary", data);
 
+        console.log(await res.json());
+
         // const responseData = await res.json();
         // return responseData;
     } catch(err) {
@@ -1091,6 +1094,7 @@ async function inv_delete_by_SN(SN, NAME) {
         }
 
         alert(`您已刪除合併單:${NAME}`)
+        console.log(await res.json());
     } catch(err) {
         console.log(err);
     }

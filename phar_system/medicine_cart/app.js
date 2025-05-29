@@ -10,6 +10,7 @@ function handleResize()
 }
 async function load()
 {
+  set_popup_notice_div();
   check_session_off();
   var serverName = "";
 //   ServerName = serverName;

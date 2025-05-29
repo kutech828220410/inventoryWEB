@@ -521,10 +521,10 @@
     border-radius: 2px;
 }
 .inve_log_card {
-    width: 330px;
+    width: 420px;
     text-align: center;
     display: grid;
-    grid-template-columns: 25% 25% 50%;
+    grid-template-columns: 20% 20% 40% 20%;
     padding: 6px 0px;
 }
 .inve_log_info {
