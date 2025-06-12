@@ -268,7 +268,7 @@ async function batch_download_sample_excel()
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify( {
+        body: JSON.stringify({
             "Data": data,
             "ValueAry" : []
           }),

@@ -2260,6 +2260,7 @@ function delay_func(ms) {
 
 // 檢查出院退藥資料
 async function check_cart_dispense() {
+    let return_info_arr = [];
     let post_data = {
         ValueAry:[current_pharmacy.phar]
     };
@@ -2324,6 +2325,7 @@ async function check_cart_dispense() {
     } else {
         let ppdl_h_current_cart_select_option = document.querySelectorAll(".ppdl_h_current_cart_select option");
         let temp_arr = return_data.Data;
+        return_info_arr = return_data.Data;
         console.log("出院藥車", temp_arr);
         if(Array.isArray(temp_arr)) {
             ppdl_h_current_cart_select_option.forEach(element => {
@@ -2347,4 +2349,6 @@ async function check_cart_dispense() {
             }
         }
     }
+
+    return return_info_arr;
 }

@@ -1,97 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="pragma" content="no-cache">
-  <meta http-equiv="expires" content="0">
-  <title>批次入庫</title>
-  <!-- <link rel="stylesheet" href="main.css"> -->
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="popup_add.css">
-  <link rel="stylesheet" href="../UI/style/navBar.css">
-  <script src="../Function/Basic.js?v=1.14"></script>
-  <script>
-    (async function() 
-        {
-          loadScript("../../ApiURL.js");
-          loadScript("../../ChatHub.js");
-          loadScript("../../session_check.js");
-          loadScript("../../session.js");
-          loadScript("../svg/mySVG.js");
-          loadScript("../UI/map.js");
-          loadScript("../popup/map.js");    
-          loadScript("../dist/JsBarcode.all.js");
-          loadScript("../Function/WebApiFunc.js");
-          loadScript("../api/med_page.js");
-          loadScript("page_data.js");
-          loadScript("app.js");
-          loadScript("popup_add.js");
-          loadScript("../UI/navBar.js");
-          loadScript("../api/transaction.js");
-          loadScript("../api/web_permissions.js");
-        })();
-
-  </script>
-</head>
-<body>
-  
-      <script>
-
-      </script>
-   
-  <div class="under-line">
-    <B> Copyright ©2024 鴻森智能科技 </B>
-  </div>
-  
-<script>
-  BarcodeKeyinEvent = BarcodeKeyin;
-  async function BarcodeKeyin(parsedCode)
-  {
-    let ppadd_CODE_input = document.querySelector("#ppadd_CODE_input");
-    if(document.activeElement == ppadd_CODE_input) return;
-
-    const response = await serch_by_BarCode(parsedCode ,medicine_page.Data);
-    console.log("serch_by_BarCode",response)
-    if(response.Data.length == 0) {
-        ppadd_CODE_input.value = ''
-        return;
-    }
-
-    console.log(response.Data[0].CODE);
-
-    let today = new Date();
-    let yyyy = today.getFullYear();
-    let mm = today.getMonth() + 1;
-    let dd = today.getDate();
-    if (mm < 10) {
-        mm = '0' + mm;
-    }
-    if (dd < 10) {
-        dd = '0' + dd;
-    }
-
-    let code = response.Data[0].CODE;
-
-    console.log("barcode：" + ppadd_CODE_input.value);
-    console.log("Barcode search result：" + code);
-
-    if(code == undefined) return;
-
-    ppadd_CODE_input.value = code;
-
-  }
-
-// 解析帶有分隔符的字符串
-function parseBarcode(scannedCode) 
-{
-  const delimiter = /[\n\r]/g;
-  const matches = scannedCode.split(delimiter);
-  return matches[0];
-}
-
-</script>
-  
-</body>
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="../../favicon.ico" >
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="192x192">
+    <link rel="icon" type="image/png" sizes="192x192" href="android-touch-icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>批次入庫 | Batch Storage</title>
+    <script type="module" crossorigin src="./assets/index-IafjQiY7.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-C8RLy_9X.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>

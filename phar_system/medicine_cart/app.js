@@ -193,6 +193,7 @@ function get_main_ui() {
     }
     
     let ppml_h_current_cart_select = document.querySelector(".ppml_h_current_cart_select");
+    let ppdl_h_current_cart_select = document.querySelector(".ppdl_h_current_cart_select");
     if(current_cart.hnursta && ppml_h_current_cart_select.value != current_cart.hnursta) {
         ppml_h_current_cart_select.value = current_cart.hnursta;
     }
@@ -204,6 +205,8 @@ function get_main_ui() {
       alert("連線超時，請重新點選");
       return;
     }, 6000);
+
+
     med_list_data = await get_all_med_qty(current_pharmacy.phar, ppml_h_current_cart_select.value, "all");
     if(med_list_data.Code != 200) {
       clearTimeout(med_list_timer);
@@ -230,6 +233,52 @@ function get_main_ui() {
         await set_pp_med_list_display();
         
         clearTimeout(med_list_timer);
+        Set_main_div_enable(false);
+      }
+
+      // 檢測有無退藥
+      Set_main_div_enable(true);
+      let test_data_arr = await check_cart_dispense();
+      if(test_data_arr.length > 0 && test_data_arr.includes(ppml_h_current_cart_select.value)) {
+        let post_data = {
+          Value: "調劑台",
+          ValueAry:  [current_pharmacy.phar, ppml_h_current_cart_select.value]
+        };
+
+        console.log("出院處方退藥api",post_data);
+        let return_data = await get_patient_discharge(post_data);
+        if(return_data.Code != 200) {
+          alert("出院處方資料錯誤", return_data.Result);
+          Set_main_div_enable(false);
+        } else {
+          discharged_data = return_data.Data;
+          if(discharged_data.length != 0) {
+            let any_cpoe = false;
+            for (let index = 0; index < discharged_data.length; index++) {
+              const element = discharged_data[index];
+              
+              if(element.cpoe.length > 0) {
+                any_cpoe = true;
+                break;
+              }
+            }
+
+            if(any_cpoe) {
+              alert("有出院退藥資料，請先處理");
+              clearTimeout(med_list_timer);
+  
+              ppdl_h_current_cart_select.value = ppml_h_current_cart_select.value;
+  
+              set_discharged_data_display();
+              Set_main_div_enable(false);
+  
+              popup_discharged_list_div_open();
+            } else {
+              Set_main_div_enable(false);
+            }
+          }
+        }        
+      } else {
         Set_main_div_enable(false);
       }
     }

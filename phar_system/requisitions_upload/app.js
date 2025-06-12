@@ -1113,32 +1113,34 @@ function set_input_file_event() {
       console.log(post_data);
       let return_data = await img_to_analysis(post_data);
       if(return_data.Code != -200) {
-        if(return_data.Data[0].Code_status == 200 || return_data.Data[0].Code_status == -2 || return_data.Data[0].Code_status == -1) {
-          console.log("驗收單辨識完成", return_data);
-          orgin_list_data.push(return_data.Data[0]);
-
-          set_process_bar_log(batch_id_return.length, i - fail_file_count, process_bar_status.anal);
-          set_upload_data_display(return_data.Data[0]);
-        } else if(return_data.Data[0].Code_status == -4) {
-          console.log("辨識重複且完成", return_data);
-          console.log("GUID", return_data.Data[0].GUID);
-          done_list_data.push(return_data.Data[0]);
-          console.log("已加入辨識且完成數量", done_list_data.length);
-          let del_post_data = {
-            ValueAry:[element.GUID]
+        for (let index = 0; index < return_data.Data.length; index++) {
+          if(return_data.Data[index].Code_status == 200 || return_data.Data[index].Code_status == -2 || return_data.Data[index].Code_status == -1) {
+            console.log("驗收單辨識完成", return_data);
+            orgin_list_data.push(return_data.Data[index]);
+  
+            set_process_bar_log(batch_id_return.length, i - fail_file_count, process_bar_status.anal);
+            set_upload_data_display(return_data.Data[index]);
+          } else if(return_data.Data[index].Code_status == -4) {
+            console.log("辨識重複且完成", return_data);
+            console.log("GUID", return_data.Data[index].GUID);
+            done_list_data.push(return_data.Data[index]);
+            console.log("已加入辨識且完成數量", done_list_data.length);
+            let del_post_data = {
+              ValueAry:[element.GUID]
+            }
+            console.log("刪除已完成送出的單號", del_post_data);
+            await delete_by_GUID(del_post_data);
+            set_process_bar_log(batch_id_return.length, i - fail_file_count, process_bar_status.anal);
+          } else if(return_data.Data[index].Code_status == -5) {
+            console.log("刪除重複單號", return_data);
+            let post_data_1 = {
+              ValueAry: [element.GUID]
+            };
+            console.log(post_data_1);
+            await delete_by_GUID(post_data_1);
+            set_process_bar_log(batch_id_return.length, i - fail_file_count, process_bar_status.anal);
+            repeat_count += 1;
           }
-          console.log("刪除已完成送出的單號", del_post_data);
-          await delete_by_GUID(del_post_data);
-          set_process_bar_log(batch_id_return.length, i - fail_file_count, process_bar_status.anal);
-        } else if(return_data.Data[0].Code_status == -5) {
-          console.log("刪除重複單號", return_data);
-          let post_data_1 = {
-            ValueAry: [element.GUID]
-          };
-          console.log(post_data_1);
-          await delete_by_GUID(post_data_1);
-          set_process_bar_log(batch_id_return.length, i - fail_file_count, process_bar_status.anal);
-          repeat_count += 1;
         }
       } else {
         fail_file_count += 1;

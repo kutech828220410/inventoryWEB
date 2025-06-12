@@ -178,6 +178,53 @@ function get_pp_med_list_header() {
                 Set_main_div_enable(false);
             }
         }
+
+        let ppdl_h_current_cart_select = document.querySelector(".ppdl_h_current_cart_select");
+        // 檢測有無退藥
+        Set_main_div_enable(true);
+        let test_data_arr = await check_cart_dispense();
+        if(test_data_arr.length > 0 && test_data_arr.includes(ppml_h_current_cart_select.value)) {
+            let post_data = {
+            Value: "調劑台",
+            ValueAry:  [current_pharmacy.phar, ppml_h_current_cart_select.value]
+            };
+
+            console.log("出院處方退藥api",post_data);
+            let return_data = await get_patient_discharge(post_data);
+            if(return_data.Code != 200) {
+            alert("出院處方資料錯誤", return_data.Result);
+            Set_main_div_enable(false);
+            } else {
+            discharged_data = return_data.Data;
+            if(discharged_data.length != 0) {
+                let any_cpoe = false;
+                for (let index = 0; index < discharged_data.length; index++) {
+                const element = discharged_data[index];
+                
+                if(element.cpoe.length > 0) {
+                    any_cpoe = true;
+                    break;
+                }
+                }
+
+                if(any_cpoe) {
+                alert("有出院退藥資料，請先處理");
+                clearTimeout(med_list_timer);
+    
+                ppdl_h_current_cart_select.value = ppml_h_current_cart_select.value;
+    
+                set_discharged_data_display();
+                Set_main_div_enable(false);
+    
+                popup_discharged_list_div_open();
+                } else {
+                Set_main_div_enable(false);
+                }
+            }
+            }        
+        } else {
+            Set_main_div_enable(false);
+        }
     });
 
     let ppml_h_title_content = document.createElement("div");
@@ -1008,7 +1055,6 @@ async function set_post_data_to_check_dispense_for_med_list(m_guid, guid, status
     return return_data;
 };
 function sort_med_list_data(array, current_func) {
-
     let sortedArray = array.sort((a, b) => a.name.localeCompare(b.name));
 
     if(current_func == "allocate") {
@@ -1049,6 +1095,51 @@ function sort_med_list_data(array, current_func) {
         return sortedArray;
     }
 }
+
+// 新的排序方式，帶API更新調整d_time後啟用
+// function sort_med_list_data(array, current_func) {
+//     const getStatusCategory = (bedList, key) => {
+//         const allY = bedList.every(bed => bed[key] === "Y");
+//         const someY = bedList.some(bed => bed[key] === "Y");
+//         if (allY) return 2;    // 全部是 Y → 最後
+//         if (someY) return 1;   // 部分是 Y → 中間
+//         return 0;              // 全部不是 Y → 最前
+//     };
+
+//     const key = current_func === "allocate" ? "dispens_status" : "check_status";
+
+//     // 預先附加 group 給每筆資料
+//     const taggedArray = array.map(item => {
+//         const group = getStatusCategory(item.bed_list, key);
+//         return { ...item, _group: group };
+//     });
+
+//     // 排序邏輯
+//     const sortedArray = taggedArray
+//         .slice()
+//         .sort((a, b) => {
+//             // group 先比
+//             if (a._group !== b._group) {
+//                 return a._group - b._group;
+//             }
+
+//             // group 相同時再排序
+//             if (a._group === 0) {
+//                 // group 0 再依 code 升冪排序
+//                 return a.code.localeCompare(b.code);
+//             } else {
+//                 // 其他 group 依 d_time 降冪排序
+//                 const timeA = a.d_time ? new Date(a.d_time) : new Date(0);
+//                 const timeB = b.d_time ? new Date(b.d_time) : new Date(0);
+//                 return timeB - timeA;
+//             }
+//         });
+
+//     console.log('sortedArray', sortedArray);
+//     return sortedArray;
+// }
+
+
 function sort_display_med_data(arr) {
     // let temp_arr = arr.sort((a, b) => {
     //     const aHasLargeL = a.large === "L" ? 1 : 0;

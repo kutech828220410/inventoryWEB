@@ -1274,7 +1274,9 @@ function get_input_result_option(value, array, combine_data) {
     
     console.log(temp_arr);
 
-    temp_arr = temp_arr.filter(item => item.NAME.includes(temp_value));
+    console.log(temp_value);
+
+    temp_arr = temp_arr.filter(item => item.NAME.toUpperCase().includes(temp_value));
 
     console.log(temp_arr);
 

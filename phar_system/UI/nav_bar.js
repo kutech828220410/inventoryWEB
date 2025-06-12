@@ -42,13 +42,13 @@ let html_pages = [
                         icon_url: "../../phar_system/image/icon/staff_icon.png",
                         icon_big_url: "../../phar_system/image/icon/staff_big_icon.png"
                     },
-                    {
-                        html_name: "pages_setting",
-                        html_ctName: "頁面設定",
-                        html_url: "../../phar_system/pages_setting",
-                        icon_url: "../../phar_system/image/icon/staff_icon.png",
-                        icon_big_url: "../../phar_system/image/icon/staff_big_icon.png"
-                    },
+                    // {
+                    //     html_name: "pages_setting",
+                    //     html_ctName: "頁面設定",
+                    //     html_url: "../../phar_system/pages_setting",
+                    //     icon_url: "../../phar_system/image/icon/staff_icon.png",
+                    //     icon_big_url: "../../phar_system/image/icon/staff_big_icon.png"
+                    // },
                     {
                         html_name: "permission_settings",
                         html_ctName: "權限設定",

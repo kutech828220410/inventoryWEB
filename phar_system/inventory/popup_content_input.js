@@ -73,6 +73,7 @@ function previous_page_popup_input()
 }
 async function confirm_popup_input()
 {
+    check_unSubmit_data();
     const END_QTY_input = document.querySelector('#END_QTY_input_popup_input');
     if(!END_QTY_input.value) return;
     if(isNaN(END_QTY_input.value))
@@ -87,10 +88,32 @@ async function confirm_popup_input()
     END_QTY_input.value = '';
     const OP = sessionData.Name;
     //輸入盤點量後創造SUB內容
+    let med_info = popup_input_div_Content;
+    let IC_SN = med_info.IC_SN;
+    let post_data = 
+    {
+        Data: {
+            Master_GUID: `${GUID}`,
+            END_QTY: `${END_QTY}`,
+            OP: `${OP}`
+        },
+        Master_GUID: 0,
+        TableName:``,
+        Result: "",
+        Value: "",
+        ServerName: ServerName,
+        ServerType: ServerType,
+        TableName: TableName,
+        TimeTaken: ""
+    };
+    let new_GUID =  set_localStorage_submit_post_data(post_data, med_info, IC_SN);
+
     let res_data = await sub_content_add(GUID, END_QTY , OP, CODE);
+    // res_data.Code = 201; // 模擬失敗回傳
     console.log(res_data);
     if(res_data.Code == 200) {
         notice_popup_sub_result(`加入成功，盤點數量：${END_QTY}`, true);
+        remove_localStorage_submit_post_data(new_GUID);
         hide_popup_input();
     } else {
         notice_popup_sub_result(`加入失敗，盤點數量：${END_QTY}`, false);
@@ -731,3 +754,119 @@ function calculateExpression(expression) {
     return stack.reduce((total, num) => total + num, 0);
   }
   
+
+function set_localStorage_submit_post_data(post_data, med_info, IC_SN)
+{
+  let localStorage_data = localStorage.getItem('inventory_unSubmit_data');
+
+  let new_GUID = generateGUID();
+
+  let temp_object = {
+    GUID: new_GUID,
+    IC_SN: IC_SN,
+    med_info: med_info,
+    post_data: post_data
+  }
+
+  if(localStorage_data) {
+    let temp_arr = JSON.parse(localStorage_data);
+
+    temp_arr.push(temp_object);
+
+    localStorage.setItem('inventory_unSubmit_data', JSON.stringify(temp_arr));
+  } else {
+    let temp_arr = [];
+    temp_arr.push(temp_object);
+
+    localStorage.setItem('inventory_unSubmit_data', JSON.stringify(temp_arr));
+  }
+
+  return new_GUID;
+}
+
+function remove_localStorage_submit_post_data(new_GUID)
+{
+  let localStorage_data = localStorage.getItem('inventory_unSubmit_data');
+
+  if(localStorage_data) {
+    let temp_arr = JSON.parse(localStorage_data);
+    temp_arr = temp_arr.filter(item => item.GUID != new_GUID);
+    if(temp_arr.length == 0) {
+      localStorage.removeItem('inventory_unSubmit_data');
+    } else {
+      localStorage.setItem('inventory_unSubmit_data', JSON.stringify(temp_arr));
+    }
+    return;
+  }
+}
+
+function check_unSubmit_data()
+{
+  let localStorage_data = localStorage.getItem('inventory_unSubmit_data');
+  let IC_SN = sessionStorage.getItem('IC_SN');
+
+  if(localStorage_data) {
+    let temp_arr = JSON.parse(localStorage_data);
+    if(temp_arr.length > 0) {
+      let checked_arr = temp_arr.filter(item => item.IC_SN == IC_SN);
+      if(checked_arr.length > 0) {
+        let confirm_msg = `有未提交成功的盤點資料，共 ${checked_arr.length} 筆，是否重新提交？\n`;
+        let cancel_msg = `是否移除殘留紀錄？`;
+        let cancel_GUID_arr = [];
+
+        for(let i = 0; i < checked_arr.length; i++) {
+            let element = checked_arr[i];
+            confirm_msg += `        
+                料號：${element.med_info.SKDIACODE}
+                藥名：${element.med_info.NAME}
+                中文名：${element.med_info.CHT_NAME}
+                盤點數量：${element.post_data.Data.END_QTY}\n
+            `;
+
+            cancel_GUID_arr.push(element.GUID);
+        }
+
+        if(confirm(confirm_msg)) {
+          checked_arr.forEach(async element => {     
+            let new_GUID = element.GUID;
+            let GUID = element.post_data.Data.Master_GUID;
+            let END_QTY = element.post_data.Data.END_QTY;
+            let OP = element.post_data.Data.OP;
+            let CODE = element.med_info.CODE;
+  
+            let res_data = await sub_content_add(GUID, END_QTY , OP, CODE);
+            console.log(res_data);
+            if(res_data.Code == 200) {
+                // notice_popup_sub_result(`加入成功，盤點數量：${END_QTY}`, true);
+                remove_localStorage_submit_post_data(new_GUID);
+                hide_popup_input();
+            } else {
+                // notice_popup_sub_result(`加入失敗，盤點數量：${END_QTY}`, false);
+            };
+          });
+        } else {
+            if(confirm(cancel_msg)) {
+                temp_arr = temp_arr.filter(item => !cancel_GUID_arr.includes(item.GUID));
+                
+                if(temp_arr.length == 0) {
+                    localStorage.removeItem('inventory_unSubmit_data');
+                } else {
+                    localStorage.setItem('inventory_unSubmit_data', JSON.stringify(temp_arr));
+                }
+            }
+        }
+
+      }
+      return;
+    }
+  }
+  return;
+}
+
+function generateGUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}

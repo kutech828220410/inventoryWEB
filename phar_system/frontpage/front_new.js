@@ -144,11 +144,21 @@ function get_page_section(object, arr) {
         let front_div = document.querySelector(".front_div");
         let back_div = document.querySelector(".back_div");
         if(element.name == "藥局") {
-          front_div.classList.add("opacity_div");
-          back_div.classList.remove("opacity_div");
+          front_div.style.opacity = "0";
+          back_div.style.opacity = "1";
+          // 設定 3000 毫秒（3 秒）後執行
+          setTimeout(() => {
+            front_div.style.display = "none";
+            back_div.style.display = "block";
+          }, 500);
         } else {
-          back_div.classList.add("opacity_div");
-          front_div.classList.remove("opacity_div");
+          front_div.style.opacity = "1";
+          back_div.style.opacity = "0";
+          // 設定 3000 毫秒（3 秒）後執行
+          setTimeout(() => {
+            front_div.style.display = "block";
+            back_div.style.display = "none";
+          }, 500);
         }
         // filp_btn.classList.toggle("img_rotate");
       });

@@ -1,119 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>管制藥結存頁面</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="../UI/style/navBar.css">
-  <link rel="stylesheet" href="popup_pharmacy_select_style.css">
-  <link rel="stylesheet" href="popup_med_balance_form_style.css?v=1.1">
-  <link rel="stylesheet" href="popup_muilt_med_select.css">
-  <script src="../Function/Basic.js?v=1.0"></script>
-  <!-- <script src="../../ApiURL.js"></script>
-  <script src="../../ChatHub.js"></script>
-  <script src="../../Function/WebApiFunc.js"></script>
-  <script src="../../svg/mySVG.js"></script>
-  <script src="../Function/WebApiFunc.js"></script>
-  <script src="../../dist/JsBarcode.all.js"></script>
-  <script src="../../UI/map.js"></script>
-  <script src="../../session_check.js"></script>
-  <script src="../../session.js"></script>
-  <script src="../api/med_page.js"></script>
-  <script src="./app.js"></script>
-  <script src="./popup_pharmacy_select.js"></script>
-  <script src="./popup_datetime_select.js"></script>
-  <script src="./popup_med_balance_form.js"></script>
-  <script src="./popup_muilt_med_select.js"></script>
-  <script src="../api/transaction.js"></script>
-  <script src="../../UI/navBar.js"></script> -->
-</head>
-<body>
-      <script>
-          (async function(){
-              loadScript("../api/map.js");
-              loadScript("../../ApiURL.js");
-              loadScript("../../ChatHub.js");
-              loadScript("../../session_check.js");
-              loadScript("../../session.js");
-              loadScript("../Function/WebApiFunc.js");
-              loadScript("../dist/JsBarcode.all.js");
-              loadScript("../UI/map.js");
-              loadScript("../svg/mySVG.js");
-              loadScript("../popup/map.js");
-              loadScript("../../UI/navBar.js");
-              // loadScript("../UI/navBar.js");
-              loadScript("../api/med_page.js");
-              loadScript("./app.js");
-              loadScript("./popup_pharmacy_select.js");
-              loadScript("./popup_med_balance_form.js");
-              loadScript("./popup_muilt_med_select.js");
-              loadScript("./popup_datetime_select.js");
-              loadScript("../api/transaction.js");
-              loadScript("../api/web_permissions.js");
-          })();
-      </script>
-   
-  <div class="under-line">
-    <B> Copyright ©2024 鴻森智能科技 </B>
-  </div>
-  <script>
-
-  get_popup_datetime_select();
-  popup_datetime_select_div.Set_Visible(false);
-
-  popup_med_balance_form();
-  popup_med_balance_form_div.Set_Visible(false);
-
-  get_popup_muilt_med_select();
-  popup_muilt_med_select_div.Set_Visible(false);
-
-  var barcode_value = '';
-    // 監聽頁面的keydown事件
-  window.addEventListener('keydown', function(event) 
-  {
-    if(document.body.style.overflow != "") return;
-    // 判斷按下的按鍵是否是Tab鍵或Enter鍵
-    console.log(event.key);
-    if (event.key === 'Tab' || event.key === 'Enter') {
-    // 防止頁面重新載入
-        event.preventDefault();
-        const parsedCode = parseBarcode(barcode_value);
-        
-        // 取得輸入框的值
-        barcode_value = '';
-        // 解析藍牙掃描器返回的數據
-        if(parsedCode != '')
-        {
-            popup_find_div.Set_Visible(false);
-            const find_code_input = document.querySelector("#find_code_input");
-            find_code_input.value = parsedCode;
-            checksvg_Click();
-        }         
-    }
-    else
-    {
-        const isValid = /^[a-zA-Z0-9]+$/.test(event.key);
-        const isControlKey = (event.keyCode < 48 || event.keyCode > 90);
-        const isNumPadlKey = (event.keyCode >= 96 && event.keyCode <= 105);
-        
-
-        if (isValid && (!isControlKey||isNumPadlKey)) {
-            // 將解析後的條碼值設定為輸入框的值
-            barcode_value += event.key;
-        } 
-    }
-});
-
-// 解析帶有分隔符的字符串
-function parseBarcode(scannedCode) 
-{
-  const delimiter = /[\n\r]/g;
-  const matches = scannedCode.split(delimiter);
-  return matches[0];
-}
-
-</script>
-  
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>管制結存</title>
+    <script type="module" crossorigin src="./assets/index-DcMXJRAC.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BGJQBcH_.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>
