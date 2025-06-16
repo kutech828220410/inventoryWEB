@@ -552,11 +552,12 @@ async function set_ppmcl_main_info() {
                         return;
                     }
     
-                    temp_result.cpoe.forEach(async item => {
+                    for (let index = 0; index < temp_result.cpoe.length; index++) {
+                        const item = temp_result.cpoe[index];
                         if(item.dispens_status == "") {
                             temp_guid_arr.push(item.GUID);
                         }
-                    });
+                    };
     
                     let return_data = await set_post_data_to_dispensed_by_GUID(temp_guid_arr, element.GUID);
                     console.log("***************************", return_data);
@@ -566,7 +567,19 @@ async function set_ppmcl_main_info() {
                         return_data.forEach(item => {
                             if(item.dispens_status == "Y") {
                                 let ppmcl_cpoe_container = document.querySelector(`.ppmcl_cpoe_container[guid="${item.GUID}"]`);
-                                if (ppmcl_cpoe_container) {
+                                let ppmcl_cpoe_more_container = document.querySelectorAll(`.ppmcl_cpoe_container[check_more="Y"]`);
+
+                                ppmcl_cpoe_more_container.forEach(object => {
+                                    let guid = object.getAttribute("guid");
+                                    console.log(object);
+                                    console.log("這邊有沒有多個處方", guid);
+                                    let guid_arr = guid.split(";");
+                                    if(guid_arr.includes(item.GUID)) {
+                                        object.remove();
+                                    }
+                                });
+
+                                if(ppmcl_cpoe_container) {
                                     ppmcl_cpoe_container.remove();
                                 }
                             }
@@ -653,6 +666,19 @@ async function set_ppmcl_main_info() {
                     if(return_data.Code == 200) {
                         temp_guid_arr.forEach(item => {
                             let ppmcl_cpoe_container = document.querySelector(`.ppmcl_cpoe_container[guid="${item}"]`);
+
+                            let ppmcl_cpoe_more_container = document.querySelectorAll(`.ppmcl_cpoe_container[check_more="Y"]`);
+
+                            ppmcl_cpoe_more_container.forEach(object => {
+                                let guid = object.getAttribute("guid");
+                                console.log(object);
+                                console.log("這邊有沒有多個處方", guid);
+                                let guid_arr = guid.split(";");
+                                if(guid_arr.includes(item.GUID)) {
+                                    object.remove();
+                                }
+                            });
+
                             if (ppmcl_cpoe_container) {
                                 ppmcl_cpoe_container.remove();
                             }
@@ -754,6 +780,10 @@ async function set_ppmcl_main_info() {
                 ppmcl_cpoe_container.classList.add("ppmcl_cpoe_container");
                 ppmcl_cpoe_container.setAttribute("GUID", item.GUID);
                 ppmcl_cpoe_container.setAttribute("Master_GUID", item.Master_GUID);
+                let check_more_arr = item.GUID.split(";");
+                if(check_more_arr.length > 1) {
+                    ppmcl_cpoe_container.setAttribute("check_more", "Y");
+                }
     
                 let ppmcl_cpoe_med_info_container = document.createElement("div");
                 ppmcl_cpoe_med_info_container.classList.add("ppmcl_cpoe_med_info_container");

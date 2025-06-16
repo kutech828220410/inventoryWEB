@@ -11,11 +11,14 @@ let web_list = [
     "consumption_report",
     "ch_medical_order",
     "cht_consumption_report",
-    "batch_storage"
+    "batch_storage",
+    "medicine_cart",
+    "suspiciousRxLog"
 ];
 
 async function get_permissions_arr() {
     let temp_arr = [];
+    let not_allow_arr = [];
     let permissions_data = await et_web_peremeter();
     console.log(permissions_data);
     if(permissions_data == "error") {
@@ -29,10 +32,14 @@ async function get_permissions_arr() {
                 if(element.value == "True") {
                     let temp_str = swtich_logic_func(element.content);
                     temp_arr.push(temp_str);
+                } else {
+                    let temp_str = swtich_logic_func(element.content);
+                    not_allow_arr.push(temp_str);
                 }
             });
             
-            console.log(temp_arr);
+            console.log("禁用項目", temp_arr);
+            console.log("不禁用項目", not_allow_arr);
         
             return temp_arr;
         } else {
@@ -105,6 +112,14 @@ function swtich_logic_func(str) {
             break;
         case "單據辨識模組不啟用":
             temp_str = "requisitions_upload";
+            break;
+
+        case "單據辨識模組不啟用":
+            temp_str = "requisitions_upload";
+            break;
+
+        case "處方疑義模組不啟用":
+            temp_str = "suspiciousRxLog";
             break;
     
         default:

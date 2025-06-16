@@ -757,7 +757,8 @@ function set_pbm_header_container() {
         let tirgger = e.target.getAttribute("checked");
         let pbmh_checked_trigger_label = document.querySelectorAll(".pbmh_checked_trigger_label");
         let med_card_checkbox = document.querySelectorAll(".med_card_checkbox");
-        let temp_check_isArray = page_setting_params && page_setting_params.big_bottle_exception && page_setting_params.big_bottle_exception.value;
+        let temp_dispense_isArray = page_setting_params && page_setting_params.dispense_big_bottle_exception && page_setting_params.dispense_big_bottle_exception.value;
+        let temp_check_isArray = page_setting_params && page_setting_params.check_big_bottle_exception && page_setting_params.check_big_bottle_exception.value;
         // 大瓶藥品api參數設定追加
         if(tirgger == "false") {
             // 點選後全選
@@ -766,30 +767,57 @@ function set_pbm_header_container() {
                 // 可勾選條件
                 if(!element.disabled && !temp_boolean) {
                     // 是否有條件資料
-                    if(temp_check_isArray) {
-                        // 如果是大瓶藥品，且設定為例外，則略過大瓶藥品
-                        if(page_setting_params.big_bottle_exception.value == "True") {
-                            // 判斷是否為大瓶藥品，進行check
-                            if(element.getAttribute("isBig") != "L") {
+                    if(temp_check_isArray && temp_dispense_isArray) {
+                        if(current_func == "allocate") {
+                            // 如果是大瓶藥品，且設定為例外，則略過大瓶藥品(調劑)
+                            if(page_setting_params.dispense_big_bottle_exception.value == "True") {
+                                // 判斷是否為大瓶藥品，進行check
+                                if(element.getAttribute("isBig") != "L") {
+                                    element.checked = true;
+    
+                                    med_log_arr.push(element.id);
+    
+                                    let index = med_nodis_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+    
+                                    if (index !== -1) {
+                                        med_nodis_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                                    }
+                                }
+                            } else {
                                 element.checked = true;
-
                                 med_log_arr.push(element.id);
-
+    
                                 let index = med_nodis_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
-
+    
                                 if (index !== -1) {
                                     med_nodis_log_arr.splice(index, 1);  // 移除索引位置的那個元素
-                                }
+                                } 
                             }
                         } else {
-                            element.checked = true;
-                            med_log_arr.push(element.id);
-
-                            let index = med_nodis_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
-
-                            if (index !== -1) {
-                                med_nodis_log_arr.splice(index, 1);  // 移除索引位置的那個元素
-                            } 
+                            // 如果是大瓶藥品，且設定為例外，則略過大瓶藥品(覆核)
+                            if(page_setting_params.check_big_bottle_exception.value == "True") {
+                                // 判斷是否為大瓶藥品，進行check
+                                if(element.getAttribute("isBig") != "L") {
+                                    element.checked = true;
+    
+                                    med_log_arr.push(element.id);
+    
+                                    let index = med_nodis_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+    
+                                    if (index !== -1) {
+                                        med_nodis_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                                    }
+                                }
+                            } else {
+                                element.checked = true;
+                                med_log_arr.push(element.id);
+    
+                                let index = med_nodis_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+    
+                                if (index !== -1) {
+                                    med_nodis_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                                } 
+                            }
                         }
 
                     } else {
@@ -802,7 +830,6 @@ function set_pbm_header_container() {
                             med_nodis_log_arr.splice(index, 1);  // 移除索引位置的那個元素
                         }
                     }
-
                     pbmh_checked_trigger_label.forEach(item => {
                         item.innerHTML = "取消全選";
                         item.setAttribute("checked", true);
@@ -812,101 +839,70 @@ function set_pbm_header_container() {
                 console.log(med_log_arr);
                 console.log(med_nodis_log_arr);
             });
-
-
         } else {
             med_card_checkbox.forEach(element => {
                 let temp_boolean = element.classList.contains("med_card_checkbox_disabled");
-                // if(!element.disabled && !temp_boolean) {
-                //     element.checked = false;
-                //     pbmh_checked_trigger_label.forEach(item => {
-                //         item.innerHTML = "全選";
-                //         item.setAttribute("checked", false);
-                //     });
-                //     let index = med_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
-
-                //     if (index !== -1) {
-                //         med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
-                //     }
-
-                //     if(!element.disabled && !temp_boolean) {
-                //         // 是否有條件資料
-                //         if(temp_check_isArray) {
-                //             // 如果是大瓶藥品，且設定為例外，則略過大瓶藥品
-                //             if(page_setting_params.big_bottle_exception.value == "True") {
-                //                 // 判斷是否為大瓶藥品，進行check
-                //                 if(element.getAttribute("isBig") != "L") {
-                //                     element.checked = false;
-
-                //                     med_nodis_log_arr.push(element.id);
-                //                     // med_log_arr.push(element.id);
-
-                //                     // let index = med_nodis_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
-                //                     let index = med_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
-
-                //                     if (index !== -1) {
-                //                         med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
-                //                     }
-                //                 }
-                //             } else {
-                //                 element.checked = false;
-                //                 // med_log_arr.push(element.id);
-                //                 med_nodis_log_arr.push(element.id);
-
-                //                 let index = med_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
-
-                //                 if (index !== -1) {
-                //                     med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
-                //                 } 
-                //             }
-
-                //         } else {
-                //             element.checked = false;
-                //             med_nodis_log_arr.push(element.id);
-
-                //             let index = med_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
-
-                //             if (index !== -1) {
-                //                 med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
-                //             }
-                //         }
-
-                //         pbmh_checked_trigger_label.forEach(item => {
-                //             item.innerHTML = "取消全選";
-                //             item.setAttribute("checked", true);
-                //         });
-                //     }
-                // }
                 if(!element.disabled && !temp_boolean) {
                     // 是否有條件資料
-                    if(temp_check_isArray) {
-                        // 如果是大瓶藥品，且設定為例外，則略過大瓶藥品
-                        if(page_setting_params.big_bottle_exception.value == "True") {
-                            // 判斷是否為大瓶藥品，進行check
-                            if(element.getAttribute("isBig") != "L") {
+                    if(temp_check_isArray && temp_dispense_isArray) {
+                        if(current_func == "allocate") {
+                            // 如果是大瓶藥品，且設定為例外，則略過大瓶藥品
+                            if(page_setting_params.dispense_big_bottle_exception.value == "True") {
+                                // 判斷是否為大瓶藥品，進行check
+                                if(element.getAttribute("isBig") != "L") {
+                                    element.checked = false;
+
+                                    med_nodis_log_arr.push(element.id);
+                                    // med_log_arr.push(element.id);
+
+                                    // let index = med_nodis_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+                                    let index = med_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+
+                                    if (index !== -1) {
+                                        med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                                    }
+                                }
+                            } else {
                                 element.checked = false;
-
-                                med_nodis_log_arr.push(element.id);
                                 // med_log_arr.push(element.id);
+                                med_nodis_log_arr.push(element.id);
 
-                                // let index = med_nodis_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
                                 let index = med_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
 
                                 if (index !== -1) {
                                     med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
-                                }
+                                } 
                             }
                         } else {
-                            element.checked = false;
-                            // med_log_arr.push(element.id);
-                            med_nodis_log_arr.push(element.id);
+                            // 如果是大瓶藥品，且設定為例外，則略過大瓶藥品
+                            if(page_setting_params.check_big_bottle_exception.value == "True") {
+                                // 判斷是否為大瓶藥品，進行check
+                                if(element.getAttribute("isBig") != "L") {
+                                    element.checked = false;
 
-                            let index = med_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+                                    med_nodis_log_arr.push(element.id);
+                                    // med_log_arr.push(element.id);
 
-                            if (index !== -1) {
-                                med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
-                            } 
+                                    // let index = med_nodis_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+                                    let index = med_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+
+                                    if (index !== -1) {
+                                        med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                                    }
+                                }
+                            } else {
+                                element.checked = false;
+                                // med_log_arr.push(element.id);
+                                med_nodis_log_arr.push(element.id);
+
+                                let index = med_log_arr.indexOf(element.id);  // 找到 "orange" 的索引位置
+
+                                if (index !== -1) {
+                                    med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                                } 
+                            }
                         }
+                     
 
                     } else {
                         element.checked = false;
@@ -1158,6 +1154,7 @@ function set_pbm_main_container() {
 
         let med_card_main_display_container = document.createElement("div");
         med_card_main_display_container.classList.add("med_card_main_display_container");
+        med_card_main_display_container.setAttribute("GUID", element.GUID);
 
         med_card_main_display_container.addEventListener('touchstart', (e) => {
             const touch = e.touches[0];
@@ -1177,6 +1174,26 @@ function set_pbm_main_container() {
             if (distanceX < 10 && distanceY < 10) {
                 if(!med_card_checkbox.classList.contains("med_card_checkbox_disabled")) {
                     med_card_checkbox.checked = !med_card_checkbox.checked;
+                    if(med_card_checkbox.checked) {
+                        med_log_arr.push(element.GUID);
+
+                        let index = med_nodis_log_arr.indexOf(element.GUID);  // 找到 "orange" 的索引位置
+    
+                        if (index !== -1) {
+                            med_nodis_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                        }
+                    } else {
+                        let index = med_log_arr.indexOf(element.GUID);  // 找到 "orange" 的索引位置
+    
+                        if (index !== -1) {
+                            med_log_arr.splice(index, 1);  // 移除索引位置的那個元素
+                        }
+    
+
+                        med_nodis_log_arr.push(element.GUID);
+                    }
+                    console.log(med_log_arr);
+                    console.log(med_nodis_log_arr);
                 } else {
                     alert("尚未完成調劑，無法進行覆核");
                 }
@@ -1862,7 +1879,6 @@ async function pre_bed_func() {
     // } else {
 
         Set_main_div_enable(true);
-        check_cart_dispense();
         await set_post_data_to_check_dispense();
         let temp_p_bed_index = patient_bed_index;
         let temp_none_bed_num_arr = [];
@@ -1900,6 +1916,8 @@ async function pre_bed_func() {
 
         let temp_p_bed_data = current_p_bed_data;
         next_p_bed_data = temp_p_bed_data;
+
+        await check_cart_dispense();
         // current_p_bed_data = pre_p_bed_data;
         allocate_display_init("on");
     // }
@@ -1913,8 +1931,7 @@ async function next_bed_func() {
     // } else {
 
     Set_main_div_enable(true);
-    check_cart_dispense();
-    set_post_data_to_check_dispense();
+    await set_post_data_to_check_dispense();
     let temp_p_bed_index = patient_bed_index;
     let temp_arr_none_bed = [];
     do {
@@ -1944,6 +1961,7 @@ async function next_bed_func() {
 
     let temp_p_bed_data = current_p_bed_data;
     pre_p_bed_data = temp_p_bed_data;
+    await check_cart_dispense();
     // current_p_bed_data = next_p_bed_data;
     allocate_display_init("on");
 }
@@ -1988,9 +2006,13 @@ async function set_post_data_to_check_dispense() {
 
     med_card_checkbox.forEach(element => {
         if(element.checked) {
+            // console.log(med_card_checkbox);
+            // console.log(element.checked);
             med_arr.push(element.id);
         };
     });
+
+    console.log("調劑打勾勾", med_arr);
 
     let post_data_check;
     if(current_med_table == "" || current_med_table == "all") {
@@ -2068,10 +2090,11 @@ async function set_post_data_to_check_dispense() {
         }
     });
 
+    console.log("調劑打勾勾有變嗎？", med_arr);
     console.log("med_log_arr", med_log_arr);
     console.log("med_nodis_log_arr", med_nodis_log_arr);
     med_arr = med_arr.filter(GUID => !med_nodis_log_arr.includes(GUID));
-    console.log("med_arr", med_arr);
+    console.log("調劑打勾勾過濾第三層", med_arr);
 
     let post_data3 = post_data2;
 
@@ -2092,16 +2115,18 @@ async function set_post_data_to_check_dispense() {
     } else {
         post_data.ValueAry[0] = "";
     }
+    console.log("最終check項目", med_arr);
     console.log("調劑post_data", post_data);
     if(current_func == "allocate") {
         return_data = await api_med_cart_check_dispense(post_data);
     } else {
         return_data = await api_med_cart_double_check(post_data);
     }
-    console.log(med_arr);
 
     if(return_data.Code == 200) {
+        console.log("回傳成功", return_data.Code == 200);
         if(med_log_arr.length > 0 || med_nodis_log_arr.length > 0) {
+            console.log("show 成功", "=-=--=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=");
             show_popup_notice(return_data.Result, true)
         }
         if(med_log_arr.length > 0) {
@@ -2119,6 +2144,7 @@ async function set_post_data_to_check_dispense() {
             med_nodis_log_arr = [];
         }
     } else {
+        console.log("失敗或沒有紀錄出現", "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
         show_popup_notice(return_data.Result, false)
     }
 

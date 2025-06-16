@@ -379,7 +379,7 @@ async function set_pp_med_list_display() {
         ppml_card_container.classList.add("ppml_card_container");
         ppml_card_container.setAttribute("code", element.code);
         ppml_card_container.setAttribute("name", element.name);
-        ppml_card_container.setAttribute("CHT_NAME", element.CHT_NAME);
+        ppml_card_container.setAttribute("cht_name", element.cht_name);
         ppml_card_container.setAttribute("skdiacode", element.SKDIACODE);
 
         let ppml_card_info_container = document.createElement("div");
@@ -402,10 +402,10 @@ async function set_pp_med_list_display() {
 
         let chtNameDiv = document.createElement('div');
         chtNameDiv.className = 'ppml_ci_content';
-        chtNameDiv.textContent = element.CHT_NAME;
+        chtNameDiv.textContent = element.cht_name;
         
         nameDiv_container.appendChild(nameDiv);
-        if(element.CHT_NAME) nameDiv_container.appendChild(chtNameDiv);
+        if(element.cht_name) nameDiv_container.appendChild(chtNameDiv);
 
         ppml_ci_top.appendChild(nameDiv_container);
         if(element.large == "L") {
@@ -1039,11 +1039,62 @@ async function set_post_data_to_check_dispense_for_med_list(m_guid, guid, status
         }
     });
 
-    if(current_func == "allocate") {
-        return_data = await api_med_cart_check_dispense_by_GUID(post_data);
+    let guid_arr = guid.split(";");
+    console.log(guid_arr.length);
+
+    if(guid_arr.length > 1) {
+        if(status == "Y") {
+            // 這裡將多個GUID調劑換一隻API送出調劑
+            let ppml_h_current_cart_select = document.querySelector(".ppml_h_current_cart_select");
+            post_data = {
+                ServerName: checkedRadio_med_change.value,
+                ServerType: "調劑台",
+                UserName: loggedName.Name,
+                ValueAry: [guid_arr.join(";"), ppml_h_current_cart_select.value]
+            }
+
+            if(current_func == "allocate") {
+                console.log("單床多藥品重複整合調劑post_data", post_data);
+                return_data = await api_med_cart_dispensed_by_cart(post_data);
+            } else if(current_func == "review") {
+                console.log("單床多藥品重複整合複合post_data", post_data);
+                return_data = await api_med_cart_check_by_cart(post_data);
+            }
+        } else {
+            // 這裡將多個GUID取消調劑換一隻API送出取消調劑
+            let post_data_array = [];
+            guid_arr.forEach(item => {
+                post_data_array.push({
+                    ServerName: checkedRadio_med_change.value,
+                    ServerType: "調劑台",
+                    UserName: loggedName.Name,
+                    ValueAry: [m_guid, item, check_status]
+                });
+            });
+
+            console.log("單床多藥品重複整合取消調劑post_data", post_data_array);
+            if(current_func == "allocate") {
+                for (let index = 0; index < post_data_array.length; index++) {
+                    const element = post_data_array[index];
+                    
+                    return_data = await api_med_cart_check_dispense_by_GUID(element);
+                }
+            } else if(current_func == "review") {
+                for (let index = 0; index < post_data_array.length; index++) {
+                    const element = post_data_array[index];
+                    
+                    return_data = await api_med_cart_double_check_by_GUID(element);
+                }
+            }
+        }
     } else {
-        return_data = await api_med_cart_double_check_by_GUID(post_data);
+        if(current_func == "allocate") {
+            return_data = await api_med_cart_check_dispense_by_GUID(post_data);
+        } else {
+            return_data = await api_med_cart_double_check_by_GUID(post_data);
+        }
     }
+
 
     if(return_data.Code == "200") {
         show_popup_notice(return_data.Result, true);
@@ -1054,90 +1105,91 @@ async function set_post_data_to_check_dispense_for_med_list(m_guid, guid, status
 
     return return_data;
 };
-function sort_med_list_data(array, current_func) {
-    let sortedArray = array.sort((a, b) => a.name.localeCompare(b.name));
 
-    if(current_func == "allocate") {
-        let sortedArray = array.sort((a, b) => {
-            const getStatusCategory = (bedList) => {
-                const hasAllY = bedList.every(bed => bed.dispens_status === "Y");
-                return hasAllY ? 1 : 0;
-                // const hasSomeY = bedList.some(bed => bed.dispens_status === "Y");
-                // return hasAllY ? 2 : hasSomeY ? 1 : 0;
-            };
-        
-            const aStatus = getStatusCategory(a.bed_list);
-            const bStatus = getStatusCategory(b.bed_list);
-        
-            return aStatus - bStatus;
-        });
-    
-    
-        console.log('sortedArray', sortedArray);
-        return sortedArray;
-    } else {
-        let sortedArray = array.sort((a, b) => {
-            const getStatusCategory = (bedList) => {
-                const hasAllY = bedList.every(bed => bed.check_status === "Y");
-                // const hasSomeY = bedList.some(bed => bed.check_status === "Y");
-                return hasAllY ?  1 : 0;
-                // const hasSomeY = bedList.some(bed => bed.check_status === "Y");
-                // return hasAllY ? 2 : hasSomeY ? 1 : 0;
-            };
-        
-            const aStatus = getStatusCategory(a.bed_list);
-            const bStatus = getStatusCategory(b.bed_list);
-        
-            return aStatus - bStatus;
-        });
-    
-        console.log('sortedArray', sortedArray);
-        return sortedArray;
-    }
-}
-
-// 新的排序方式，帶API更新調整d_time後啟用
 // function sort_med_list_data(array, current_func) {
-//     const getStatusCategory = (bedList, key) => {
-//         const allY = bedList.every(bed => bed[key] === "Y");
-//         const someY = bedList.some(bed => bed[key] === "Y");
-//         if (allY) return 2;    // 全部是 Y → 最後
-//         if (someY) return 1;   // 部分是 Y → 中間
-//         return 0;              // 全部不是 Y → 最前
-//     };
+//     let sortedArray = array.sort((a, b) => a.name.localeCompare(b.name));
 
-//     const key = current_func === "allocate" ? "dispens_status" : "check_status";
-
-//     // 預先附加 group 給每筆資料
-//     const taggedArray = array.map(item => {
-//         const group = getStatusCategory(item.bed_list, key);
-//         return { ...item, _group: group };
-//     });
-
-//     // 排序邏輯
-//     const sortedArray = taggedArray
-//         .slice()
-//         .sort((a, b) => {
-//             // group 先比
-//             if (a._group !== b._group) {
-//                 return a._group - b._group;
-//             }
-
-//             // group 相同時再排序
-//             if (a._group === 0) {
-//                 // group 0 再依 code 升冪排序
-//                 return a.code.localeCompare(b.code);
-//             } else {
-//                 // 其他 group 依 d_time 降冪排序
-//                 const timeA = a.d_time ? new Date(a.d_time) : new Date(0);
-//                 const timeB = b.d_time ? new Date(b.d_time) : new Date(0);
-//                 return timeB - timeA;
-//             }
+//     if(current_func == "allocate") {
+//         let sortedArray = array.sort((a, b) => {
+//             const getStatusCategory = (bedList) => {
+//                 const hasAllY = bedList.every(bed => bed.dispens_status === "Y");
+//                 return hasAllY ? 1 : 0;
+//                 // const hasSomeY = bedList.some(bed => bed.dispens_status === "Y");
+//                 // return hasAllY ? 2 : hasSomeY ? 1 : 0;
+//             };
+        
+//             const aStatus = getStatusCategory(a.bed_list);
+//             const bStatus = getStatusCategory(b.bed_list);
+        
+//             return aStatus - bStatus;
 //         });
-
-//     console.log('sortedArray', sortedArray);
-//     return sortedArray;
+    
+    
+//         console.log('sortedArray', sortedArray);
+//         return sortedArray;
+//     } else {
+//         let sortedArray = array.sort((a, b) => {
+//             const getStatusCategory = (bedList) => {
+//                 const hasAllY = bedList.every(bed => bed.check_status === "Y");
+//                 // const hasSomeY = bedList.some(bed => bed.check_status === "Y");
+//                 return hasAllY ?  1 : 0;
+//                 // const hasSomeY = bedList.some(bed => bed.check_status === "Y");
+//                 // return hasAllY ? 2 : hasSomeY ? 1 : 0;
+//             };
+        
+//             const aStatus = getStatusCategory(a.bed_list);
+//             const bStatus = getStatusCategory(b.bed_list);
+        
+//             return aStatus - bStatus;
+//         });
+    
+//         console.log('sortedArray', sortedArray);
+//         return sortedArray;
+//     }
 // }
+
+// 新的排序方式，帶API更新調整d_time後啟用=>update_time
+function sort_med_list_data(array, current_func) {
+    const key = current_func === "allocate" ? "dispens_status" : "check_status";
+
+    const getStatusCategory = (bedList, key) => {
+        const allY = bedList.every(bed => bed[key] === "Y");
+        const someY = bedList.some(bed => bed[key] === "Y");
+        if (allY) return 2;    // 全部是 Y → 最後
+        if (someY) return 1;   // 部分是 Y → 中間
+        return 0;              // 全部不是 Y → 最前
+    };
+
+    // 預先附加 group 給每筆資料
+    const taggedArray = array.map(item => {
+        const group = getStatusCategory(item.bed_list, key);
+        return { ...item, _group: group };
+    });
+
+    // 排序邏輯
+    const sortedArray = taggedArray
+        .slice()
+        .sort((a, b) => {
+            // group 先比
+            if (a._group !== b._group) {
+                return a._group - b._group;
+            }
+
+            // group 相同時再排序
+            if (a._group === 0) {
+                // group 0 再依 code 升冪排序
+                return a.code.localeCompare(b.code);
+            } else {
+                // 其他 group 依 update_time 降冪排序
+                const timeA = a.update_time ? new Date(a.update_time) : new Date(0);
+                const timeB = b.update_time ? new Date(b.update_time) : new Date(0);
+                return timeB - timeA;
+            }
+        });
+
+    console.log('sortedArray', sortedArray);
+    return sortedArray;
+}
 
 
 function sort_display_med_data(arr) {
@@ -1156,9 +1208,28 @@ function sort_display_med_data(arr) {
     // }
     let temp_arr = arr.filter(item => item.dispens_name == "Y");
     // let temp_arr = arr;
-    console.log("排序過濾後", temp_arr);
+    let new_arr = [];
 
-    return temp_arr;
+    temp_arr.forEach(element => {
+        const data = element;
+
+        const seen = new Set();
+        const uniqueBedList = data.bed_list.filter(item => {
+        if (seen.has(item.GUID)) {
+            return false;
+        }
+        seen.add(item.GUID);
+        return true;
+        });
+
+        // 將結果重新賦值回原本的資料物件中
+        data.bed_list = uniqueBedList;
+        new_arr.push(data);
+    });
+
+    console.log("排序過濾後", new_arr);
+
+    return new_arr;
 }
 function set_med_table_filter_radio() {
     let head_med_table_filter_container = document.querySelector(".head_med_table_filter_container");

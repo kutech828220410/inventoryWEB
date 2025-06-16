@@ -120,16 +120,48 @@ async function get_all_med_qty(phar, med_cart, table) {
     try {
         let start_p = performance.now();
         let temp_doman = transform_api_ip_4433(api_ip);
+
+        let temp_check_isArray = page_setting_params && page_setting_params.total_qty_merge_same_bed && page_setting_params.total_qty_merge_same_bed.value;
         
-        let temp_data = await fetch(`${temp_doman}api/med_cart/get_med_qty`, {
+        let fetch_url;
+
+        if(temp_check_isArray) {
+            if(page_setting_params.total_qty_merge_same_bed.value == "True") {
+                fetch_url = `${temp_doman}api/med_cart/get_med_qty_summary`;
+                console.log("藥品床好合併");
+            } else {
+                fetch_url = `${temp_doman}api/med_cart/get_med_qty`;
+                console.log("藥品床好分開");
+            }
+        } else {
+            fetch_url = `${temp_doman}api/med_cart/get_med_qty`;
+            console.log("藥品床好分開");
+        }
+
+        let post_data = {};
+
+        if(current_func == "allocate") {
+            post_data = {
+                Value: table,
+                ValueAry:[phar, med_cart],
+                ServerType: "調劑"
+            };
+        } else {
+            post_data = {
+                Value: table,
+                ValueAry:[phar, med_cart],
+                ServerType: "覆核"
+            };
+        }
+
+        console.log("取得藥品調劑資料post", post_data);
+
+        let temp_data = await fetch(fetch_url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-                Value: table,
-                ValueAry:[phar, med_cart]
-            }),
+            body: JSON.stringify(post_data),
         })
         .then((response) => {
             return response.json();
@@ -153,7 +185,25 @@ async function get_all_med_qty(phar, med_cart, table) {
 async function get_patient_with_NOdispense(data) {
     let start_p = performance.now();
     let temp_doman = transform_api_ip_4433(api_ip);
-    let temp_data = await fetch(`${temp_doman}api/med_cart/get_patient_with_NOdispense`, {
+   
+    let temp_check_isArray = page_setting_params && page_setting_params.undispensed_merge_same_bed && page_setting_params.undispensed_merge_same_bed.value;
+    
+    let fetch_url;
+
+    if(temp_check_isArray) {
+        if(page_setting_params.undispensed_merge_same_bed.value == "True") {
+            fetch_url = `${temp_doman}api/med_cart/get_patient_with_NOdispens_summary`;
+            console.log("藥品床好合併");
+        } else {
+            fetch_url = `${temp_doman}api/med_cart/get_patient_with_NOdispense`;
+            console.log("藥品床好分開");
+        }
+    } else {
+        fetch_url = `${temp_doman}api/med_cart/get_patient_with_NOdispense`;
+        console.log("藥品床好分開");
+    }
+
+    let temp_data = await fetch(fetch_url, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -177,7 +227,25 @@ async function get_patient_with_NOdispense(data) {
 async function get_patient_with_NOcheck(data) {
     let start_p = performance.now();
     let temp_doman = transform_api_ip_4433(api_ip);
-    let temp_data = await fetch(`${temp_doman}api/med_cart/get_patient_with_NOcheck`, {
+
+    let temp_check_isArray = page_setting_params && page_setting_params.undispensed_merge_same_bed && page_setting_params.undispensed_merge_same_bed.value;
+    
+    let fetch_url;
+
+    if(temp_check_isArray) {
+        if(page_setting_params.undispensed_merge_same_bed.value == "True") {
+            fetch_url = `${temp_doman}api/med_cart/get_patient_with_NOdispens_summary`;
+            console.log("藥品床好合併");
+        } else {
+            fetch_url = `${temp_doman}api/med_cart/get_patient_with_NOcheck`;
+            console.log("藥品床好分開");
+        }
+    } else {
+        fetch_url = `${temp_doman}api/med_cart/get_patient_with_NOcheck`;
+            console.log("藥品床好分開");
+    }
+
+    let temp_data = await fetch(fetch_url, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
