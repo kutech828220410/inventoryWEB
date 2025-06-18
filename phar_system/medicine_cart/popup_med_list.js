@@ -1149,47 +1149,93 @@ async function set_post_data_to_check_dispense_for_med_list(m_guid, guid, status
 // }
 
 // 新的排序方式，帶API更新調整d_time後啟用=>update_time
+// function sort_med_list_data(array, current_func) {
+//     const key = current_func === "allocate" ? "dispens_status" : "check_status";
+
+//     const getStatusCategory = (bedList, key) => {
+//         const allY = bedList.every(bed => bed[key] === "Y");
+//         const someY = bedList.some(bed => bed[key] === "Y");
+//         if (allY) return 2;    // 全部是 Y → 最後
+//         if (someY) return 1;   // 部分是 Y → 中間
+//         return 0;              // 全部不是 Y → 最前
+//     };
+
+//     // 預先附加 group 給每筆資料
+//     const taggedArray = array.map(item => {
+//         const group = getStatusCategory(item.bed_list, key);
+//         return { ...item, _group: group };
+//     });
+
+//     // 排序邏輯
+//     const sortedArray = taggedArray
+//         .slice()
+//         .sort((a, b) => {
+//             // group 先比
+//             if (a._group !== b._group) {
+//                 return a._group - b._group;
+//             }
+
+//             // group 相同時再排序
+//             if (a._group === 0) {
+//                 // group 0 再依 code 升冪排序
+//                 return a.code.localeCompare(b.code);
+//             } else {
+//                 // 其他 group 依 update_time 降冪排序
+//                 const timeA = a.update_time ? new Date(a.update_time) : new Date(0);
+//                 const timeB = b.update_time ? new Date(b.update_time) : new Date(0);
+//                 return timeB - timeA;
+//             }
+//         });
+
+//     console.log('sortedArray', sortedArray);
+//     return sortedArray;
+// }
+
+//  更新排序方式，字母排序完後分組、全部調劑組別依照時間排序
 function sort_med_list_data(array, current_func) {
     const key = current_func === "allocate" ? "dispens_status" : "check_status";
 
-    const getStatusCategory = (bedList, key) => {
+    const getGroup = (bedList) => {
         const allY = bedList.every(bed => bed[key] === "Y");
         const someY = bedList.some(bed => bed[key] === "Y");
-        if (allY) return 2;    // 全部是 Y → 最後
-        if (someY) return 1;   // 部分是 Y → 中間
-        return 0;              // 全部不是 Y → 最前
+        if (allY) return 2; // 全部是 Y → group 2（全部調劑）
+        if (someY) return 1; // 部分是 Y → group 1（部分調劑）
+        return 0; // 都不是 Y → group 0（全部未調劑）
     };
 
-    // 預先附加 group 給每筆資料
-    const taggedArray = array.map(item => {
-        const group = getStatusCategory(item.bed_list, key);
-        return { ...item, _group: group };
+    // 先根據 code 升冪排序
+    const baseSorted = array.slice().sort((a, b) => a.name.localeCompare(b.name));
+
+    console.log("藥碼排序", baseSorted);
+
+    // 分組
+    const group0 = [];
+    const group1 = [];
+    const group2 = [];
+
+    for (const item of baseSorted) {
+        const group = getGroup(item.bed_list);
+        if (group === 0) group0.push(item);
+        else if (group === 1) group1.push(item);
+        else group2.push(item);
+    }
+
+    // group2 裡用 update_time 降冪排序
+    group2.sort((a, b) => {
+        const timeA = a.update_time ? new Date(a.update_time) : new Date(0);
+        const timeB = b.update_time ? new Date(b.update_time) : new Date(0);
+        return timeB - timeA; // 降冪
     });
 
-    // 排序邏輯
-    const sortedArray = taggedArray
-        .slice()
-        .sort((a, b) => {
-            // group 先比
-            if (a._group !== b._group) {
-                return a._group - b._group;
-            }
+    console.log("全調時間排序", group2);
 
-            // group 相同時再排序
-            if (a._group === 0) {
-                // group 0 再依 code 升冪排序
-                return a.code.localeCompare(b.code);
-            } else {
-                // 其他 group 依 update_time 降冪排序
-                const timeA = a.update_time ? new Date(a.update_time) : new Date(0);
-                const timeB = b.update_time ? new Date(b.update_time) : new Date(0);
-                return timeB - timeA;
-            }
-        });
+    // 合併結果：未調劑 → 部分調劑 → 全部調劑（內部已依 update_time 降冪）
+    const finalSorted = [...group0, ...group1, ...group2];
 
-    console.log('sortedArray', sortedArray);
-    return sortedArray;
+    console.log("sortedArray", finalSorted);
+    return finalSorted;
 }
+
 
 
 function sort_display_med_data(arr) {
