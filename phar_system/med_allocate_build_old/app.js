@@ -322,9 +322,15 @@ function set_choose_item(params) {
 
   main_choose_div.style.display = "block";
 
-  let temp_med_data = medicine_page["Data"].filter(e => {
+  let temp_med_data_filter_lock = medicine_page["Data"].filter(e => {
+    return e.FILE_STATUS != "關檔中";
+  });
+
+  let temp_med_data = temp_med_data_filter_lock.filter(e => {
     return e[`${target.toUpperCase()}`].toUpperCase().includes(value.toUpperCase());
   });
+
+  console.log(temp_med_data);
 
   temp_med_data.forEach(element => {
     let choose_item = document.createElement("div");

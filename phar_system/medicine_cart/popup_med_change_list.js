@@ -206,6 +206,7 @@ async function popup_med_change_list_div_open() {
     let ppdl_h_current_cart_select = document.querySelector(".ppdl_h_current_cart_select");
     // 檢測有無退藥
     Set_main_div_enable(true);
+    console.log("檢測退藥資料中");
     let test_data_arr = await check_cart_dispense();
     if(test_data_arr.length > 0 && test_data_arr.includes(ppmcl_h_current_cart_select.value)) {
         post_data = {
@@ -249,6 +250,7 @@ async function popup_med_change_list_div_open() {
     } else {
         Set_main_div_enable(false);
     }
+    console.log("開啟退藥彈窗");
 }
 
 async function set_ppmcl_main_info() {
