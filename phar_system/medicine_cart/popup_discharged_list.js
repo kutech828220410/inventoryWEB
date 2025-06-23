@@ -61,8 +61,22 @@ function get_ppdl_header() {
         popup_discharged_list_div_close();
     });
 
+        let ppdl_head_sort_container = document.createElement("div");
+    ppdl_head_sort_container.classList.add("ppdl_head_sort_container");
+
+    let ppdl_head_sort_title = document.createElement("div");
+    ppdl_head_sort_title.classList.add("ppdl_head_sort_title");
+    ppdl_head_sort_title.innerHTML = "調劑台";
+
+    let ppdl_head_med_table_filter_container = document.createElement("div");
+    ppdl_head_med_table_filter_container.classList.add("ppdl_head_med_table_filter_container");
+
+    ppdl_head_sort_container.appendChild(ppdl_head_sort_title)
+    ppdl_head_sort_container.appendChild(ppdl_head_med_table_filter_container);
+
     ppdl_header_container.appendChild(ppdl_h_title);
     ppdl_header_container.appendChild(ppdl_h_close_btn);
+    ppdl_header_container.appendChild(ppdl_head_sort_container);
 
     return ppdl_header_container;
 }
@@ -126,6 +140,8 @@ function set_discharged_data_display() {
             ppdl_return_all_btn.addEventListener("click", async () => {
                 Set_main_div_enable(true);
                 let ppdl_h_current_cart_select = document.querySelector(".ppdl_h_current_cart_select");
+                let checkedRadio = document.querySelector('input[name="ppdl_filter_med_table_input"]:checked');
+                let temp_table = checkedRadio.value;
                 let ppdl_cpoe_med_check_btn = document.querySelectorAll(".ppdl_cpoe_med_check_btn");
                 let ppdl_return_container = document.querySelectorAll(".ppdl_return_container");
                 if(ppdl_return_container.length == 0) {
@@ -149,10 +165,10 @@ function set_discharged_data_display() {
                     ValueAry: [guid_arr.join(";"), ppdl_h_current_cart_select.value]
                 }
 
-                // if(temp_table != "all") {
-                //     post_data.ServerName = temp_table;
-                //     post_data.ServerType = "調劑台";
-                // }
+                if(temp_table != "all") {
+                    post_data.ServerName = temp_table;
+                    post_data.ServerType = "調劑台";
+                }
 
                 console.log("未條藥品總調劑", post_data);
                 let return_data = await api_med_cart_dispensed_by_cart(post_data);
@@ -195,7 +211,13 @@ function set_discharged_data_display() {
     
                         let ppdl_bed_number_label = document.createElement("div");
                         ppdl_bed_number_label.classList.add("ppdl_bed_number_label");
-                        ppdl_bed_number_label.innerHTML = `${element.bednum} 床 - ${element.pnamec}`;
+                        if(element.bedStatus.status) {
+                            if(element.bedStatus.status == "轉床") {
+                                ppdl_bed_number_label.innerHTML = `${element.bednum} 床 - ${element.pnamec}（轉床：${element.bedStatus.bed_new}）`;
+                            }
+                        } else {
+                            ppdl_bed_number_label.innerHTML = `${element.bednum} 床 - ${element.pnamec}（出院）`;
+                        }
     
                         let ppdl_return_bed_all_btn = document.createElement("div");
                         ppdl_return_bed_all_btn.classList.add("ppdl_return_bed_all_btn");
@@ -247,7 +269,7 @@ function set_discharged_data_display() {
                         ppdl_return_header.appendChild(ppdl_return_bed_all_btn);
 
                         ppdl_return_container.appendChild(ppdl_return_header);
-    
+
                         element["cpoe"].forEach(item => {
                             if(item.dispens_status != "Y") {
                                 let ppdl_med_card_container = document.createElement("div");
@@ -337,7 +359,12 @@ function set_discharged_data_display() {
                                 ppdl_med_right_container.appendChild(ppdl_cpoe_status);
                                 ppdl_med_right_container.appendChild(ppdl_cpoe_med_check_btn);
 
+                                let ppdl_med_card_type = document.createElement("div");
+                                // ppdl_med_card_type.classList.add("ppml_big_bottle");
+                                if(item.ice == "Y" || item.large == "Y") ppdl_med_card_type.classList.add("ppml_big_bottle");
+
                                 ppdl_med_card_container.appendChild(ppdl_med_info_container);
+                                ppdl_med_card_container.appendChild(ppdl_med_card_type);
                                 ppdl_med_card_container.appendChild(ppdl_med_right_container);
 
                                 ppdl_return_container.appendChild(ppdl_med_card_container);
@@ -360,6 +387,8 @@ function set_discharged_data_display() {
 async function set_post_data_to_discharged_by_GUID(guid_arr, master_guid) {
     let loggedName = sessionStorage.getItem('login_json');
     loggedName = JSON.parse(loggedName);
+    let checkedRadio = document.querySelector('input[name="ppdl_filter_med_table_input"]:checked');
+    let temp_table = checkedRadio.value;
     let return_data;
     let temp_str = "";
     temp_str = guid_arr.join(";");
@@ -373,6 +402,11 @@ async function set_post_data_to_discharged_by_GUID(guid_arr, master_guid) {
 
     post_data.ValueAry[0] = temp_str;
     post_data.ValueAry[1] = master_guid;
+
+    if(temp_table != "all") {
+        post_data.ServerName = temp_table;
+        post_data.ServerType = "調劑台";
+    }
 
     console.log("退藥調劑post_data", post_data);
 
@@ -399,3 +433,61 @@ async function set_post_data_to_discharged_by_GUID(guid_arr, master_guid) {
 
     return return_data;
 };
+
+function ppdl_set_med_table_filter_radio() {
+    let head_med_table_filter_container = document.querySelector(".ppdl_head_med_table_filter_container");
+    head_med_table_filter_container.innerHTML = "";
+
+    let all_input = document.createElement("input");
+    all_input.className = "ppdl_filter_med_table_input";
+    all_input.name = "ppdl_filter_med_table_input";
+    all_input.type = "radio";
+    all_input.value = "all";
+    all_input.id = "ppdl_filter_med_table_all";
+    all_input.checked = true;
+    // all_input.addEventListener("change", async (e) => {
+    //     let ppml_main_container = document.querySelector(".ppml_main_container");
+    //     med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, e.target.value);
+    //     med_list_data = med_list_data.Data;
+    //     med_list_data = sort_med_list_data(med_list_data, current_func);
+    //     med_list_data = sort_display_med_data(med_list_data);
+    //     await set_pp_med_list_display();
+    //     ppml_main_container.scrollTop = 0;
+    // });
+
+    let all_label = document.createElement("label");
+    all_label.classList.add("ppdl_filter_med_label");
+    all_label.innerHTML = "全部";
+    all_label.setAttribute("for", "ppdl_filter_med_table_all");
+
+    head_med_table_filter_container.appendChild(all_input);
+    head_med_table_filter_container.appendChild(all_label);
+
+    if(med_table.length == 0) return;
+
+    med_table.forEach(element => {
+        let input = document.createElement("input");
+        input.className = "ppdl_filter_med_table_input";
+        input.name = "ppdl_filter_med_table_input";
+        input.type = "radio";
+        input.value = element.name;
+        input.id = `ppdl_guid_${element.GUID}`;
+        // input.addEventListener("change", async (e) => {
+        //     let ppml_main_container = document.querySelector(".ppml_main_container");
+        //     med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, e.target.value);
+        //     med_list_data = med_list_data.Data;
+        //     med_list_data = sort_med_list_data(med_list_data, current_func);
+        //     med_list_data = sort_display_med_data(med_list_data);
+        //     await set_pp_med_list_display();
+        //     ppml_main_container.scrollTop = 0;
+        // });
+
+        let label = document.createElement("label");
+        label.classList.add("ppdl_filter_med_label");
+        label.innerHTML = element.name;
+        label.setAttribute("for", `ppdl_guid_${element.GUID}`);
+
+        head_med_table_filter_container.appendChild(input);
+        head_med_table_filter_container.appendChild(label);
+    });
+}

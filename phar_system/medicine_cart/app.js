@@ -818,6 +818,7 @@ async function get_cart_list_and_med_table() {
   //  插入藥品總量選單條及台選單
   set_med_table_filter_radio();
   ppmcl_set_med_table_filter_radio();
+  ppdl_set_med_table_filter_radio();
   console.log(med_table);
 
   let cart_option_container = document.querySelector(".cart_option_container");

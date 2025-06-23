@@ -14,7 +14,6 @@
     text-align: center;
     font-size: 18px;
     font-weight: 600;
-    margin-bottom: 12px;
     background-color: rgb(222, 222, 222);
     color: #000000;
     border-radius: 5px;
@@ -128,6 +127,38 @@
     font-size: 20px;
     text-align: center;
     font-weight: 600;
+}
+.ppdl_head_sort_container {
+    width: 100%;
+} 
+.ppdl_head_sort_title {
+    margin-bottom: 12px;
+    font-weight: 600;
+    font-size: 20px;
+}
+.ppdl_head_med_table_filter_container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 19% 19% 19% 19% 19%;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+.ppdl_filter_med_table_input {
+    display: none;
+}
+.ppdl_filter_med_label {
+    border-radius: 4px;
+    padding: 4px;
+    text-align: center;
+    background-color: #d7d7d7;
+    transition: all 0.2s ease-out;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+.ppdl_head_med_table_filter_container input[type="radio"]:checked + label  {
+    background-color: #5e5e5e;
+    transition: all 0.2s ease-out;
+    color: #ffffff;
 }
 
 
