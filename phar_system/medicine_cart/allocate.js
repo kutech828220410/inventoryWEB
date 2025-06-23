@@ -67,7 +67,9 @@ async function allocate_diplay_logic() {
         await allocate_display_init();
     }
     if(change_cart && med_cart_beds_data.length != 0) {
-        alert(`目前為第${med_cart_beds_data[patient_bed_index].bednum}床`);
+        if(med_cart_beds_data[patient_bed_index].bednum != "1") {
+            alert(`目前為第${med_cart_beds_data[patient_bed_index].bednum}床`);
+        }
     }
 
     return;
@@ -957,6 +959,7 @@ function set_pbm_header_container() {
     pbmh_checked_submit_btn.addEventListener("click", async () => {
         Set_main_div_enable(true);
         let return_data = await set_post_data_to_check_dispense();
+        console.log("current_med_table", current_med_table);
         if(return_data.Code == 200) {
             if(current_med_table == "" || current_med_table == "all") {
                 if(current_func == "allocate") {
@@ -964,6 +967,9 @@ function set_pbm_header_container() {
                     last_current_med_table = "all";
                     let med_table_content = document.querySelector(".med_table_content");
                     med_table_content.innerHTML = "全部";
+                } else {
+                    current_med_table = "all";
+                    last_current_med_table = "all";
                 }
 
                 post_data = {
@@ -976,7 +982,7 @@ function set_pbm_header_container() {
                     ValueAry: [med_cart_beds_data[patient_bed_index].GUID]
                 }
             }
-        
+            
             current_p_bed_data = await get_patient_GUID(post_data);
             current_p_bed_data = current_p_bed_data.Data;
             current_p_bed_data.cpoe.sort((a, b) => {
@@ -986,6 +992,10 @@ function set_pbm_header_container() {
             });
             await allocate_display_init("");
             alert(`第${current_p_bed_data.bednum}床，完成調劑`);
+            if(current_func != "allocate") {
+                current_med_table = "";
+                last_current_med_table = "";
+            }
             Set_main_div_enable(false);
         }
     });
@@ -1322,6 +1332,16 @@ function set_pbm_main_container() {
                 med_card_cht_name.innerHTML = `${element.cht_name}`;
             } else {
                 med_card_cht_name.innerHTML = `${element["med_cloud"][0].CHT_NAME}`;
+            }
+        }
+
+        // 覆核變色功能，等API架設後加入
+        temp_check_isArray = page_setting_params && page_setting_params.highlight_checked && page_setting_params.highlight_checked.value;
+        if(temp_check_isArray) {
+            if(current_func != "allocate" && element.check_status == "Y" && page_setting_params.highlight_checked.value == "True") {
+                // med_card_name.classList.add("dobule_checked_color");
+                // med_card_cht_name.classList.add("dobule_checked_color");
+                med_card_container.classList.add("dobule_checked_color");
             }
         }
 

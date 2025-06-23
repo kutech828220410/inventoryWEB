@@ -238,6 +238,7 @@ function get_main_ui() {
 
       // 檢測有無退藥
       Set_main_div_enable(true);
+      console.log("============ 檢查退藥中 =============");
       let test_data_arr = await check_cart_dispense();
       if(test_data_arr.length > 0 && test_data_arr.includes(ppml_h_current_cart_select.value)) {
         let post_data = {
@@ -271,15 +272,17 @@ function get_main_ui() {
   
               set_discharged_data_display();
               Set_main_div_enable(false);
-  
+              console.log("============ 檢查退藥完成 =============");
               popup_discharged_list_div_open();
             } else {
               Set_main_div_enable(false);
+              console.log("============ 檢查退藥完成 =============");
             }
           }
         }        
       } else {
         Set_main_div_enable(false);
+        console.log("============ 檢查退藥完成 =============");
       }
     }
   });

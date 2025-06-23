@@ -1197,9 +1197,9 @@ function sort_med_list_data(array, current_func) {
 
     const getGroup = (bedList) => {
         const allY = bedList.every(bed => bed[key] === "Y");
-        const someY = bedList.some(bed => bed[key] === "Y");
+        // const someY = bedList.some(bed => bed[key] === "Y");
         if (allY) return 2; // 全部是 Y → group 2（全部調劑）
-        if (someY) return 1; // 部分是 Y → group 1（部分調劑）
+        // if (someY) return 1; // 部分是 Y → group 1（部分調劑）
         return 0; // 都不是 Y → group 0（全部未調劑）
     };
 

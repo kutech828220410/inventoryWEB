@@ -1,5 +1,5 @@
 var popup_creatSelect_div;
-var review_data;
+var review_data = [];
 var popup_creatSelect_creat = [];
 var popup_creatSelect_finishedEvent = [];
 
@@ -24,8 +24,8 @@ async function popup_creatSelect_load()
     console.log("盤點單",popup_creatSelect_creat);  
     popup_creatSelect_div.Set_BackgroundOpacity(1);
     popup_creatSelect_div.Clear();
-    const title = popup_creatSelect_title_init();
-    const content = popup_creatSelect_content_init();
+
+
 
     let temp_post = {Data:{}}
     review_data = await get_all_inv_combinelist(temp_post);
@@ -57,6 +57,7 @@ async function popup_creatSelect_load()
         for (let x = 0; x < element["records_Ary"].length; x++) {
             const item = element["records_Ary"][x];
             let temp_return = await get_creat_Islocked_by_IC_SN(item.SN);
+            // console.log(temp_return);
 
             if(temp_return.Data != "鎖定") {
                 check_lock = false;
@@ -64,11 +65,16 @@ async function popup_creatSelect_load()
             }
         }
 
-        new_filter_lock_list_arr.push(element);
+        if(check_lock) new_filter_lock_list_arr.push(element);
     }
 
     review_data = new_filter_lock_list_arr;
     console.log("過濾合併單皆為鎖定單據", review_data);
+
+    
+
+    const title = popup_creatSelect_title_init();
+    const content = popup_creatSelect_content_init();
     
     // let loged_name = get_logedName();
     // creats.forEach(async(element) => {
@@ -159,7 +165,8 @@ function popup_creatSelect_content_init()
         const IC_SN = popup_creatSelect_creat.Data[i].IC_SN;
         const IC_NAME = popup_creatSelect_creat.Data[i].IC_NAME;
         const temp_button = document.createElement('button');
-        My_Div.Init(temp_button, `creatSelect_button`,`creatSelect_button_${IC_SN}`, '90%', '50px',);
+        // My_Div.Init(temp_button, `creatSelect_button`,`creatSelect_button_${IC_SN}`, '90%', '50px',);
+        My_Div.Init(temp_button, `pp_review_IC_SN`,`creatSelect_button_${IC_SN}`, '90%', '50px',);
         My_Div.Set_Text(temp_button ,`${IC_NAME}` , TextAlignEnum.CENTER , "20px", true,"微軟正黑體","black");
         temp_button.setAttribute("IC_SN",IC_SN);
         temp_button.setAttribute("IC_NAME",IC_NAME);
@@ -189,6 +196,36 @@ function popup_creatSelect_content_init()
         });
         normal_CN.appendChild(temp_button);
     }
+
+    let pp_review_container;
+    if(review_data.length > 0) {
+        pp_review_container = document.createElement("div");
+        pp_review_container.classList.add("pp_review_container");
+
+        let pp_review_title = document.createElement("div");
+        pp_review_title.classList.add("pp_review_title");
+        pp_review_title.innerHTML = "覆盤";
+
+        let pp_review_button_container = document.createElement("div");
+        pp_review_button_container.classList.add("pp_review_button_container");
+
+        pp_review_container.appendChild(pp_review_title);
+        pp_review_container.appendChild(pp_review_button_container);
+
+        for (let i = 0; i < review_data.length; i++) {
+            const element = review_data[i];
+            
+            let pp_review_IC_SN = document.createElement("div");
+            pp_review_IC_SN.classList.add("pp_review_IC_SN");
+            pp_review_IC_SN.id = `inv_sn_${element.INV_SN}`;
+            pp_review_IC_SN.innerHTML = element.INV_NAME
+            pp_review_IC_SN.setAttribute("IC_SN",element.INV_SN);
+            pp_review_IC_SN.setAttribute("IC_NAME",element.INV_NAME);
+            
+            pp_review_button_container.appendChild(pp_review_IC_SN);
+        }
+    }
+
     const quick_CN = document.createElement('div');
     My_Div.Init(quick_CN, 'popup_creatSelect_quick_CN','popup_creatSelect_quick_CN', '100%', '', '');
     My_Div.Set_Block(quick_CN, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.TOP);
@@ -202,8 +239,6 @@ function popup_creatSelect_content_init()
     quick_CN_text.style.borderRadius = "5px";
     quick_CN_text.style.marginBottom = "5px";
     quick_CN.appendChild(quick_CN_text);
-
-
 
     const quick_CN_controls = document.createElement('div');
     My_Div.Init(quick_CN_controls, 'popup_creatSelect_quick_CN_controls','popup_creatSelect_quick_CN_controls', '100%', '', '');
@@ -327,6 +362,10 @@ function popup_creatSelect_content_init()
     quick_CN.appendChild(quick_CN_controls);
 
     content.appendChild(normal_CN);
+    console.log(pp_review_container);
+    if(pp_review_container) {
+        content.appendChild(pp_review_container);
+    }
     content.appendChild(quick_CN);
     return content;
 }

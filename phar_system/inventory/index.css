@@ -74,7 +74,7 @@ html, body {
 }
 
 .popup_creatSelect_normal_CN {
-  max-height: 322px !important;
+  max-height: 244px !important;
 }
 .popup_creatSelect_normal_CN::-webkit-scrollbar {
   width: 8px; /* 设置滚动条的宽度 */

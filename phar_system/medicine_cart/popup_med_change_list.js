@@ -205,6 +205,7 @@ async function popup_med_change_list_div_open() {
 
     let ppdl_h_current_cart_select = document.querySelector(".ppdl_h_current_cart_select");
     // 檢測有無退藥
+    console.log("============ 檢查退藥中 =============");
     Set_main_div_enable(true);
     console.log("檢測退藥資料中");
     let test_data_arr = await check_cart_dispense();
@@ -217,37 +218,40 @@ async function popup_med_change_list_div_open() {
         console.log("出院處方退藥api",post_data);
         let return_data = await get_patient_discharge(post_data);
         if(return_data.Code != 200) {
-        alert("出院處方資料錯誤", return_data.Result);
-        Set_main_div_enable(false);
+            alert("出院處方資料錯誤", return_data.Result);
+            Set_main_div_enable(false);
         } else {
-        discharged_data = return_data.Data;
-        if(discharged_data.length != 0) {
-            let any_cpoe = false;
-            for (let index = 0; index < discharged_data.length; index++) {
-            const element = discharged_data[index];
-            
-            if(element.cpoe.length > 0) {
-                any_cpoe = true;
-                break;
+            discharged_data = return_data.Data;
+            if(discharged_data.length != 0) {
+                let any_cpoe = false;
+                for (let index = 0; index < discharged_data.length; index++) {
+                    const element = discharged_data[index];
+                
+                    if(element.cpoe.length > 0) {
+                        any_cpoe = true;
+                        break;
+                    }
+                }
+
+                if(any_cpoe) {
+                    alert("有出院退藥資料，請先處理");
+                    clearTimeout(med_list_timer);
+
+                    ppdl_h_current_cart_select.value = ppmcl_h_current_cart_select.value;
+
+                    set_discharged_data_display();
+                    Set_main_div_enable(false);
+                    console.log("============ 檢查退藥完成 =============");
+
+                    popup_discharged_list_div_open();
+                } else {
+                    Set_main_div_enable(false);
+                    console.log("============ 檢查退藥完成 =============");
+                }
             }
-            }
-
-            if(any_cpoe) {
-            alert("有出院退藥資料，請先處理");
-            clearTimeout(med_list_timer);
-
-            ppdl_h_current_cart_select.value = ppmcl_h_current_cart_select.value;
-
-            set_discharged_data_display();
-            Set_main_div_enable(false);
-
-            popup_discharged_list_div_open();
-            } else {
-            Set_main_div_enable(false);
-            }
-        }
         }        
     } else {
+        console.log("============ 檢查退藥完成 =============");
         Set_main_div_enable(false);
     }
     console.log("開啟退藥彈窗");
