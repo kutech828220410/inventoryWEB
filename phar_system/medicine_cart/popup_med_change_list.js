@@ -93,7 +93,7 @@ function get_ppmcl_header() {
 
                 set_discharged_data_display();
                 Set_main_div_enable(false);
-
+                popup_med_change_list_div_close();
                 popup_discharged_list_div_open();
                 } else {
                 Set_main_div_enable(false);
@@ -242,7 +242,7 @@ async function popup_med_change_list_div_open() {
                     set_discharged_data_display();
                     Set_main_div_enable(false);
                     console.log("============ 檢查退藥完成 =============");
-
+                    popup_med_change_list_div_close();
                     popup_discharged_list_div_open();
                 } else {
                     Set_main_div_enable(false);

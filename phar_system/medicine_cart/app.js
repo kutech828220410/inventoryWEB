@@ -272,6 +272,7 @@ function get_main_ui() {
   
               set_discharged_data_display();
               Set_main_div_enable(false);
+              popup_med_list_div_close();
               console.log("============ 檢查退藥完成 =============");
               popup_discharged_list_div_open();
             } else {

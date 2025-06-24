@@ -73,6 +73,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: 19% 19% 19% 19% 19%;
+    gap: 2;
     justify-content: space-between;
 }
 .head_med_table_filter_line {

@@ -991,7 +991,11 @@ function set_pbm_header_container() {
                 return aHasPubMedY - bHasPubMedY; // 讓 pub_med 為 "Y" 的排到最後
             });
             await allocate_display_init("");
-            alert(`第${current_p_bed_data.bednum}床，完成調劑`);
+            if(current_func == "allocate") {
+                alert(`第${current_p_bed_data.bednum}床，完成調劑`);
+            } else {
+                alert(`第${current_p_bed_data.bednum}床，完成覆核`);
+            }
             if(current_func != "allocate") {
                 current_med_table = "";
                 last_current_med_table = "";
@@ -1781,7 +1785,12 @@ function set_pbm_footer_container() {
                 return aHasPubMedY - bHasPubMedY; // 讓 pub_med 為 "Y" 的排到最後
             });
             await allocate_display_init("");
-            alert(`第${current_p_bed_data.bednum}床，完成調劑`);
+            if(current_func == "allocate") {
+                alert(`第${current_p_bed_data.bednum}床，完成調劑`);
+            } else {
+                alert(`第${current_p_bed_data.bednum}床，完成覆核`);
+            }
+
             Set_main_div_enable(false);
         }
     })

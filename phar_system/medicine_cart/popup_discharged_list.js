@@ -189,7 +189,26 @@ function set_discharged_data_display() {
                 if(return_data.Code != 200) {
                     alert("出院處方資料錯誤", return_data.Result);
                     Set_main_div_enable(false);
-                } else {  
+                } else {
+                    let loggedName = sessionStorage.getItem('login_json');
+                    loggedName = JSON.parse(loggedName);
+                    
+                    let post_data2 = {
+                        Data: [
+                            {
+                                op_id: loggedName.ID,
+                                op_name: loggedName.Name
+                            }
+                        ],
+                        ServerName: "",
+                        ServerType: "",
+                        ValueAry: [guid_arr.join(";")],
+                        Value: "退藥"
+                    }
+
+                    console.log("退藥log post", post_data2);
+                    await add_med_inventory_log(post_data2);
+
                     discharged_data = return_data.Data;
                     set_discharged_data_display();
                     Set_main_div_enable(false);
@@ -361,7 +380,7 @@ function set_discharged_data_display() {
 
                                 let ppdl_med_card_type = document.createElement("div");
                                 // ppdl_med_card_type.classList.add("ppml_big_bottle");
-                                if(item.ice == "Y" || item.large == "Y") ppdl_med_card_type.classList.add("ppml_big_bottle");
+                                if(item.ice == "Y" || item.large == "L") ppdl_med_card_type.classList.add("ppml_big_bottle");
 
                                 ppdl_med_card_container.appendChild(ppdl_med_info_container);
                                 ppdl_med_card_container.appendChild(ppdl_med_card_type);
@@ -412,24 +431,21 @@ async function set_post_data_to_discharged_by_GUID(guid_arr, master_guid) {
 
     return_data = await api_med_cart_dispensed_by_GUID(post_data);
 
-    await guid_arr.forEach(async element => {
-        let post_data2 = {
-            Data: [
-                {
-                    op_id: loggedName.ID,
-                    op_name: loggedName.Name
-                }
-            ],
-            ServerName: "",
-            ServerType: "",
-            ValueAry: [element],
-            Value: ""
-        }
+    let post_data2 = {
+        Data: [
+            {
+                op_id: loggedName.ID,
+                op_name: loggedName.Name
+            }
+        ],
+        ServerName: "",
+        ServerType: "",
+        ValueAry: [guid_arr.join(";")],
+        Value: "退藥"
+    }
 
-        post_data2.Value = "調劑"
-    
-        await add_med_inventory_log(post_data2);
-    });
+    console.log("退藥log post", post_data2);
+    await add_med_inventory_log(post_data2);
 
     return return_data;
 };
