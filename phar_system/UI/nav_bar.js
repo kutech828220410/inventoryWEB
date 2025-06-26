@@ -99,7 +99,7 @@ let html_pages = [
                     {
                         html_name: "med_allocate",
                         html_ctName: "撥補建單",
-                        html_url: "../../phar_system/med_allocate_build_old",
+                        html_url: "../../phar_system/med_allocate_build",
                         icon_url: "../../phar_system/phar_system/image/icon/assortment.png",
                         icon_big_url: "../../phar_system/image/allocate_bulid_icon.png"
                     },
@@ -160,7 +160,7 @@ let html_pages = [
                     {
                         html_name: "med_request",
                         html_ctName: "申領建單",
-                        html_url: "../../phar_system/med_request_build_old",
+                        html_url: "../../phar_system/med_request_build",
                         icon_url: "../../phar_system/image/icon/assortment.png",
                         icon_big_url: "../../phar_system/image/requset_bulid_icon.png"
                     },
