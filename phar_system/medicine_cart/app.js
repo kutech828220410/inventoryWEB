@@ -18,8 +18,9 @@ async function load()
   TableName = "medicine_page";
   APIServer = await LoadAPIServer();
   console.log(ServerType, TableName, APIServer);
-  const API01 = serch_APIServer(serverName,"調劑台","API01");
-  const API02 = serch_APIServer(serverName,"調劑台","API02");
+  console.log(serverName,"網頁","API01");
+  const API01 = serch_APIServer(serverName,"網頁","API01");
+  const API02 = serch_APIServer(serverName,"網頁","API02");
   console.log("API01",API01);
   console.log("API02",API02);
   await check_ip(API01[0].server,API02[0].server);
@@ -194,8 +195,14 @@ function get_main_ui() {
     
     let ppml_h_current_cart_select = document.querySelector(".ppml_h_current_cart_select");
     let ppdl_h_current_cart_select = document.querySelector(".ppdl_h_current_cart_select");
-    if(current_cart.hnursta && ppml_h_current_cart_select.value != current_cart.hnursta) {
-        ppml_h_current_cart_select.value = current_cart.hnursta;
+    if(last_med_list_n == "") {
+      if(current_cart.hnursta && ppml_h_current_cart_select.value != current_cart.hnursta) {
+          ppml_h_current_cart_select.value = current_cart.hnursta;
+      }
+
+      last_med_list_n = ppml_h_current_cart_select.value;
+    } else {
+      last_med_list_n = ppml_h_current_cart_select.value;
     }
 
     Set_main_div_enable(true);
@@ -644,6 +651,7 @@ function open_cart_list() {
   let cart_option_div = document.querySelectorAll(".cart_option_div");
 
   let temp_height = 0;
+  let temp_max_height = 320;
 
   cart_option_div.forEach(element => {
     temp_height += element.offsetHeight;
@@ -651,10 +659,15 @@ function open_cart_list() {
 
   if(!cart_list_triiger) {
     cart_option_container.style.height = `${temp_height}px`;
+    // cart_option_container.style.height = `200px`;
+    cart_option_container.style.maxHeight = `${temp_max_height}px`;
+    // cart_option_container.style.maxHeight = `200px`;
+    cart_option_container.style.overflowY = `auto`;
     cart_option_container.style.boxShadow = "2px 2px 8px 2px #00000090";
     cart_list_triiger = true;
   } else {
     cart_option_container.style.height = "0px";
+    cart_option_container.style.overflowY = `hidden`;
     cart_option_container.style.boxShadow = "none";
     cart_list_triiger = false;
   }
@@ -663,6 +676,7 @@ function open_cart_list() {
 function close_cart_list() {
   let cart_option_container = document.querySelector(".cart_option_container");
   cart_option_container.style.height = "0px";
+  cart_option_container.style.overflowY = `none`;
   cart_option_container.style.boxShadow = "none";
   cart_list_triiger = false;
 }

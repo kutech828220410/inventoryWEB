@@ -171,3 +171,5 @@ let med_list_sort_radio_data = [
     },
 ];
 let med_data;
+let last_med_list_n = "";
+let last_med_change_list_n = "";

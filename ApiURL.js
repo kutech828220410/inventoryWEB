@@ -18,9 +18,10 @@ var MED_page_url = ``;
 async function LoadAPIServer(log)
 {
   const json = await Loadtxt("../../config.txt");
-  console.log(json);
+  console.log("抓到config.txt檔案資料=====>", json);
   json.API_Server = is_https_trans_ip(json.API_Server);
   APIServer = await getDataFromAPI(`${json.API_Server}/api/ServerSetting`);
+  console.log("APIServer 抓到的資料", APIServer);
   const API_Session = serch_APIServer("Main","網頁" ,"API_Session");
   session_url = `${is_https_trans_ip(API_Session[0].server)}/api/session`;
   if(!log)console.log("session_url",session_url);
@@ -189,7 +190,8 @@ function is_https_trans_ip(ip) {
   let close_url = ip;
   let temp_str = window.location.protocol;
   let domain = window.location.hostname;
-  console.log(domain);
+  console.log("API server url: ", temp_url);
+  console.log("網址資料:", domain);
   // 使用URL物件解析網址
   console.log("https", temp_str.includes("s"));
   if (temp_str.includes("s")) {

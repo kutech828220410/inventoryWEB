@@ -165,7 +165,7 @@ function set_med_take_info_table() {
                         break;
                     case 4:
                         // 劑量
-                        ppmt_med_td.innerHTML = element.qty;
+                        ppmt_med_td.innerHTML = element.returnQty;
                         break;
                     case 5:
                         // 單位

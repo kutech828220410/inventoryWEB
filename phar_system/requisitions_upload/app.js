@@ -20,8 +20,8 @@ async function load()
   TableName = "medicine_page";
   APIServer = await LoadAPIServer();
   console.log(ServerType, TableName, APIServer);
-  const API01 = serch_APIServer(serverName,"調劑台","API01");
-  const API02 = serch_APIServer(serverName,"調劑台","API02");
+  const API01 = serch_APIServer(serverName,"網頁","API01");
+  const API02 = serch_APIServer(serverName,"網頁","API02");
   console.log("API01",API01);
   console.log("API02",API02);
   check_ip(API01[0].server,API02[0].server);

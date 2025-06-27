@@ -25,6 +25,7 @@ function get_ppmcl_header() {
     ppmcl_h_current_cart_select.classList.add("ppmcl_h_current_cart_select");
     ppmcl_h_current_cart_select.addEventListener("change", async () => {
         Set_main_div_enable(true);
+        last_med_change_list_n = ppmcl_h_current_cart_select.value
         let post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
         console.log(post_data);
         if(current_func == "allocate") {
@@ -166,9 +167,17 @@ async function popup_med_change_list_div_open() {
     }
 
     let ppmcl_h_current_cart_select = document.querySelector(".ppmcl_h_current_cart_select");
-    if(current_cart.hnursta && ppmcl_h_current_cart_select.value != current_cart.hnursta) {
-        ppmcl_h_current_cart_select.value = current_cart.hnursta;
+    if(last_med_change_list_n == "") {
+        if(current_cart.hnursta && ppmcl_h_current_cart_select.value != current_cart.hnursta) {
+            ppmcl_h_current_cart_select.value = current_cart.hnursta;
+        }
+
+        last_med_change_list_n = ppmcl_h_current_cart_select.value
+    } else {
+        last_med_change_list_n = ppmcl_h_current_cart_select.value
     }
+
+    
 
     Set_main_div_enable(true);
     let post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];

@@ -150,6 +150,9 @@ function get_pp_med_list_header() {
             alert("連線超時，請重新點選");
             return;
         }, 6000);
+        
+        last_med_list_n = ppml_h_current_cart_select.value;
+
         med_list_data = await get_all_med_qty(current_pharmacy.phar, ppml_h_current_cart_select.value, "all");
         if(med_list_data.Code != 200) {
             clearTimeout(med_list_timer);
