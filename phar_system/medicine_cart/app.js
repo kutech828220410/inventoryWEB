@@ -135,6 +135,14 @@ function get_header(test_user_data) {
     let header_btn_div = document.createElement("div");
     header_btn_div.classList.add("header_btn_div");
 
+    let header_pages_setting = document.createElement("div");
+    header_pages_setting.classList.add("header_pages_setting");
+    header_pages_setting.classList.add("btn");
+    header_pages_setting.innerHTML = "設定";
+    header_pages_setting.addEventListener("click", () => {
+      location.href = "../pages_setting";
+    });
+
     let header_logout_btn = document.createElement("div");
     header_logout_btn.classList.add("header_logout_btn");
     header_logout_btn.classList.add("btn");
@@ -150,6 +158,7 @@ function get_header(test_user_data) {
       }
     })
 
+    header_btn_div.appendChild(header_pages_setting);
     header_btn_div.appendChild(header_logout_btn);
 
     header.appendChild(header_display_div);
