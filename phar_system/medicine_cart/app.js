@@ -204,15 +204,15 @@ function get_main_ui() {
     
     let ppml_h_current_cart_select = document.querySelector(".ppml_h_current_cart_select");
     let ppdl_h_current_cart_select = document.querySelector(".ppdl_h_current_cart_select");
-    if(last_med_list_n == "") {
-      if(current_cart.hnursta && ppml_h_current_cart_select.value != current_cart.hnursta) {
-          ppml_h_current_cart_select.value = current_cart.hnursta;
-      }
-
-      last_med_list_n = ppml_h_current_cart_select.value;
-    } else {
-      last_med_list_n = ppml_h_current_cart_select.value;
+    if(current_cart.hnursta && ppml_h_current_cart_select.value != current_cart.hnursta) {
+        ppml_h_current_cart_select.value = current_cart.hnursta;
     }
+    // if(last_med_list_n == "") {
+
+    //   last_med_list_n = ppml_h_current_cart_select.value;
+    // } else {
+    //   last_med_list_n = ppml_h_current_cart_select.value;
+    // }
 
     Set_main_div_enable(true);
     clearTimeout(med_list_timer);

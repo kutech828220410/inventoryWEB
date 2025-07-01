@@ -726,6 +726,37 @@ async function get_cart_with_NOdispense(data) {
     }
 }
 
+// 取得未調藥車紀錄
+async function get_cart_with_NOcheck(data) {
+    try {
+        let start_p = performance.now();
+        let temp_doman = transform_api_ip_4433(api_ip);
+        
+        let temp_data = await fetch(`${temp_doman}api/med_cart/get_cart_with_NOcheck`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+        .then((response) => {
+            return response.json();
+        })
+
+        let end_p = performance.now();
+        console.log(end_p - start_p);
+        console.log(temp_data);
+
+        return temp_data;
+    } catch (error) {
+        let err_data = {
+            Code: -200,
+            Result: `網路錯誤：${error}`
+        }
+        return err_data;
+    }
+}
+
 // 取得出院藥車退藥紀錄
 async function get_patient_discharge(data) {
     try {

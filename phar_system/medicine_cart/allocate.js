@@ -2321,7 +2321,13 @@ async function check_cart_dispense() {
     };
 
     console.log("未調劑api check", post_data);
-    let return_data = await get_cart_with_NOdispense(post_data);
+    let return_data;
+
+    if(current_func == "allocate") {
+        return_data = await get_cart_with_NOdispense(post_data);
+    } else {
+        return_data = await get_cart_with_NOcheck(post_data);
+    }
     if(return_data.Code != 200) {
         console.log("未條藥品check api資料錯誤", return_data.Result);
     } else {

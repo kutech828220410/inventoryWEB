@@ -151,7 +151,7 @@ function get_pp_med_list_header() {
             return;
         }, 6000);
         
-        last_med_list_n = ppml_h_current_cart_select.value;
+        // last_med_list_n = ppml_h_current_cart_select.value;
 
         med_list_data = await get_all_med_qty(current_pharmacy.phar, ppml_h_current_cart_select.value, "all");
         if(med_list_data.Code != 200) {
@@ -183,6 +183,30 @@ function get_pp_med_list_header() {
         }
 
         let ppdl_h_current_cart_select = document.querySelector(".ppdl_h_current_cart_select");
+
+        for (let i = 0; i < cart_list.length; i++) {
+            const element = cart_list[i];
+            if(element.hnursta == ppml_h_current_cart_select.value) {
+                current_cart = element;
+                // let temp_logic = get_func_logic();
+                // get_all_select_option_logic(temp_logic);
+                
+                // 根據選取的調劑台解鎖藥品
+                if(current_med_table != "") {
+                    console.log("切換調劑台");
+                    await allocate_display_init("on");
+                } else {
+                    console.log("未選調劑台");
+                    await allocate_display_init();
+                }
+
+                last_current_cart = current_cart;
+                let cart_content = document.querySelector(".cart_select_container > .cart_content");
+                cart_content.innerHTML = ppml_h_current_cart_select.value;
+                break;
+            }
+        }
+
         // 檢測有無退藥
         Set_main_div_enable(true);
         let test_data_arr = await check_cart_dispense();
@@ -195,37 +219,37 @@ function get_pp_med_list_header() {
             console.log("出院處方退藥api",post_data);
             let return_data = await get_patient_discharge(post_data);
             if(return_data.Code != 200) {
-            alert("出院處方資料錯誤", return_data.Result);
-            Set_main_div_enable(false);
+                alert("出院處方資料錯誤", return_data.Result);
+                Set_main_div_enable(false);
             } else {
-            discharged_data = return_data.Data;
-            if(discharged_data.length != 0) {
-                let any_cpoe = false;
-                for (let index = 0; index < discharged_data.length; index++) {
-                const element = discharged_data[index];
-                
-                if(element.cpoe.length > 0) {
-                    any_cpoe = true;
-                    break;
-                }
-                }
+                discharged_data = return_data.Data;
+                if(discharged_data.length != 0) {
+                    let any_cpoe = false;
+                    for (let index = 0; index < discharged_data.length; index++) {
+                    const element = discharged_data[index];
+                    
+                    if(element.cpoe.length > 0) {
+                        any_cpoe = true;
+                        break;
+                    }
+                    }
 
-                if(any_cpoe) {
-                alert("有出院退藥資料，請先處理");
-                clearTimeout(med_list_timer);
-    
-                ppdl_h_current_cart_select.value = ppml_h_current_cart_select.value;
-    
-                set_discharged_data_display();
-                Set_main_div_enable(false);
-    
-                popup_med_list_div_close();
-                popup_discharged_list_div_open();
-                } else {
-                Set_main_div_enable(false);
+                    if(any_cpoe) {
+                        alert("有出院退藥資料，請先處理");
+                        clearTimeout(med_list_timer);
+            
+                        ppdl_h_current_cart_select.value = ppml_h_current_cart_select.value;
+            
+                        set_discharged_data_display();
+                        Set_main_div_enable(false);
+            
+                        popup_med_list_div_close();
+                        popup_discharged_list_div_open();
+                    } else {
+                        Set_main_div_enable(false);
+                    }
                 }
             }
-            }        
         } else {
             Set_main_div_enable(false);
         }

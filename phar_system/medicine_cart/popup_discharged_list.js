@@ -44,6 +44,29 @@ function get_ppdl_header() {
             discharged_data = return_data.Data;
             set_discharged_data_display();
         }
+
+        for (let i = 0; i < cart_list.length; i++) {
+            const element = cart_list[i];
+            if(element.hnursta == ppdl_h_current_cart_select.value) {
+                current_cart = element;
+                // let temp_logic = get_func_logic();
+                // get_all_select_option_logic(temp_logic);
+                
+                // 根據選取的調劑台解鎖藥品
+                if(current_med_table != "") {
+                    console.log("切換調劑台");
+                    await allocate_display_init("on");
+                } else {
+                    console.log("未選調劑台");
+                    await allocate_display_init();
+                }
+
+                last_current_cart = current_cart;
+                let cart_content = document.querySelector(".cart_select_container > .cart_content");
+                cart_content.innerHTML = ppdl_h_current_cart_select.value;
+                break;
+            }
+        }
         Set_main_div_enable(false);
     });
 

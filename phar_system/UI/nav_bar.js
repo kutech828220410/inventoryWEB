@@ -85,14 +85,14 @@ let html_pages = [
                     {
                         html_name: "med_request",
                         html_ctName: "申領核撥",
-                        html_url: "../../phar_system/med_request_old",
+                        html_url: "../../phar_system/med_request",
                         icon_url: "../../phar_system/image/icon/research.png",
                         icon_big_url: "../../phar_system/image/icon/research.png"
                     },
                     {
                         html_name: "med_allocate",
                         html_ctName: "撥補核撥",
-                        html_url: "../../phar_system/med_allocate_old",
+                        html_url: "../../phar_system/med_allocate",
                         icon_url: "../../phar_system/image/icon/assortment.png",
                         icon_big_url: "../../phar_system/image/list.png"
                     },
