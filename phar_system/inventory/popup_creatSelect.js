@@ -25,53 +25,11 @@ async function popup_creatSelect_load()
     popup_creatSelect_div.Set_BackgroundOpacity(1);
     popup_creatSelect_div.Clear();
 
+    review_data = popup_creatSelect_creat.Data.filter((item) => {
+       return item.IC_SN.includes("REV");
+    })
 
-
-    let temp_post = {Data:{}}
-    review_data = await get_all_inv_combinelist(temp_post);
-    if(review_data.Code != 200) alert("覆盤單取得失敗");
-    review_data = review_data.Data;
-    console.log("合併單清單", review_data);
-
-    // 計算今天與一個月前的時間
-    const today = new Date('2025-06-18T23:59:59');
-    const oneMonthAgo = new Date(today);
-    oneMonthAgo.setMonth(today.getMonth() - 1);
-
-    // 過濾近一個月的資料
-    review_data = review_data.filter(item => {
-        const ctTimeStr = item.CT_TIME;
-        if (!ctTimeStr) return false;
-
-        const ctTime = new Date(ctTimeStr.replace(/\//g, '-')); // 轉換格式 "2025/06/18 14:39:29" → "2025-06-18 14:39:29"
-        return ctTime >= oneMonthAgo && ctTime <= today;
-    });
-
-    console.log("過濾一個月合併單", review_data);
-    let new_filter_lock_list_arr = [];
-
-    for (let i = 0; i < review_data.length; i++) {
-        const element = review_data[i];
-        let check_lock = true;
-        
-        for (let x = 0; x < element["records_Ary"].length; x++) {
-            const item = element["records_Ary"][x];
-            let temp_return = await get_creat_Islocked_by_IC_SN(item.SN);
-            // console.log(temp_return);
-
-            if(temp_return.Data != "鎖定") {
-                check_lock = false;
-                break;
-            }
-        }
-
-        if(check_lock) new_filter_lock_list_arr.push(element);
-    }
-
-    review_data = new_filter_lock_list_arr;
-    console.log("過濾合併單皆為鎖定單據", review_data);
-
-    
+    console.log("覆盤單清單", review_data);
 
     const title = popup_creatSelect_title_init();
     const content = popup_creatSelect_content_init();
@@ -217,10 +175,24 @@ function popup_creatSelect_content_init()
             
             let pp_review_IC_SN = document.createElement("div");
             pp_review_IC_SN.classList.add("pp_review_IC_SN");
-            pp_review_IC_SN.id = `inv_sn_${element.INV_SN}`;
-            pp_review_IC_SN.innerHTML = element.INV_NAME
-            pp_review_IC_SN.setAttribute("IC_SN",element.INV_SN);
-            pp_review_IC_SN.setAttribute("IC_NAME",element.INV_NAME);
+            pp_review_IC_SN.id = `${element.IC_SN}`;
+            pp_review_IC_SN.innerHTML = element.IC_NAME
+            pp_review_IC_SN.setAttribute("IC_SN",element.IC_SN);
+            pp_review_IC_SN.setAttribute("IC_NAME",element.IC_NAME);
+
+            pp_review_IC_SN.addEventListener('click', async () => {
+                const IC_SN = pp_review_IC_SN.getAttribute("IC_SN");
+                console.log("IC_SN",IC_SN);
+                sessionStorage.setItem('IC_SN', IC_SN);
+                for(var i = 0 ; i < popup_creatSelect_finishedEvent.length ; i++)
+                {
+                    if(typeof popup_creatSelect_finishedEvent[i] == "function") 
+                    {
+                        await popup_creatSelect_finishedEvent[i]();
+                    }
+                }
+                popup_creatSelect_div.Close();
+            });
             
             pp_review_button_container.appendChild(pp_review_IC_SN);
         }

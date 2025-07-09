@@ -203,6 +203,7 @@ async function get_patient_with_NOdispense(data) {
         console.log("藥品床好分開");
     }
 
+    console.log("未調藥品資料API", fetch_url);
     let temp_data = await fetch(fetch_url, {
         method: "POST",
         headers: {
@@ -234,7 +235,7 @@ async function get_patient_with_NOcheck(data) {
 
     if(temp_check_isArray) {
         if(page_setting_params.undispensed_merge_same_bed.value == "True") {
-            fetch_url = `${temp_doman}api/med_cart/get_patient_with_NOdispens_summary`;
+            fetch_url = `${temp_doman}api/med_cart/get_patient_with_NOcheck_summary`;
             console.log("藥品床好合併");
         } else {
             fetch_url = `${temp_doman}api/med_cart/get_patient_with_NOcheck`;
@@ -245,6 +246,7 @@ async function get_patient_with_NOcheck(data) {
             console.log("藥品床好分開");
     }
 
+    console.log("未調藥品資料API", fetch_url);
     let temp_data = await fetch(fetch_url, {
         method: "POST",
         headers: {

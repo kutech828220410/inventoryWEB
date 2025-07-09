@@ -71,10 +71,16 @@ function get_ppmcl_header() {
                 // 根據選取的調劑台解鎖藥品
                 if(current_med_table != "") {
                     console.log("切換調劑台");
+                    patient_bed_index = -1;
                     await allocate_display_init("on");
                 } else {
                     console.log("未選調劑台");
+                    patient_bed_index = -1;
                     await allocate_display_init();
+                }
+
+                if(med_cart_beds_data[patient_bed_index].bednum != "1" && med_cart_beds_data.length != 0) {
+                    alert(`目前為第${med_cart_beds_data[patient_bed_index].bednum}床`);
                 }
 
                 last_current_cart = current_cart;
@@ -212,6 +218,7 @@ async function popup_med_change_list_div_open() {
         //     return e.cpoe_change_status != "";
         // });
     } else {
+        console.log("==-=-=-=-=-=-=-=-==", "這邊撈覆核");
         med_change_data = await get_patient_with_NOcheck(post_data);
         med_change_data = med_change_data.Data;
     }

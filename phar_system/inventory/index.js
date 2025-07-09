@@ -55,7 +55,14 @@ setInterval(async function()
         sessionStorage.removeItem("IC_SN");
         location.reload();
     }
+
+    
+    let userID = sessionStorage.getItem("loggedID");
+    let userName = sessionStorage.getItem("loggedName");
+    let return_data = await report_member("盤點操作", current_IC_SN, userID, userName);
+    console.log("===== 人員回報 ======>",return_data);
   }
+
   
 }, 5000);
 

@@ -52,17 +52,36 @@ async function confirm_popup_upload()
         if (confirmResult)
         {     
             Set_main_div_enable(true);
-            console.log("test01");
+            let temp_url = api_ip + "api/inspection/excel_upload";
             const API_inspection_excel_upload = serch_APIServer("DS01","藥庫","API_inspection_excel_upload");
             // console.log(API_inspection_excel_upload[0].server);
             // console.log(IC_NAME_input_popup.value);
             // console.log(PON_input_popup.value);
             // console.log(get_logedName());
+            
+            
+            // temp_url[0].server
+            // 判斷目前是否在 HTTPS 協議下
+            // console.log("原先API IP", temp_url);
+
+            if (API_inspection_excel_upload[0].server) {
+                if(window.location.protocol === "https:") {
+                    API_inspection_excel_upload[0].server = temp_url
+                    console.log("https協定下轉換", temp_url);
+                } else {
+                    console.log("轉換API URL至驗收上傳", API_inspection_excel_upload[0].server);
+                }
+            } else {
+                API_inspection_excel_upload[0].server = temp_url;
+                console.log("抓不到轉換資料，啟用原先API url", temp_url);
+            }
+
             await excel_upload(upload_input.files[0],IC_NAME_input_popup.value,PON_input_popup.value,get_logedName(), API_inspection_excel_upload);
             Set_main_div_enable(false);
             hide_popup_upload();
             Set_main_div_enable(false);
-            // location.reload();
+            console.log("種新整理畫面");
+            location.reload();
         }
       
     

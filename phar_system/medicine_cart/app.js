@@ -143,6 +143,14 @@ function get_header(test_user_data) {
       location.href = "../pages_setting";
     });
 
+    let header_med_cart_report = document.createElement("div");
+    header_med_cart_report.classList.add("header_med_cart_report");
+    header_med_cart_report.classList.add("btn");
+    header_med_cart_report.innerHTML = "報表";
+    header_med_cart_report.addEventListener("click", () => {
+      location.href = "../medicine_cart/order_record/";
+    });
+
     let header_logout_btn = document.createElement("div");
     header_logout_btn.classList.add("header_logout_btn");
     header_logout_btn.classList.add("btn");
@@ -158,6 +166,7 @@ function get_header(test_user_data) {
       }
     })
 
+    header_btn_div.appendChild(header_med_cart_report);
     header_btn_div.appendChild(header_pages_setting);
     header_btn_div.appendChild(header_logout_btn);
 
