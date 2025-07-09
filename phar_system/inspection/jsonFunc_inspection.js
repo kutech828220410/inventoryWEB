@@ -392,6 +392,33 @@ async function sub_contents_delete_by_GUID(_GUID, Master_GUID)
   await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
   return response;
 }
+async function check_get_pic_api(GUID) {
+    let start_p = performance.now();
+    try {        
+        console.log(api_ip, "api/inspection/content_get_by_content_GUID");
+        let temp_data = await fetch(`${api_ip}api/inspection/content_get_by_content_GUID`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({"Data":{
+                "GUID": GUID
+            }}),
+        })
+        .then((response) => {
+            return response.json();
+        });
+
+        let end_p = performance.now();
+        console.log(end_p - start_p);
+        console.log(temp_data);
+
+        return temp_data;
+    } catch (error) {
+        console.error(error);
+        return ""
+    }
+}   
 async function download_excel_by_IC_SN(IC_SN)
 {
   const post_data = 

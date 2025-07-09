@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  <title>驗收照片</title>
+  <link rel="stylesheet" href="picture.css">
+  <link rel="icon" href="../favicon.ico" >
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="192x192">
+  <link rel="icon" type="image/png" sizes="192x192" href="android-touch-icon.png">
+  <script></script>
+</head>
+<body>
+    <div class="set_pic_container">
+        <img class="pic_img" src="" alt="">
+    </div>
+</body>
+<script>
+    let API_URL;
+    window.addEventListener("load", async () => {
+        await  get_config();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        console.log(urlParams);
+        const guid = urlParams.get('GUID');
+        console.log(guid); 
+
+        let return_data = await get_pic_api(guid);
+
+        let pic_img = document.querySelector(".pic_img");
+        pic_img.src = return_data.Data.textVision[0].base64;
+    });
+
+    async function get_config() {
+        try {
+            const response = await fetch('../config.txt');
+            const config = await response.json();
+            API_URL = config.domain;
+        } catch (error) {
+            console.error('Failed to load config:', error);
+            throw new Error('Failed to load configuration');
+        }
+    }
+
+    async function get_pic_api(GUID) {
+        let start_p = performance.now();
+        try {        
+            console.log(API_URL, "api/inspection/content_get_by_content_GUID");
+            let temp_data = await fetch(`${API_URL}/api/inspection/content_get_by_content_GUID`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({"Data":{
+                    "GUID": GUID
+                }}),
+            })
+            .then((response) => {
+                return response.json();
+            });
+    
+            let end_p = performance.now();
+            console.log(end_p - start_p);
+            console.log(temp_data);
+    
+            return temp_data;
+        } catch (error) {
+            console.error(error);
+            return ""
+        }
+    }   
+</script>
+</html>

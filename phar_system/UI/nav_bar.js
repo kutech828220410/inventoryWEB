@@ -42,6 +42,13 @@ let html_pages = [
                         icon_url: "../../phar_system/image/icon/staff_icon.png",
                         icon_big_url: "../../phar_system/image/icon/staff_big_icon.png"
                     },
+                    {
+                        html_name: "refrigerator_inventory",
+                        html_ctName: "冰箱庫存",
+                        html_url: "../../phar_system/refrigerator_inventory",
+                        icon_url: "../../phar_system/image/icon/refrigerator.png",
+                        icon_big_url: "../../phar_system/image/icon/refrigerator.png"
+                    },
                     // {
                     //     html_name: "pages_setting",
                     //     html_ctName: "頁面設定",

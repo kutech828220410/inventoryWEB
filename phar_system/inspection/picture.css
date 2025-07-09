@@ -1,0 +1,22 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    background-color: black;
+}
+
+.set_pic_container {
+    width: 100vw;
+    width: 100svw;
+    height: 100vh;
+    height: 100svh;
+    display: flex;
+    justify-content: center;
+}
+.pic_img {
+    max-height: 100%;
+    object-fit: cover;
+    display: block;
+}

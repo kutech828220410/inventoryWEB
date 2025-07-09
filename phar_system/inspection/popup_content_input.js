@@ -156,10 +156,27 @@ function get_popup_input()
    
     return popup_input_div;
 }
+async function get_pic_func(e) {
+    console.log(e.target.getAttribute("GUID"));
+
+    let return_data = await check_get_pic_api(e.target.getAttribute("GUID"));
+    return_data = return_data.Data
+    if(return_data.textVision && return_data.textVision[0] && return_data.textVision[0].base64) {
+        const url = `./picture.html?GUID=${e.target.getAttribute("GUID")}`;
+        window.open(url, '_blank');
+    } else {
+        alert("查無驗收照片");
+    }
+}
 function edit_title_popup_input(Content)
 {
     console.log(Content);
     // set_light_on(Content.CODE)
+    let med_pic_check_btn = document.querySelector(".med_pic_check_btn");
+    med_pic_check_btn.setAttribute("GUID", Content.GUID);
+    med_pic_check_btn.removeEventListener("click", get_pic_func);
+    med_pic_check_btn.addEventListener("click", get_pic_func);
+
     let undo_SVG = document.querySelector(".undo_div_popup_input")
     undo_SVG.onclick = () => {
         // set_light_off(Content.CODE)
@@ -357,17 +374,39 @@ function get_title_popup_input()
     med_CODE_SKDIACODE_block.appendChild(med_end_PKG_text);
     med_CODE_SKDIACODE_block.appendChild(med_end_qty_for_count);
 
+    let med_name_title_container = document.createElement("div");
+    med_name_title_container.style.display = "flex";
+    med_name_title_container.style.justifyContent = "space-between";
+    med_name_title_container.style.alignItems = "center";
+    med_name_title_container.style.width = "100%";
+
+    let med_name_text_container = document.createElement("div");
+
+    let med_pic_check_btn = document.createElement("div");
+    med_pic_check_btn.style.padding = "6px 12px";
+    med_pic_check_btn.style.cursor = "pointer";
+    med_pic_check_btn.style.borderRadius = "5px";
+    med_pic_check_btn.style.backgroundColor = "black";
+    med_pic_check_btn.style.color = "white";
+    med_pic_check_btn.style.textAlign = "center";
+    med_pic_check_btn.innerHTML = "查看";
+    med_pic_check_btn.classList.add("med_pic_check_btn");
+
+    med_name_title_container.appendChild(med_name_text_container);
+    med_name_title_container.appendChild(med_pic_check_btn);
+
     const med_eng_name_text = document.createElement('div');
     My_Div.Init(med_eng_name_text,'med_eng_name_text_popup_input','med_eng_name_text_popup_input', '100%',"",'');
     My_Div.Set_Text(med_eng_name_text ,"(英) : XXXXXXXXXXXXXXXXX" , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","#c88114");
-    med_eng_name_text.style.marginLeft = "5px";
     med_eng_name_text.style.marginBottom = "5px";
 
     const med_cht_name_text = document.createElement('div');
     My_Div.Init(med_cht_name_text,'med_cht_name_text_popup_input','med_cht_name_text_popup_input', '100%',"");
     My_Div.Set_Text(med_cht_name_text ,"(中) : XXXXXXXXXXXXXXXXX" , TextAlignEnum.LEFT , "16px", true,"微軟正黑體","#c88114");
-    med_cht_name_text.style.marginLeft = "5px";
     med_cht_name_text.style.marginBottom = "5px";
+
+    med_name_text_container.appendChild(med_eng_name_text);
+    med_name_text_container.appendChild(med_cht_name_text);
 
     const med_pon_text = document.createElement('div');
     My_Div.Init(med_pon_text,'med_pon_text','med_pon_text', '100%',"");
@@ -375,9 +414,7 @@ function get_title_popup_input()
     med_pon_text.style.marginLeft = "5px";
     med_pon_text.style.marginBottom = "5px";
 
-   
-    med_info.appendChild(med_eng_name_text);
-    med_info.appendChild(med_cht_name_text);
+    med_info.appendChild(med_name_title_container);
     med_info.appendChild(med_pon_text);
     med_info.appendChild(med_CODE_SKDIACODE_block);
 
@@ -740,22 +777,22 @@ function get_row_popup_input(Sub_content)
   
 
     row.style.margin = "5px 5px 5px 5px";
+    row.style.padding = "4px";
     row.style.border  = '1px solid';
     row.style.borderRadius = '3px 2px 3px 2px';
     row.style.boxShadow = '1px 1px 2px 2px black';
-    row.style.paddingTop = "2px";
     return row;
 }
 function get_block_popup_input(Sub_content)
 {
     const M_block = document.createElement('div');
     My_Div.Init(M_block, 'M_block_popup_input','M_block_popup_input', '100%','');
-    My_Div.Set_Block(M_block, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.LEFT);
+    My_Div.Set_Block(M_block, DisplayEnum.FLEX, FlexDirectionEnum.ROW);
+    M_block.style.justifyContent = "space-between";
 
     const block1 = document.createElement('div');
-    My_Div.Init(block1, 'block1_popup_input','block1_popup_input', '125px','');
+    My_Div.Init(block1, 'block1_popup_input','block1_popup_input', '154px','');
     My_Div.Set_Block(block1, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.LEFT);
-    block1.style.marginLeft = "10px";
 
     const block1_Date_popup_input = document.createElement('div');
     My_Div.Init(block1_Date_popup_input, 'block1_Date_popup_input','block1_Date_popup_input', '100%',"");
@@ -781,11 +818,9 @@ function get_block_popup_input(Sub_content)
     M_block.appendChild(block1);
 
     const block2 = document.createElement('div');
-    My_Div.Init(block2, 'block2_popup_input','block2_popup_input', '100px','40px','lightgray');
+    My_Div.Init(block2, 'block2_popup_input','block2_popup_input', '78px','40px','lightgray');
     My_Div.Set_Block(block2, DisplayEnum.FLEX, FlexDirectionEnum.COLUMN, JustifyContentEnum.LEFT);
     block2.style.border = '1px solid black';
-    block2.style.marginLeft = '10px';
-    block2.style.marginTop = '2px';
     block2.style.borderRadius = "5px";
 
     const block2_Value_text_popup_input = document.createElement('div');
@@ -803,15 +838,11 @@ function get_block_popup_input(Sub_content)
     deleteBtn_popup_input.className = "almcontrol_btn";
     My_Div.Init(deleteBtn_popup_input, 'almcontrol_btn','deleteBtn_popup_input', '', '40px', '');
     My_Div.Set_Text(deleteBtn_popup_input ,"刪除" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","white");
-    deleteBtn_popup_input.style.marginLeft = "10px";
-    deleteBtn_popup_input.style.marginTop = "3px";
     deleteBtn_popup_input.addEventListener("click", function()
     {     
         delete_row_popup_input(Sub_content.GUID,Sub_content.Master_GUID);
     });
     M_block.appendChild(deleteBtn_popup_input);
-
-
 
     return M_block;
 }
