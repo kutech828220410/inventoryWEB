@@ -565,11 +565,13 @@ function set_p_bed_info_container() {
     // 鼻胃管
     let pbsc_ngtube = document.createElement("div");
     pbsc_ngtube.classList.add("pbsc_info");
+    pbsc_ngtube.classList.add("text_red");
     if(current_p_bed_data.ngtube == "Y") pbsc_ngtube.innerHTML = `鼻胃管`;
 
     // 管灌餐
     let pbsc_tube = document.createElement("div");
     pbsc_tube.classList.add("pbsc_info");
+    pbsc_tube.classList.add("text_red");
     if(current_p_bed_data.tube == "Y") pbsc_tube.innerHTML = `管灌餐`;
 
     div_grid_4.appendChild(pbsc_ngtube);

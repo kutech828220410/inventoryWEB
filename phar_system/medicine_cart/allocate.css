@@ -543,6 +543,9 @@
     /* text-decoration: underline; */
     /* border: 5px solid #000000; */
 }
+.text_red {
+    color: rgb(229, 61, 61);
+}
 
 @media screen and (max-width: 1200px) {
     .p_bed_header {

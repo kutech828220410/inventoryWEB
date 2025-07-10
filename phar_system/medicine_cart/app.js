@@ -1013,6 +1013,8 @@ async function allocate_func() {
   let cart_select_container = document.querySelector(".cart_select_container");
   let med_table_select_container = document.querySelector(".med_table_select_container");
   let func_select_container = document.querySelector(".func_select_container");
+  let ppmcl_btn = document.querySelector(".ppmcl_btn");
+  let ppmcl_h_title_content = document.querySelector(".ppmcl_h_title_content");
 
   let cart_content = document.querySelector(".cart_content");
   let med_table_content = document.querySelector(".med_table_content");
@@ -1021,6 +1023,8 @@ async function allocate_func() {
     div_event_click_tri_able(cart_select_container);
     div_event_click_cir_able(med_table_select_container);
     div_event_click_tri_able(func_select_container);
+    ppmcl_btn.innerHTML = "未調藥品";
+    ppmcl_h_title_content.innerHTML = "未調藥品";
 
     cart_content.addEventListener("click", open_cart_list);
     med_table_content.addEventListener("click", open_med_table_list);
@@ -1038,6 +1042,8 @@ async function allocate_func() {
     div_event_click_cir_able(cart_select_container);
     div_event_click_cir_disable(med_table_select_container);
     div_event_click_tri_able(func_select_container);
+    ppmcl_btn.innerHTML = "未核藥品";
+    ppmcl_h_title_content.innerHTML = "未核藥品";
 
     cart_content.addEventListener("click", open_cart_list);
     med_table_content.removeEventListener("click", open_med_table_list);

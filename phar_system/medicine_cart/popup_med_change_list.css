@@ -150,7 +150,7 @@
     font-weight: 600;
 }
 .ppmcl_cpoe_med_check_btn {
-    min-width: 82px;
+    min-width: 72px;
     text-align: center;
 }
 
@@ -162,6 +162,17 @@
     font-size: 20px;
     text-align: center;
     font-weight: 600;
+}
+.ppmcl_light_btn {
+    min-width: 72px;
+    border-radius: 5px;
+    text-align: center;
+    padding: 4px 18px;
+    background-color: rgb(62, 177, 0);
+    transition: all 0.2s;
+    cursor: pointer;
+    color: #ffffff;
+    margin: 4px 4px 12px 4px;
 }
 
 @media screen and (max-width: 1200px) {

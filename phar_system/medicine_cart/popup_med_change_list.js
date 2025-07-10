@@ -828,6 +828,21 @@ async function set_ppmcl_main_info() {
                 if(check_more_arr.length > 1) {
                     ppmcl_cpoe_container.setAttribute("check_more", "Y");
                 }
+
+                let ppmcl_light_container = document.createElement("div");
+                ppmcl_light_container.classList.add("ppmcl_light_container");
+
+                let ppmcl_light_btn = document.createElement("div");
+                ppmcl_light_btn.classList.add("ppmcl_light_btn");
+                ppmcl_light_btn.innerHTML = "亮燈";
+                ppmcl_light_btn.addEventListener("click", async () => {
+                    let checkedRadio = document.querySelector('input[name="ppmcl_filter_med_table_input"]:checked');
+                    if(checkedRadio.value != "all") {
+                        await light_on_func(item.code, checkedRadio.value, "調劑台");
+                    } else {
+                        alert("請彈窗上方選擇調劑台");
+                    }
+                });
     
                 let ppmcl_cpoe_med_info_container = document.createElement("div");
                 ppmcl_cpoe_med_info_container.classList.add("ppmcl_cpoe_med_info_container");
@@ -995,9 +1010,11 @@ async function set_ppmcl_main_info() {
                     }
                 }
 
+                ppmcl_cpoe_right_container.appendChild(ppmcl_light_btn);
                 ppmcl_cpoe_right_container.appendChild(ppmcl_cpoe_status);
                 ppmcl_cpoe_right_container.appendChild(ppmcl_cpoe_med_check_btn);
     
+                // ppmcl_cpoe_container.appendChild(ppmcl_light_container);
                 ppmcl_cpoe_container.appendChild(ppmcl_cpoe_med_info_container);
                 ppmcl_cpoe_container.appendChild(ppmcl_cpoe_right_container);
     

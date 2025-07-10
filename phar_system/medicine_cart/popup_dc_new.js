@@ -83,7 +83,7 @@ function popup_dc_new_div_open() {
 function set_dc_new_info_table() {
     let bed_name = dc_new_p_bed_data[0].bednum;
     let med_array = dc_new_p_bed_data[0].cpoe_change;
-    let table_th_arr = ["序號", "藥名", "（中）", "DC/NEW", "數量", "單位", "頻次", "更新時間"];
+    let table_th_arr = ["序號", "藥名", "（中）", "DC/NEW", "數量", "頻次", "更新時間"];
 
     let ppdn_main_container = document.querySelector(".ppdn_main_container");
     ppdn_main_container.innerHTML = "";
@@ -126,7 +126,7 @@ function set_dc_new_info_table() {
                 ppdn_med_td_container.classList.add("bgc_light");
             }
     
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i < 7; i++) {
                 let ppdn_med_td = document.createElement("th");
                 ppdn_med_td.classList.add(`td_${i}`);
                 ppdn_med_td.classList.add("ppdn_med_td");
@@ -158,13 +158,9 @@ function set_dc_new_info_table() {
                         break;
                     case 5:
                         // 單位
-                        ppdn_med_td.innerHTML = element.dunit;
-                        break;
-                    case 6:
-                        // 單位
                         ppdn_med_td.innerHTML = element.freqn;
                         break;
-                    case 7:
+                    case 6:
                         // 單位
                         ppdn_med_td.innerHTML = element.update_time;
                         break;
