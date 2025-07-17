@@ -124,6 +124,10 @@
     grid-template-columns: 49% 49%;
     justify-content: space-between;
 }
+.pbsc_info_bold_font_big {
+    font-weight: bold;
+    font-size: 18px;
+}
 
 /* 給整個表格加上邊框線 */
 .pbict_table {

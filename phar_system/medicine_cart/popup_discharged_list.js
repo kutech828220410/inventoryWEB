@@ -489,7 +489,15 @@ function ppdl_set_med_table_filter_radio() {
     all_input.type = "radio";
     all_input.value = "all";
     all_input.id = "ppdl_filter_med_table_all";
-    all_input.checked = true;
+    if(page_setting_params.default_dps_discharge) {
+        if(page_setting_params.default_dps_discharge.value) {
+            let check_str = page_setting_params.default_dps_discharge.value;
+            let hasMatch = med_table.some(item => item.name == check_str);
+            if(!hasMatch) {
+                all_input.checked = true;
+            }
+        }
+    }
     // all_input.addEventListener("change", async (e) => {
     //     let ppml_main_container = document.querySelector(".ppml_main_container");
     //     med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, e.target.value);
@@ -526,6 +534,15 @@ function ppdl_set_med_table_filter_radio() {
         //     await set_pp_med_list_display();
         //     ppml_main_container.scrollTop = 0;
         // });
+        if(page_setting_params.default_dps_discharge) {
+            if(page_setting_params.default_dps_discharge.value) {
+                let check_str = page_setting_params.default_dps_discharge.value;
+                let hasMatch = med_table.some(item => item.name == check_str);
+                if(hasMatch) {
+                    input.checked = true;
+                }
+            }
+        }
 
         let label = document.createElement("label");
         label.classList.add("ppdl_filter_med_label");

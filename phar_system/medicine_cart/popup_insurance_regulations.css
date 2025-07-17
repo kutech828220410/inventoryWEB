@@ -1,5 +1,13 @@
 .popup_insurance_regulations_div {
-    width: 360px;
+    width: 92vw;
+    width: 92svw;
+    height: 92vh;
+    height: 92svh;
+    max-width: 800px;
+    display: flex !important;
+    justify-content: start !important;
+    justify-content: flex-start !important;
+    flex-direction: column;
 }
 
 .ppir_header_container {
@@ -27,10 +35,19 @@
     top: 0px;
     right: 0px;
 }
+.ppir_main_container {
+    flex-grow: 1;
+    width: 100%;
+    display: flex;
+}
+.ppir_med_info_container {
+    flex-grow: 1;
+    width: 100%;
+    display: flex;
+}
 .ppir_main_content {
-    height: 400px;
+    flex-grow: 1;
     overflow-y: auto;
-    padding-right: 3px;
 }
 .ppir_footer_container {
     display: flex;

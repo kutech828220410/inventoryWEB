@@ -463,7 +463,7 @@ function get_p_bed_header() {
     return p_bed_header;
 }
 function set_p_bed_info_container() {
-    // 病床資料
+    // 病床資
     let p_bed_info_container = document.createElement("div");
     p_bed_info_container.classList.add("p_bed_info_container");
 
@@ -500,6 +500,11 @@ function set_p_bed_info_container() {
     // 健保類別
     let pbsc_pfinc = document.createElement("div");
     pbsc_pfinc.classList.add("pbsc_info");
+    if(page_setting_params.main_indentity_bold && page_setting_params.main_indentity_bold.value) {
+        if(page_setting_params.main_indentity_bold.value == "True") {
+            pbsc_pfinc.classList.add("pbsc_info_bold_font_big");
+        }
+    }
     pbsc_pfinc.innerHTML = `${current_p_bed_data.pfinc}`;
 
     div_grid_1.appendChild(pbsc_pfinc);
@@ -522,7 +527,6 @@ function set_p_bed_info_container() {
     pbsc_age.innerHTML = `${current_p_bed_data.age}`;
 
     div_grid_2.appendChild(pbsc_age);
-
     // 科別
     let pbsc_psectc = document.createElement("div");
     pbsc_psectc.classList.add("pbsc_info");
@@ -549,7 +553,7 @@ function set_p_bed_info_container() {
 
     div_grid_3.appendChild(pbsc_hight);
 
-    // 體表面積
+    // 體表面
     let pbsc_pbbsa = document.createElement("div");
     pbsc_pbbsa.classList.add("pbsc_info");
     // pbsc_pbbsa.innerHTML = `BSA：${+current_p_bed_data.pbbsa}㎡`;
@@ -1504,10 +1508,10 @@ function set_pbm_main_container() {
                     med_detail_info_div.addEventListener("click", () => {
                         console.log(element.med_cloud);
                         if(element.med_cloud.length == 0) {
-                            set_ppp_info_func("");
+                            set_ppp_info_func("", "");
                             popup_prescription_info_div_open();
                         } else {
-                            set_ppp_info_func(element.med_cloud[0]);
+                            set_ppp_info_func(element.med_cloud[0], element.medprice[0]);
                             popup_prescription_info_div_open();
                         }
                     })

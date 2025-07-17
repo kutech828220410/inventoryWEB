@@ -3,8 +3,6 @@ var popup_login_finishedEvent = [];
 var popup_login_session_login;
 async function popup_login_load()
 { 
-    console.log("aqwerqwer");
-
     const serverName ="";
     const serverType = "網頁";
     APIServer = await LoadAPIServer();
@@ -153,14 +151,15 @@ async function popup_login_content_submit_button_click(event)
     }
     // 恢復按鈕為可用狀態
     sessionStorage.setItem("login_json",JSON.stringify(session_login.Data));
-    sessionStorage.setItem('GUuser', session_login.Data.GUuser);
-    sessionStorage.setItem('loggeduser', session_login.Data.user);
+    sessionStorage.setItem('GUuser', session_login.Data.ID);
+    sessionStorage.setItem('loggeduser', session_login.Data.ID);
     sessionStorage.setItem('loggedPassword', session_login.Data.Password);
     sessionStorage.setItem('loggedName', session_login.Data.Name); 
     sessionStorage.setItem('loggedEmployer', session_login.Data.Employer);
     sessionStorage.setItem('loggedlevel', session_login.Data.level);
     sessionStorage.setItem('loggedTime', session_login.Data.loginTime);
     sessionStorage.setItem('color', session_login.Data.color);
+    sessionStorage.setItem('user_session', JSON.stringify(session_login.Data));
     const greeting = `${session_login.Data.Name} 登入成功!`;
     alert(greeting);
 

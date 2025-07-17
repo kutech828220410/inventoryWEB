@@ -801,7 +801,27 @@ async function set_ppmcl_main_info() {
             }
         });
 
-        ppmcl_bed_name_container.appendChild(ppmcl_bed_name_title);
+        let ppmcl_bed_name_info_container = document.createElement("div");
+        ppmcl_bed_name_info_container.classList.add("ppmcl_bed_name_info_container");
+
+        let ppmcl_bed_name_old_bed = document.createElement("div");
+        ppmcl_bed_name_old_bed.classList.add("ppmcl_bed_name_old_bed");
+        if(element.bedStatus) {
+            if (Object.keys(element.bedStatus).length !== 0) {
+                ppmcl_bed_name_old_bed.innerHTML = `從 ${element.bedStatus.bed_old} 轉入`;
+            }
+        } else {
+            console.log("沒有收到轉出床位資料，element.bedStatus：", element.bedStatus);
+        }
+
+        ppmcl_bed_name_info_container.appendChild(ppmcl_bed_name_title);
+        if(element.bedStatus) {
+            if (Object.keys(element.bedStatus).length !== 0) {
+                ppmcl_bed_name_info_container.appendChild(ppmcl_bed_name_old_bed);
+            }
+        }
+
+        ppmcl_bed_name_container.appendChild(ppmcl_bed_name_info_container);
         ppmcl_bed_name_container.appendChild(ppmcl_bed_name_all_btn);
 
         let ppmcl_bed_card = document.createElement("div");
@@ -865,21 +885,81 @@ async function set_ppmcl_main_info() {
                 let ppmcl_cpoe_storage = document.createElement("div");
                 ppmcl_cpoe_storage.classList.add("ppmcl_cpoe_storage");
                 ppmcl_cpoe_storage.innerHTML = `儲位：${item.store_position}`;
+
+                let ppmcl_cpoe_ordseq = document.createElement("div");
+                ppmcl_cpoe_ordseq.classList.add("ppmcl_cpoe_ordseq");
+                ppmcl_cpoe_ordseq.innerHTML = `序號：${item.ordseq}`;
+
+                let ppmcl_cpoe_dosage = document.createElement("div");
+                ppmcl_cpoe_dosage.classList.add("ppmcl_cpoe_dosage");
+                ppmcl_cpoe_dosage.innerHTML = `劑量：${item.dosage}`;
+
+                let ppmcl_cpoe_freqn = document.createElement("div");
+                ppmcl_cpoe_freqn.classList.add("ppmcl_cpoe_freqn");
+                ppmcl_cpoe_freqn.innerHTML = `頻次：${item.freqn}`;
+
+                let ppmcl_cpoe_route = document.createElement("div");
+                ppmcl_cpoe_route.classList.add("ppmcl_cpoe_route");
+                ppmcl_cpoe_route.innerHTML = `途徑：${item.route}`;
+
+                let ppmcl_cpoe_code = document.createElement("div");
+                ppmcl_cpoe_code.classList.add("ppmcl_cpoe_code");
+                ppmcl_cpoe_code.innerHTML = `藥碼：${item.code}`;
+
     
                 let ppmcl_cpoe_qty = document.createElement("div");
                 ppmcl_cpoe_qty.classList.add("ppmcl_cpoe_qty");
                 ppmcl_cpoe_qty.innerHTML = `總量：${+item.qty}`;
-    
-                ppmcl_cpoe_med_info2.appendChild(ppmcl_cpoe_dunit);
-                if(page_setting_params.med_unCheck_display_loc) {
-                    if(page_setting_params.med_unCheck_display_loc.value == "True") {
-                        ppmcl_cpoe_med_info2.appendChild(ppmcl_cpoe_storage);
+
+                if(page_setting_params.display_block_nocheck && page_setting_params.display_block_nocheck.value_db) {
+                    let temp_str_ary = page_setting_params.display_block_nocheck.value_db.split(";");
+
+                    temp_str_ary.forEach(element => {
+                        switch (element) {
+                            case "dunit":
+                                ppmcl_cpoe_med_info2.appendChild(ppmcl_cpoe_dunit);
+                                break;
+                            case "code":
+                                ppmcl_cpoe_med_info2.appendChild(ppmcl_cpoe_code);
+                                break;
+                            case "storage":
+                                ppmcl_cpoe_med_info2.appendChild(ppmcl_cpoe_storage);
+                                break;
+                            case "ordseq":
+                                ppmcl_cpoe_med_info2.appendChild(ppmcl_cpoe_ordseq);
+                                break;
+                            case "dosage":
+                                ppmcl_cpoe_med_info2.appendChild(ppmcl_cpoe_dosage);
+                                break;
+                            case "freqn":
+                                ppmcl_cpoe_med_info2.appendChild(ppmcl_cpoe_freqn);
+                                break;
+                            case "route":
+                                ppmcl_cpoe_med_info2.appendChild(ppmcl_cpoe_route);
+                                break;
+                        
+                            default:
+                                break;
+                        }
+                    });
+                } else {
+                    ppmcl_cpoe_med_info2.appendChild(ppmcl_cpoe_dunit);
+                    if(page_setting_params.med_unCheck_display_loc) {
+                        if(page_setting_params.med_unCheck_display_loc.value == "True") {
+                            ppmcl_cpoe_med_info2.appendChild(ppmcl_cpoe_storage);
+                        }
                     }
                 }
+    
                 ppmcl_cpoe_med_info2.appendChild(ppmcl_cpoe_qty);
+
+                let ppmcl_cpoe_name_container = document.createElement("div");
+                ppmcl_cpoe_name_container.classList.add("ppmcl_cpoe_name_container");
+
+                ppmcl_cpoe_name_container.appendChild(ppmcl_cpoe_name);
+                ppmcl_cpoe_name_container.appendChild(ppmcl_cpoe_cht_name);
                 
-                ppmcl_cpoe_med_info_container.appendChild(ppmcl_cpoe_name);
-                ppmcl_cpoe_med_info_container.appendChild(ppmcl_cpoe_cht_name);
+                ppmcl_cpoe_med_info_container.appendChild(ppmcl_cpoe_name_container);
                 ppmcl_cpoe_med_info_container.appendChild(ppmcl_cpoe_med_info2);
 
                 let ppmcl_cpoe_right_container = document.createElement("div");
@@ -1138,6 +1218,7 @@ async function set_post_data_to_dispensed_by_GUID(guid_arr, master_guid) {
 };
 
 function ppmcl_set_med_table_filter_radio() {
+    console.log(page_setting_params,"這邊要設定預設的調劑台+++++++++++++++++");
     let head_med_table_filter_container = document.querySelector(".ppmcl_head_med_table_filter_container");
     head_med_table_filter_container.innerHTML = "";
 
@@ -1147,7 +1228,15 @@ function ppmcl_set_med_table_filter_radio() {
     all_input.type = "radio";
     all_input.value = "all";
     all_input.id = "ppmcl_filter_med_table_all";
-    all_input.checked = true;
+    if(page_setting_params.default_dps_nocheck) {
+        if(page_setting_params.default_dps_nocheck.value) {
+            let check_str = page_setting_params.default_dps_nocheck.value;
+            let hasMatch = med_table.some(item => item.name == check_str);
+            if(!hasMatch) {
+                all_input.checked = true;
+            }
+        }
+    }
     // all_input.addEventListener("change", async (e) => {
     //     let ppml_main_container = document.querySelector(".ppml_main_container");
     //     med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, e.target.value);
@@ -1184,6 +1273,15 @@ function ppmcl_set_med_table_filter_radio() {
         //     await set_pp_med_list_display();
         //     ppml_main_container.scrollTop = 0;
         // });
+        if(page_setting_params.default_dps_nocheck) {
+            if(page_setting_params.default_dps_nocheck.value) {
+                let check_str = page_setting_params.default_dps_nocheck.value;
+                let hasMatch = med_table.some(item => item.name == check_str);
+                if(hasMatch) {
+                    input.checked = true;
+            }
+        }
+    }
 
         let label = document.createElement("label");
         label.classList.add("ppmcl_filter_med_label");

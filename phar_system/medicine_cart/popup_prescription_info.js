@@ -59,6 +59,14 @@ let ppp_info_label_data = [
         title: "藥品商品名"
     },
     {
+        name: "HealthInsurancePrice",
+        title: "健保價"
+    },
+    {
+        name: "SalePrice",
+        title: "售價"
+    },
+    {
         name: "TYPE",
         title: "藥品分類"
     },
@@ -145,14 +153,22 @@ function popup_prescription_info_div_close() {
 async function popup_prescription_info_div_open() {
     popup_prescription_info_div.Set_Visible(true);
 }
-async function set_ppp_info_func(element) { 
+async function set_ppp_info_func(element, item_price) { 
     console.log(element);
+    console.log(item_price);
     ppp_info_label_data.forEach(item => {
         let temp_div = document.querySelector(`.ppp_info_main_content_${item.name}`);
         if(element == "") {
             temp_div.innerHTML = "無資料";
         } else {
-            temp_div.innerHTML = element[`${item.name}`];
+            if(item.name == "HealthInsurancePrice") {
+                temp_div.innerHTML = item_price[`${item.name}`];
+            } else if(item.name == "SalePrice") {
+                temp_div.innerHTML = item_price[`${item.name}`];
+            } else {
+                temp_div.innerHTML = element[`${item.name}`];
+            }
+
         }
     });
 }

@@ -1,5 +1,12 @@
 .popup_med_change_list_div {
-    width: 600px;
+    width: 92vw;
+    width: 92svw;
+    height: 92vh;
+    height: 92svh;
+    max-width: 800px;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
 }
 .ppmcl_header_container {
     width: 100%;
@@ -22,7 +29,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 60%;
+    min-width: 60%;
+    max-width: 80%;
 }
 .ppmcl_h_title_content {
     padding-left: 12px;
@@ -75,9 +83,11 @@
     color: #ffffff;
 }
 .ppmcl_main_container {
-    max-height: 520px;
     overflow-y: auto;
-    padding-right: 4px;
+    min-height: 0px;
+    flex-grow: 1;
+    width: 100%;
+    padding-right: 6px;
 }
 /* 整個捲動條的樣式 */
 .ppmcl_main_container::-webkit-scrollbar {
@@ -112,6 +122,14 @@
     justify-content: space-between;
     margin-bottom: 8px;
 }
+.ppmcl_bed_name_info_container {
+    display: flex;
+    align-items: end;
+}
+.ppmcl_bed_name_old_bed {
+    padding-left: 12px;
+}
+
 .ppmcl_bed_name_title {
     text-align: center;
     padding: 4px 8px;
@@ -129,11 +147,13 @@
     border-radius: 5px;
     background-color: #e0e0e0;
     margin-bottom: 12px;
-    align-items: center;
 }
 .ppmcl_cpoe_med_info_container {
     flex-grow: 1;
     padding-right: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 .ppmcl_cpoe_med_info2 {
     display: flex;
@@ -178,7 +198,4 @@
 @media screen and (max-width: 1200px) {
 }
 @media screen and (max-width: 550px) {
-    .popup_med_change_list_div {
-        width: 360px;
-    }
 }

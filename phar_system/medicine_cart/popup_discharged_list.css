@@ -1,5 +1,13 @@
 .popup_discharged_list_div {
-    width: 600px;
+    width: 92vw;
+    width: 92svw;
+    height: 92vh;
+    height: 92svh;
+    max-width: 800px;
+    display: flex !important;
+    justify-content: start !important;
+    justify-content: flex-start !important;
+    flex-direction: column;
 }
 .ppdl_header_container {
     width: 100%;
@@ -43,7 +51,8 @@
 }
 
 .ppdl_main_container {
-    max-height: 520px;
+    width: 100%;
+    flex-grow: 1;
     overflow-y: auto;
     padding-right: 4px;
 }
@@ -165,7 +174,4 @@
 @media screen and (max-width: 1200px) {
 }
 @media screen and (max-width: 550px) {
-    .popup_discharged_list_div {
-        width: 360px;
-    }
 }

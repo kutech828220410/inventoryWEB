@@ -1,5 +1,13 @@
 .popup_similar_drugs_div {
-    width: 360px;
+    width: 92vw;
+    width: 92svw;
+    height: 92vh;
+    height: 92svh;
+    max-width: 800px;
+    display: flex !important;
+    justify-content: start !important;
+    justify-content: flex-start !important;
+    flex-direction: column;
 }
 
 .ppsd_header_container {
@@ -37,7 +45,8 @@
 }
 
 .ppsd_main_container {
-    max-height: 400px;
+    width: 100%;
+    flex-grow: 1;
     overflow-y: auto;
 }
 .ppsd_main_title {

@@ -27,20 +27,8 @@ let ppsd_label_data = [
         title: "藥品名"
     },
     {
-        name: "HealthInsurancePrice",
-        title: "健保價"
-    },
-    {
-        name: "SalePrice",
-        title: "售價"
-    },
-    {
-        name: "SUGGESTED_FREQUENCY",
-        title: "頻次代號"
-    },
-    {
-        name: "SUGGESTED_DOSE",
-        title: "劑量"
+        name: "DIANAME",
+        title: "藥品商品名"
     },
 ];
 
