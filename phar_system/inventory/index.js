@@ -227,20 +227,22 @@ async function init()
     let temp_shift_contents_names_arr = temp_shift_contents.map(item => item.NAME);
     let temp_str_shift_contents_names = temp_shift_contents_names_arr.join("\n");
 
-    if(temp_shift_contents.length < 10) {
-      alert(`共計 ${temp_shift_contents.length} 項藥品因鎖檔被過濾。\n${temp_str_shift_contents_names}`);
-    } else {
-      alert(`共計 ${temp_shift_contents.length} 項藥品因鎖檔被過濾。`);
-    }
-
     data.Data[0].Contents = temp_contents;
     console.log("過濾盤點單藥品鎖檔" , data);
     State = StateType.等待條碼刷入;
 
     await page_Init(data);
     hideLoadingPopup();
-    let header_serch_text = document.querySelector('#header_serch_text');
-    header_serch_text.focus();
+
+    if(temp_shift_contents.length < 10) {
+      // alert(`共計 ${temp_shift_contents.length} 項藥品因鎖檔被過濾。\n${temp_str_shift_contents_names}`);
+      loading_locked_med_and_show_then_focus_input(`共計 ${temp_shift_contents.length} 項藥品因鎖檔被過濾。\n${temp_str_shift_contents_names}`);
+    } else {
+      // alert(`共計 ${temp_shift_contents.length} 項藥品因鎖檔被過濾。`);
+      loading_locked_med_and_show_then_focus_input(`共計 ${temp_shift_contents.length} 項藥品因鎖檔被過濾。`);
+    }
+    // let header_serch_text = document.querySelector('#header_serch_text');
+    // header_serch_text.focus();
 }
 async function page_Init(data)
 {
@@ -756,4 +758,11 @@ function isIOSDevice() {
 
   // 結合判斷條件，回傳布林值
   return isiPhone || isiPad || isIPod;
+}
+
+function loading_locked_med_and_show_then_focus_input(text) {
+  let ppp_med_info_container = document.querySelector(".ppp_med_info_container");
+  ppp_med_info_container.innerText = text;
+
+  popup_locked_med_info_div_open();
 }

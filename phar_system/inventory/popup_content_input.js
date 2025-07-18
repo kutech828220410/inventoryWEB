@@ -85,6 +85,7 @@ async function confirm_popup_input()
     const CODE = popup_input_div_Content.CODE;
     var END_QTY = END_QTY_input.value;
 
+    showLoadingPopup();
     END_QTY_input.value = '';
     const OP = sessionData.Name;
     //輸入盤點量後創造SUB內容
@@ -106,7 +107,7 @@ async function confirm_popup_input()
         TableName: TableName,
         TimeTaken: ""
     };
-    let new_GUID =  set_localStorage_submit_post_data(post_data, med_info, IC_SN);
+    let new_GUID = set_localStorage_submit_post_data(post_data, med_info, IC_SN);
 
     let res_data = await sub_content_add(GUID, END_QTY , OP, CODE);
     // res_data.Code = 201; // 模擬失敗回傳
@@ -114,11 +115,11 @@ async function confirm_popup_input()
     if(res_data.Code == 200) {
         notice_popup_sub_result(`加入成功，盤點數量：${END_QTY}`, true);
         remove_localStorage_submit_post_data(new_GUID);
+        hideLoadingPopup();
         hide_popup_input();
     } else {
         notice_popup_sub_result(`加入失敗，盤點數量：${END_QTY}`, false);
     };
-    // hide_popup_input();
 }
 function notice_popup_sub_result(msg, status) {
     let popup_notice_for_sub_container = document.querySelector('.popup_notice_for_sub_container');

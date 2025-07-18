@@ -448,6 +448,21 @@ function get_p_bed_header() {
     // if(page_setting_params && page_setting_params.pick_medicine.value == "True") {
     //     pb_btn_container.appendChild(med_take_btn);
     // }
+
+    let electronic_medical_record_btn = document.createElement("div");
+    electronic_medical_record_btn.classList.add("btn");
+    electronic_medical_record_btn.classList.add("electronic_medical_record_btn");
+    electronic_medical_record_btn.innerHTML = "電子病歷";
+    electronic_medical_record_btn.addEventListener("click", () => {
+        console.log("等API開發彈窗畫面功能");
+    });
+
+    if(page_setting_params && page_setting_params.electronic_medical_record) {
+        if(page_setting_params.electronic_medical_record.value == "True") {
+            pb_btn_container.appendChild(electronic_medical_record_btn);
+        }
+    }
+
     pb_btn_container.appendChild(med_take_btn);
     pb_btn_container.appendChild(dc_new_btn);
     // pb_btn_container.appendChild(med_cart_sum_list_btn);

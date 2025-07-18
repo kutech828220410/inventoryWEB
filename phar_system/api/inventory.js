@@ -447,13 +447,14 @@ async function sub_content_add(_Master_GUID, _END_QTY, _OP)
   console.log(`Post_data [${arguments.callee.name}]`,post_data);
   // 送出資料
   let response = await postDataToAPI(`${_url}`,post_data);
-  // 廣播到所有站台
-  await postDataToAPI_NoneReturn(`${MessageAPI_url}`,response);
-  if(response.Code != 200)
-  {
+  if(response.Code != 200) {
     alert("輸入資料失敗,請重新整理");
     location.reload();
+  } else {
+    // 廣播到所有站台
+    await postDataToAPI_NoneReturn(`${MessageAPI_url}`, response);
   }
+
   return response;
 }
 async function sub_contents_delete_by_GUID(_GUID, Master_GUID)

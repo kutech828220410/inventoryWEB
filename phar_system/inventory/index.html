@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="../UI/style/navBar.css">
   <link rel="stylesheet" href="popup_count_drugs.css?v=2.2">
   <link rel="stylesheet" href="popup_creatSelect.css?v=1">
+  <link rel="stylesheet" href="popup_locked_med_info.css?v=1">
   <link rel="icon" href="../favicon.ico" >
   <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="192x192">
   <link rel="icon" type="image/png" sizes="192x192" href="android-touch-icon.png">
@@ -34,6 +35,7 @@
           loadScript("popup_login.js");
           loadScript("popup_creatSelect.js");
           loadScript("popup_med_serch.js");
+          loadScript("popup_locked_med_info.js");
           loadScript("index.js");
           loadScript("jsonFunc.js");
           loadScript("../api/web_permissions.js");
@@ -75,6 +77,9 @@
           popup_med_serch_div.LoadEvent.push(popup_med_serch_Load);
           popup_med_serch_div.ClosedEvent.push(popup_med_serch_Closed);
           popup_med_serch_finishedEvent.push(popup_med_serch_finished);
+
+          get_popup_locked_med_info();
+          popup_locked_med_info_div.Set_Visible(false);
 
           set_popup_container();
           // tigger_count_drugs_container(false);
