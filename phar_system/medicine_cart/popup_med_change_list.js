@@ -1219,6 +1219,9 @@ async function set_post_data_to_dispensed_by_GUID(guid_arr, master_guid) {
 
 function ppmcl_set_med_table_filter_radio() {
     console.log(page_setting_params,"這邊要設定預設的調劑台+++++++++++++++++");
+    if(page_setting_params.default_dps_nocheck) {
+        console.log("未調/核藥品預設調劑台：", page_setting_params.default_dps_nocheck.value);
+    }
     let head_med_table_filter_container = document.querySelector(".ppmcl_head_med_table_filter_container");
     head_med_table_filter_container.innerHTML = "";
 
@@ -1235,6 +1238,8 @@ function ppmcl_set_med_table_filter_radio() {
             if(!hasMatch) {
                 all_input.checked = true;
             }
+        } else {
+            all_input.checked = true;
         }
     }
     // all_input.addEventListener("change", async (e) => {
@@ -1276,12 +1281,14 @@ function ppmcl_set_med_table_filter_radio() {
         if(page_setting_params.default_dps_nocheck) {
             if(page_setting_params.default_dps_nocheck.value) {
                 let check_str = page_setting_params.default_dps_nocheck.value;
-                let hasMatch = med_table.some(item => item.name == check_str);
+                let hasMatch = false;
+                if(element.name == check_str) hasMatch = true;
                 if(hasMatch) {
+                    console.log("未調/核藥品預設調劑台：\n","調劑台名稱：",element.name , "\ncheck_str：", check_str, "\n配對成功：", hasMatch);
                     input.checked = true;
+                }
             }
         }
-    }
 
         let label = document.createElement("label");
         label.classList.add("ppmcl_filter_med_label");

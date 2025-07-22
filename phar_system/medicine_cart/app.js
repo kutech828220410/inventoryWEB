@@ -231,8 +231,10 @@ function get_main_ui() {
       return;
     }, 6000);
 
+    let checkedRadio_med = document.querySelector('input[name="filter_med_table_input"]:checked');
+    console.log(checkedRadio_med.value);
 
-    med_list_data = await get_all_med_qty(current_pharmacy.phar, ppml_h_current_cart_select.value, "all");
+    med_list_data = await get_all_med_qty(current_pharmacy.phar, ppml_h_current_cart_select.value, checkedRadio_med.value);
     if(med_list_data.Code != 200) {
       clearTimeout(med_list_timer);
 

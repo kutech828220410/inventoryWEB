@@ -480,6 +480,10 @@ async function set_post_data_to_discharged_by_GUID(guid_arr, master_guid) {
 };
 
 function ppdl_set_med_table_filter_radio() {
+    console.log(page_setting_params,"這邊要設定預設的調劑台+++++++++++++++++");
+    if(page_setting_params.default_dps_discharge) {
+        console.log("出院退藥預設調劑台：", page_setting_params.default_dps_discharge.value);
+    }
     let head_med_table_filter_container = document.querySelector(".ppdl_head_med_table_filter_container");
     head_med_table_filter_container.innerHTML = "";
 
@@ -496,6 +500,8 @@ function ppdl_set_med_table_filter_radio() {
             if(!hasMatch) {
                 all_input.checked = true;
             }
+        } else {
+            all_input.checked = true;
         }
     }
     // all_input.addEventListener("change", async (e) => {
@@ -537,10 +543,12 @@ function ppdl_set_med_table_filter_radio() {
         if(page_setting_params.default_dps_discharge) {
             if(page_setting_params.default_dps_discharge.value) {
                 let check_str = page_setting_params.default_dps_discharge.value;
-                let hasMatch = med_table.some(item => item.name == check_str);
+                let hasMatch = false;
+                if(element.name == check_str) hasMatch = true;
                 if(hasMatch) {
+                    console.log("出院退藥預設調劑台：\n","調劑台名稱：",element.name , "\ncheck_str：", check_str, "\n配對成功：", hasMatch);
                     input.checked = true;
-                }
+                }   
             }
         }
 

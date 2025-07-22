@@ -1312,6 +1312,10 @@ function sort_display_med_data(arr) {
     return new_arr;
 }
 function set_med_table_filter_radio() {
+    console.log(page_setting_params,"這邊要設定預設的調劑台+++++++++++++++++");
+    if(page_setting_params.default_dps_qty) {
+        console.log("藥品總量預設調劑台：", page_setting_params.default_dps_qty.value);
+    }
     let head_med_table_filter_container = document.querySelector(".head_med_table_filter_container");
     head_med_table_filter_container.innerHTML = "";
 
@@ -1322,6 +1326,17 @@ function set_med_table_filter_radio() {
     all_input.value = "all";
     all_input.id = "filter_med_table_all";
     all_input.checked = true;
+        if(page_setting_params.default_dps_qty) {
+        if(page_setting_params.default_dps_qty.value) {
+            let check_str = page_setting_params.default_dps_qty.value;
+            let hasMatch = med_table.some(item => item.name == check_str);
+            if(!hasMatch) {
+                all_input.checked = true;
+            }
+        } else {
+            all_input.checked = true;
+        }
+    }
     all_input.addEventListener("change", async (e) => {
         Set_main_div_enable(true);
         let ppml_h_current_cart_select = document.querySelector(".ppml_h_current_cart_select");
@@ -1364,6 +1379,20 @@ function set_med_table_filter_radio() {
             ppml_main_container.scrollTop = 0;
             Set_main_div_enable(false);
         });
+        
+        if(page_setting_params.default_dps_qty) {
+            if(page_setting_params.default_dps_qty.value) {
+                let check_str = page_setting_params.default_dps_qty.value;
+                let hasMatch = false;
+                if(element.name == check_str) hasMatch = true;
+                if(hasMatch) {
+                    console.log("藥品總量預設調劑台：\n","調劑台名稱：",element.name , "\ncheck_str：", check_str, "\n配對成功：", hasMatch);
+                    input.checked = true;
+                }   
+            }
+        }
+
+
 
         let label = document.createElement("label");
         label.classList.add("filter_med_label");
