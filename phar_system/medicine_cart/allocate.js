@@ -92,8 +92,17 @@ function pbm_header_scroll() {
 // 產生調劑台畫面
 async function allocate_display_init(light_on) {
     Set_main_div_enable(true);
+    let start_p = performance.now();
+    let all_start_p = performance.now();
 
     med_cart_beds_data = await get_bed_list_by_cart(current_pharmacy.phar, current_cart.hnursta);
+    if(med_cart_beds_data.Code != 200) {
+        console.log("get_bed_list_by_cart post_data: ", med_cart_beds_data.ValueAry);
+        console.log("get_bed_list_by_cart response: ", med_cart_beds_data);
+        alert("資料載入期間發生問題\n請重新選擇其他護理站或重新整理畫面。")
+        Set_main_div_enable(false);
+        return
+    }
     med_cart_beds_data = med_cart_beds_data.Data;
 
     // 移除監聽滾動事件
@@ -171,6 +180,11 @@ async function allocate_display_init(light_on) {
                 }
             }
     
+            let end_p = performance.now();
+            console.log("更新確認藥車病床資訊：", end_p - start_p);
+
+            start_p = performance.now();
+
             console.log("first_load post_data", post_data);
             current_p_bed_data = await get_patient_GUID(post_data);
             if(current_p_bed_data.Code != 200) {
@@ -244,6 +258,11 @@ async function allocate_display_init(light_on) {
             }
         });
         open_med_detail_info();
+        Set_main_div_enable(false);
+
+        end_p = performance.now();
+        console.log("完成床位資料顯示：", end_p - start_p);
+        console.log("完整流程床位資料顯示：", end_p - all_start_p);
 
         console.log("回到最上面");
         window.scrollTo({
@@ -251,6 +270,8 @@ async function allocate_display_init(light_on) {
             behavior: "smooth" // 平滑滾動
         });
         console.log("回到最上面done");
+
+        start_p = performance.now();
 
         if(current_func == "allocate") {
             post_data = [current_cart.phar, current_cart.hnursta];
@@ -275,12 +296,24 @@ async function allocate_display_init(light_on) {
             if(med_change_data.length != 0) {
                 console.log("加入驚嘆號");
                 let ppmcl_btn = document.querySelector(".ppmcl_btn");
-                ppmcl_btn.innerHTML = `未調藥品`;
+                if(current_func == "review") {
+                    ppmcl_btn.innerHTML = `未核藥品`;
+                } else {
+                    ppmcl_btn.innerHTML = `未調藥品`;
+                }
             } else {
                 console.log("去除驚嘆號");
                 let ppmcl_btn = document.querySelector(".ppmcl_btn");
-                ppmcl_btn.innerHTML = `未調藥品`;
+                if(current_func == "review") {
+                    ppmcl_btn.innerHTML = `未核藥品`;
+                } else {
+                    ppmcl_btn.innerHTML = `未調藥品`;
+                }
             }
+
+            end_p = performance.now();
+            console.log("完成藥品異動確認：", end_p - start_p);
+
         } else {
             post_data = [current_cart.phar, current_cart.hnursta];
             console.log(post_data);
@@ -304,12 +337,23 @@ async function allocate_display_init(light_on) {
             if(med_change_data.length != 0) {
                 console.log("加入驚嘆號");
                 let ppmcl_btn = document.querySelector(".ppmcl_btn");
-                ppmcl_btn.innerHTML = `未調藥品`;
+                if(current_func == "review") {
+                    ppmcl_btn.innerHTML = `未核藥品`;
+                } else {
+                    ppmcl_btn.innerHTML = `未調藥品`;
+                }
             } else {
                 console.log("去除驚嘆號");
                 let ppmcl_btn = document.querySelector(".ppmcl_btn");
-                ppmcl_btn.innerHTML = `未調藥品`;
+                if(current_func == "review") {
+                    ppmcl_btn.innerHTML = `未核藥品`;
+                } else {
+                    ppmcl_btn.innerHTML = `未調藥品`;
+                }
             }
+
+            end_p = performance.now();
+            console.log("完成藥品異動確認：", end_p - start_p);
         }
 
         // 監聽滾動事件
@@ -343,13 +387,13 @@ function get_p_bed_header() {
     let pb_btn_container = document.createElement("div");
     pb_btn_container.classList.add("pb_btn_container");
 
-    let ppmcl_btn = document.createElement("div");
-    ppmcl_btn.classList.add("btn");
-    ppmcl_btn.classList.add("ppmcl_btn");
-    ppmcl_btn.innerHTML = "未調藥品";
-    ppmcl_btn.addEventListener("click", () => {
-        popup_med_change_list_div_open();
-    });
+    // let ppmcl_btn = document.createElement("div");
+    // ppmcl_btn.classList.add("btn");
+    // ppmcl_btn.classList.add("ppmcl_btn");
+    // ppmcl_btn.innerHTML = "未調藥品";
+    // ppmcl_btn.addEventListener("click", () => {
+    //     popup_med_change_list_div_open();
+    // });
 
     let pb_list_btn = document.createElement("div");
     pb_list_btn.classList.add("btn");
@@ -1059,6 +1103,8 @@ function set_pbm_main_container() {
 
     current_p_bed_data["cpoe"].forEach((element, index) => {
         let med_card_container = document.createElement("div");
+        med_card_container.id = `${element.GUID}`;
+        med_card_container.setAttribute("GUID", element.GUID);
         med_card_container.classList.add("med_card_container");
 
         if(page_setting_params.order_display_mode) {
@@ -1929,7 +1975,8 @@ async function pre_bed_func() {
     // } else {
 
         Set_main_div_enable(true);
-        await set_post_data_to_check_dispense();
+        let start_p = performance.now();
+        set_post_data_to_check_dispense();
         let temp_p_bed_index = patient_bed_index;
         let temp_none_bed_num_arr = [];
         let temp_arr_none_bed = [];
@@ -1968,6 +2015,8 @@ async function pre_bed_func() {
         next_p_bed_data = temp_p_bed_data;
 
         await check_cart_dispense();
+        let end_p = performance.now();
+        console.log("床位調劑記錄完成並開始下一床資料準備：", end_p - start_p);
         // current_p_bed_data = pre_p_bed_data;
         allocate_display_init("on");
     // }
@@ -1980,8 +2029,10 @@ async function next_bed_func() {
     //     }, 2000);
     // } else {
 
+    let start_p = performance.now();
+
     Set_main_div_enable(true);
-    await set_post_data_to_check_dispense();
+    set_post_data_to_check_dispense();
     let temp_p_bed_index = patient_bed_index;
     let temp_arr_none_bed = [];
     do {
@@ -2012,6 +2063,9 @@ async function next_bed_func() {
     let temp_p_bed_data = current_p_bed_data;
     pre_p_bed_data = temp_p_bed_data;
     await check_cart_dispense();
+
+    let end_p = performance.now();
+    console.log("床位調劑記錄完成並開始下一床資料準備：", end_p - start_p);
     // current_p_bed_data = next_p_bed_data;
     allocate_display_init("on");
 }

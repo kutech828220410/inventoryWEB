@@ -195,7 +195,7 @@ function get_pp_med_list_header() {
                 if(current_med_table != "") {
                     console.log("切換調劑台");
                     patient_bed_index = -1;
-                    await allocate_display_init("on");
+                    await allocate_display_init();
                 } else {
                     console.log("未選調劑台");
                     patient_bed_index = -1;
@@ -660,10 +660,49 @@ async function set_pp_med_list_display() {
                 return_data = await api_med_cart_check_by_cart(post_data);
             }
 
+            // 這邊喔幹
+            // let med_card_checkbox = document.querySelectorAll(".med_card_checkbox");
+            // let med_card_container = document.querySelectorAll(".med_card_container");
+
+            // med_card_checkbox.forEach((element, index) => {
+            //     if(element.id == guid) {
+            //         if(check_status == "Y") {
+            //             if(current_func == "review") {
+            //                 med_card_container[index].classList.add("dobule_checked_color");
+            //             }
+            //             element.checked = true;
+            //         } else {
+            //             if(current_func == "review") {
+            //                 med_card_container[index].classList.remove("dobule_checked_color");
+            //             }
+            //             element.checked = false;
+            //         }
+            //     }
+            // });
+
             if(return_data.Code == 200) {
                 guid_arr.forEach(guid => {
                     let ppml_bed_card = document.querySelector(`.ppml_bed_card[guid="${guid}"]`);
                     ppml_bed_card.classList.add("ppml_bed_done");
+
+
+                    let med_card_container = document.querySelector(`.med_card_container[guid="${guid}"]`);
+                    let med_card_checkbox = document.querySelector(`.med_card_checkbox[id="${guid}"]`);
+
+                    if(med_card_container) {
+                        let temp_guid = med_card_container.getAttribute("guid");
+                        if(guid == temp_guid) {
+                            if(current_func == "review") {
+                                med_card_container.classList.add("dobule_checked_color");
+                            }
+                        }
+                    }
+                    if(med_card_checkbox) {
+                        let temp_guid = med_card_checkbox.id;
+                        if(guid == temp_guid) {
+                            med_card_checkbox.checked = true;
+                        }
+                    }
                 });
 
                 show_popup_notice(return_data.Result, true);
@@ -981,6 +1020,7 @@ async function set_post_data_to_check_dispense_for_med_list(m_guid, guid, status
     let loggedName = sessionStorage.getItem('login_json');
     loggedName = JSON.parse(loggedName);
     let med_card_checkbox = document.querySelectorAll(".med_card_checkbox");
+    let med_card_container = document.querySelectorAll(".med_card_container");
     let check_status = status;
     let return_data;
     let post_data = {
@@ -1063,11 +1103,17 @@ async function set_post_data_to_check_dispense_for_med_list(m_guid, guid, status
     console.log("post_data", post_data);
     console.log("post_log_data", post_data2);
 
-    med_card_checkbox.forEach(element => {
+    med_card_checkbox.forEach((element, index) => {
         if(element.id == guid) {
             if(check_status == "Y") {
+                if(current_func == "review") {
+                    med_card_container[index].classList.add("dobule_checked_color");
+                }
                 element.checked = true;
             } else {
+                if(current_func == "review") {
+                    med_card_container[index].classList.remove("dobule_checked_color");
+                }
                 element.checked = false;
             }
         }

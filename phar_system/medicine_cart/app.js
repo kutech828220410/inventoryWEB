@@ -874,10 +874,10 @@ async function get_cart_list_and_med_table() {
         return;
       } else {
         console.log(current_cart);
+        last_current_cart = current_cart;
         let temp_logic = get_func_logic();
         get_all_select_option_logic(temp_logic);
         close_cart_list();
-        last_current_cart = current_cart;
       }
     });
 

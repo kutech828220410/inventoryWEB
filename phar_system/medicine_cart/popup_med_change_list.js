@@ -72,7 +72,7 @@ function get_ppmcl_header() {
                 if(current_med_table != "") {
                     console.log("切換調劑台");
                     patient_bed_index = -1;
-                    await allocate_display_init("on");
+                    await allocate_display_init();
                 } else {
                     console.log("未選調劑台");
                     patient_bed_index = -1;
