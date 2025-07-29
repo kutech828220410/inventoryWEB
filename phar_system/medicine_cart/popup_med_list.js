@@ -168,6 +168,9 @@ function get_pp_med_list_header() {
     
                 clearTimeout(med_list_timer);
 
+                let ppml_main_container = document.querySelector(".ppml_main_container");
+                ppml_main_container.scrollTop = 0;
+
                 Set_main_div_enable(false);
             } else {
                 console.log("藥品總量，資料格式錯誤", med_list_data.Data);
@@ -176,6 +179,9 @@ function get_pp_med_list_header() {
                 med_list_data = sort_med_list_data(med_list_data, current_func);
                 med_list_data = sort_display_med_data(med_list_data);
                 await set_pp_med_list_display();
+
+                let ppml_main_container = document.querySelector(".ppml_main_container");
+                ppml_main_container.scrollTop = 0;
                 
                 clearTimeout(med_list_timer);
                 Set_main_div_enable(false);

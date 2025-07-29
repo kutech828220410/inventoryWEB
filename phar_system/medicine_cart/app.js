@@ -866,7 +866,7 @@ async function get_cart_list_and_med_table() {
     if(element.hand_status == "已交車") {
       cart_option_div.classList.add("cart_option_div_done");
     }
-    cart_option_div.addEventListener("click", () => {
+    cart_option_div.addEventListener("click", async () => {
       cart_content.innerHTML = cart_option_div.innerHTML;
       current_cart = element;
       if(last_current_cart == current_cart) {
@@ -874,9 +874,9 @@ async function get_cart_list_and_med_table() {
         return;
       } else {
         console.log(current_cart);
-        last_current_cart = current_cart;
         let temp_logic = get_func_logic();
         get_all_select_option_logic(temp_logic);
+        last_current_cart = current_cart;
         close_cart_list();
       }
     });
@@ -1196,7 +1196,7 @@ async function reset_cart_list_container() {
     if(element.hand_status == "已交車") {
       cart_option_div.classList.add("cart_option_div_done");
     } else {
-      cart_option_div.addEventListener("click", () => {
+      cart_option_div.addEventListener("click", async () => {
         cart_content.innerHTML = cart_option_div.innerHTML;
         current_cart = element;
         if(last_current_cart == current_cart) {
@@ -1206,8 +1206,8 @@ async function reset_cart_list_container() {
           console.log(current_cart);
           let temp_logic = get_func_logic();
           get_all_select_option_logic(temp_logic);
-          close_cart_list();
           last_current_cart = current_cart;
+          close_cart_list();
         }
       });
     }

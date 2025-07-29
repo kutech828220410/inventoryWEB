@@ -42,6 +42,13 @@ let html_pages = [
                         icon_url: "../../phar_system/image/icon/staff_icon.png",
                         icon_big_url: "../../phar_system/image/icon/staff_big_icon.png"
                     },
+                    {
+                        html_name: "medicine_map",
+                        html_ctName: "藥品地圖",
+                        html_url: "../../phar_system/medicine_map",
+                        icon_url: "../../phar_system/image/icon/staff_icon.png",
+                        icon_big_url: "../../phar_system/image/icon/staff_big_icon.png"
+                    },
                     // {
                     //     html_name: "refrigerator_inventory",
                     //     html_ctName: "冰箱庫存",

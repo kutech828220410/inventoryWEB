@@ -217,17 +217,13 @@
 .pbmh_checked_submit_btn,
 .pbmh_next_btn {
     margin-right: 0px;
-    padding: 6px 16px;
 }
 .pbmh_checked_trigger_label {
     align-items: center;
     border-radius: 5px;
-    padding: 6px 16px;
-    margin-right: 24px;
     cursor: pointer;
     transition: all 0.2s;
     text-align: center;
-    width: 104px;
 }
 .pbmh_checked_trigger_label:hover {
     transition: all 0.2s;
@@ -241,7 +237,7 @@
     margin-top: 12px;
     min-height: 200px;
     border-radius: 12px;
-    background-color: rgb(236, 236, 236);
+    background-color: rgb(231, 231, 231);
     padding: 10px;
 }
 .pbm_main_container_fixed {
@@ -543,7 +539,14 @@
 }
 
 .dobule_checked_color {
-    background-color: #bce9ff;
+    background-color:rgb(219 234 254);
+    border-color: rgb(69, 150, 255);
+    /* text-decoration: underline; */
+    /* border: 5px solid #000000; */
+}
+.dobule_checked_color_yellow {
+    background-color: rgb(254 252 232);
+    border-color: rgb(210, 194, 17);
     /* text-decoration: underline; */
     /* border: 5px solid #000000; */
 }
@@ -618,8 +621,6 @@
     .pbmh_next_btn {
         font-size: 16px;
         position: relative;
-        padding: 6px 12px;
-        height: 40px;
     }
     .pbmh_light_on_btn,
     .pbmh_next_btn,

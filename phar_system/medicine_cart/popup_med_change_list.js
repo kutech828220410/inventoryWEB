@@ -808,7 +808,7 @@ async function set_ppmcl_main_info() {
         ppmcl_bed_name_old_bed.classList.add("ppmcl_bed_name_old_bed");
         if(element.bedStatus) {
             if (Object.keys(element.bedStatus).length !== 0) {
-                ppmcl_bed_name_old_bed.innerHTML = `從 ${element.bedStatus.bed_old} 轉入`;
+                ppmcl_bed_name_old_bed.innerHTML = `${element.bedStatus.bed_old} 轉入`;
             }
         } else {
             console.log("沒有收到轉出床位資料，element.bedStatus：", element.bedStatus);

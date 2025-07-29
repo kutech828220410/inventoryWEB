@@ -95,6 +95,7 @@
     transition: all 0.2s ease-out;
     border: 1px solid #000;
     cursor: pointer;
+    margin-bottom: 12px;
 }
 .head_sort_radio_container input[type="radio"]:checked + label,
 .head_med_table_filter_container input[type="radio"]:checked + label  {

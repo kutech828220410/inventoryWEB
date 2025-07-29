@@ -47,27 +47,41 @@ async function get_all_med_cart_by_phar(phar) {
 
 // 取得病床清單
 async function get_bed_list_by_cart(phar, med_cart) {
-    let start_p = performance.now();
-    let temp_doman = transform_api_ip_4433(api_ip);
-    console.log(`"test", ${temp_doman}api/med_cart/get_bed_list_by_cart`);
-    let temp_data = await fetch(`${temp_doman}api/med_cart/get_bed_list_by_cart`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            "ValueAry":[phar, med_cart]
-        }),
-    })
-    .then((response) => {
-        return response.json();
-    })
+    try {
+        let start_p = performance.now();
+        let temp_doman = transform_api_ip_4433(api_ip);
+        console.log(`"test", ${temp_doman}api/med_cart/get_bed_list_by_cart`);
+        let temp_data = await fetch(`${temp_doman}api/med_cart/get_bed_list_by_cart`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "ValueAry":[phar, med_cart]
+            }),
+        })
+        .then((response) => {
+            return response.json();
+        })
 
-    let end_p = performance.now();
-    console.log(end_p - start_p);
-    console.log(temp_data);
+        let end_p = performance.now();
+        console.log(end_p - start_p);
+        if(temp_data.Code == 200) {
+            console.log(temp_data);
+        } else {
+            temp_str = `API Error\nAPI_URL: api/med_cart/get_bed_list_by_cart\nrequest: {"ValueAry":[${phar}, ${med_cart}]}\nerror result: ${temp_data.Result}\n`;
+            console.error(temp_str);
+            console.error("Error response:", temp_data);
+        }
 
-    return temp_data;
+        return temp_data;
+    } catch(error) {
+        let err_data = {
+            Code: -200,
+            Result: `網路錯誤：${error}`
+        }
+        return err_data;
+    }
 }
 
 // 取的病床資訊

@@ -38,6 +38,8 @@ let fake_icon_popup_data = [
 
 // 調劑畫面生成
 async function allocate_diplay_logic() {
+    console.log(current_cart);
+    console.log(last_current_cart);
     if(last_current_cart == "") {
         console.log("調劑功能畫面初生成");
         patient_bed_index = -1;
@@ -60,8 +62,13 @@ async function allocate_diplay_logic() {
 
     // 根據選取的調劑台解鎖藥品
     if(current_med_table != "") {
-        console.log("切換調劑台");
-        await allocate_display_init("on");
+        if(current_med_table != "all") {
+            console.log("切換調劑台");
+            await allocate_display_init("on");
+        } else {
+            console.log("未選調劑台");
+            await allocate_display_init();            
+        }
     } else {
         console.log("未選調劑台");
         await allocate_display_init();
@@ -94,16 +101,19 @@ async function allocate_display_init(light_on) {
     Set_main_div_enable(true);
     let start_p = performance.now();
     let all_start_p = performance.now();
-
-    med_cart_beds_data = await get_bed_list_by_cart(current_pharmacy.phar, current_cart.hnursta);
-    if(med_cart_beds_data.Code != 200) {
-        console.log("get_bed_list_by_cart post_data: ", med_cart_beds_data.ValueAry);
-        console.log("get_bed_list_by_cart response: ", med_cart_beds_data);
-        alert("資料載入期間發生問題\n請重新選擇其他護理站或重新整理畫面。")
-        Set_main_div_enable(false);
-        return
+    let new_med_cart_beds_data = await get_bed_list_by_cart(current_pharmacy.phar, current_cart.hnursta);
+    if(new_med_cart_beds_data.Code == 200) {
+        console.log("成功更新最新病床資料");
+        med_cart_beds_data = new_med_cart_beds_data.Data;
+    } else {
+        if(!med_cart_beds_data) {
+            allocate_display_init("");
+            return;
+        } else {
+            let temp_strr = `"未成功更新最新病床資料"\n當前藥局：${current_pharmacy.phar}\n當前護理站：${current_cart.hnursta},\n帶入資料：${new_med_cart_beds_data.ValueAry}\n回傳資料：${new_med_cart_beds_data.Result}`
+            alert(temp_strr);
+        }
     }
-    med_cart_beds_data = med_cart_beds_data.Data;
 
     // 移除監聽滾動事件
     window.removeEventListener('scroll', pbm_header_scroll);
@@ -488,25 +498,20 @@ function get_p_bed_header() {
         popup_med_take_div_open();
     });
 
+    let med_log_btn = document.createElement("div");
+    med_log_btn.classList.add("btn");
+    med_log_btn.classList.add("med_log_btn");
+    med_log_btn.innerHTML = "操作紀錄";
+    med_log_btn.addEventListener("click", () => {
+        popup_med_take_div_open();
+    });
+
     // pb_btn_container.appendChild(ppmcl_btn);
     // if(page_setting_params && page_setting_params.pick_medicine.value == "True") {
     //     pb_btn_container.appendChild(med_take_btn);
     // }
 
-    let electronic_medical_record_btn = document.createElement("div");
-    electronic_medical_record_btn.classList.add("btn");
-    electronic_medical_record_btn.classList.add("electronic_medical_record_btn");
-    electronic_medical_record_btn.innerHTML = "電子病歷";
-    electronic_medical_record_btn.addEventListener("click", () => {
-        console.log("等API開發彈窗畫面功能");
-    });
-
-    if(page_setting_params && page_setting_params.electronic_medical_record) {
-        if(page_setting_params.electronic_medical_record.value == "True") {
-            pb_btn_container.appendChild(electronic_medical_record_btn);
-        }
-    }
-
+    // pb_btn_container.appendChild(med_log_btn);
     pb_btn_container.appendChild(med_take_btn);
     pb_btn_container.appendChild(dc_new_btn);
     // pb_btn_container.appendChild(med_cart_sum_list_btn);
@@ -1071,11 +1076,24 @@ function set_pbm_header_container() {
 
     if(patient_bed_index != final_patient_bed_index) {
         pbmh_checked_submit_btn.classList.add("display_none");
-    } 
+    }
+
+    let electronic_medical_record_btn = document.createElement("div");
+    electronic_medical_record_btn.classList.add("btn");
+    electronic_medical_record_btn.classList.add("electronic_medical_record_btn");
+    electronic_medical_record_btn.innerHTML = "電子病歷";
+    electronic_medical_record_btn.addEventListener("click", () => {
+        console.log("等API開發彈窗畫面功能");
+    });
 
     pbm_header_container.appendChild(pbmh_pre_btn);
     if(current_func == "allocate") {
         pbm_header_container.appendChild(pbmh_light_on_btn);
+    }
+    if(page_setting_params && page_setting_params.electronic_medical_record) {
+        if(page_setting_params.electronic_medical_record.value == "True") {
+            pbm_header_container.appendChild(electronic_medical_record_btn);
+        }
     }
     pbm_header_container.appendChild(pbmh_checked_trigger_label);
     pbm_header_container.appendChild(pbmh_checked_submit_btn);
@@ -1413,6 +1431,12 @@ function set_pbm_main_container() {
                 // med_card_name.classList.add("dobule_checked_color");
                 // med_card_cht_name.classList.add("dobule_checked_color");
                 med_card_container.classList.add("dobule_checked_color");
+            }
+
+            if(current_func == "allocate" && element.check_status == "Y" && element.dispens_status == "Y" && page_setting_params.highlight_checked.value == "True") {
+                // med_card_name.classList.add("dobule_checked_color");
+                // med_card_cht_name.classList.add("dobule_checked_color");
+                med_card_container.classList.add("dobule_checked_color_yellow");
             }
         }
 
@@ -1952,7 +1976,21 @@ function set_pbm_footer_container() {
 
     if(patient_bed_index != final_patient_bed_index) {
         pbmh_checked_submit_btn.classList.add("display_none");
-    } 
+    }
+
+    let electronic_medical_record_btn = document.createElement("div");
+    electronic_medical_record_btn.classList.add("btn");
+    electronic_medical_record_btn.classList.add("electronic_medical_record_btn");
+    electronic_medical_record_btn.innerHTML = "電子病歷";
+    electronic_medical_record_btn.addEventListener("click", () => {
+        console.log("等API開發彈窗畫面功能");
+    });
+
+    if(page_setting_params && page_setting_params.electronic_medical_record) {
+        if(page_setting_params.electronic_medical_record.value == "True") {
+            pbm_footer_container.appendChild(electronic_medical_record_btn);
+        }
+    }
 
     pbm_footer_container.appendChild(pbmh_pre_btn);
     if(current_func == "allocate") {
@@ -1974,51 +2012,51 @@ async function pre_bed_func() {
     //     }, 2000);
     // } else {
 
-        Set_main_div_enable(true);
-        let start_p = performance.now();
-        set_post_data_to_check_dispense();
-        let temp_p_bed_index = patient_bed_index;
-        let temp_none_bed_num_arr = [];
-        let temp_arr_none_bed = [];
-        do {
-            temp_p_bed_index--;
-            if(med_cart_beds_data[temp_p_bed_index]["bed_status"] != "已佔床") {
-                temp_none_bed_num_arr.push(+temp_p_bed_index);
-            }
-        } while(med_cart_beds_data[temp_p_bed_index]["bed_status"] != "已佔床");
-    
-        last_patient_bed_index = patient_bed_index;
-        patient_bed_index = temp_p_bed_index;
+    Set_main_div_enable(true);
+    let start_p = performance.now();
+    set_post_data_to_check_dispense();
+    let temp_p_bed_index = patient_bed_index;
+    let temp_none_bed_num_arr = [];
+    let temp_arr_none_bed = [];
+    do {
+        temp_p_bed_index--;
+        if(med_cart_beds_data[temp_p_bed_index]["bed_status"] != "已佔床") {
+            temp_none_bed_num_arr.push(+temp_p_bed_index);
+        }
+    } while(med_cart_beds_data[temp_p_bed_index]["bed_status"] != "已佔床");
 
-        temp_none_bed_num_arr.sort((a, b) => a - b);
+    last_patient_bed_index = patient_bed_index;
+    patient_bed_index = temp_p_bed_index;
 
-        temp_none_bed_num_arr.forEach(element => {
-            if(!temp_arr_none_bed.includes(`第${med_cart_beds_data[+element].bednum}床`)) {
-                temp_arr_none_bed.push(`第${med_cart_beds_data[+element].bednum}床`); 
+    temp_none_bed_num_arr.sort((a, b) => a - b);
+
+    temp_none_bed_num_arr.forEach(element => {
+        if(!temp_arr_none_bed.includes(`第${med_cart_beds_data[+element].bednum}床`)) {
+            temp_arr_none_bed.push(`第${med_cart_beds_data[+element].bednum}床`); 
+        }
+    });
+
+    let temp_p_bed_data = current_p_bed_data;
+    next_p_bed_data = temp_p_bed_data;
+
+    check_cart_dispense();
+    let end_p = performance.now();
+    console.log("床位調劑記錄完成並開始下一床資料準備：", end_p - start_p);
+    // current_p_bed_data = pre_p_bed_data;
+    await allocate_display_init("on");
+
+    if(temp_arr_none_bed != 0) {
+        let temp_str = '';
+        temp_arr_none_bed.forEach((element, index) => {
+            if(index == temp_arr_none_bed.length - 1) {
+                temp_str += element;
+            } else {
+                temp_str += element + "、";
             }
         });
-
-        if(temp_arr_none_bed != 0) {
-            let temp_str = '';
-            temp_arr_none_bed.forEach((element, index) => {
-                if(index == temp_arr_none_bed.length - 1) {
-                    temp_str += element;
-                } else {
-                    temp_str += element + "、";
-                }
-            });
-            temp_str += `為空床，已為您轉到第 ${med_cart_beds_data[patient_bed_index].bednum} 床。`;
-            alert(temp_str);
-        }
-
-        let temp_p_bed_data = current_p_bed_data;
-        next_p_bed_data = temp_p_bed_data;
-
-        await check_cart_dispense();
-        let end_p = performance.now();
-        console.log("床位調劑記錄完成並開始下一床資料準備：", end_p - start_p);
-        // current_p_bed_data = pre_p_bed_data;
-        allocate_display_init("on");
+        temp_str += `為空床，已為您轉到第 ${med_cart_beds_data[patient_bed_index].bednum} 床。`;
+        alert(temp_str);
+    }
     // }
 }
 async function next_bed_func() {
@@ -2047,6 +2085,15 @@ async function next_bed_func() {
     last_patient_bed_index = patient_bed_index;
     patient_bed_index = temp_p_bed_index;
 
+    let temp_p_bed_data = current_p_bed_data;
+    pre_p_bed_data = temp_p_bed_data;
+    check_cart_dispense();
+
+    let end_p = performance.now();
+    console.log("床位調劑記錄完成並開始下一床資料準備：", end_p - start_p);
+    // current_p_bed_data = next_p_bed_data;
+    await allocate_display_init("on");
+
     if(temp_arr_none_bed != 0) {
         let temp_str = '';
         temp_arr_none_bed.forEach((element, index) => {
@@ -2059,18 +2106,10 @@ async function next_bed_func() {
         temp_str += `為空床，已為您轉到第 ${med_cart_beds_data[patient_bed_index].bednum} 床。`;
         alert(temp_str);
     }
-
-    let temp_p_bed_data = current_p_bed_data;
-    pre_p_bed_data = temp_p_bed_data;
-    await check_cart_dispense();
-
-    let end_p = performance.now();
-    console.log("床位調劑記錄完成並開始下一床資料準備：", end_p - start_p);
-    // current_p_bed_data = next_p_bed_data;
-    allocate_display_init("on");
 }
 
 async function set_post_data_to_check_dispense() {
+    let temp_bed_index = patient_bed_index
     let med_card_checkbox = document.querySelectorAll(".med_card_checkbox");
     let bed_guid = current_p_bed_data.GUID;
     let loggedName = sessionStorage.getItem('login_json');
@@ -2128,19 +2167,19 @@ async function set_post_data_to_check_dispense() {
 
             post_data_check = {
                 Value: current_med_table,
-                ValueAry: [med_cart_beds_data[patient_bed_index].GUID]
+                ValueAry: [med_cart_beds_data[temp_bed_index].GUID]
             }
         } else if (current_func == "review") {
             post_data_check = {
                 Value: "all",
-                ValueAry: [med_cart_beds_data[patient_bed_index].GUID]
+                ValueAry: [med_cart_beds_data[temp_bed_index].GUID]
             }
         }
 
     } else {
         post_data_check = {
             Value: current_med_table.name,
-            ValueAry: [med_cart_beds_data[patient_bed_index].GUID]
+            ValueAry: [med_cart_beds_data[temp_bed_index].GUID]
         }
     }
 
