@@ -62,6 +62,7 @@ async function load()
   await get_function_menu();
   get_no_selected_func();
   select_list_controller();
+  await set_med_qty_type_radio();
   Set_main_div_enable(false);
 
   // 開發顯示
@@ -86,6 +87,16 @@ function get_header(test_user_data) {
     let header_user = document.createElement("div");
     header_user.classList.add("header_user");
     header_user.innerHTML = `使用者：${test_user_data.name}`;
+
+    let homepage_link = document.createElement("a");
+    homepage_link.classList.add("homepage_link");
+    homepage_link.href = '../frontpage';
+
+    let homepage_link_img = document.createElement("img");
+    homepage_link_img.src = '../image/homepage.png';
+    homepage_link_img.classList.add("homepage_link_img");
+
+    homepage_link.appendChild(homepage_link_img);
 
     header_title_container.appendChild(h_title);
     header_title_container.appendChild(header_user);
@@ -129,11 +140,21 @@ function get_header(test_user_data) {
     let header_display_div = document.createElement("div");
     header_display_div.classList.add("header_display_div");
 
+    header_display_div.appendChild(homepage_link);
     header_display_div.appendChild(header_title_container);
     header_display_div.appendChild(light_color_select_div);
 
     let header_btn_div = document.createElement("div");
     header_btn_div.classList.add("header_btn_div");
+
+    let header_operate = document.createElement("div");
+    header_operate.classList.add("header_operate");
+    header_operate.classList.add("btn");
+    header_operate.innerHTML = "操作";
+    header_operate.addEventListener("click", () => {
+      api_logger_add("開啟操作彈窗 => API個人操作取得資料：api/med_inventory/get_opid_by_time", "click");
+      popup_self_operate_div_open();
+    })
 
     let header_pages_setting = document.createElement("div");
     header_pages_setting.classList.add("header_pages_setting");
@@ -157,6 +178,7 @@ function get_header(test_user_data) {
     header_logout_btn.innerText = "登出";
     header_logout_btn.addEventListener("click", async () => {
       if (confirm("是否登出？")) {
+        api_logger_add("住院藥車登出", "click");
         sessionStorage.removeItem("login_json");
         sessionStorage.removeItem("IC_SN");
 
@@ -166,6 +188,7 @@ function get_header(test_user_data) {
       }
     })
 
+    header_btn_div.appendChild(header_operate);
     header_btn_div.appendChild(header_med_cart_report);
     header_btn_div.appendChild(header_pages_setting);
     header_btn_div.appendChild(header_logout_btn);
@@ -194,6 +217,7 @@ function get_main_ui() {
   ppmcl_btn.classList.add("ppmcl_btn");
   ppmcl_btn.innerHTML = "未調藥品";
   ppmcl_btn.addEventListener("click", () => {
+    api_logger_add("開啟未調藥品彈窗", "click");
     popup_med_change_list_div_open();
   });
 
@@ -234,6 +258,7 @@ function get_main_ui() {
     let checkedRadio_med = document.querySelector('input[name="filter_med_table_input"]:checked');
     console.log(checkedRadio_med.value);
 
+    api_logger_add("開啟藥品總量彈窗", "click");
     med_list_data = await get_all_med_qty(current_pharmacy.phar, ppml_h_current_cart_select.value, checkedRadio_med.value);
     if(med_list_data.Code != 200) {
       clearTimeout(med_list_timer);
@@ -332,6 +357,7 @@ function get_main_ui() {
     }
 
     console.log("出院api", post_data);
+    api_logger_add("開啟出院退藥彈窗", "click");
     let return_data = await get_all_cart_discharge(post_data);
     if(return_data.Code != 200) {
       alert("出院退藥資料錯誤", return_data.Result);
@@ -378,6 +404,7 @@ function get_main_ui() {
   bed_change_btn.classList.add("bed_change_btn");
   bed_change_btn.innerHTML = "病床異動";
   bed_change_btn.addEventListener("click", () => {
+    api_logger_add("開啟病床異動彈窗", "click");
       popup_bed_change_div_open();
   });
 
@@ -560,7 +587,7 @@ function open_light_color_list() {
   let light_color_select_container = document.querySelector(".light_color_select_container");
   let temp_client_width = window.innerWidth;
 
-  if(temp_client_width > 550) {
+  if(temp_client_width > 800) {
     if(!color_list_triiger) {
       light_color_select_container.style.width = "250px";
       light_color_select_container.style.height = "50px";
@@ -1213,5 +1240,76 @@ async function reset_cart_list_container() {
     }
 
     cart_option_container.appendChild(cart_option_div);
+  });
+}
+
+async function set_med_qty_type_radio() {
+  let head_sort_radio_container = document.querySelector('.head_sort_radio_container');
+  med_list_sort_radio_data = await get_med_qty_group();
+  med_list_sort_radio_data = med_list_sort_radio_data.Data;
+
+  let input = document.createElement("input");
+  input.className = "sort_med_input";
+  input.name = "sort_med_input";
+  input.type = "radio";
+  input.value = "all";
+  input.id = "sort_all";
+  input.checked = true;
+
+  let label = document.createElement("label");
+  label.classList.add("sort_med_label");
+  label.innerHTML = '全部';
+  label.setAttribute("for", 'sort_all');
+
+  head_sort_radio_container.appendChild(input);
+  head_sort_radio_container.appendChild(label);
+
+  med_list_sort_radio_data.forEach(element => {
+    let input = document.createElement("input");
+    input.className = "sort_med_input";
+    input.name = "sort_med_input";
+    input.type = "radio";
+
+    let label = document.createElement("label");
+    label.classList.add("sort_med_label");
+    label.innerHTML = element.NAME;
+
+    switch (element.NAME) {
+      case "大瓶藥":      
+        input.value = 'bottle';
+        input.id = 'sort_bottle';
+        label.setAttribute("for", 'sort_bottle');
+        break;
+    
+      case "口服":
+        input.value = 'oral';
+        input.id = 'sort_oral';
+        label.setAttribute("for", 'sort_oral');
+        break;
+    
+      case "冷藏":
+        input.value = 'ice';
+        input.id = 'sort_ice';
+        label.setAttribute("for", 'sort_ice');
+        break;
+    
+      case "針劑":
+        input.value = 'injection';
+        input.id = 'sort_injection';
+        label.setAttribute("for", 'sort_injection');
+        break;
+    
+      default:
+        break;
+    }
+    input.addEventListener("change", () => {
+        let ppml_main_container = document.querySelector(".ppml_main_container");
+        api_logger_add("藥品總量：更換藥品種類", "藥品種類 radio change");
+        set_pp_med_list_display();
+        ppml_main_container.scrollTop = 0;
+    });
+
+    head_sort_radio_container.appendChild(input);
+    head_sort_radio_container.appendChild(label);
   });
 }

@@ -81,7 +81,8 @@
 } */
 .pbic_top {
     width: 100%;
-    display: flex;
+    display: grid;
+    grid-template-columns: 49% 49%;
     justify-content: space-between;
     margin-top: 20px;
     margin-bottom: 16px;
@@ -93,7 +94,7 @@
 }
 .p_bed_simple_container,
 .p_bed_detailed_container {
-    width: 48%;
+    width: 100%;
     min-height: 180px;
     padding: 8px;
     border-radius: 5px;
@@ -421,6 +422,10 @@
     color: rgb(229, 61, 61);
     font-weight: 600;
 }
+.p_blue_notice {
+    color: rgb(61, 69, 229);
+    font-weight: 600;
+}
 .med_card_big_bottle_icon {
     text-align: center;
     min-width: 48px;
@@ -554,6 +559,7 @@
     color: rgb(229, 61, 61);
 }
 
+
 @media screen and (max-width: 1200px) {
     .p_bed_header {
         flex-direction: column;
@@ -593,14 +599,13 @@
         flex-direction: column;
     }
     .pb_btn_container {
-        display: grid;
-        grid-template-columns: 40% 40%;
-        justify-content: center;
+        display: flex;
+        justify-content: start;
         text-align: center;
         width: 100%;
     }
     .pbic_top {
-        flex-direction: column;
+        grid-template-columns: 100%;
         margin-top: 12px;
     }
     .p_bed_simple_container {

@@ -119,12 +119,12 @@ async function allocate_display_init(light_on) {
     window.removeEventListener('scroll', pbm_header_scroll);
 
     console.log("調劑功能畫面產生");
-    console.log(med_cart_beds_data);
+    console.log("病床詳細資料顯示：", med_cart_beds_data);
     // console.log(current_p_bed_data);
     func_display_init();
-    med_log_arr = [];
+    // med_log_arr = [];
     med_double_check_arr = [];
-    med_nodis_log_arr = [];
+    // med_nodis_log_arr = [];
 
     let function_display_container = document.querySelector(".function_display_container");
 
@@ -259,12 +259,17 @@ async function allocate_display_init(light_on) {
         function_display_container.appendChild(p_bed_med_container);
 
         let p_status_td = document.querySelectorAll(".p_status_td");
-        let p_status_arr = current_p_bed_data.abnormal.split(';');
+        let temp_low_high_arr = current_p_bed_data.abnormal.split('||');
+        let p_status_arr = temp_low_high_arr[1].split(';');
+        let p_status_low_arr = temp_low_high_arr[0].split(';');
         console.log(p_status_arr);
 
         p_status_td.forEach(element => {
             if(p_status_arr.includes(element.getAttribute("key"))) {
                 element.classList.add("p_red_notice");
+            }
+            if(p_status_low_arr.includes(element.getAttribute("key"))) {
+                element.classList.add("p_blue_notice");
             }
         });
         open_med_detail_info();
@@ -487,6 +492,7 @@ function get_p_bed_header() {
     bed_change_btn.classList.add("bed_change_btn");
     bed_change_btn.innerHTML = "病床異動";
     bed_change_btn.addEventListener("click", () => {
+        api_logger_add("開啟病床異動彈窗", "click");
         popup_bed_change_div_open()
     });
 
@@ -495,14 +501,7 @@ function get_p_bed_header() {
     med_take_btn.classList.add("med_take_btn");
     med_take_btn.innerHTML = "撈藥清單";
     med_take_btn.addEventListener("click", () => {
-        popup_med_take_div_open();
-    });
-
-    let med_log_btn = document.createElement("div");
-    med_log_btn.classList.add("btn");
-    med_log_btn.classList.add("med_log_btn");
-    med_log_btn.innerHTML = "操作紀錄";
-    med_log_btn.addEventListener("click", () => {
+        api_logger_add("開啟撈藥清單彈窗", "click");
         popup_med_take_div_open();
     });
 
@@ -655,6 +654,7 @@ function set_p_bed_info_container() {
     // 過敏史
     let pbsc_hallergy = document.createElement("div");
     pbsc_hallergy.classList.add("pbsc_info");
+    pbsc_hallergy.classList.add("text_red");
     // pbsc_hallergy.innerHTML = `BSA：${+current_p_bed_data.hallergy}㎡`;
     pbsc_hallergy.innerHTML = `過敏史：${current_p_bed_data.hallergy}`;
 
@@ -666,10 +666,17 @@ function set_p_bed_info_container() {
     let pbsc_doc_container = document.createElement("div");
     pbsc_doc_container.classList.add("pbsc_info");
     pbsc_doc_container.classList.add("pbsc_doctor");
-    pbsc_doc_container.innerHTML = `
-        <div class="pbsc_doc">主治：${current_p_bed_data.pvsdno_name}(${current_p_bed_data.pvsdno})</div>
-        <div class="pbsc_doc">住院：${current_p_bed_data.prdno_name}(${current_p_bed_data.prdno})</div>
-    `;
+
+    let attending_physician = document.createElement("div");
+    attending_physician.classList.add("pbsc_doc");
+    if(current_p_bed_data.pvsdno_name) attending_physician.innerHTML = `主治：${current_p_bed_data.pvsdno_name}(${current_p_bed_data.pvsdno})`;
+
+    let resident_physician = document.createElement("div");
+    resident_physician.classList.add("pbsc_doc");
+    if(current_p_bed_data.pvsdno_name) resident_physician.innerHTML = `住院：${current_p_bed_data.prdno_name}(${current_p_bed_data.prdno})`;
+
+    pbsc_doc_container.appendChild(attending_physician);
+    pbsc_doc_container.appendChild(resident_physician);
 
     p_bed_simple_container.appendChild(pbsc_doc_container);
 
@@ -805,6 +812,7 @@ function set_pbm_header_container() {
         pbmh_pre_btn.classList.add("display_none");
     } else {
         pbmh_pre_btn.addEventListener("click", () => {
+            api_logger_add(`${current_cart.hnursta}-${current_p_bed_data.bednum}調劑畫面 上一床點擊`, "click");
             pre_bed_func();
         });
     }
@@ -817,6 +825,7 @@ function set_pbm_header_container() {
             alert("未選擇調劑台，請選好調劑台或使用藥品總量功能");
             return;
         }
+        api_logger_add(`${current_cart.hnursta}-${current_p_bed_data.bednum}調劑畫面 亮燈點擊`, "click");
         light_switch_func();
     });
 
@@ -1014,6 +1023,7 @@ function set_pbm_header_container() {
         pbmh_next_btn.classList.add("pbmh_pre_btn_not_allow");
     } else {
         pbmh_next_btn.addEventListener("click", () => {
+            api_logger_add(`${current_cart.hnursta}-${current_p_bed_data.bednum}調劑畫面 下一床點擊`, "click");
             next_bed_func();
         });
     }
@@ -1028,6 +1038,7 @@ function set_pbm_header_container() {
     pbmh_checked_submit_btn.innerHTML = "完成";
     pbmh_checked_submit_btn.addEventListener("click", async () => {
         Set_main_div_enable(true);
+        api_logger_add(`${current_cart.hnursta}-${current_p_bed_data.bednum}調劑畫面 "完成"按鈕點擊`, "click");
         let return_data = await set_post_data_to_check_dispense();
         console.log("current_med_table", current_med_table);
         if(return_data.Code == 200) {
@@ -1061,11 +1072,56 @@ function set_pbm_header_container() {
                 return aHasPubMedY - bHasPubMedY; // 讓 pub_med 為 "Y" 的排到最後
             });
             await allocate_display_init("");
+            let post_data_for_check = [current_pharmacy.phar, current_cart.hnursta];
+            let temp_str
+            console.log(post_data_for_check);
+
             if(current_func == "allocate") {
-                alert(`第${current_p_bed_data.bednum}床，完成調劑`);
+                med_change_data = await get_patient_with_NOdispense(post_data_for_check);
+                let temp_result = med_change_data.Result;
+                med_change_data = med_change_data.Data;
+                med_change_data = med_change_data.filter((e) => {
+                    return e.cpoe.length > 0;
+                });
+
+                console.log("未調藥品資料：", med_change_data);
+
+                temp_str = `第${current_p_bed_data.bednum}床，完成調劑`;
+                // console.log(temp_str);
+                if(med_change_data.length > 0) {
+                    temp_str += `，目前${current_pharmacy.phar}-${current_cart.hnursta}尚有${med_change_data.length}床未調劑完成，是否開啟未調藥品？`;
+
+                    if(confirm(temp_str)) {
+                        popup_med_change_list_div_open();
+                    }
+                } else {
+                    alert(temp_str);
+                }
             } else {
-                alert(`第${current_p_bed_data.bednum}床，完成覆核`);
+                // 這邊確認完成
+                console.log("==-=-=-=-=-=-=-=-==", "這邊撈覆核");
+                med_change_data = await get_patient_with_NOcheck(post_data_for_check);
+                let temp_result = med_change_data.Result;
+                med_change_data = med_change_data.Data;
+                med_change_data = med_change_data.filter((e) => {
+                    return e.cpoe.length > 0;
+                });
+
+                console.log("未核藥品資料：", med_change_data);
+                temp_str = `第${current_p_bed_data.bednum}床，完成覆核`;
+                // console.log(temp_str);
+
+                if(med_change_data.length > 0) {
+                    temp_str += `，目前${current_pharmacy.phar}-${current_cart.hnursta}尚有${med_change_data.length}床未覆核完成，是否開啟未核藥品？`;
+
+                    if(confirm(temp_str)) {
+                        popup_med_change_list_div_open();
+                    }
+                } else {
+                    alert(temp_str);
+                }
             }
+
             if(current_func != "allocate") {
                 current_med_table = "";
                 last_current_med_table = "";
@@ -1470,6 +1526,7 @@ function set_pbm_main_container() {
                     ValueAry:[element.GUID, ""]
                 };
                 if(confirm("該處方藥品是否取消大瓶藥標記？")){
+                    api_logger_add(`${current_cart.hnursta}-${current_p_bed_data.bednum} \n${element.GUID} 大瓶藥標記取消`, "click");
                     let return_data = await update_large_in_med_cpoe(post_data);
                     if(return_data.Code == 200) {
                         med_card_big_bottle_icon.classList.remove("med_card_bigB");
@@ -1484,6 +1541,7 @@ function set_pbm_main_container() {
                     ValueAry:[element.GUID, "L"]
                 };
                 if(confirm("該處方藥品是否標記為大瓶藥？")){
+                    api_logger_add(`${current_cart.hnursta}-${current_p_bed_data.bednum} \n${element.GUID} 大瓶藥標記`, "click");
                     let return_data = await update_large_in_med_cpoe(post_data);
                     if(return_data.Code == 200) {
                         med_card_big_bottle_icon.classList.add("med_card_bigB");
@@ -2268,6 +2326,8 @@ async function set_post_data_to_check_dispense() {
 
     if(return_data.Code == 200) {
         console.log("回傳成功", return_data.Code == 200);
+        console.log("調劑：", med_log_arr);
+        console.log("取消：", med_nodis_log_arr);
         if(med_log_arr.length > 0 || med_nodis_log_arr.length > 0) {
             console.log("show 成功", "=-=--=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=");
             show_popup_notice(return_data.Result, true)
@@ -2275,14 +2335,16 @@ async function set_post_data_to_check_dispense() {
         if(med_log_arr.length > 0) {
             post_data2.ValueAry[0] = med_log_arr.join(";");
             console.log("調劑log post_data", post_data2);
-            await add_med_inventory_log(post_data2);
+            let temp_notice = await add_med_inventory_log(post_data2);
+            console.log("調劑log API", temp_notice);
             
             med_log_arr = [];
         }
         if(med_nodis_log_arr.length > 0) {
             post_data3.ValueAry[0] = med_nodis_log_arr.join(";");
             console.log("取消 log post_data", post_data3);
-            await add_med_inventory_log(post_data3);
+            let temp_notice = await add_med_inventory_log(post_data3);
+            console.log("取消調劑log API", temp_notice);
             
             med_nodis_log_arr = [];
         }

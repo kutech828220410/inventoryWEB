@@ -83,6 +83,43 @@ async function get_bed_list_by_cart(phar, med_cart) {
         return err_data;
     }
 }
+// 取得病床清單
+async function get_med_qty_group() {
+    try {
+        let start_p = performance.now();
+        console.log(api_ip);
+        let temp_doman = transform_api_ip_4433(api_ip);
+        console.log(`"test", ${temp_doman}api/med_cart/get_med_qty_group`);
+        let temp_data = await fetch(`${temp_doman}api/med_cart/get_med_qty_group`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({}),
+        })
+        .then((response) => {
+            return response.json();
+        })
+
+        let end_p = performance.now();
+        console.log(end_p - start_p);
+        if(temp_data.Code == 200) {
+            console.log(temp_data);
+        } else {
+            temp_str = `API Error\nAPI_URL: /api/med_cart/get_med_qty_group\nerror result: ${temp_data.Result}\n`;
+            console.error(temp_str);
+            console.error("Error response:", temp_data);
+        }
+
+        return temp_data;
+    } catch(error) {
+        let err_data = {
+            Code: -200,
+            Result: `網路錯誤：${error}`
+        }
+        return err_data;
+    }
+}
 
 // 取的病床資訊
 async function get_patient_by_bedNum(phar, med_cart, bed_num) {
@@ -194,6 +231,7 @@ async function get_all_med_qty(phar, med_cart, table) {
         return err_data;
     }
 }
+
 
 // 取得藥品異動清單
 async function get_patient_with_NOdispense(data) {

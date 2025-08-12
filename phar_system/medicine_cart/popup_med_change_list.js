@@ -27,6 +27,7 @@ function get_ppmcl_header() {
         Set_main_div_enable(true);
         // last_med_change_list_n = ppmcl_h_current_cart_select.value;
 
+        api_logger_add(`未調藥品：${current_cart.hnursta}更換藥車${ppmcl_h_current_cart_select}`, "click");
         let post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
         console.log(post_data);
         if(current_func == "allocate") {
@@ -215,16 +216,19 @@ async function popup_med_change_list_div_open() {
         med_change_data = med_change_data.Data;
 
         // med_change_data = med_change_data.filter((e) => {
-        //     return e.cpoe_change_status != "";
+        //     return e.cpoe.length > 0;
         // });
     } else {
         console.log("==-=-=-=-=-=-=-=-==", "這邊撈覆核");
         med_change_data = await get_patient_with_NOcheck(post_data);
         med_change_data = med_change_data.Data;
+
+        // med_change_data = med_change_data.filter((e) => {
+        //     return e.cpoe.length > 0;
+        // });
     }
 
     console.log(med_change_data);
-
     med_change_data = med_change_data.filter((e) => {
         return Array.isArray(e.cpoe) && e.cpoe.length != 0;
     });
@@ -313,6 +317,7 @@ async function set_ppmcl_main_info() {
         med_change_all_check_btn.innerHTML = "全部異動調劑";
         med_change_all_check_btn.addEventListener("click", async () => {
             if(confirm("是否調劑所有異動？")) {
+                api_logger_add(`未調藥品：${current_cart.hnursta}藥車總調劑`, "click");
                 Set_main_div_enable(true);
                 let ppmcl_cpoe_med_check_btn = document.querySelectorAll(".ppmcl_cpoe_med_check_btn");
                 let ppmcl_bed_card_container = document.querySelectorAll(".ppmcl_bed_card_container");
@@ -410,6 +415,7 @@ async function set_ppmcl_main_info() {
         med_change_all_check_btn.addEventListener("click", async () => {
             if(confirm("是否覆核所有異動？")) {
                 Set_main_div_enable(true);
+                api_logger_add(`未調藥品：${current_cart.hnursta}藥車總覆核`, "click");
                 let ppmcl_cpoe_med_check_btn = document.querySelectorAll(".ppmcl_cpoe_med_check_btn");
                 let ppmcl_bed_card_container = document.querySelectorAll(".ppmcl_bed_card_container");
                 if(ppmcl_bed_card_container.length == 0) {
@@ -520,8 +526,17 @@ async function set_ppmcl_main_info() {
 
         let ppmcl_bed_name_title = document.createElement("div");
         ppmcl_bed_name_title.classList.add("ppmcl_bed_name_title");
-        ppmcl_bed_name_title.innerHTML = `${element.bednum} 床 - ${element.pnamec}`;
+        if(element.bedStatus) {
+            if(element.bedStatus.bed_old) {
+                ppmcl_bed_name_title.innerHTML = `${element.bednum} 床 （從${element.bedStatus.bed_old} 轉入）- ${element.pnamec}`;
+            } else {
+                ppmcl_bed_name_title.innerHTML = `${element.bednum} 床 - ${element.pnamec}`;
+            }
+        } else {
+            ppmcl_bed_name_title.innerHTML = `${element.bednum} 床 - ${element.pnamec}`;
+        }
         ppmcl_bed_name_title.addEventListener("click", async () => {
+            api_logger_add(`未調藥品：藥車病床進入${element.bednum}床調劑畫面`, "click");
             let cart_content = document.querySelector(".cart_content");
             let ppmcl_h_current_cart_select = document.querySelector(".ppmcl_h_current_cart_select");
 
@@ -573,6 +588,7 @@ async function set_ppmcl_main_info() {
         ppmcl_bed_name_all_btn.addEventListener("click", async () => {
             if(current_func == "allocate") {
                 if(confirm(`${element.bednum} 號病床處方異動調劑確認`)) {
+                    api_logger_add(`未調藥品：${current_cart.hnursta}-${element.bednum}床藥品全部調劑`, "click");
                     Set_main_div_enable(true);
                     let temp_guid_arr = [];
     
@@ -773,16 +789,17 @@ async function set_ppmcl_main_info() {
                         med_change_data = await get_patient_with_NOdispense(post_data);
                         med_change_data = med_change_data.Data;
                 
+                        console.log("未調藥品資料", med_change_data);
+
                         med_change_data = med_change_data.filter((e) => {
                             return e.cpoe_change_status != "";
                         });
-                
                     } else {
                         med_change_data = await get_patient_with_NOcheck(post_data);
                         med_change_data = med_change_data.Data;
+
+                        console.log("為何藥品資料", med_change_data);
                     }
-                
-                    console.log(med_change_data);
                 
                     med_change_data = med_change_data.filter((e) => {
                         return Array.isArray(e.cpoe) && e.cpoe.length != 0;
@@ -804,22 +821,22 @@ async function set_ppmcl_main_info() {
         let ppmcl_bed_name_info_container = document.createElement("div");
         ppmcl_bed_name_info_container.classList.add("ppmcl_bed_name_info_container");
 
-        let ppmcl_bed_name_old_bed = document.createElement("div");
-        ppmcl_bed_name_old_bed.classList.add("ppmcl_bed_name_old_bed");
-        if(element.bedStatus) {
-            if (Object.keys(element.bedStatus).length !== 0) {
-                ppmcl_bed_name_old_bed.innerHTML = `${element.bedStatus.bed_old} 轉入`;
-            }
-        } else {
-            console.log("沒有收到轉出床位資料，element.bedStatus：", element.bedStatus);
-        }
+        // let ppmcl_bed_name_old_bed = document.createElement("div");
+        // ppmcl_bed_name_old_bed.classList.add("ppmcl_bed_name_old_bed");
+        // if(element.bedStatus) {
+        //     if (Object.keys(element.bedStatus).length !== 0) {
+        //         ppmcl_bed_name_old_bed.innerHTML = `(從${element.bedStatus.bed_old} 轉入)`;
+        //     }
+        // } else {
+        //     console.log("沒有收到轉出床位資料，element.bedStatus：", element.bedStatus);
+        // }
 
         ppmcl_bed_name_info_container.appendChild(ppmcl_bed_name_title);
-        if(element.bedStatus) {
-            if (Object.keys(element.bedStatus).length !== 0) {
-                ppmcl_bed_name_info_container.appendChild(ppmcl_bed_name_old_bed);
-            }
-        }
+        // if(element.bedStatus) {
+        //     if (Object.keys(element.bedStatus).length !== 0) {
+        //         ppmcl_bed_name_info_container.appendChild(ppmcl_bed_name_old_bed);
+        //     }
+        // }
 
         ppmcl_bed_name_container.appendChild(ppmcl_bed_name_info_container);
         ppmcl_bed_name_container.appendChild(ppmcl_bed_name_all_btn);
@@ -858,6 +875,7 @@ async function set_ppmcl_main_info() {
                 ppmcl_light_btn.addEventListener("click", async () => {
                     let checkedRadio = document.querySelector('input[name="ppmcl_filter_med_table_input"]:checked');
                     if(checkedRadio.value != "all") {
+                        api_logger_add(`未調藥品：${current_cart.hnursta}-${element.bednum}床藥品${item.code}亮燈`, "click");
                         await light_on_func(item.code, checkedRadio.value, "調劑台");
                     } else {
                         alert("請彈窗上方選擇調劑台");
@@ -977,6 +995,7 @@ async function set_ppmcl_main_info() {
                 if(current_func == "allocate") {
                     ppmcl_cpoe_med_check_btn.innerHTML = "調劑";
                     ppmcl_cpoe_med_check_btn.addEventListener("click", async () => {
+                        api_logger_add(`未調藥品：${current_cart.hnursta}-${element.bednum}床藥品${item.code}調劑`, "click");
                         Set_main_div_enable(true);
                         let return_data = await set_post_data_to_check_dispense_for_med_list(element.GUID, item.GUID, "Y", true);
     
@@ -1031,6 +1050,7 @@ async function set_ppmcl_main_info() {
                     if(item.dispens_status == "Y" && item.check_status != "Y") {
                         ppmcl_cpoe_med_check_btn.addEventListener("click", async () => {
                             Set_main_div_enable(true);
+                            api_logger_add(`未調藥品：${current_cart.hnursta}-${element.bednum}床藥品${item.code}覆核`, "click");
                             let return_data = await set_post_data_to_check_dispense_for_med_list(element.GUID, item.GUID, "Y", true);
         
                             if(return_data.Code == 200) {
