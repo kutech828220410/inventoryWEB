@@ -1245,8 +1245,11 @@ async function reset_cart_list_container() {
 
 async function set_med_qty_type_radio() {
   let head_sort_radio_container = document.querySelector('.head_sort_radio_container');
-  med_list_sort_radio_data = await get_med_qty_group();
-  med_list_sort_radio_data = med_list_sort_radio_data.Data;
+  let temp_med_group_api_data = await get_med_qty_group();
+  if(temp_med_group_api_data.Code == 200) {
+    med_list_sort_radio_data = temp_med_group_api_data
+    med_list_sort_radio_data = med_list_sort_radio_data.Data;
+  }
 
   let input = document.createElement("input");
   input.className = "sort_med_input";
@@ -1255,6 +1258,12 @@ async function set_med_qty_type_radio() {
   input.value = "all";
   input.id = "sort_all";
   input.checked = true;
+  input.addEventListener("change", () => {
+    let ppml_main_container = document.querySelector(".ppml_main_container");
+    api_logger_add("藥品總量：更換藥品種類", "藥品種類 radio change");
+    set_pp_med_list_display();
+    ppml_main_container.scrollTop = 0;
+  });
 
   let label = document.createElement("label");
   label.classList.add("sort_med_label");

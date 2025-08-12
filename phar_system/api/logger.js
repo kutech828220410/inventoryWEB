@@ -11,9 +11,9 @@ async function api_logger_add(event, op_type) {
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0'); // 月份補0
     const day = String(today.getDate()).padStart(2, '0'); // 日期補0
-    const hour = String(now.getHours()).padStart(2, '0');
-    const minute = String(now.getMinutes()).padStart(2, '0');
-    const second = String(now.getSeconds()).padStart(2, '0');  
+    const hour = String(today.getHours()).padStart(2, '0');
+    const minute = String(today.getMinutes()).padStart(2, '0');
+    const second = String(today.getSeconds()).padStart(2, '0');  
 
     const time = `${year}-${month}-${day}T${hour}:${minute}:${second}`;
 
