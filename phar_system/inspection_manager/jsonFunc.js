@@ -472,12 +472,13 @@ async function device_light(Color, device_basic)
   let response = await postDataToAPI(`${_url}`,post_data);
   return response;
 }
-async function excel_upload(file, IC_NAME, PON, CT, API_inspection_excel_upload) 
+// async function excel_upload(file, IC_NAME, PON, CT, API_inspection_excel_upload) 
+async function excel_upload(file, IC_NAME, CT, API_inspection_excel_upload) 
 {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('IC_NAME', IC_NAME);
-  formData.append('PON', PON);
+  // formData.append('PON', PON);
   formData.append('CT', CT);
   console.log("excel_upload" , `${API_inspection_excel_upload[0].server}`);
   console.log("post_data [excel_upload]",formData);

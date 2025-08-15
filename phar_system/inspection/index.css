@@ -124,7 +124,13 @@ html, body {
 
 .control_btn{border-radius: 5px; background-color:#005798; padding:0 20px; color:#fff; transition:.2s;}
 .control_btn:hover{ background-color:#0c6eb7; transition:.2s;}
-.link_btn{ border-radius: 5px;  background-color:#AAAAAA; padding:0 20px; color:#fff; transition:.2s;}
+.link_btn { 
+  border-radius: 5px;  
+  background-color:#AAAAAA; 
+  padding:0 12px; 
+  color:#fff; 
+  transition:.2s;
+}
 .link_btn:hover{ background-color:#929292; transition:.2s;}
 
 .calculate_btn{ border-radius: 5px;  background-color:#c9c9bc; padding:0 20px; color:#fff; transition:.2s;}

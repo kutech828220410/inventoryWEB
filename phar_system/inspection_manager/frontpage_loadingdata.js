@@ -250,8 +250,10 @@ async function select_btn_Click(event)
   var IC_SN = this.getAttribute("IC_SN");
   console.log(IC_SN);
   sessionStorage.setItem('IC_SN', IC_SN);
+  Set_main_div_enable(true);
   await creat_update_startime_by_IC_SN(IC_SN);
   // location.href = "../inspection/main.html";
+  Set_main_div_enable(false);
   location.href = "../../phar_system/inspection/index.html?administrator";
 }
 

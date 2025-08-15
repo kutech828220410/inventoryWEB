@@ -36,13 +36,13 @@ async function confirm_popup_upload()
     try
     {   
         const IC_NAME_input_popup = document.getElementById('IC_NAME_input_popup');
-        const PON_input_popup = document.getElementById('PON_input_popup');
+        // const PON_input_popup = document.getElementById('PON_input_popup');
         const upload_input = document.getElementById('upload_input');
-        if(!PON_input_popup.value)
-        {
-            alert("未輸入驗收單號!");
-            return;
-        }
+        // if(!PON_input_popup.value)
+        // {
+        //     alert("未輸入驗收單號!");
+        //     return;
+        // }
         if(upload_input.files.length == 0)
         {
             alert("未選取上傳檔案!");
@@ -76,7 +76,8 @@ async function confirm_popup_upload()
                 console.log("抓不到轉換資料，啟用原先API url", temp_url);
             }
 
-            await excel_upload(upload_input.files[0],IC_NAME_input_popup.value,PON_input_popup.value,get_logedName(), API_inspection_excel_upload);
+            await excel_upload(upload_input.files[0],IC_NAME_input_popup.value,get_logedName(), API_inspection_excel_upload);
+            // await excel_upload(upload_input.files[0],IC_NAME_input_popup.value,PON_input_popup.value,get_logedName(), API_inspection_excel_upload);
             Set_main_div_enable(false);
             hide_popup_upload();
             Set_main_div_enable(false);
@@ -143,7 +144,7 @@ function get_box_popup_upload()
     {
        this.select();       
     };
-    add_box_div.appendChild(PON_input);
+    // add_box_div.appendChild(PON_input);
 
     const upload_input = document.createElement('input');
     My_Div.Init(upload_input,'upload_input','upload_input', '90%','40px','');

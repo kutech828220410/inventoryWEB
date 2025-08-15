@@ -161,7 +161,7 @@ async function set_self_operate_info_table() {
         return opTime >= startTime && opTime <= endTime;
     });
 
-    let table_th_arr = ["動作", "護理站", "床號", "藥碼", "藥名", "劑量", "操作時間"];
+    let table_th_arr = ["動作", "護理站", "床號", "藥碼", "藥名", "數量", "操作時間"];
 
     let ppso_table = document.createElement("table");
     ppso_table.classList.add("ppso_table");
@@ -208,7 +208,7 @@ async function set_self_operate_info_table() {
                 case "藥名":
                     ppso_td.innerText = element.name;
                     break;
-                case "劑量":
+                case "數量":
                     ppso_td.innerText = element.qty;
                     ppso_td.classList.add("ppso_text_center");
                     break;

@@ -62,7 +62,7 @@ function get_title_popup_add()
 {
     const title_text = document.createElement('div');
     My_Div.Init(title_text, 'title_text_add_div','title_text_add_div', '100%', '40px', 'gray');
-    My_Div.Set_Text(title_text ,"新增驗收單號" , TextAlignEnum.CENTER , "24px", true,"微軟正黑體","white");
+    My_Div.Set_Text(title_text ,"新增驗收單" , TextAlignEnum.CENTER , "24px", true,"微軟正黑體","white");
     title_text.style.borderRadius = "5px";
     title_text.style.marginBottom = "10px";
     return title_text;
@@ -78,7 +78,7 @@ function get_box_popup_add()
     const serch_IC_NAME_input = document.createElement('input');
     My_Div.Init(serch_IC_NAME_input,'serch_IC_NAME_input_popup_serch','serch_IC_NAME_input_popup_serch', '90%','40px','');
     My_Div.Set_Text(serch_IC_NAME_input ,"" , TextAlignEnum.CENTER , "18px", false ,"微軟正黑體","black");
-    serch_IC_NAME_input.placeholder = '請輸入驗收單號';
+    serch_IC_NAME_input.placeholder = '請輸入驗收單名稱';
     serch_IC_NAME_input.style.borderRadius = "3px";
     serch_IC_NAME_input.style.border = "1px solid gray";
     serch_IC_NAME_input.style.paddingLeft = "10px";

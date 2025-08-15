@@ -467,11 +467,12 @@ function get_header()
   const header_controls = document.createElement('div');
   My_Div.Init(header_controls, 'header_controls','header_controls', '100%', '', '');
   My_Div.Set_Block(header_controls, DisplayEnum.FLEX, FlexDirectionEnum.ROW, JustifyContentEnum.RIGHT);
-  header_controls.style.marginRight = "10px";
+  header_controls.style.gap = "4px";
   const header_creatselect_btn = document.createElement('button');
   header_creatselect_btn.className = "control_btn";
+  header_creatselect_btn.style.marginRight = "10px";
   My_Div.Init(header_creatselect_btn, 'control_btn','header_creatselect_btn', '', '40px', '');
-  My_Div.Set_Text(header_creatselect_btn ,"換單" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","white");
+  My_Div.Set_Text(header_creatselect_btn ,"換單" , TextAlignEnum.CENTER , "14px", false,"微軟正黑體","white");
   header_creatselect_btn.addEventListener("click", function()
   {
     popup_creatSelect_div.Show();
@@ -480,7 +481,7 @@ function get_header()
   const header_serch_btn = document.createElement('button');
   header_serch_btn.className = "control_btn";
   My_Div.Init(header_serch_btn, 'control_btn','header_serch_btn', '', '40px', '');
-  My_Div.Set_Text(header_serch_btn ,"搜尋" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","white");
+  My_Div.Set_Text(header_serch_btn ,"搜尋" , TextAlignEnum.CENTER , "14px", false,"微軟正黑體","white");
   header_serch_btn.addEventListener("click", function()
   {
      popup_med_serch_div.Show();
@@ -489,7 +490,7 @@ function get_header()
   const header_refresh_btn = document.createElement('button');
   header_refresh_btn.className = "link_btn";
   My_Div.Init(header_refresh_btn, 'link_btn','header_refresh_btn', '', '40px', '');
-  My_Div.Set_Text(header_refresh_btn ,"重新整理" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","white");
+  My_Div.Set_Text(header_refresh_btn ,"重新整理" , TextAlignEnum.CENTER , "14px", false,"微軟正黑體","white");
   header_refresh_btn.addEventListener("click", function()
   {
       location.reload();
@@ -497,7 +498,7 @@ function get_header()
   const header_logout = document.createElement('button');
   header_logout.className = "link_btn";
   My_Div.Init(header_logout, 'link_btn','header_logout', '', '40px', '');
-  My_Div.Set_Text(header_logout ,"登出" , TextAlignEnum.CENTER , "16px", false,"微軟正黑體","white");
+  My_Div.Set_Text(header_logout ,"登出" , TextAlignEnum.CENTER , "14px", false,"微軟正黑體","white");
   header_logout.addEventListener("click", function()
   {
      const confirmResult = confirm(`是否登出系統?`);
@@ -510,6 +511,78 @@ function get_header()
     }
   });
 
+  const header_excel_upload = document.createElement('button');
+  header_excel_upload.className = "link_btn";
+  My_Div.Init(header_excel_upload, 'link_btn','header_excel_upload', '', '40px', '');
+  My_Div.Set_Text(header_excel_upload ,"上傳" , TextAlignEnum.CENTER , "14px", false,"微軟正黑體","white");
+  header_excel_upload.addEventListener("click", async () => 
+  {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".xlsx,.xls";
+    input.style.display = "none";
+    input.multiple = false;
+
+    // 綁定 change 事件
+    input.addEventListener("change", async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      showLoadingPopup();
+      const ic_sn = sessionStorage.getItem("IC_SN");
+      const ct = JSON.parse( sessionStorage.getItem("login_json")).Name;
+      const formData = new FormData();
+      console.log(file);
+      console.log(ic_sn);
+      console.log(ct);
+      if(!ic_sn) {
+        alert("讀取不到單號");
+        hideLoadingPopup();
+        return
+      }
+      if(!ct) {
+        alert("讀取使用者");
+        hideLoadingPopup();
+        return
+      }
+
+      formData.append("file", file);
+      formData.append("IC_SN", ic_sn);
+      formData.append("CT", ct);
+
+      console.log("檔案名稱：", formData.get("file").name);
+      console.log("IC_SN：", formData.get("IC_SN"));
+      console.log("CT：", formData.get("CT"));
+
+      try {
+        const response = await fetch(`${api_ip}api/inspection/excel_upload_sub_content`, {
+          method: "POST",
+          body: formData
+        });
+
+        if (!response.ok) throw new Error("上傳失敗");
+
+        const result = await response.json();
+        console.log("上傳成功", result);
+        if(Array.isArray(result.Data)) {
+          alert("成功上傳excel，刷新頁面...");
+          location.reload();
+        } else {
+          alert(`資料有誤，請確認\nResult：${result.Result}`);
+        }
+      } catch (err) {
+        console.error("錯誤：", err);
+      }
+
+      // 用完刪掉
+      hideLoadingPopup();
+      input.remove();
+    });
+
+    // 觸發點擊
+    document.body.appendChild(input);
+    input.click();
+  });
+
   // const light_all_on_trigger = document.createElement("button");
   // light_all_on_trigger.classList.add("control_btn");
   // My_Div.Init(light_all_on_trigger, 'control_btn','light_all_on_trigger', '', '40px', '');
@@ -518,6 +591,7 @@ function get_header()
  
   header_controls.appendChild(header_logout);
   header_controls.appendChild(header_refresh_btn);
+  header_controls.appendChild(header_excel_upload);
   // header_controls.appendChild(light_all_on_trigger);
   header_controls.appendChild(header_serch_btn);
   header_controls.appendChild(header_creatselect_btn);

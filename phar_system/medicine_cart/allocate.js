@@ -607,14 +607,14 @@ function set_p_bed_info_container() {
     pbsc_weight.classList.add("pbsc_info");
     pbsc_weight.innerHTML = `${+current_p_bed_data.weight}Kg`;
 
-    div_grid_3.appendChild(pbsc_weight);
+    if(current_p_bed_data.weight) div_grid_3.appendChild(pbsc_weight);
 
     // 身高
     let pbsc_hight = document.createElement("div");
     pbsc_hight.classList.add("pbsc_info");
     pbsc_hight.innerHTML = `${+current_p_bed_data.hight}cm`;
 
-    div_grid_3.appendChild(pbsc_hight);
+    if(current_p_bed_data.hight) div_grid_3.appendChild(pbsc_hight);
 
     // 體表面
     let pbsc_pbbsa = document.createElement("div");
@@ -622,7 +622,7 @@ function set_p_bed_info_container() {
     // pbsc_pbbsa.innerHTML = `BSA：${+current_p_bed_data.pbbsa}㎡`;
     pbsc_pbbsa.innerHTML = `${+current_p_bed_data.pbbsa}㎡`;
 
-    div_grid_3.appendChild(pbsc_pbbsa);
+    if(current_p_bed_data.pbbsa) div_grid_3.appendChild(pbsc_pbbsa);
 
     p_bed_simple_container.appendChild(div_grid_3);
 
