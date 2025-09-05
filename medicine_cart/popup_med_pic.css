@@ -48,7 +48,9 @@
 .ppmp_main_img {
     width: 100%;
     object-fit: cover;
-    padding: 16px;
+}
+.ppmp_main_pic_container {
+    max-width: 600px;
 }
 
 @media screen and (max-width: 550px) {

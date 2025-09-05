@@ -248,141 +248,57 @@ function set_discharged_data_display() {
 
             ppdl_main_container.appendChild(ppdl_return_all_btn);
 
-            discharged_data.forEach(element => {
-                if(Array.isArray(element["cpoe"])) {
-                    if(element["cpoe"].length > 0) {
-                        let ppdl_return_container = document.createElement("div");
-                        ppdl_return_container.classList.add("ppdl_return_container");
-    
-                        let ppdl_return_header = document.createElement("div");
-                        ppdl_return_header.classList.add("ppdl_return_header");
-    
-                        let ppdl_bed_number_label = document.createElement("div");
-                        ppdl_bed_number_label.classList.add("ppdl_bed_number_label");
-                        if(element.bedStatus.status) {
-                            if(element.bedStatus.status == "轉床") {
-                                ppdl_bed_number_label.innerHTML = `${element.bednum} 床 - ${element.pnamec}（轉床：${element.bedStatus.bed_new}）`;
-                            }
-                        } else {
-                            ppdl_bed_number_label.innerHTML = `${element.bednum} 床 - ${element.pnamec}（出院）`;
-                        }
-    
-                        let ppdl_return_bed_all_btn = document.createElement("div");
-                        ppdl_return_bed_all_btn.classList.add("ppdl_return_bed_all_btn");
-                        ppdl_return_bed_all_btn.classList.add("btn");
-                        ppdl_return_bed_all_btn.setAttribute("master_guid", element.GUID);
-                        ppdl_return_bed_all_btn.innerHTML = "病床退藥";
-                        ppdl_return_bed_all_btn.addEventListener("click", async () => {
-                            Set_main_div_enable(true);
-                            let guid_arr = [];
-                            element["cpoe"].forEach(item => {
-                                if(item.dispens_status != "Y") {
-                                    guid_arr.push(item.GUID);
-                                }
-                            });
+            // console.log("出院退藥資料", discharged_data);
+            // discharged_data = discharged_data.filter(item => {
+            //     return item.bedStatus != undefined;
+            // });
 
-                            console.log("病床退藥按鈕", guid_arr, element.GUID);
-                            if(guid_arr.length != 0) {
-                                let return_data = await set_post_data_to_discharged_by_GUID(guid_arr, element.GUID);
-    
-                                if(return_data.Code == 200) {
-                                    let ppdl_h_current_cart_select = document.querySelector(".ppdl_h_current_cart_select");
-                                    
-                                    post_data = {
-                                        Value: "調劑台",
-                                        ValueAry:  [current_pharmacy.phar, ppdl_h_current_cart_select.value]
-                                    };
-                                
-                                    console.log("出院處方退藥api", post_data);
-                                    return_data = await get_patient_discharge(post_data);
-                                    if(return_data.Code != 200) {
-                                        alert("出院處方資料錯誤", return_data.Result);
-                                        Set_main_div_enable(false);
-                                    } else {  
-                                        discharged_data = return_data.Data;
-                                        set_discharged_data_display();
-                                        Set_main_div_enable(false);
+            if(discharged_data.length > 0) {
+                discharged_data.forEach(element => {
+                    if(Array.isArray(element["cpoe"])) {
+                        if(element["cpoe"].length > 0) {
+                            let ppdl_return_container = document.createElement("div");
+                            ppdl_return_container.classList.add("ppdl_return_container");
+        
+                            let ppdl_return_header = document.createElement("div");
+                            ppdl_return_header.classList.add("ppdl_return_header");
+        
+                            let ppdl_bed_number_label = document.createElement("div");
+                            ppdl_bed_number_label.classList.add("ppdl_bed_number_label");
+                            console.log(element.bedStatus);
+                            if(element.bedStatus) {
+                                if(element.bedStatus.status) {
+                                    if(element.bedStatus.status == "轉床") {
+                                        ppdl_bed_number_label.innerHTML = `${element.bednum} 床 - ${element.pnamec}（轉床：${element.bedStatus.bed_new}）`;
                                     }
                                 } else {
-                                    alert("退藥失敗", return_data.Result);
-                                    Set_main_div_enable(false);
+                                    ppdl_bed_number_label.innerHTML = `${element.bednum} 床 - ${element.pnamec}（出院）`;
                                 }
                             } else {
-                                alert("無可退藥項目", "請確認是否有可退藥項目");
-                                Set_main_div_enable(false);
+                                ppdl_bed_number_label.innerHTML = `${element.bednum} 床 - ${element.pnamec}（出院）`;
                             }
-                        });
-    
-                        ppdl_return_header.appendChild(ppdl_bed_number_label);
-                        ppdl_return_header.appendChild(ppdl_return_bed_all_btn);
-
-                        ppdl_return_container.appendChild(ppdl_return_header);
-
-                        element["cpoe"].forEach(item => {
-                            if(item.dispens_status != "Y") {
-                                let ppdl_med_card_container = document.createElement("div");
-                                ppdl_med_card_container.classList.add("ppdl_med_card_container");
-
-                                let ppdl_med_info_container = document.createElement("div");
-                                ppdl_med_info_container.classList.add("ppdl_med_info_container");
-
-                                let ppdl_med_name_label = document.createElement("div");
-                                ppdl_med_name_label.classList.add("ppdl_med_name_label");
-                                ppdl_med_name_label.innerHTML = item.name;
-
-                                let ppdl_med_cht_name_label = document.createElement("div");
-                                ppdl_med_cht_name_label.classList.add("ppdl_med_cht_name_label");
-                                ppdl_med_cht_name_label.innerHTML = item.cht_name;
-
-                                let ppdl_med_info_detail = document.createElement("div");
-                                ppdl_med_info_detail.classList.add("ppdl_med_info_detail");
-
-                                let ppdl_med_info_dunit = document.createElement("div");
-                                ppdl_med_info_dunit.classList.add("ppdl_med_info_dunit");
-                                ppdl_med_info_dunit.innerHTML = "單位：" + item.dunit;
-
-                                let ppdl_med_info_storage = document.createElement("div");
-                                ppdl_med_info_storage.classList.add("ppdl_med_info_storage");
-                                ppdl_med_info_storage.innerHTML = "儲位：" + item.store_position;
-
-                                let ppdl_med_info_qty = document.createElement("div");
-                                ppdl_med_info_qty.classList.add("ppdl_med_info_qty");
-                                ppdl_med_info_qty.innerHTML = "數量：" + item.qty;
-
-                                ppdl_med_info_detail.appendChild(ppdl_med_info_dunit);
-                                if(page_setting_params.med_unCheck_display_loc) {
-                                    if(page_setting_params.med_unCheck_display_loc.value == "True") {
-                                        ppdl_med_info_detail.appendChild(ppdl_med_info_storage);
+        
+                            let ppdl_return_bed_all_btn = document.createElement("div");
+                            ppdl_return_bed_all_btn.classList.add("ppdl_return_bed_all_btn");
+                            ppdl_return_bed_all_btn.classList.add("btn");
+                            ppdl_return_bed_all_btn.setAttribute("master_guid", element.GUID);
+                            ppdl_return_bed_all_btn.innerHTML = "病床退藥";
+                            ppdl_return_bed_all_btn.addEventListener("click", async () => {
+                                Set_main_div_enable(true);
+                                let guid_arr = [];
+                                element["cpoe"].forEach(item => {
+                                    if(item.dispens_status != "Y") {
+                                        guid_arr.push(item.GUID);
                                     }
-                                }
-                                ppdl_med_info_detail.appendChild(ppdl_med_info_qty);
-
-                                ppdl_med_info_container.appendChild(ppdl_med_name_label);
-                                ppdl_med_info_container.appendChild(ppdl_med_cht_name_label);
-                                ppdl_med_info_container.appendChild(ppdl_med_info_detail);
-
-                                let ppdl_med_right_container = document.createElement("div");
-                                ppdl_med_right_container.classList.add("ppdl_med_right_container");
-
-                                let ppdl_cpoe_status = document.createElement("div");
-                                ppdl_cpoe_status.classList.add("ppdl_cpoe_status");
-                                ppdl_cpoe_status.textContent = item.status;
-                    
-                                let ppdl_cpoe_med_check_btn = document.createElement("div");
-                                ppdl_cpoe_med_check_btn.classList.add("ppdl_cpoe_med_check_btn");
-                                ppdl_cpoe_med_check_btn.classList.add("btn");
-                                ppdl_cpoe_med_check_btn.setAttribute("GUID", item.GUID);
-                                ppdl_cpoe_med_check_btn.setAttribute("Master_GUID", item.Master_GUID);
-                                ppdl_cpoe_med_check_btn.innerHTML = "退藥";
-                                ppdl_cpoe_med_check_btn.addEventListener("click", async () => {
-                                    Set_main_div_enable(true);
-                                    let guid_arr = [item.GUID];
-                                    let master_guid = item.Master_GUID;
-                                    console.log("退藥按鈕", guid_arr, master_guid);
-                                    let return_data = await set_post_data_to_discharged_by_GUID(guid_arr, master_guid);
+                                });
+    
+                                console.log("病床退藥按鈕", guid_arr, element.GUID);
+                                if(guid_arr.length != 0) {
+                                    let return_data = await set_post_data_to_discharged_by_GUID(guid_arr, element.GUID);
+        
                                     if(return_data.Code == 200) {
                                         let ppdl_h_current_cart_select = document.querySelector(".ppdl_h_current_cart_select");
-                                
+                                        
                                         post_data = {
                                             Value: "調劑台",
                                             ValueAry:  [current_pharmacy.phar, ppdl_h_current_cart_select.value]
@@ -402,28 +318,135 @@ function set_discharged_data_display() {
                                         alert("退藥失敗", return_data.Result);
                                         Set_main_div_enable(false);
                                     }
-                                });
-
-                                ppdl_med_right_container.appendChild(ppdl_cpoe_status);
-                                ppdl_med_right_container.appendChild(ppdl_cpoe_med_check_btn);
-
-                                let ppdl_med_card_type = document.createElement("div");
-                                // ppdl_med_card_type.classList.add("ppml_big_bottle");
-                                if(item.ice == "Y" || item.large == "L") ppdl_med_card_type.classList.add("ppml_big_bottle");
-
-                                ppdl_med_card_container.appendChild(ppdl_med_info_container);
-                                ppdl_med_card_container.appendChild(ppdl_med_card_type);
-                                ppdl_med_card_container.appendChild(ppdl_med_right_container);
-
-                                ppdl_return_container.appendChild(ppdl_med_card_container);
-                            }
-                        });
+                                } else {
+                                    alert("無可退藥項目", "請確認是否有可退藥項目");
+                                    Set_main_div_enable(false);
+                                }
+                            });
         
-                        ppdl_main_container.appendChild(ppdl_return_container);
+                            ppdl_return_header.appendChild(ppdl_bed_number_label);
+                            ppdl_return_header.appendChild(ppdl_return_bed_all_btn);
+    
+                            ppdl_return_container.appendChild(ppdl_return_header);
+    
+                            element["cpoe"].forEach(item => {
+                                if(item.dispens_status != "Y") {
+                                    let ppdl_med_card_container = document.createElement("div");
+                                    ppdl_med_card_container.classList.add("ppdl_med_card_container");
+    
+                                    let ppdl_med_info_container = document.createElement("div");
+                                    ppdl_med_info_container.classList.add("ppdl_med_info_container");
+    
+                                    let ppdl_med_name_label = document.createElement("div");
+                                    ppdl_med_name_label.classList.add("ppdl_med_name_label");
+                                    ppdl_med_name_label.innerHTML = item.name;
+    
+                                    let ppdl_med_cht_name_label = document.createElement("div");
+                                    ppdl_med_cht_name_label.classList.add("ppdl_med_cht_name_label");
+                                    ppdl_med_cht_name_label.innerHTML = item.cht_name;
+    
+                                    let ppdl_med_info_detail = document.createElement("div");
+                                    ppdl_med_info_detail.classList.add("ppdl_med_info_detail");
+    
+                                    let ppdl_med_info_dunit = document.createElement("div");
+                                    ppdl_med_info_dunit.classList.add("ppdl_med_info_dunit");
+                                    ppdl_med_info_dunit.innerHTML = "單位：" + item.dunit;
+    
+                                    let ppdl_med_info_storage = document.createElement("div");
+                                    ppdl_med_info_storage.classList.add("ppdl_med_info_storage");
+                                    ppdl_med_info_storage.innerHTML = "儲位：" + item.store_position;
+    
+                                    let ppdl_med_info_qty = document.createElement("div");
+                                    ppdl_med_info_qty.classList.add("ppdl_med_info_qty");
+                                    ppdl_med_info_qty.innerHTML = "數量：" + item.qty;
+    
+                                    ppdl_med_info_detail.appendChild(ppdl_med_info_dunit);
+                                    if(page_setting_params.med_unCheck_display_loc) {
+                                        if(page_setting_params.med_unCheck_display_loc.value == "True") {
+                                            ppdl_med_info_detail.appendChild(ppdl_med_info_storage);
+                                        }
+                                    }
+                                    ppdl_med_info_detail.appendChild(ppdl_med_info_qty);
+    
+                                    let ppdl_med_label_container = document.createElement("div");
+                                    ppdl_med_label_container.classList.add("ppdl_med_label_container");
+    
+                                    let ppdl_med_name_container = document.createElement("div");
+                                    ppdl_med_name_container.classList.add("ppdl_med_name_container");
+    
+                                    ppdl_med_name_container.appendChild(ppdl_med_name_label);
+                                    ppdl_med_name_container.appendChild(ppdl_med_cht_name_label);
+                                    
+                                    let ppdl_med_card_type = document.createElement("div");
+                                    ppdl_med_card_type.classList.add("ppdl_med_card_type");
+                                    ppdl_med_card_type.innerHTML = `<img src="../../image/iv-bag.png" alt="">`;
+                                    
+                                    ppdl_med_label_container.appendChild(ppdl_med_name_container);
+                                   if(item.ice == "Y" || item.large == "L") ppdl_med_label_container.appendChild(ppdl_med_card_type);
+    
+                                    ppdl_med_info_container.appendChild(ppdl_med_label_container);
+                                    ppdl_med_info_container.appendChild(ppdl_med_info_detail);
+    
+                                    let ppdl_med_right_container = document.createElement("div");
+                                    ppdl_med_right_container.classList.add("ppdl_med_right_container");
+    
+                                    let ppdl_cpoe_status = document.createElement("div");
+                                    ppdl_cpoe_status.classList.add("ppdl_cpoe_status");
+                                    ppdl_cpoe_status.textContent = item.status;
+                        
+                                    let ppdl_cpoe_med_check_btn = document.createElement("div");
+                                    ppdl_cpoe_med_check_btn.classList.add("ppdl_cpoe_med_check_btn");
+                                    ppdl_cpoe_med_check_btn.classList.add("btn");
+                                    ppdl_cpoe_med_check_btn.setAttribute("GUID", item.GUID);
+                                    ppdl_cpoe_med_check_btn.setAttribute("Master_GUID", item.Master_GUID);
+                                    ppdl_cpoe_med_check_btn.innerHTML = "退藥";
+                                    ppdl_cpoe_med_check_btn.addEventListener("click", async () => {
+                                        Set_main_div_enable(true);
+                                        let guid_arr = [item.GUID];
+                                        let master_guid = item.Master_GUID;
+                                        console.log("退藥按鈕", guid_arr, master_guid);
+                                        let return_data = await set_post_data_to_discharged_by_GUID(guid_arr, master_guid);
+                                        if(return_data.Code == 200) {
+                                            let ppdl_h_current_cart_select = document.querySelector(".ppdl_h_current_cart_select");
+                                    
+                                            post_data = {
+                                                Value: "調劑台",
+                                                ValueAry:  [current_pharmacy.phar, ppdl_h_current_cart_select.value]
+                                            };
+                                        
+                                            console.log("出院處方退藥api", post_data);
+                                            return_data = await get_patient_discharge(post_data);
+                                            if(return_data.Code != 200) {
+                                                alert("出院處方資料錯誤", return_data.Result);
+                                                Set_main_div_enable(false);
+                                            } else {  
+                                                discharged_data = return_data.Data;
+                                                set_discharged_data_display();
+                                                Set_main_div_enable(false);
+                                            }
+                                        } else {
+                                            alert("退藥失敗", return_data.Result);
+                                            Set_main_div_enable(false);
+                                        }
+                                    });
+    
+                                    ppdl_med_right_container.appendChild(ppdl_cpoe_status);
+                                    ppdl_med_right_container.appendChild(ppdl_cpoe_med_check_btn);
+    
+                                    ppdl_med_card_container.appendChild(ppdl_med_info_container);
+                                    ppdl_med_card_container.appendChild(ppdl_med_right_container);
+    
+                                    ppdl_return_container.appendChild(ppdl_med_card_container);
+                                }
+                            });
+            
+                            ppdl_main_container.appendChild(ppdl_return_container);
+                        }
                     }
-                }
-            });
-
+                });
+            } else {
+                ppdl_main_container.innerHTML = `<span class="ppdl_span_main_content">無需退藥</span>`;
+            }
         } else {
             ppdl_main_container.innerHTML = `<span class="ppdl_span_main_content">無需退藥</span>`;
         }

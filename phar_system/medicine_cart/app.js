@@ -8,6 +8,87 @@ function handleResize()
 {
    //Set_popup_find_position();
 }
+function set_login_timestamp() {
+  // 取得當前時間
+  let now = new Date();
+
+  // 格式化成 "2025-09-09T00:00:00" 的形式
+  let pad = (n) => n.toString().padStart(2, "0");
+  let formatted = 
+    now.getFullYear() + "-" +
+    pad(now.getMonth() + 1) + "-" +
+    pad(now.getDate()) + "T" +
+    pad(now.getHours()) + ":" +
+    pad(now.getMinutes()) + ":" +
+    pad(now.getSeconds());
+
+  let log_time =     
+    pad(now.getHours()) + ":" +
+    pad(now.getMinutes()) + ":" +
+    pad(now.getSeconds());
+
+  let cutoff_time = page_setting_params.delivery_time.value + ":00";
+
+  console.log(log_time > cutoff_time);
+
+  let formatted_cutoff;
+  if(log_time > cutoff_time) {
+    let nextDay = new Date(now);
+    nextDay.setDate(nextDay.getDate() + 1)
+    formatted_cutoff = 
+      nextDay.getFullYear() + "-" +
+      pad(nextDay.getMonth() + 1) + "-" +
+      pad(nextDay.getDate()) + "T" +
+      page_setting_params.delivery_time.value + ":00";
+  } else {
+    formatted_cutoff = 
+      now.getFullYear() + "-" +
+      pad(now.getMonth() + 1) + "-" +
+      pad(now.getDate()) + "T" +
+      page_setting_params.delivery_time.value + ":00";
+  }
+
+  // 寫入 localStorage
+  localStorage.setItem("login_timestamp", formatted);
+  // 下次過帳時間寫入
+  localStorage.setItem("cutoff_timestamp", formatted_cutoff);
+
+  console.log("登入時間戳記已寫入:", formatted);
+}
+
+function check_cutoff_time_relogin() {
+  let cutoff_time = localStorage.getItem("cutoff_timestamp");
+  // 取得當前時間
+  let now = new Date();
+
+  // 格式化成 "2025-09-09T00:00:00" 的形式
+  let pad = (n) => n.toString().padStart(2, "0");
+  let formatted = 
+    now.getFullYear() + "-" +
+    pad(now.getMonth() + 1) + "-" +
+    pad(now.getDate()) + "T" +
+    pad(now.getHours()) + ":" +
+    pad(now.getMinutes()) + ":" +
+    pad(now.getSeconds());
+
+  if(cutoff_time < formatted) {
+    console.log("API操作時間", formatted);
+    console.log("切帳時間：", cutoff_time);
+    console.log("取消操作，重新整理頁面。");
+
+    sessionStorage.removeItem("login_json");
+    sessionStorage.removeItem("IC_SN");
+    sessionStorage.removeItem("user_session");
+
+    alert("登入已超時，請重新登入");
+    location.reload();
+    return;
+  } else {
+    console.log("API操作時間", formatted);
+    console.log("切帳時間：", cutoff_time);
+  }
+}
+
 async function load()
 {
   set_popup_notice_div();
@@ -42,6 +123,8 @@ async function load()
   });
 
   console.log(page_setting_params);
+
+  set_login_timestamp();
 
   let rowNum = 1;
   const Loadingpopup = GetLoadingpopup();
@@ -116,13 +199,13 @@ function get_header(test_user_data) {
       if(index != 5) {
         let light_color_select_item = document.createElement("div");
         light_color_select_item.classList.add("light_color_select_item");
-        light_color_select_item.setAttribute("color", `${element.name}`)
+        light_color_select_item.setAttribute("data-color", `${element.name}`)
         light_color_select_item.style.backgroundColor = `rgb(${light_color_object[element.name]})`;
         light_color_select_item.onclick = (e) => {
           let current_light_color_display = document.querySelector(".current_light_color_display");
           current_light_color_display.style.backgroundColor = `rgb(${light_color_object[e.target.getAttribute("color")]})`;
           light_color_list.forEach(element => {
-            if(element.name == e.target.getAttribute("color")) {
+            if(element.name == e.target.getAttribute("data-color")) {
               color_select = element;
               console.log("color_select", color_select);
             }
@@ -152,6 +235,7 @@ function get_header(test_user_data) {
     header_operate.classList.add("btn");
     header_operate.innerHTML = "操作";
     header_operate.addEventListener("click", () => {
+      check_cutoff_time_relogin();
       api_logger_add("開啟操作彈窗 => API個人操作取得資料：api/med_inventory/get_opid_by_time", "click");
       popup_self_operate_div_open();
     })
@@ -181,6 +265,7 @@ function get_header(test_user_data) {
         api_logger_add("住院藥車登出", "click");
         sessionStorage.removeItem("login_json");
         sessionStorage.removeItem("IC_SN");
+        sessionStorage.removeItem("user_session");
 
         await light_off_func();
 
@@ -217,6 +302,7 @@ function get_main_ui() {
   ppmcl_btn.classList.add("ppmcl_btn");
   ppmcl_btn.innerHTML = "未調藥品";
   ppmcl_btn.addEventListener("click", () => {
+    check_cutoff_time_relogin();
     api_logger_add("開啟未調藥品彈窗", "click");
     popup_med_change_list_div_open();
   });
@@ -226,6 +312,7 @@ function get_main_ui() {
   med_cart_sum_list_btn.classList.add("med_cart_sum_list_btn");
   med_cart_sum_list_btn.innerHTML = "藥品總量";
   med_cart_sum_list_btn.addEventListener("click", async () => {
+    check_cutoff_time_relogin();
     if(!current_pharmacy.phar) {
       alert("請先選擇藥局");
       return;
@@ -345,6 +432,7 @@ function get_main_ui() {
   discharged_btn.classList.add("discharged_btn");
   discharged_btn.innerHTML = "出院退藥";
   discharged_btn.addEventListener("click", async () => {
+    check_cutoff_time_relogin();
     if(!current_pharmacy.phar) {
       alert("請先選擇藥局");
       return;
@@ -404,8 +492,9 @@ function get_main_ui() {
   bed_change_btn.classList.add("bed_change_btn");
   bed_change_btn.innerHTML = "病床異動";
   bed_change_btn.addEventListener("click", () => {
+    check_cutoff_time_relogin();
     api_logger_add("開啟病床異動彈窗", "click");
-      popup_bed_change_div_open();
+    popup_bed_change_div_open();
   });
 
   function_btn_container.appendChild(ppmcl_btn);
@@ -1297,6 +1386,12 @@ async function set_med_qty_type_radio() {
         break;
     
       case "冷藏":
+        input.value = 'ice';
+        input.id = 'sort_ice';
+        label.setAttribute("for", 'sort_ice');
+        break;
+
+      case "冷藏/高貴":
         input.value = 'ice';
         input.id = 'sort_ice';
         label.setAttribute("for", 'sort_ice');

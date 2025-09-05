@@ -8,28 +8,30 @@
   <meta http-equiv="expires" content="0">
   <title>住院藥局調劑</title>
   <!-- <link rel="stylesheet" href="main.css"> -->
-  <link rel="stylesheet" href="style.css?v=1.7">
+  <link rel="stylesheet" href="style.css?v=1.9">
   <link rel="stylesheet" href="../UI/style/navBar.css">
-  <link rel="stylesheet" href="allocate.css?v=2.8">
+  <link rel="stylesheet" href="allocate.css?v=2.9">
   <link rel="stylesheet" href="review.css">
-  <link rel="stylesheet" href="popup_dc_new.css">
-  <link rel="stylesheet" href="popup_med_take.css?v=1.4">
+  <link rel="stylesheet" href="popup_dc_new.css?v=1.3">
+  <link rel="stylesheet" href="popup_med_take.css?v=1.6">
   <link rel="stylesheet" href="popup_med_take_time.css?v=1.3">
   <link rel="stylesheet" href="popup_bed_list.css?v=1.6">
   <link rel="stylesheet" href="popup_med_list.css?v=19">
   <link rel="stylesheet" href="popup_med_list_search.css">
   <link rel="stylesheet" href="popup_light_table_select.css">
-  <link rel="stylesheet" href="popup_med_pic.css?v=1.1">
+  <link rel="stylesheet" href="popup_med_pic.css?v=1.2">
   <link rel="stylesheet" href="popup_prescription_info.css?v=1.1">
   <link rel="stylesheet" href="popup_similar_drugs.css?v=1.1">
   <link rel="stylesheet" href="popup_physician_notes.css?v=1.1">
   <link rel="stylesheet" href="popup_insurance_regulations.css?v=1.1">
   <link rel="stylesheet" href="popup_bed_change.css?v=1.5">
   <link rel="stylesheet" href="popup_bed_change_search.css">
-  <link rel="stylesheet" href="popup_discharged_list.css?v=1.7">
-  <link rel="stylesheet" href="popup_med_change_list.css?v=1.7">
+  <link rel="stylesheet" href="popup_discharged_list.css?v=1.8">
+  <link rel="stylesheet" href="popup_med_change_list.css?v=1.8">
   <link rel="stylesheet" href="popup_notice.css?v=1.4">
-  <link rel="stylesheet" href="popup_self_operate.css?v=1.1">
+  <link rel="stylesheet" href="popup_self_operate.css?v=1.2">
+  <link rel="stylesheet" href="popup_nearMiss.css?v=1.6">
+  <link rel="stylesheet" href="popup_nearMiss_report.css?v=1.2">
   <script src="../Function/Basic.js?v=1.14"></script>
 
   <script>
@@ -76,6 +78,8 @@
           loadScript("popup_discharged_list.js");
           loadScript("popup_notice.js");
           loadScript("popup_self_operate.js");
+          loadScript("popup_nearMiss.js");
+          loadScript("popup_nearMiss_report.js");
         })();
 
   </script>
@@ -132,6 +136,13 @@
 
     get_popup_self_operate();
     popup_self_operate_div.Set_Visible(false);
+
+    get_popup_nearMiss();
+    popup_nearMiss_div.Set_Visible(false);
+    
+    get_popup_nearMiss_report();
+    popup_nearMiss_report_div.Set_Visible(false);
+    set_step_btn();
   </script>
 
   <div class="under-line">

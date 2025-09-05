@@ -4,10 +4,6 @@
     height: 92vh;
     height: 92svh;
     max-width: 800px;
-    display: flex !important;
-    justify-content: start !important;
-    justify-content: flex-start !important;
-    flex-direction: column;
 }
 
 .ppmp_header_container {
@@ -35,29 +31,26 @@
     top: 0px;
     right: 0px;
 }
+.ppmp_main_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .ppmp_main_name {
+    width: 100%;
     padding: 0px 8px;
     font-size: 20px;
     font-weight: 600;
     line-height: 24px;
-    width: 100%;
-}
-.ppmp_main_container {
-    flex-grow: 1;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow-y: auto;
 }
 .ppmp_main_cht_name {
     width: 100%;
-    padding: 0px 16px;
+    padding: 0px 8px;
     line-height: 24px;
 }
 .ppmp_main_code {
     width: 100%;
-    padding: 0px 24px;
+    padding: 0px 8px;
     line-height: 24px;
     margin-bottom: 12px;
 }
@@ -66,9 +59,50 @@
 }
 .ppmp_main_img {
     display: block;
-    object-fit: cover;
-    padding: 8px;
     width: 100%;
+    object-fit: cover;
+}
+.ppmp_main_pic_container {
+    width: 100%;
+    max-width: 600px;
+}
+
+
+.silder_med_container {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    aspect-ratio: 10 / 9;
+    overflow: hidden;
+    position: relative;
+}
+
+.silder_div {
+    width: 100%;
+    position: absolute;
+}
+.silder_img {
+    display: block;
+    width: 90%;
+    margin: 0px 5%;
+    object-fit: cover;
+}
+.slider_pre_btn,
+.slider_next_btn {
+    position: absolute;
+    transform: translate(0%, -50%);
+    top: 50%;
+    height: 100px;
+    width: 40px;
+    background-color: rgb(44, 78, 78);
+    z-index: 100
+}
+.slider_pre_btn {
+    left: 20px;
+}
+
+.slider_next_btn {
+    right: 20px;
 }
 
 @media screen and (max-width: 550px) {

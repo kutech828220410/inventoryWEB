@@ -141,9 +141,11 @@ function popup_self_operate_div_close() {
     popup_self_operate_div.Set_Visible(false);
 }
 async function popup_self_operate_div_open() {
+    Set_main_div_enable(true);
     ppso_table_data = await get_table_info();
     await set_self_operate_info_table();
     popup_self_operate_div.Set_Visible(true);
+    Set_main_div_enable(false);
 }
 async function set_self_operate_info_table() {
     let ppso_table_container = document.querySelector(".ppso_table_container");

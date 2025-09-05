@@ -1,5 +1,13 @@
 .popup_med_take_div {
-    width: 720px;
+    width: 92vw;
+    width: 92svw;
+    min-height: 80vh;
+    min-height: 80svh;
+    max-height: 92vh;
+    max-height: 92svh;
+    max-width: 800px;
+    display: flex !important;
+    flex-direction: column;
 }
 
 .ppmt_header_container {
@@ -38,6 +46,8 @@
     padding: 0px 2px;
     height: 380px;
     overflow-y: auto;
+    width: 100%;
+    flex-grow: 1;
     /* box-shadow: 0px 0px 4px #00000042; */
 }
 
@@ -52,6 +62,7 @@
     color: #da4343;
 }
 .ppmt_footer_container {
+    width: 100%;
     display: flex;
     justify-content: space-between;
 }
@@ -78,16 +89,15 @@
     border: 1px solid black;
     padding: 4px;
 }
-.td_1,
-.td_2 {
+.mt_td_1 {
     text-align: left;
 }
-.td_3 {
-    min-width: 70px;
+.mt_td_3 {
+    min-width: 80px;
+    text-align: right;
 }
-.td_4,
-.td_5 {
-    min-width: 50px;
+.mt_td_4 {
+    min-width: 48px;
 }
 .ppmt_med_th_container {
     background-color: #989898;

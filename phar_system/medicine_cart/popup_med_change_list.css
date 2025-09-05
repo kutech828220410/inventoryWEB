@@ -166,6 +166,21 @@
 .ppmcl_cpoe_cht_name {
     word-break: break-all;
 } */
+
+.ppmcl_cpoe_name_container {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+.ppmcl_cpoe_large_container {
+    width: 36px;
+    height: 36px;
+}
+.ppmcl_cpoe_large_container > img {
+    display: block;
+    object-fit: cover;
+    width: 100%;
+}
 .ppmcl_cpoe_qty {
     font-size: 20px;
     font-weight: 600;

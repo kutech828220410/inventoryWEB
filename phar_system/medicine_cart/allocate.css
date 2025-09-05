@@ -234,19 +234,21 @@
 
 .pbm_main_container {
     margin-top: 12px;
-    min-height: 200px;
     border-radius: 12px;
     background-color: rgb(231, 231, 231);
     padding: 10px;
+    display: grid;
+    grid-template-columns: 100%;
+    gap: 10px;
 }
 .pbm_main_container_fixed {
     margin-top: 60px;
 }
 .med_card_container {
-    margin-bottom: 10px;
+    
     border-radius: 5px;
     border: 1px solid #000000;
-    background-color: rgb(228, 228, 228);
+    background-color: rgb(247, 247, 247);
     overflow: hidden;
     transition: all 0.3s;
 }

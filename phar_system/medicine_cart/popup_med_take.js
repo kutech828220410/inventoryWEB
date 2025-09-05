@@ -80,8 +80,8 @@ function get_pp_med_take_footer() {
 function popup_med_take_div_close() {
     popup_med_take_div.Set_Visible(false);
 }
-function popup_med_take_div_open() {
-    open_med_take_func();
+async function popup_med_take_div_open() {
+    await open_med_take_func();
     popup_med_take_div.Set_Visible(true);
 }
 function set_med_take_info_table() {
@@ -94,7 +94,7 @@ function set_med_take_info_table() {
     }
     let bed_name = med_take_data[temp_pp_mt_index].bednum;
     let med_array = med_take_data[temp_pp_mt_index].cpoes;
-    let table_th_arr = ["序號", "藥名", "（中）", "DC/NEW", "數量", "單位", "頻次", "更新時間"];
+    let table_th_arr = ["序號", "藥名", "DC/NEW", "劑量", "總量", "頻次", "更新時間"];
 
 
     let ppmt_main_table = document.createElement("table");
@@ -135,9 +135,9 @@ function set_med_take_info_table() {
                 ppmt_med_td_container.classList.add("bgc_light");
             }
     
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i < 7; i++) {
                 let ppmt_med_td = document.createElement("th");
-                ppmt_med_td.classList.add(`td_${i}`);
+                ppmt_med_td.classList.add(`mt_td_${i}`);
                 ppmt_med_td.classList.add("ppmt_med_td");
     
                 switch (i) {
@@ -147,36 +147,32 @@ function set_med_take_info_table() {
                         break;
                     case 1:
                         // 藥名
-                        ppmt_med_td.innerHTML = element.name;
-                        break;
-                    case 2:
-                        // 中文名
-                        if(element.cht_name == "") {
-                            ppmt_med_td.innerHTML = "--";
-                            ppmt_med_td.style.textAlign = "center";
+                        if(element.cht_name) {
+                            ppmt_med_td.innerText = element.name;
+                            ppmt_med_td.style.textAlign = "left";
                         } else {
-                            ppmt_med_td.innerHTML = element.cht_name;
+                            ppmt_med_td.innerText = `${element.name}\n${element.cht_name}`;
                             ppmt_med_td.style.textAlign = "left";
                         }
                         break;
-                    case 3:
+                    case 2:
                         // dc or new
                         ppmt_med_td.innerHTML = element.status;
                         break;
-                    case 4:
+                    case 3:
                         // 劑量
-                        ppmt_med_td.innerHTML = element.returnQty;
+                        ppmt_med_td.innerHTML = `${element.dosage} ${element.dunit}`;
+                        break;
+                    case 4:
+                        // 總量
+                        ppmt_med_td.innerHTML = element.qty;
                         break;
                     case 5:
-                        // 單位
-                        ppmt_med_td.innerHTML = element.dunit;
-                        break;
-                    case 6:
-                        // 單位
+                        // 頻次
                         ppmt_med_td.innerHTML = element.freqn;
                         break;
-                    case 7:
-                        // 單位
+                    case 6:
+                        // 更新時間
                         ppmt_med_td.innerHTML = element.update_time;
                         break;
                 
@@ -194,6 +190,7 @@ function set_med_take_info_table() {
     ppmt_main_container.appendChild(ppmt_main_table);
 }
 async function open_med_take_func() {
+    Set_main_div_enable(true);
     let ppmt_h_title_span = document.querySelector(".ppmt_h_title_span");
     let ppmtt_start_time_input = document.querySelector("#ppmtt_start_time_input");
     let ppmtt_end_time_input = document.querySelector("#ppmtt_end_time_input");
@@ -234,6 +231,7 @@ async function open_med_take_func() {
     }
 
     set_med_take_info_table();
+    Set_main_div_enable(false);
 }
 async function pp_med_take_next() {
     let ppmt_next_bed_btn = document.querySelector(".ppmt_next_bed_btn");

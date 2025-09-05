@@ -424,10 +424,18 @@ async function set_ppmcl_main_info() {
                 }
 
                 let guid_arr = [];
+
+                let check_arr = [];
                 ppmcl_cpoe_med_check_btn.forEach(element => {
                     let temp_guid = element.getAttribute("guid");
-                    guid_arr.push(temp_guid);
+                    let check_able = element.getAttribute("check_able");
+                    console.log("可複核藥品：", check_able == "true");
+                    if(check_able == "true") guid_arr.push(temp_guid);
+                    check_arr.push(temp_guid);
                 });
+
+                console.log(guid_arr.length);
+                console.log(check_arr.length);
 
                 let checkedRadio = document.querySelector('input[name="ppmcl_filter_med_table_input"]:checked');
                 let temp_table = checkedRadio.value;
@@ -480,9 +488,9 @@ async function set_ppmcl_main_info() {
                         med_change_data = await get_patient_with_NOdispense(post_data);
                         med_change_data = med_change_data.Data;
                 
-                        med_change_data = med_change_data.filter((e) => {
-                            return e.cpoe_change_status != "";
-                        });
+                        // med_change_data = med_change_data.filter((e) => {
+                        //     return e.cpoe_change_status != "";
+                        // });
                 
                     } else {
                         med_change_data = await get_patient_with_NOcheck(post_data);
@@ -845,22 +853,30 @@ async function set_ppmcl_main_info() {
         ppmcl_bed_card.classList.add("ppmcl_bed_card");
         ppmcl_bed_card.setAttribute("Master_Guid", element.GUID);
 
-        // let temp_cpoe = element.cpoe.filter(e => {
-        //     return e.dispens_change == "Y";
-        // });
-        let temp_cpoe = element.cpoe;
+        // let temp_cpoe = element.cpoe;
+        
+        let temp_cpoe;
+        if(current_func == "allocate") {
+            temp_cpoe = element.cpoe.filter(e => {
+                return e.dispens_status != "Y" && e.check_status != "Y";
+            });
+        } else {
+            temp_cpoe = element.cpoe.filter(e => {
+                return e.check_status != "Y";
+            });
+        }
 
         // console.log(temp_cpoe);
 
         temp_cpoe.forEach(item => {
-            // if(item.dispens_change != "") {};
-            //  && item.dispens_change != "":
-            
             if(temp_cpoe.length > 0) {
                 let ppmcl_cpoe_container = document.createElement("div");
                 ppmcl_cpoe_container.classList.add("ppmcl_cpoe_container");
                 ppmcl_cpoe_container.setAttribute("GUID", item.GUID);
                 ppmcl_cpoe_container.setAttribute("Master_GUID", item.Master_GUID);
+                if(current_func != "allocate" && item.dispens_status != "Y") {
+                    ppmcl_cpoe_container.style.backgroundColor = "#b0b0b0";
+                }
                 let check_more_arr = item.GUID.split(";");
                 if(check_more_arr.length > 1) {
                     ppmcl_cpoe_container.setAttribute("check_more", "Y");
@@ -910,7 +926,7 @@ async function set_ppmcl_main_info() {
 
                 let ppmcl_cpoe_dosage = document.createElement("div");
                 ppmcl_cpoe_dosage.classList.add("ppmcl_cpoe_dosage");
-                ppmcl_cpoe_dosage.innerHTML = `劑量：${item.dosage}`;
+                ppmcl_cpoe_dosage.innerHTML = `劑量：${item.dosage} ${item.dunit}`;
 
                 let ppmcl_cpoe_freqn = document.createElement("div");
                 ppmcl_cpoe_freqn.classList.add("ppmcl_cpoe_freqn");
@@ -974,8 +990,18 @@ async function set_ppmcl_main_info() {
                 let ppmcl_cpoe_name_container = document.createElement("div");
                 ppmcl_cpoe_name_container.classList.add("ppmcl_cpoe_name_container");
 
-                ppmcl_cpoe_name_container.appendChild(ppmcl_cpoe_name);
-                ppmcl_cpoe_name_container.appendChild(ppmcl_cpoe_cht_name);
+                let ppmcl_cpoe_large_container = document.createElement("div");
+                ppmcl_cpoe_large_container.classList.add("ppmcl_cpoe_large_container");
+                ppmcl_cpoe_large_container.innerHTML = `<img src="../../image/iv-bag.png" alt="">`;
+
+                let ppmcl_cpoe_med_name_container = document.createElement("div");
+                ppmcl_cpoe_med_name_container.classList.add("ppmcl_cpoe_med_name_container");
+
+                ppmcl_cpoe_med_name_container.appendChild(ppmcl_cpoe_name)
+                ppmcl_cpoe_med_name_container.appendChild(ppmcl_cpoe_cht_name)
+
+                ppmcl_cpoe_name_container.appendChild(ppmcl_cpoe_med_name_container);
+                if(item.large == "L") ppmcl_cpoe_name_container.appendChild(ppmcl_cpoe_large_container);
                 
                 ppmcl_cpoe_med_info_container.appendChild(ppmcl_cpoe_name_container);
                 ppmcl_cpoe_med_info_container.appendChild(ppmcl_cpoe_med_info2);
@@ -992,6 +1018,15 @@ async function set_ppmcl_main_info() {
                 ppmcl_cpoe_med_check_btn.classList.add("btn");
                 ppmcl_cpoe_med_check_btn.setAttribute("GUID", item.GUID);
                 ppmcl_cpoe_med_check_btn.setAttribute("Master_GUID", item.Master_GUID);
+                if(current_func != "allocate") {
+                    if(item.dispens_status == "Y" && item.check_status != "Y") {
+                        ppmcl_cpoe_med_check_btn.setAttribute("check_able", true);
+                    } else {
+                        ppmcl_cpoe_med_check_btn.setAttribute("check_able", false);
+                    }
+                } else {
+                    ppmcl_cpoe_med_check_btn.setAttribute("check_able", true);
+                }
                 if(current_func == "allocate") {
                     ppmcl_cpoe_med_check_btn.innerHTML = "調劑";
                     ppmcl_cpoe_med_check_btn.addEventListener("click", async () => {
@@ -1120,12 +1155,12 @@ async function set_ppmcl_main_info() {
     
                 if(current_func == "allocate") {
                     ppmcl_bed_card.appendChild(ppmcl_cpoe_container);
-                    // if(item.dispens_change != "") {
+                    // if(item.dispens_status != "Y" && item.check_status != "Y") {
                     // }
                 } else {
-                    if(item.check_status != "Y") {
-                        ppmcl_bed_card.appendChild(ppmcl_cpoe_container);
-                    }
+                    ppmcl_bed_card.appendChild(ppmcl_cpoe_container);
+                    // if(item.check_status != "Y" && item.dispens_status == "Y") {
+                    // }
                 }
             }
         });
@@ -1136,20 +1171,20 @@ async function set_ppmcl_main_info() {
         if(current_func == "allocate") {
             let temp_cpoe2 = temp_cpoe;
             // .filter(e => {
-            //     return e.dispens_change != "";
+            //     return e.dispens_status != "Y" && e.check_status != "Y";
             // });
-            if(temp_cpoe2.length != 0) {
+            if(temp_cpoe2.length > 0) {
                 ppmcl_main_container.appendChild(ppmcl_bed_card_container);
                 temp_count_bed++;
             }
         } else {
-            if(temp_cpoe.length != 0) {
+            if(temp_cpoe.length > 0) {
                 let temp_cpoe2 = temp_cpoe;
                 // .filter(e => {
-                //     return e.check_status != "Y";
+                //     return e.check_status != "Y" && e.dispens_change == "Y";
                 // });
                 console.log(temp_cpoe2);
-                if(temp_cpoe2.length != 0) {
+                if(temp_cpoe2.length > 0) {
                     ppmcl_main_container.appendChild(ppmcl_bed_card_container);
                     temp_count_bed++;
                 }

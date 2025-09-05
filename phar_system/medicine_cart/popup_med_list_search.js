@@ -41,12 +41,14 @@ function get_pp_med_list_search_main() {
 
     let ppmls_table_select = document.createElement("select");
     ppmls_table_select.classList.add("ppmls_table_select");
+    ppmls_table_select.id = "ppmls_table_select";
 
     let ppmls_type_select = document.createElement("select");
     ppmls_type_select.classList.add("ppmls_type_select");
+    ppmls_type_select.id = "ppmls_type_select";
     ppmls_type_select.innerHTML = `
-        <option value="code">藥碼</option>
         <option value="name">藥名</option>
+        <option value="code">藥碼</option>
     `;
     ppmls_type_select.addEventListener("change", (e) => {
         if(e.target.value == "table" || e.target.value == "drugkind") {
@@ -89,6 +91,7 @@ function get_pp_med_list_search_main() {
 
     let ppmls_select = document.createElement("select");
     ppmls_select.classList.add("ppmls_select");
+    ppmls_select.id = "ppmls_select";
 
     ppmls_main_container.appendChild(ppmls_table_select);
     ppmls_main_container.appendChild(ppmls_type_select);

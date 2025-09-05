@@ -121,6 +121,20 @@
     flex-grow: 1;
     padding-right: 8px;
 }
+.ppdl_med_label_container {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+.ppdl_med_card_type {
+    width: 36px;
+    height: 36px;
+}
+.ppdl_med_card_type > img {
+    width: 100%;
+    object-fit: cover;
+    display: block;
+}
 .ppdl_med_info_detail {
     display: flex;
     padding-top: 6px;
