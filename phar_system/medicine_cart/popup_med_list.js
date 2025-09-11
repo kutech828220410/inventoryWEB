@@ -750,12 +750,41 @@ async function set_pp_med_list_display() {
             }
         }
 
-        if(element.dispens_name == "Y") {
-            if(check_count != 0) {
-                ppml_light_btn_container.appendChild(ppml_light_all_check_btn);
+        // 切換調劑模式
+        let temp_mode = true;
+        if(temp_mode) {
+            let ppml_check_btn_container = document.createElement("div");
+            ppml_check_btn_container.classList.add("ppml_check_btn_container");
+
+            let ppml_check_select_all_btn = document.createElement("div");
+            ppml_check_select_all_btn.classList.add("ppml_check_select_all_btn");
+            ppml_check_select_all_btn.classList.add("btn");
+            ppml_check_select_all_btn.setAttribute("code", element.code);
+            ppml_check_select_all_btn.innerHTML = "全選";
+
+            let ppml_check_selected_submin_btn = document.createElement("div");
+            ppml_check_selected_submin_btn.classList.add("ppml_check_selected_submin_btn");
+            ppml_check_selected_submin_btn.classList.add("btn");
+            ppml_check_selected_submin_btn.classList.add("check_selected_disable");
+            if(current_func == "allocate") {
+                ppml_check_selected_submin_btn.innerHTML = "調劑";
+            } else {
+                ppml_check_selected_submin_btn.innerHTML = "覆核";
             }
-            ppml_light_btn_container.appendChild(ppml_light_on_btn);
+
+            ppml_check_btn_container.appendChild(ppml_check_select_all_btn);
+            ppml_check_btn_container.appendChild(ppml_check_selected_submin_btn);
+
+        
+            ppml_light_btn_container.appendChild(ppml_check_btn_container);
+        } else {
+            if(element.dispens_name == "Y") {
+                if(check_count != 0) {
+                    ppml_light_btn_container.appendChild(ppml_light_all_check_btn);
+                }
+            }
         }
+        ppml_light_btn_container.appendChild(ppml_light_on_btn);
 
 
         ppml_card_info_container.appendChild(ppml_ci_1_div);

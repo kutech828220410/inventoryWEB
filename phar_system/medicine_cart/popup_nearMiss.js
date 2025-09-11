@@ -73,16 +73,7 @@ function get_pp_nearMiss_header() {
     ppnms_h_close_btn.addEventListener("click", () => {
         popup_nearMiss_div_close();
     });
-
-    let ppnms_h_report_btn = document.createElement("div");
-    ppnms_h_report_btn.classList.add("ppnms_h_report_btn");
-    ppnms_h_report_btn.classList.add("btn");
-    ppnms_h_report_btn.innerHTML = "紀錄";
-    ppnms_h_report_btn.addEventListener("click", () => {
-        popup_nearMiss_report_div_open();
-    })
-
-    ppnms_header_container.appendChild(ppnms_h_report_btn);
+    
     ppnms_header_container.appendChild(ppnms_h_title);
     ppnms_header_container.appendChild(ppnms_h_close_btn);
 
@@ -197,7 +188,7 @@ function get_pp_nearMiss_main() {
                     reporter_id: report_id,
                     reporter_name: report_name,
                     reason: temp_reason_str,
-                    note: nearMiss_data.note.content
+                    note: element.content
                 }
 
                 post_data.Data.push(temp_object);

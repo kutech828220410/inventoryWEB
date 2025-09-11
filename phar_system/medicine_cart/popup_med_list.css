@@ -310,6 +310,12 @@
     background-color: #939393;
     cursor: auto;
 }
+.ppml_check_btn_container {
+    display: flex;
+}
+.check_selected_disable {
+    cursor: not-allow;
+}
 
 @media screen and (max-width: 1200px) {
     .ppml_card_info_container {

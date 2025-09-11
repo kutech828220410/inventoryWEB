@@ -22,7 +22,7 @@ function get_pp_nearMiss_report_header() {
 
     let ppnmsr_h_title = document.createElement("div");
     ppnmsr_h_title.classList.add("ppnmsr_h_title");
-    ppnmsr_h_title.innerHTML = `處方疑義紀錄`;
+    ppnmsr_h_title.innerHTML = `調劑錯誤紀錄`;
 
     let ppnmsr_h_close_btn = document.createElement("img");
     ppnmsr_h_close_btn.classList.add("ppnmsr_h_close_btn");
@@ -65,6 +65,7 @@ function set_main_report_display() {
     if(Array.isArray(nearMiss_report)) {
         let temp_cpoe_data = nearMiss_report.filter(item => item.medCpoe);
         let temp_note_data = nearMiss_report.filter(item => !item.medCpoe);
+        let disp_id = JSON.parse(sessionStorage.getItem("user_session")).ID;
 
         if(temp_cpoe_data.length > 0 || temp_note_data.length > 0) {
             temp_cpoe_data.forEach(element => {
@@ -73,6 +74,7 @@ function set_main_report_display() {
 
                 let ppnmsr_card_title = document.createElement("div");
                 ppnmsr_card_title.classList.add("ppnmsr_card_title");
+                if(disp_id == element.disp_id) ppnmsr_card_title.style.textDecoration = "underline";
                 ppnmsr_card_title.innerHTML = `${element.nurnum}-${element.medCpoe.bednum}床 ${element.medCpoe.pnamec}`;
 
 
@@ -253,12 +255,25 @@ function set_main_report_display() {
     }
 }
 async function popup_nearMiss_report_div_open() {
+    if(!current_pharmacy.phar) {
+        alert("請先選擇藥局");
+        return
+    }
     let post_data = {
         ValueAry: [current_pharmacy.phar]
     }
     let return_data = await get_nearMiss_by_phar_api(post_data);
     if(return_data.Code == 200) {
         nearMiss_report = return_data.Data;
+
+        let disp_id = JSON.parse(sessionStorage.getItem("user_session")).ID;
+
+        nearMiss_report = [...nearMiss_report].sort((a, b) => {
+            const A = ((a.disp_id ?? "") + "").trim() === disp_id ? 0 : 1;
+            const B = ((b.disp_id ?? "") + "").trim() === disp_id ? 0 : 1;
+            return A - B; // A=0 會排前面
+        });
+
         console.log(nearMiss_report);
         set_main_report_display();
     } else {

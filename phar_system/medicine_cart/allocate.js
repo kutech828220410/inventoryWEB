@@ -700,7 +700,7 @@ function set_p_bed_info_container() {
 
     let resident_physician = document.createElement("div");
     resident_physician.classList.add("pbsc_doc");
-    if(current_p_bed_data.pvsdno_name) resident_physician.innerHTML = `住院：${current_p_bed_data.prdno_name}(${current_p_bed_data.prdno})`;
+    if(current_p_bed_data.prdno_name) resident_physician.innerHTML = `住院：${current_p_bed_data.prdno_name}(${current_p_bed_data.prdno})`;
 
     pbsc_doc_container.appendChild(attending_physician);
     pbsc_doc_container.appendChild(resident_physician);
@@ -2665,11 +2665,13 @@ function delay_func(ms) {
 
 // 檢查出院退藥資料
 async function check_cart_dispense() {
+    console.log("更新紀錄檢查-----------==--=-=-=-=");
     let return_info_arr = [];
     let post_data = {
         ValueAry:[current_pharmacy.phar]
     };
 
+    check_nearMiss_notice();
     console.log("未調劑api check", post_data);
     let return_data;
 
@@ -2762,4 +2764,33 @@ async function check_cart_dispense() {
     }
 
     return return_info_arr;
+}
+
+async function check_nearMiss_notice() {
+    console.log("檢查調劑錯誤回報紀錄");
+
+    let post_data = {
+        ValueAry:[current_pharmacy.phar]
+    };
+
+    let return_data = await get_nearMiss_by_phar_api(post_data);
+    if(return_data.Code == 200) {
+        nearMiss_report = return_data.Data;
+        console.log(nearMiss_report);
+        set_main_report_display();
+    } else {
+        console.log(`系統錯誤：${return_data.Result}`);
+        return;
+    }
+
+    let disp_id = JSON.parse(sessionStorage.getItem("user_session")).ID;
+    
+    let temp_check_arr = nearMiss_report.filter(item => item.disp_id == disp_id);
+    
+    let ppnms_h_report_btn = document.querySelector(".ppnms_h_report_btn");
+    if(temp_check_arr.length > 0) {
+        if(!ppnms_h_report_btn.className.includes("ppnms_h_report_btn_warning")) ppnms_h_report_btn.classList.add("ppnms_h_report_btn_warning");
+    } else {
+        ppnms_h_report_btn.classList.remove("ppnms_h_report_btn_warning");
+    }
 }

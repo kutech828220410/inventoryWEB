@@ -20,10 +20,6 @@
     align-items: center;
     margin-bottom: 16px;
 }
-.ppnms_h_report_btn {
-    position: absolute;
-    left: 0px;
-}
 .ppnms_h_title {
     padding: 4px 48px;
     text-align: center;
@@ -63,6 +59,7 @@
 }
 .nearMiss_cpoe_card,
 .nearMiss_note_card {
+    position: relative;
     display: block;
     width: 100%;
     padding: 10px;

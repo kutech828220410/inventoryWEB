@@ -164,8 +164,22 @@ function get_ppmcl_header() {
     ppmcl_head_sort_container.appendChild(ppmcl_head_sort_title)
     ppmcl_head_sort_container.appendChild(ppmcl_head_med_table_filter_container);
 
+    let ppmcl_head_type_container = document.createElement("div");
+    ppmcl_head_type_container.classList.add("ppmcl_head_type_container");
+
+    let ppmcl_head_type_title = document.createElement("div");
+    ppmcl_head_type_title.classList.add("ppmcl_head_type_title");
+    ppmcl_head_type_title.innerHTML = "藥品總類";
+
+    let ppmcl_head_med_type_filter_container = document.createElement("div");
+    ppmcl_head_med_type_filter_container.classList.add("ppmcl_head_med_type_filter_container");
+
+    ppmcl_head_type_container.appendChild(ppmcl_head_type_title)
+    ppmcl_head_type_container.appendChild(ppmcl_head_med_type_filter_container);
+
     ppmcl_header_container.appendChild(ppmcl_h_title);
     ppmcl_header_container.appendChild(ppmcl_h_close_btn);
+    ppmcl_header_container.appendChild(ppmcl_head_type_container);
     ppmcl_header_container.appendChild(ppmcl_head_sort_container);
 
     return ppmcl_header_container;
@@ -187,7 +201,6 @@ function popup_med_change_list_div_close() {
     check_cart_dispense();
 }
 async function popup_med_change_list_div_open() {
-    await check_cart_dispense();
     if(!current_pharmacy.phar) {
         alert("請先選擇藥局");
         return;
@@ -296,7 +309,7 @@ async function popup_med_change_list_div_open() {
         console.log("============ 檢查退藥完成 =============");
         Set_main_div_enable(false);
     }
-    console.log("開啟退藥彈窗");
+    // console.log("開啟退藥彈窗");
 }
 
 async function set_ppmcl_main_info() {
@@ -619,7 +632,28 @@ async function set_ppmcl_main_info() {
                         alert("資料異常，請重新整理");
                         return;
                     }
-    
+
+                    let radio_checked_input = document.querySelector('.sort_med_change_list_input:checked');
+
+                    if(Array.isArray(temp_result.cpoe)) {
+                        switch (radio_checked_input.value) {
+                            case "all":
+                                break;
+                            case "bottle":
+                                temp_result.cpoe = temp_result.cpoe.filter(element => element.large == "L");
+                                break;
+                            case "injection":
+                                temp_result.cpoe = temp_result.cpoe.filter(element => element.injection == "Y");
+                                break;
+                            case "oral":
+                                temp_result.cpoe = temp_result.cpoe.filter(element => element.oral == "Y");
+                                break;
+                            case "ice":
+                                temp_result.cpoe = temp_result.cpoe.filter(element => element.ice == "Y");
+                                break;
+                        }
+                    }
+
                     for (let index = 0; index < temp_result.cpoe.length; index++) {
                         const item = temp_result.cpoe[index];
                         if(item.dispens_status == "") {
@@ -705,8 +739,30 @@ async function set_ppmcl_main_info() {
                 if(confirm(`${element.bednum} 號病床處方異動覆核確認`)) {
                     Set_main_div_enable(true);
                     let temp_guid_arr = [];
+                    let temp_cpoe = element["cpoe"];
 
-                    element["cpoe"].forEach(item => {       
+                    let radio_checked_input = document.querySelector('.sort_med_change_list_input:checked');
+
+                    if(Array.isArray(temp_cpoe)) {
+                        switch (radio_checked_input.value) {
+                            case "all":
+                                break;
+                            case "bottle":
+                                temp_cpoe = temp_cpoe.filter(item => item.large == "L");
+                                break;
+                            case "injection":
+                                temp_cpoe = temp_cpoe.filter(item => item.injection == "Y");
+                                break;
+                            case "oral":
+                                temp_cpoe = temp_cpoe.filter(item => item.oral == "Y");
+                                break;
+                            case "ice":
+                                temp_cpoe = temp_cpoe.filter(item => item.ice == "Y");
+                                break;
+                        }
+                    }
+
+                    temp_cpoe.forEach(item => {       
                         if(item.dispens_status == "Y" && item.check_status != "Y") {
                             temp_guid_arr.push(item.GUID);
                         }
@@ -866,6 +922,24 @@ async function set_ppmcl_main_info() {
             });
         }
 
+        let radio_checked_input = document.querySelector('.sort_med_change_list_input:checked');
+
+        switch (radio_checked_input.value) {
+            case "all":
+                break;
+            case "bottle":
+                temp_cpoe = temp_cpoe.filter(element => element.large == "L");
+                break;
+            case "injection":
+                temp_cpoe = temp_cpoe.filter(element => element.injection == "Y");
+                break;
+            case "oral":
+                temp_cpoe = temp_cpoe.filter(element => element.oral == "Y");
+                break;
+            case "ice":
+                temp_cpoe = temp_cpoe.filter(element => element.ice == "Y");
+                break;
+        }
         // console.log(temp_cpoe);
 
         temp_cpoe.forEach(item => {
@@ -1193,7 +1267,9 @@ async function set_ppmcl_main_info() {
     });
 
     if(temp_count_bed == 0) {
-        ppmcl_main_container.innerHTML = `<div class="ppmcl_main_no_info">${ppmcl_h_current_cart_select.value} 處方無異動</div>`;
+        let radio_checked_input = document.querySelector('.sort_med_change_list_input:checked');
+        if(radio_checked_input.value == "all") ppmcl_main_container.innerHTML = `<div class="ppmcl_main_no_info">${ppmcl_h_current_cart_select.value} 處方無異動</div>`;
+        if(radio_checked_input.value != "all") ppmcl_main_container.innerHTML = `<div class="ppmcl_main_no_info">${ppmcl_h_current_cart_select.value} 處方無異動 / 無該類型藥品</div>`;
     }
 }
 

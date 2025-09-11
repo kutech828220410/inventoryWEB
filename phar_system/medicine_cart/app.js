@@ -146,6 +146,7 @@ async function load()
   get_no_selected_func();
   select_list_controller();
   await set_med_qty_type_radio();
+  await set_med_change_list_type_radio();
   Set_main_div_enable(false);
 
   // 開發顯示
@@ -497,10 +498,20 @@ function get_main_ui() {
     popup_bed_change_div_open();
   });
 
+
+  let ppnms_h_report_btn = document.createElement("div");
+  ppnms_h_report_btn.classList.add("ppnms_h_report_btn");
+  ppnms_h_report_btn.classList.add("btn");
+  ppnms_h_report_btn.innerHTML = "調劑錯誤";
+  ppnms_h_report_btn.addEventListener("click", () => {
+      popup_nearMiss_report_div_open();
+  })
+
   function_btn_container.appendChild(ppmcl_btn);
   function_btn_container.appendChild(med_cart_sum_list_btn);
   function_btn_container.appendChild(discharged_btn);
   function_btn_container.appendChild(bed_change_btn);
+  function_btn_container.appendChild(ppnms_h_report_btn);
 
   let function_menu_container = document.createElement("div");
   function_menu_container.classList.add("function_menu_container");
@@ -1415,5 +1426,90 @@ async function set_med_qty_type_radio() {
 
     head_sort_radio_container.appendChild(input);
     head_sort_radio_container.appendChild(label);
+  });
+}
+async function set_med_change_list_type_radio() {
+  let ppmcl_head_med_type_filter_container = document.querySelector('.ppmcl_head_med_type_filter_container');
+  let temp_med_group_api_data = await get_med_qty_group();
+  if(temp_med_group_api_data.Code == 200) {
+    med_list_sort_radio_data = temp_med_group_api_data
+    med_list_sort_radio_data = med_list_sort_radio_data.Data;
+  }
+
+  let input = document.createElement("input");
+  input.className = "sort_med_change_list_input";
+  input.name = "sort_med_change_list_input";
+  input.type = "radio";
+  input.value = "all";
+  input.id = "sort_change_list_all";
+  input.checked = true;
+  input.addEventListener("change", () => {
+    let ppmcl_main_container = document.querySelector(".ppmcl_main_container");
+    api_logger_add("未調藥品：更換藥品種類", "藥品種類 radio change");
+    set_ppmcl_main_info();
+    ppmcl_main_container.scrollTop = 0;
+  });
+
+  let label = document.createElement("label");
+  label.classList.add("sort_med_change_list_label");
+  label.innerHTML = '全部';
+  label.setAttribute("for", 'sort_change_list_all');
+
+  ppmcl_head_med_type_filter_container.appendChild(input);
+  ppmcl_head_med_type_filter_container.appendChild(label);
+
+  med_list_sort_radio_data.forEach(element => {
+    let input = document.createElement("input");
+    input.className = "sort_med_change_list_input";
+    input.name = "sort_med_change_list_input";
+    input.type = "radio";
+
+    let label = document.createElement("label");
+    label.classList.add("sort_med_change_list_label");
+    label.innerHTML = element.NAME;
+
+    switch (element.NAME) {
+      case "大瓶藥":      
+        input.value = 'bottle';
+        input.id = 'sort_change_list_bottle';
+        label.setAttribute("for", 'sort_change_list_bottle');
+        break;
+    
+      case "口服":
+        input.value = 'oral';
+        input.id = 'sort_change_list_oral';
+        label.setAttribute("for", 'sort_change_list_oral');
+        break;
+    
+      case "冷藏":
+        input.value = 'ice';
+        input.id = 'sort_change_list_ice';
+        label.setAttribute("for", 'sort_change_list_ice');
+        break;
+
+      case "冷藏/高貴":
+        input.value = 'ice';
+        input.id = 'sort_change_list_ice';
+        label.setAttribute("for", 'sort_change_list_ice');
+        break;
+    
+      case "針劑":
+        input.value = 'injection';
+        input.id = 'sort_change_list_injection';
+        label.setAttribute("for", 'sort_change_list_injection');
+        break;
+    
+      default:
+        break;
+    }
+    input.addEventListener("change", () => {
+        let ppmcl_main_container = document.querySelector(".ppmcl_main_container");
+        api_logger_add("未調藥品：更換藥品種類", "藥品種類 radio change");
+        set_ppmcl_main_info();
+        ppmcl_main_container.scrollTop = 0;
+    });
+
+    ppmcl_head_med_type_filter_container.appendChild(input);
+    ppmcl_head_med_type_filter_container.appendChild(label);
   });
 }

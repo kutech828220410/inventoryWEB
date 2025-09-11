@@ -310,8 +310,24 @@
     display: flex;
 }
 
-
-
+.ppnms_h_report_btn {
+    position: relative;
+}
+.ppnms_h_report_btn_warning::before {
+    content: "!";
+    display: flex;
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    font-weight: 600;
+    background-color: #ff2626;
+}
 
 
 .under-line {
@@ -344,7 +360,7 @@
         flex-direction: column;
     }
 }
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 660px) {
     .header {
         padding: 20px 20px 12px;
     }

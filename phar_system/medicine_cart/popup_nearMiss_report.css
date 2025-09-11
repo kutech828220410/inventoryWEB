@@ -242,6 +242,7 @@
     justify-content: space-between;
 }
 .ppnmsr_card_title {
+    position: relative;
     font-weight: 600;
     font-size: 20px;
 }
