@@ -146,7 +146,7 @@ async function popup_bed_change_div_open() {
         return;
     }
 
-    await check_cart_dispense();
+    // await check_cart_dispense();
 
     let ppbc_h_current_cart_select = document.querySelector(".ppbc_h_current_cart_select");
     if(current_cart.hnursta && ppbc_h_current_cart_select.value != current_cart.hnursta) {

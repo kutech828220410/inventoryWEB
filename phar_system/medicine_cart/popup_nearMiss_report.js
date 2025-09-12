@@ -55,6 +55,7 @@ function get_pp_nearMiss_report_footer() {
     return ppnmsr_footer_container;
 }
 function popup_nearMiss_report_div_close() {
+    check_cart_dispense();
     popup_nearMiss_report_div.Set_Visible(false);
 }
 

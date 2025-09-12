@@ -125,8 +125,10 @@ function get_ppmcl_header() {
 
                         set_discharged_data_display();
                         Set_main_div_enable(false);
-                        popup_med_change_list_div_close();
-                        popup_discharged_list_div_open();
+                        // popup_med_change_list_div_close();
+                        popup_med_change_list_div_close_other();
+                        // popup_discharged_list_div_open();
+                        popup_discharged_list_div_open_other();
                     } else {
                         Set_main_div_enable(false);
                     }
@@ -200,6 +202,9 @@ function popup_med_change_list_div_close() {
     popup_med_change_list_div.Set_Visible(false);
     check_cart_dispense();
 }
+function popup_med_change_list_div_close_other() {
+    popup_med_change_list_div.Set_Visible(false);
+}
 async function popup_med_change_list_div_open() {
     if(!current_pharmacy.phar) {
         alert("請先選擇藥局");
@@ -241,12 +246,12 @@ async function popup_med_change_list_div_open() {
         // });
     }
 
-    console.log(med_change_data);
+    // console.log(med_change_data);
     med_change_data = med_change_data.filter((e) => {
         return Array.isArray(e.cpoe) && e.cpoe.length != 0;
     });
 
-    console.log(med_change_data);
+    // console.log(med_change_data);
 
     if(med_change_data.length > 0) {
         med_change_data.sort((a, b) => +a.bednum - +b.bednum);
@@ -256,7 +261,7 @@ async function popup_med_change_list_div_open() {
     await set_ppmcl_main_info();
     
     popup_med_change_list_div.Set_Visible(true);
-    Set_main_div_enable(false);
+    Set_main_div_enable(true);
 
     let ppdl_h_current_cart_select = document.querySelector(".ppdl_h_current_cart_select");
     // 檢測有無退藥
@@ -295,10 +300,12 @@ async function popup_med_change_list_div_open() {
                     ppdl_h_current_cart_select.value = ppmcl_h_current_cart_select.value;
 
                     set_discharged_data_display();
-                    Set_main_div_enable(false);
                     console.log("============ 檢查退藥完成 =============");
-                    popup_med_change_list_div_close();
-                    popup_discharged_list_div_open();
+                    // popup_med_change_list_div_close();
+                    popup_med_change_list_div_close_other();
+                    // popup_discharged_list_div_open();
+                    popup_discharged_list_div_open_other();
+                    Set_main_div_enable(false);
                 } else {
                     Set_main_div_enable(false);
                     console.log("============ 檢查退藥完成 =============");
@@ -635,24 +642,32 @@ async function set_ppmcl_main_info() {
 
                     let radio_checked_input = document.querySelector('.sort_med_change_list_input:checked');
 
-                    if(Array.isArray(temp_result.cpoe)) {
-                        switch (radio_checked_input.value) {
-                            case "all":
-                                break;
-                            case "bottle":
-                                temp_result.cpoe = temp_result.cpoe.filter(element => element.large == "L");
-                                break;
-                            case "injection":
-                                temp_result.cpoe = temp_result.cpoe.filter(element => element.injection == "Y");
-                                break;
-                            case "oral":
-                                temp_result.cpoe = temp_result.cpoe.filter(element => element.oral == "Y");
-                                break;
-                            case "ice":
-                                temp_result.cpoe = temp_result.cpoe.filter(element => element.ice == "Y");
-                                break;
+                    if(radio_checked_input.value != "all") {
+                        if(Array.isArray(temp_result.cpoe)) {
+                            temp_result.cpoe = temp_result.cpoe.filter(item => {
+                                return item.med_group.includes(radio_checked_input.value);
+                            });
                         }
                     }
+
+                    // if(Array.isArray(temp_result.cpoe)) {
+                    //     switch (radio_checked_input.value) {
+                    //         case "all":
+                    //             break;
+                    //         case "bottle":
+                    //             temp_result.cpoe = temp_result.cpoe.filter(element => element.large == "L");
+                    //             break;
+                    //         case "injection":
+                    //             temp_result.cpoe = temp_result.cpoe.filter(element => element.injection == "Y");
+                    //             break;
+                    //         case "oral":
+                    //             temp_result.cpoe = temp_result.cpoe.filter(element => element.oral == "Y");
+                    //             break;
+                    //         case "ice":
+                    //             temp_result.cpoe = temp_result.cpoe.filter(element => element.ice == "Y");
+                    //             break;
+                    //     }
+                    // }
 
                     for (let index = 0; index < temp_result.cpoe.length; index++) {
                         const item = temp_result.cpoe[index];
@@ -743,24 +758,32 @@ async function set_ppmcl_main_info() {
 
                     let radio_checked_input = document.querySelector('.sort_med_change_list_input:checked');
 
-                    if(Array.isArray(temp_cpoe)) {
-                        switch (radio_checked_input.value) {
-                            case "all":
-                                break;
-                            case "bottle":
-                                temp_cpoe = temp_cpoe.filter(item => item.large == "L");
-                                break;
-                            case "injection":
-                                temp_cpoe = temp_cpoe.filter(item => item.injection == "Y");
-                                break;
-                            case "oral":
-                                temp_cpoe = temp_cpoe.filter(item => item.oral == "Y");
-                                break;
-                            case "ice":
-                                temp_cpoe = temp_cpoe.filter(item => item.ice == "Y");
-                                break;
+                    if(radio_checked_input.value != "all") {
+                        if(Array.isArray(temp_result.cpoe)) {
+                            temp_result.cpoe = temp_result.cpoe.filter(item => {
+                                return item.med_group.includes(radio_checked_input.value);
+                            });
                         }
                     }
+
+                    // if(Array.isArray(temp_cpoe)) {
+                    //     switch (radio_checked_input.value) {
+                    //         case "all":
+                    //             break;
+                    //         case "bottle":
+                    //             temp_cpoe = temp_cpoe.filter(item => item.large == "L");
+                    //             break;
+                    //         case "injection":
+                    //             temp_cpoe = temp_cpoe.filter(item => item.injection == "Y");
+                    //             break;
+                    //         case "oral":
+                    //             temp_cpoe = temp_cpoe.filter(item => item.oral == "Y");
+                    //             break;
+                    //         case "ice":
+                    //             temp_cpoe = temp_cpoe.filter(item => item.ice == "Y");
+                    //             break;
+                    //     }
+                    // }
 
                     temp_cpoe.forEach(item => {       
                         if(item.dispens_status == "Y" && item.check_status != "Y") {
@@ -912,6 +935,7 @@ async function set_ppmcl_main_info() {
         // let temp_cpoe = element.cpoe;
         
         let temp_cpoe;
+
         if(current_func == "allocate") {
             temp_cpoe = element.cpoe.filter(e => {
                 return e.dispens_status != "Y" && e.check_status != "Y";
@@ -923,23 +947,30 @@ async function set_ppmcl_main_info() {
         }
 
         let radio_checked_input = document.querySelector('.sort_med_change_list_input:checked');
-
-        switch (radio_checked_input.value) {
-            case "all":
-                break;
-            case "bottle":
-                temp_cpoe = temp_cpoe.filter(element => element.large == "L");
-                break;
-            case "injection":
-                temp_cpoe = temp_cpoe.filter(element => element.injection == "Y");
-                break;
-            case "oral":
-                temp_cpoe = temp_cpoe.filter(element => element.oral == "Y");
-                break;
-            case "ice":
-                temp_cpoe = temp_cpoe.filter(element => element.ice == "Y");
-                break;
+        console.log(radio_checked_input.value);
+        if(radio_checked_input.value != "all") {
+            temp_cpoe = temp_cpoe.filter(e => {
+                return e.med_group.includes(radio_checked_input.value);
+            });
         }
+        console.log(temp_cpoe);
+
+        // switch (radio_checked_input.value) {
+        //     case "all":
+        //         break;
+        //     case "bottle":
+        //         temp_cpoe = temp_cpoe.filter(element => element.large == "L");
+        //         break;
+        //     case "injection":
+        //         temp_cpoe = temp_cpoe.filter(element => element.injection == "Y");
+        //         break;
+        //     case "oral":
+        //         temp_cpoe = temp_cpoe.filter(element => element.oral == "Y");
+        //         break;
+        //     case "ice":
+        //         temp_cpoe = temp_cpoe.filter(element => element.ice == "Y");
+        //         break;
+        // }
         // console.log(temp_cpoe);
 
         temp_cpoe.forEach(item => {
@@ -1226,7 +1257,7 @@ async function set_ppmcl_main_info() {
                 // ppmcl_cpoe_container.appendChild(ppmcl_light_container);
                 ppmcl_cpoe_container.appendChild(ppmcl_cpoe_med_info_container);
                 ppmcl_cpoe_container.appendChild(ppmcl_cpoe_right_container);
-    
+
                 if(current_func == "allocate") {
                     ppmcl_bed_card.appendChild(ppmcl_cpoe_container);
                     // if(item.dispens_status != "Y" && item.check_status != "Y") {

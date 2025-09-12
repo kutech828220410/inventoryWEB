@@ -411,10 +411,12 @@ function get_main_ui() {
               ppdl_h_current_cart_select.value = ppml_h_current_cart_select.value;
   
               set_discharged_data_display();
-              Set_main_div_enable(false);
-              popup_med_list_div_close();
+              // popup_med_list_div_close();
+              popup_med_list_div_close_other();
               console.log("============ 檢查退藥完成 =============");
-              popup_discharged_list_div_open();
+              // popup_discharged_list_div_open();
+              popup_discharged_list_div_open_other();
+              Set_main_div_enable(false);
             } else {
               Set_main_div_enable(false);
               console.log("============ 檢查退藥完成 =============");
@@ -485,7 +487,7 @@ function get_main_ui() {
       Set_main_div_enable(false);
     }
 
-    popup_discharged_list_div_open();
+    popup_discharged_list_div_open_other();
   });
 
   let bed_change_btn = document.createElement("div");
@@ -1378,45 +1380,14 @@ async function set_med_qty_type_radio() {
     input.className = "sort_med_input";
     input.name = "sort_med_input";
     input.type = "radio";
+    input.value = element.NAME; 
+    input.id = `type_${element.GUID}`;
 
     let label = document.createElement("label");
     label.classList.add("sort_med_label");
     label.innerHTML = element.NAME;
+    label.setAttribute("for", `type_${element.GUID}`);
 
-    switch (element.NAME) {
-      case "大瓶藥":      
-        input.value = 'bottle';
-        input.id = 'sort_bottle';
-        label.setAttribute("for", 'sort_bottle');
-        break;
-    
-      case "口服":
-        input.value = 'oral';
-        input.id = 'sort_oral';
-        label.setAttribute("for", 'sort_oral');
-        break;
-    
-      case "冷藏":
-        input.value = 'ice';
-        input.id = 'sort_ice';
-        label.setAttribute("for", 'sort_ice');
-        break;
-
-      case "冷藏/高貴":
-        input.value = 'ice';
-        input.id = 'sort_ice';
-        label.setAttribute("for", 'sort_ice');
-        break;
-    
-      case "針劑":
-        input.value = 'injection';
-        input.id = 'sort_injection';
-        label.setAttribute("for", 'sort_injection');
-        break;
-    
-      default:
-        break;
-    }
     input.addEventListener("change", () => {
         let ppml_main_container = document.querySelector(".ppml_main_container");
         api_logger_add("藥品總量：更換藥品種類", "藥品種類 radio change");
@@ -1463,45 +1434,14 @@ async function set_med_change_list_type_radio() {
     input.className = "sort_med_change_list_input";
     input.name = "sort_med_change_list_input";
     input.type = "radio";
+    input.value = element.NAME; 
+    input.id = `type_change_${element.GUID}`;
 
     let label = document.createElement("label");
     label.classList.add("sort_med_change_list_label");
     label.innerHTML = element.NAME;
+    label.setAttribute("for", `type_change_${element.GUID}`);
 
-    switch (element.NAME) {
-      case "大瓶藥":      
-        input.value = 'bottle';
-        input.id = 'sort_change_list_bottle';
-        label.setAttribute("for", 'sort_change_list_bottle');
-        break;
-    
-      case "口服":
-        input.value = 'oral';
-        input.id = 'sort_change_list_oral';
-        label.setAttribute("for", 'sort_change_list_oral');
-        break;
-    
-      case "冷藏":
-        input.value = 'ice';
-        input.id = 'sort_change_list_ice';
-        label.setAttribute("for", 'sort_change_list_ice');
-        break;
-
-      case "冷藏/高貴":
-        input.value = 'ice';
-        input.id = 'sort_change_list_ice';
-        label.setAttribute("for", 'sort_change_list_ice');
-        break;
-    
-      case "針劑":
-        input.value = 'injection';
-        input.id = 'sort_change_list_injection';
-        label.setAttribute("for", 'sort_change_list_injection');
-        break;
-    
-      default:
-        break;
-    }
     input.addEventListener("change", () => {
         let ppmcl_main_container = document.querySelector(".ppmcl_main_container");
         api_logger_add("未調藥品：更換藥品種類", "藥品種類 radio change");

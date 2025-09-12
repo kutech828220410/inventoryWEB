@@ -135,6 +135,16 @@ async function popup_discharged_list_div_open() {
     popup_discharged_list_div.Set_Visible(true);
     Set_main_div_enable(false);
 }
+function popup_discharged_list_div_open_other() {
+    // await check_cart_dispense();
+    if(!current_pharmacy.phar) {
+        alert("請先選擇藥局");
+        return;
+    }
+    
+    popup_discharged_list_div.Set_Visible(true);
+    Set_main_div_enable(false);
+}
 
 function set_discharged_data_display() {
     let ppdl_main_container = document.querySelector(".ppdl_main_container");

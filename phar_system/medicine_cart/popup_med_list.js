@@ -256,7 +256,8 @@ async function get_pp_med_list_header() {
                         set_discharged_data_display();
                         Set_main_div_enable(false);
             
-                        popup_med_list_div_close();
+                        // popup_med_list_div_close();
+                        popup_med_list_div_close_other();
                         popup_discharged_list_div_open();
                     } else {
                         Set_main_div_enable(false);
@@ -382,8 +383,10 @@ function popup_med_list_div_close() {
     popup_med_list_div.Set_Visible(false);
     check_cart_dispense();
 }
+function popup_med_list_div_close_other() {
+    popup_med_list_div.Set_Visible(false);
+}
 function popup_med_list_div_open() {
-    check_cart_dispense();
     popup_med_list_div.Set_Visible(true);
 }
 
@@ -539,24 +542,6 @@ async function set_pp_med_list_display() {
             Set_main_div_enable(true);
             let check_count = 0;
             let guid_arr = [];
-            // let confirm_arr = [];
-            // let temp_coonfirm_text = "";
-
-            // if(current_func == "allocate") {
-            //     element["bed_list"].forEach(item => {
-            //         if(item.dispens_status != "Y") {
-            //             confirm_arr.push(item.bednum);
-            //         }
-            //     });
-            // } else if(current_func == "review") {
-            //     element["bed_list"].forEach(item => {
-            //         if(item.check_status != "Y") {
-            //             confirm_arr.push(item.bednum);
-            //         }
-            //     });
-            // }
-
-            // temp_coonfirm_text = `第${confirm_arr.join("、")}病床\n${element.name}藥品是否全部調劑？`;
 
             for (let index = 0; index < element["bed_list"].length; index++) {
                 const item = element["bed_list"][index];
@@ -597,21 +582,21 @@ async function set_pp_med_list_display() {
                     return;
                 }
             }
-
+            
             let checkedRadio = document.querySelector('input[name="filter_med_table_input"]:checked');
             let temp_table = checkedRadio.value;
             let ppml_h_current_cart_select = document.querySelector(".ppml_h_current_cart_select");
-        
+            
             let loggedName = sessionStorage.getItem('login_json');
             loggedName = JSON.parse(loggedName);
-
+            
             let post_data = {
                 ServerName: "",
                 ServerType: "",
                 UserName: loggedName.Name,
                 ValueAry: [guid_arr.join(";"), ppml_h_current_cart_select.value]
             }
-
+            
             let post_data2 = {
                 Data: [
                     {
@@ -625,21 +610,21 @@ async function set_pp_med_list_display() {
                 ServerType: "",
                 UserName: loggedName.Name
             }
-
+            
             if(current_func == "allocate") {
                 post_data2.Value = "調劑";
             } else if(current_func == "review") {
                 post_data2.Value = "覆核";
             }
-
+            
             if(temp_table != "all") {
                 post_data.ServerName = temp_table;
                 post_data.ServerType = "調劑台";
             }
-
+            
             console.log("post_data", post_data);
             console.log("post_log_data", post_data2);
-
+            
             let return_data;
             if(current_func == "allocate") {
                 console.log("藥品全部調劑post_data", post_data);
@@ -648,36 +633,16 @@ async function set_pp_med_list_display() {
                 console.log("藥品全部複合post_data", post_data);
                 return_data = await api_med_cart_check_by_cart(post_data);
             }
-
-            // 這邊喔幹
-            // let med_card_checkbox = document.querySelectorAll(".med_card_checkbox");
-            // let med_card_container = document.querySelectorAll(".med_card_container");
-
-            // med_card_checkbox.forEach((element, index) => {
-            //     if(element.id == guid) {
-            //         if(check_status == "Y") {
-            //             if(current_func == "review") {
-            //                 med_card_container[index].classList.add("dobule_checked_color");
-            //             }
-            //             element.checked = true;
-            //         } else {
-            //             if(current_func == "review") {
-            //                 med_card_container[index].classList.remove("dobule_checked_color");
-            //             }
-            //             element.checked = false;
-            //         }
-            //     }
-            // });
-
+            
             if(return_data.Code == 200) {
                 guid_arr.forEach(guid => {
                     let ppml_bed_card = document.querySelector(`.ppml_bed_card[guid="${guid}"]`);
                     ppml_bed_card.classList.add("ppml_bed_done");
-
-
+                    
+                    
                     let med_card_container = document.querySelector(`.med_card_container[guid="${guid}"]`);
                     let med_card_checkbox = document.querySelector(`.med_card_checkbox[id="${guid}"]`);
-
+                    
                     if(med_card_container) {
                         let temp_guid = med_card_container.getAttribute("guid");
                         if(guid == temp_guid) {
@@ -693,7 +658,7 @@ async function set_pp_med_list_display() {
                         }
                     }
                 });
-
+                                        
                 show_popup_notice(return_data.Result, true);
                 await add_med_inventory_log(post_data2);
             } else {
@@ -751,32 +716,180 @@ async function set_pp_med_list_display() {
         }
 
         // 切換調劑模式
-        let temp_mode = true;
+        let temp_mode = false;
+        if(page_setting_params.med_qty_popup_prefill) {
+            if(page_setting_params.med_qty_popup_prefill.value == "True") temp_mode = true;
+        }
+        let uncheck_arr = [];
+        let check_arr = [];
         if(temp_mode) {
+            if(current_func == "allocate") {
+                uncheck_arr = element["bed_list"].filter(item => {
+                    return item.dispens_status != "Y";
+                });
+                check_arr = element["bed_list"].filter(item => {
+                    return item.dispens_status == "Y";
+                });
+            } else {
+                uncheck_arr = element["bed_list"].filter(item => {
+                    return item.check_status != "Y" && item.dispens_status == "Y";
+                });
+                check_arr = element["bed_list"].filter(item => {
+                    return item.check_status == "Y" && item.dispens_status == "Y";
+    
+                });
+            }
+
             let ppml_check_btn_container = document.createElement("div");
             ppml_check_btn_container.classList.add("ppml_check_btn_container");
 
             let ppml_check_select_all_btn = document.createElement("div");
             ppml_check_select_all_btn.classList.add("ppml_check_select_all_btn");
+            if (element.dispens_name != "Y") {
+                ppml_check_select_all_btn.classList.add("check_selected_disable");
+            }
             ppml_check_select_all_btn.classList.add("btn");
-            ppml_check_select_all_btn.setAttribute("code", element.code);
+            ppml_check_select_all_btn.setAttribute("code", `med_${element.code}`);
             ppml_check_select_all_btn.innerHTML = "全選";
+            ppml_check_select_all_btn.addEventListener("click", () => {
+                if (element.dispens_name != "Y") {
+                    alert("請選取對應的調劑台");
+                    return;
+                }
+                let ppml_bed_med_input_all = document.querySelectorAll(`.ppml_bed_med_input[code="med_${element.code}"]`);
+                let ppml_check_selected_submin_btn = document.querySelector(`.ppml_check_selected_submin_btn[code="med_${element.code}"]`);
+                if(ppml_check_select_all_btn.innerHTML == "取消") {
+                    ppml_bed_med_input_all.forEach(item => {
+                        item.checked = false;
+                    });
+                    ppml_check_select_all_btn.innerHTML = "全選";
+                    ppml_check_selected_submin_btn.classList.add("check_selected_disable");
+                } else {
+                    ppml_bed_med_input_all.forEach(item => {
+                        item.checked = true;
+                    });
+                    ppml_check_select_all_btn.innerHTML = "取消";
+                    ppml_check_selected_submin_btn.classList.remove("check_selected_disable");
+                }
+            });
 
             let ppml_check_selected_submin_btn = document.createElement("div");
             ppml_check_selected_submin_btn.classList.add("ppml_check_selected_submin_btn");
             ppml_check_selected_submin_btn.classList.add("btn");
             ppml_check_selected_submin_btn.classList.add("check_selected_disable");
+            ppml_check_selected_submin_btn.setAttribute("code", `med_${element.code}`);
             if(current_func == "allocate") {
                 ppml_check_selected_submin_btn.innerHTML = "調劑";
             } else {
                 ppml_check_selected_submin_btn.innerHTML = "覆核";
             }
+            ppml_check_selected_submin_btn.addEventListener("click", async () => {
+                if (element.dispens_name != "Y") {
+                    alert("請選取對應的調劑台");
+                    return;
+                }
+                if(ppml_check_selected_submin_btn.className.includes("check_selected_disable")) {
+                    alert("未選取任何床位");
+                    return;
+                }
+
+                let temp_str = true;
+                // if(current_func == "allocate") {
+                //     temp_str = `${element.name}是否進行調劑？`;
+                // } else {
+                //     temp_str = `${element.name}是否進行覆核？`;
+                // }
+                // if(confirm(temp_str)) {
+                if(temp_str) {
+                    let ppml_bed_med_input_all = document.querySelectorAll(`.ppml_bed_med_input[code="med_${element.code}"]:checked`);
+                    api_logger_add(`${current_cart.hnursta}藥品總量：${element.code}全部調劑`, "click");
+                    Set_main_div_enable(true);
+                    let check_count = 0;
+                    let guid_arr = [];
+
+                    ppml_bed_med_input_all.forEach(item => {
+                        let temp_guid = item.id;
+                        guid_arr.push(temp_guid);
+                        check_count++;
+                    });
+
+                    let checkedRadio = document.querySelector('input[name="filter_med_table_input"]:checked');
+                    let temp_table = checkedRadio.value;
+                    let ppml_h_current_cart_select = document.querySelector(".ppml_h_current_cart_select");
+                    let loggedName = sessionStorage.getItem('login_json');
+                    loggedName = JSON.parse(loggedName);
+                    
+                    let post_data = {
+                        ServerName: "",
+                        ServerType: "",
+                        UserName: loggedName.Name,
+                        ValueAry: [guid_arr.join(";"), ppml_h_current_cart_select.value]
+                    }
+
+                    let post_data2 = {
+                        Data: [
+                            {
+                                op_id: loggedName.ID,
+                                op_name: loggedName.Name
+                            }
+                        ],
+                        ValueAry: [guid_arr.join(";")],
+                        Value: "",
+                        ServerName: "",
+                        ServerType: "",
+                        UserName: loggedName.Name
+                    }
+
+                    if(current_func == "allocate") {
+                        post_data2.Value = "調劑";
+                    } else if(current_func == "review") {
+                        post_data2.Value = "覆核";
+                    }
+
+                    if(temp_table != "all") {
+                        post_data.ServerName = temp_table;
+                        post_data.ServerType = "調劑台";
+                    }
+
+                    console.log("post_data", post_data);
+                    console.log("post_log_data", post_data2);
+                    let return_data;
+                    if(current_func == "allocate") {
+                        console.log("藥品全部調劑post_data", post_data);
+                        return_data = await api_med_cart_dispensed_by_cart(post_data);
+                    } else if(current_func == "review") {
+                        console.log("藥品全部複合post_data", post_data);
+                        return_data = await api_med_cart_check_by_cart(post_data);
+                    }
+
+                    if(return_data.Code == 200) {
+                        show_popup_notice(return_data.Result, true);
+                        await add_med_inventory_log(post_data2);
+                    } else {
+                        alert("操作失敗 Result:", return_data.Result);
+                        Set_main_div_enable(false);
+                        return;
+                    }
+
+                    let filter_med_table_input = document.querySelector('.filter_med_table_input:checked');
+
+                    med_list_data = await get_all_med_qty(current_pharmacy.phar, ppml_h_current_cart_select.value, filter_med_table_input.value);
+                    med_list_data = med_list_data.Data;
+                    med_list_data = sort_med_list_data(med_list_data, current_func);
+                    med_list_data = sort_display_med_data(med_list_data);
+                    await set_pp_med_list_display();
+
+                    Set_main_div_enable(false);
+                    // 安安安
+                }
+            });
 
             ppml_check_btn_container.appendChild(ppml_check_select_all_btn);
             ppml_check_btn_container.appendChild(ppml_check_selected_submin_btn);
-
-        
-            ppml_light_btn_container.appendChild(ppml_check_btn_container);
+            
+            if(uncheck_arr.length > 0) {
+                ppml_light_btn_container.appendChild(ppml_check_btn_container);
+            }
         } else {
             if(element.dispens_name == "Y") {
                 if(check_count != 0) {
@@ -802,101 +915,120 @@ async function set_pp_med_list_display() {
         let done_qty = 0;
         let check_qty = 0;
 
-        element["bed_list"].forEach(item => {
-            let ppml_bed_card = document.createElement("div");
-            ppml_bed_card.classList.add("ppml_bed_card");
-            // PRN標示
-            // let temp_str = item.freqn.toUpperCase();
-            // console.log(temp_str);
-            // console.log(temp_str.includes("PRN"));
-            if(item.selfPRN == "Y") {
-                // 調整自費PRN顯示
-                // ppml_bed_card.innerHTML = `<span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${item.lqnty}</div>`;
-                ppml_bed_card.innerHTML = `
-                <div class="ppml_bed_card_PRN">P</div><span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${item.lqnty}</div>
-                `;
-            } else if(item.selfPRN != "Y" && item.freqn == "Y") {
-                ppml_bed_card.innerHTML = `<div class="ppml_bed_card_PRN_noself">P</div><span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}</div>`;
-            } else {
-                ppml_bed_card.innerHTML = `<span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${item.lqnty}</div>`;
-            }
+        if(temp_mode) {
+            uncheck_arr.forEach(item => {
+                let ppml_bed_card = document.createElement("label");
+                ppml_bed_card.classList.add("ppml_bed_card");
+                ppml_bed_card.setAttribute("for", item.GUID);
 
-            // else if(item.freqn == "PRN") {
-            //     ppml_bed_card.innerHTML = `
-            //     <div class="ppml_bed_card_PRN">P</div><span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}</div>
-            //     `;
-            // }
-            // ppml_bed_card.innerHTML = `<span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}</div>`;
-            ppml_bed_card.setAttribute("m_guid", item.Master_GUID);
-            ppml_bed_card.setAttribute("guid", item.GUID);
-            
-            if(element.dispens_name != "Y") {
-                ppml_bed_card.setAttribute("checkable", false);
-                ppml_bed_card.classList.add("ppml_bed_card_disable");
-            } else {
-                ppml_bed_card.setAttribute("checkable", true);
-            }
-
-            total_qty += +item.lqnty;
-
-            if(current_func == "allocate") {
-                if(item.dispens_status == "Y") {
-                    ppml_bed_card.classList.add("ppml_bed_done");
-                    done_qty += +item.lqnty;
+                if(item.selfPRN == "Y") {
+                    // 調整自費PRN顯示
+                    // ppml_bed_card.innerHTML = `<span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${item.lqnty}</div>`;
+                    ppml_bed_card.innerHTML = `
+                    <div class="ppml_bed_card_PRN">P</div><span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${item.lqnty}</div>
+                    `;
+                } else if(item.selfPRN != "Y" && item.freqn == "Y") {
+                    ppml_bed_card.innerHTML = `<div class="ppml_bed_card_PRN_noself">P</div><span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}</div>`;
+                } else {
+                    ppml_bed_card.innerHTML = `<span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${item.lqnty}</div>`;
                 }
-                if(element.dispens_name == "Y") {
+                
+                ppml_bed_card.setAttribute("m_guid", item.Master_GUID);
+                ppml_bed_card.setAttribute("guid", item.GUID);
+
+                total_qty += +item.lqnty;
+
+                let ppml_bed_med_input = document.createElement("input");
+                ppml_bed_med_input.id = item.GUID;
+                ppml_bed_med_input.name = item.GUID;
+                ppml_bed_med_input.classList.add("ppml_bed_med_input");
+                ppml_bed_med_input.setAttribute("code", `med_${element.code}`);
+                ppml_bed_med_input.type = "checkbox";
+                if(element.dispens_name != "Y") {
+                    ppml_bed_med_input.disabled = true;
+                }
+                ppml_bed_med_input.addEventListener("change", () => {
+                    let ppml_bed_med_input_all = document.querySelectorAll(`.ppml_bed_med_input[code="med_${element.code}"]`);
+                    let ppml_check_selected_submin_btn = document.querySelector(`.ppml_check_selected_submin_btn[code="med_${element.code}"]`);
+                    let ppml_check_select_all_btn = document.querySelector(`.ppml_check_select_all_btn[code="med_${element.code}"]`);
+
+                    let temp_count = 0;
+                    let temp_no_count = 0;
+                    ppml_bed_med_input_all.forEach(item => {
+                        if(item.checked) temp_count++;
+                        if(!item.checked) temp_no_count++;
+                    });
+
+                    if(temp_no_count == 0) {
+                        ppml_check_select_all_btn.innerHTML = "取消";
+                    } else {
+                        ppml_check_select_all_btn.innerHTML = "全選";
+                    }
+
+                    if(temp_count > 0) ppml_check_selected_submin_btn.classList.remove("check_selected_disable");
+                    if(temp_count == 0) ppml_check_selected_submin_btn.classList.add("check_selected_disable");
+                });
+
+                ppml_bed_list_container.appendChild(ppml_bed_med_input);
+                ppml_bed_list_container.appendChild(ppml_bed_card);
+            });
+            check_arr.forEach(item => {
+                let ppml_bed_card = document.createElement("div");
+                ppml_bed_card.classList.add("ppml_bed_card");
+
+                if(item.selfPRN == "Y") {
+                    // 調整自費PRN顯示
+                    // ppml_bed_card.innerHTML = `<span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${item.lqnty}</div>`;
+                    ppml_bed_card.innerHTML = `
+                    <div class="ppml_bed_card_PRN">P</div><span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${item.lqnty}</div>
+                    `;
+                } else if(item.selfPRN != "Y" && item.freqn == "Y") {
+                    ppml_bed_card.innerHTML = `<div class="ppml_bed_card_PRN_noself">P</div><span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}</div>`;
+                } else {
+                    ppml_bed_card.innerHTML = `<span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${item.lqnty}</div>`;
+                }
+                
+                ppml_bed_card.setAttribute("m_guid", item.Master_GUID);
+                ppml_bed_card.setAttribute("guid", item.GUID);
+
+                ppml_bed_card.classList.add("ppml_bed_done");
+                total_qty += +item.lqnty;
+                done_qty += +item.lqnty;
+                if(element.dispens_name != "Y") {
+                    ppml_bed_card.setAttribute("checkable", false);
+                    ppml_bed_card.classList.add("ppml_bed_card_disable");
+                } else {
+                    ppml_bed_card.setAttribute("checkable", true);
                     ppml_bed_card.addEventListener("click", async (e) => {
                         console.log(ppml_bed_card.classList.contains("ppml_bed_done"));
-                        if(ppml_bed_card.classList.contains("ppml_bed_done")) {
-                            if(confirm(`是否取消調劑狀態`)) {
-                                Set_main_div_enable(true);
-        
-                                let master_guid = ppml_bed_card.getAttribute("m_guid");
-                                let guid = ppml_bed_card.getAttribute("guid");
-            
-                                await set_post_data_to_check_dispense_for_med_list(master_guid, guid, "", false);
-            
-                                let filter_med_table_input = document.querySelector('.filter_med_table_input:checked');
-                                let ppml_h_current_cart_select = document.querySelector(".ppml_h_current_cart_select");
-                                med_list_data = await get_all_med_qty(current_pharmacy.phar, ppml_h_current_cart_select.value, filter_med_table_input.value);
-                                med_list_data = med_list_data.Data;
-                                med_list_data = sort_med_list_data(med_list_data, current_func);
-                                med_list_data = sort_display_med_data(med_list_data);
-                                await set_pp_med_list_display();
-    
-                                // med_list_search_result();
-    
-                                ppml_bed_card.classList.remove("ppml_bed_done");
-                                item.dispens_status = "";
-    
-                                done_qty = +done_qty - +item.lqnty;
-    
-                                infoCode2.textContent = `${done_qty} / ${total_qty}`;
-                                
-                                Set_main_div_enable(false);
-                            }
+                        let temp_str = "";
+                        if(current_func == "allocate") {
+                            temp_str = `是否取消調劑狀態`;
                         } else {
+                            temp_str = `是否取消覆核狀態`;
+                        }
+                        if(confirm(temp_str)) {
                             Set_main_div_enable(true);
-                            api_logger_add(`${current_cart.hnursta}藥品總量：${item.bednum}床，${element.code} 調劑`, "click");
+    
                             let master_guid = ppml_bed_card.getAttribute("m_guid");
                             let guid = ppml_bed_card.getAttribute("guid");
         
-                            await set_post_data_to_check_dispense_for_med_list(master_guid, guid, "Y", false);
+                            await set_post_data_to_check_dispense_for_med_list(master_guid, guid, "", false);
         
                             let filter_med_table_input = document.querySelector('.filter_med_table_input:checked');
                             let ppml_h_current_cart_select = document.querySelector(".ppml_h_current_cart_select");
-                            
                             med_list_data = await get_all_med_qty(current_pharmacy.phar, ppml_h_current_cart_select.value, filter_med_table_input.value);
                             med_list_data = med_list_data.Data;
                             med_list_data = sort_med_list_data(med_list_data, current_func);
                             med_list_data = sort_display_med_data(med_list_data);
                             await set_pp_med_list_display();
+    
                             // med_list_search_result();
     
-                            ppml_bed_card.classList.add("ppml_bed_done");
-                            item.dispens_status = "Y";
+                            ppml_bed_card.classList.remove("ppml_bed_done");
+                            item.dispens_status = "";
     
-                            done_qty = +done_qty + +item.lqnty;
+                            done_qty = +done_qty - +item.lqnty;
     
                             infoCode2.textContent = `${done_qty} / ${total_qty}`;
                             
@@ -904,105 +1036,213 @@ async function set_pp_med_list_display() {
                         }
                     });
                 }
-            } else {
-                if(item.dispens_status != "Y") {
-                    ppml_bed_card.classList.add("ppml_bed_disalbe");
-                    ppml_bed_card.addEventListener("click", () => {
-                        alert("請先完成調劑");
-                    }) 
+
+
+                ppml_bed_list_container.appendChild(ppml_bed_card);
+            });
+        } else {
+            element["bed_list"].forEach(item => {
+                let ppml_bed_card = document.createElement("div");
+                ppml_bed_card.classList.add("ppml_bed_card");
+                // PRN標示
+                // let temp_str = item.freqn.toUpperCase();
+                // console.log(temp_str);
+                // console.log(temp_str.includes("PRN"));
+                if(item.selfPRN == "Y") {
+                    // 調整自費PRN顯示
+                    // ppml_bed_card.innerHTML = `<span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${item.lqnty}</div>`;
+                    ppml_bed_card.innerHTML = `
+                    <div class="ppml_bed_card_PRN">P</div><span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${item.lqnty}</div>
+                    `;
+                } else if(item.selfPRN != "Y" && item.freqn == "Y") {
+                    ppml_bed_card.innerHTML = `<div class="ppml_bed_card_PRN_noself">P</div><span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}</div>`;
                 } else {
-                    if(item.check_status == "Y") {
+                    ppml_bed_card.innerHTML = `<span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${item.lqnty}</div>`;
+                }
+    
+                // else if(item.freqn == "PRN") {
+                //     ppml_bed_card.innerHTML = `
+                //     <div class="ppml_bed_card_PRN">P</div><span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}</div>
+                //     `;
+                // }
+                // ppml_bed_card.innerHTML = `<span class="ppml_bed_card_num">${item.bednum}床</span><div class="ppml_bed_card_qty">${+item.lqnty}</div>`;
+                ppml_bed_card.setAttribute("m_guid", item.Master_GUID);
+                ppml_bed_card.setAttribute("guid", item.GUID);
+                
+                if(element.dispens_name != "Y") {
+                    ppml_bed_card.setAttribute("checkable", false);
+                    ppml_bed_card.classList.add("ppml_bed_card_disable");
+                } else {
+                    ppml_bed_card.setAttribute("checkable", true);
+                }
+    
+                total_qty += +item.lqnty;
+    
+                if(current_func == "allocate") {
+                    if(item.dispens_status == "Y") {
                         ppml_bed_card.classList.add("ppml_bed_done");
-                        check_qty += +item.lqnty;
-                        // ppml_bed_card.addEventListener("click", async (e) => {
-                        //     console.log(e.target.classList.contains("ppml_bed_done"));
-                        //     if(e.target.classList.contains("ppml_bed_done")) {
-                        //         if(confirm("是否取消覆核狀態")) {
-                        //             Set_main_div_enable(true);
-            
-                        //             let master_guid = ppml_bed_card.getAttribute("m_guid");
-                        //             let guid = ppml_bed_card.getAttribute("guid");
-                
-                        //             await set_post_data_to_check_dispense_for_med_list(master_guid, guid, "");
-                
-                        //             // med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, "all");
-                        //             // med_list_data = med_list_data.Data;
-                        //             // med_list_data = sort_med_list_data(med_list_data, current_func);;
-                        //             // await set_pp_med_list_display();
-    
-                        //             // med_list_search_result();
-    
-                        //             ppml_bed_card.classList.remove("ppml_bed_done");
-                        //             item.check_status = "";
-                                    
-                        //             Set_main_div_enable(false);
-                        //         }
-                        //     }
-                        // });
+                        done_qty += +item.lqnty;
                     }
                     if(element.dispens_name == "Y") {
                         ppml_bed_card.addEventListener("click", async (e) => {
                             console.log(ppml_bed_card.classList.contains("ppml_bed_done"));
                             if(ppml_bed_card.classList.contains("ppml_bed_done")) {
-                                if(confirm("是否取消覆核狀態")) {
+                                if(confirm(`是否取消調劑狀態`)) {
                                     Set_main_div_enable(true);
-                                    api_logger_add(`${current_cart.hnursta}藥品總量：${item.bednum}床，${element.code} 取消覆核`, "click");
+            
                                     let master_guid = ppml_bed_card.getAttribute("m_guid");
                                     let guid = ppml_bed_card.getAttribute("guid");
                 
                                     await set_post_data_to_check_dispense_for_med_list(master_guid, guid, "", false);
+                
                                     let filter_med_table_input = document.querySelector('.filter_med_table_input:checked');
-    
-                                    med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, filter_med_table_input.value);
+                                    let ppml_h_current_cart_select = document.querySelector(".ppml_h_current_cart_select");
+                                    med_list_data = await get_all_med_qty(current_pharmacy.phar, ppml_h_current_cart_select.value, filter_med_table_input.value);
                                     med_list_data = med_list_data.Data;
                                     med_list_data = sort_med_list_data(med_list_data, current_func);
                                     med_list_data = sort_display_med_data(med_list_data);
                                     await set_pp_med_list_display();
-    
+        
                                     // med_list_search_result();
-    
+        
                                     ppml_bed_card.classList.remove("ppml_bed_done");
-                                    item.check_status = "";
-    
-                                    check_qty = +check_qty - +item.lqnty;
-    
-                                    infoCode2.textContent = `${check_qty} / ${total_qty}`;
+                                    item.dispens_status = "";
+        
+                                    done_qty = +done_qty - +item.lqnty;
+        
+                                    infoCode2.textContent = `${done_qty} / ${total_qty}`;
                                     
                                     Set_main_div_enable(false);
                                 }
                             } else {
                                 Set_main_div_enable(true);
-                                api_logger_add(`${current_cart.hnursta}藥品總量：${item.bednum}床，${element.code} 覆核`, "click");
+                                api_logger_add(`${current_cart.hnursta}藥品總量：${item.bednum}床，${element.code} 調劑`, "click");
                                 let master_guid = ppml_bed_card.getAttribute("m_guid");
                                 let guid = ppml_bed_card.getAttribute("guid");
             
                                 await set_post_data_to_check_dispense_for_med_list(master_guid, guid, "Y", false);
+            
                                 let filter_med_table_input = document.querySelector('.filter_med_table_input:checked');
-                               
-                                med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, filter_med_table_input.value);
+                                let ppml_h_current_cart_select = document.querySelector(".ppml_h_current_cart_select");
+                                
+                                med_list_data = await get_all_med_qty(current_pharmacy.phar, ppml_h_current_cart_select.value, filter_med_table_input.value);
                                 med_list_data = med_list_data.Data;
                                 med_list_data = sort_med_list_data(med_list_data, current_func);
                                 med_list_data = sort_display_med_data(med_list_data);
                                 await set_pp_med_list_display();
-    
                                 // med_list_search_result();
-    
+        
                                 ppml_bed_card.classList.add("ppml_bed_done");
-                                item.check_status = "Y";
-    
-                                check_qty = +check_qty + +item.lqnty;
-    
-                                infoCode2.textContent = `${check_qty} / ${total_qty}`;
+                                item.dispens_status = "Y";
+        
+                                done_qty = +done_qty + +item.lqnty;
+        
+                                infoCode2.textContent = `${done_qty} / ${total_qty}`;
                                 
                                 Set_main_div_enable(false);
                             }
                         });
                     }
+                } else {
+                    if(item.dispens_status != "Y") {
+                        ppml_bed_card.classList.add("ppml_bed_disalbe");
+                        ppml_bed_card.addEventListener("click", () => {
+                            alert("請先完成調劑");
+                        }) 
+                    } else {
+                        if(item.check_status == "Y") {
+                            ppml_bed_card.classList.add("ppml_bed_done");
+                            check_qty += +item.lqnty;
+                            // ppml_bed_card.addEventListener("click", async (e) => {
+                            //     console.log(e.target.classList.contains("ppml_bed_done"));
+                            //     if(e.target.classList.contains("ppml_bed_done")) {
+                            //         if(confirm("是否取消覆核狀態")) {
+                            //             Set_main_div_enable(true);
+                
+                            //             let master_guid = ppml_bed_card.getAttribute("m_guid");
+                            //             let guid = ppml_bed_card.getAttribute("guid");
+                    
+                            //             await set_post_data_to_check_dispense_for_med_list(master_guid, guid, "");
+                    
+                            //             // med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, "all");
+                            //             // med_list_data = med_list_data.Data;
+                            //             // med_list_data = sort_med_list_data(med_list_data, current_func);;
+                            //             // await set_pp_med_list_display();
+        
+                            //             // med_list_search_result();
+        
+                            //             ppml_bed_card.classList.remove("ppml_bed_done");
+                            //             item.check_status = "";
+                                        
+                            //             Set_main_div_enable(false);
+                            //         }
+                            //     }
+                            // });
+                        }
+                        if(element.dispens_name == "Y") {
+                            ppml_bed_card.addEventListener("click", async (e) => {
+                                console.log(ppml_bed_card.classList.contains("ppml_bed_done"));
+                                if(ppml_bed_card.classList.contains("ppml_bed_done")) {
+                                    if(confirm("是否取消覆核狀態")) {
+                                        Set_main_div_enable(true);
+                                        api_logger_add(`${current_cart.hnursta}藥品總量：${item.bednum}床，${element.code} 取消覆核`, "click");
+                                        let master_guid = ppml_bed_card.getAttribute("m_guid");
+                                        let guid = ppml_bed_card.getAttribute("guid");
+                    
+                                        await set_post_data_to_check_dispense_for_med_list(master_guid, guid, "", false);
+                                        let filter_med_table_input = document.querySelector('.filter_med_table_input:checked');
+        
+                                        med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, filter_med_table_input.value);
+                                        med_list_data = med_list_data.Data;
+                                        med_list_data = sort_med_list_data(med_list_data, current_func);
+                                        med_list_data = sort_display_med_data(med_list_data);
+                                        await set_pp_med_list_display();
+        
+                                        // med_list_search_result();
+        
+                                        ppml_bed_card.classList.remove("ppml_bed_done");
+                                        item.check_status = "";
+        
+                                        check_qty = +check_qty - +item.lqnty;
+        
+                                        infoCode2.textContent = `${check_qty} / ${total_qty}`;
+                                        
+                                        Set_main_div_enable(false);
+                                    }
+                                } else {
+                                    Set_main_div_enable(true);
+                                    api_logger_add(`${current_cart.hnursta}藥品總量：${item.bednum}床，${element.code} 覆核`, "click");
+                                    let master_guid = ppml_bed_card.getAttribute("m_guid");
+                                    let guid = ppml_bed_card.getAttribute("guid");
+                
+                                    await set_post_data_to_check_dispense_for_med_list(master_guid, guid, "Y", false);
+                                    let filter_med_table_input = document.querySelector('.filter_med_table_input:checked');
+                                   
+                                    med_list_data = await get_all_med_qty(current_pharmacy.phar, current_cart.hnursta, filter_med_table_input.value);
+                                    med_list_data = med_list_data.Data;
+                                    med_list_data = sort_med_list_data(med_list_data, current_func);
+                                    med_list_data = sort_display_med_data(med_list_data);
+                                    await set_pp_med_list_display();
+        
+                                    // med_list_search_result();
+        
+                                    ppml_bed_card.classList.add("ppml_bed_done");
+                                    item.check_status = "Y";
+        
+                                    check_qty = +check_qty + +item.lqnty;
+        
+                                    infoCode2.textContent = `${check_qty} / ${total_qty}`;
+                                    
+                                    Set_main_div_enable(false);
+                                }
+                            });
+                        }
+                    }
                 }
-            }
-
-            ppml_bed_list_container.appendChild(ppml_bed_card);
-        });
+    
+                ppml_bed_list_container.appendChild(ppml_bed_card);
+            });
+        }
 
         if(current_func == "allocate") {
             infoLabel2.textContent = '已調配 / 總量';
@@ -1011,6 +1251,7 @@ async function set_pp_med_list_display() {
             infoLabel2.textContent = '已覆核 / 總量';
             infoCode2.textContent = `${check_qty} / ${total_qty}`;
         }
+
         // ppml_ci_2_div.innerHTML = `
         //     <div class="ppml_ci_content">已調配 / 總量</div>
         //     <div class="ppml_ci_qty">${done_qty} / ${total_qty}</div>
@@ -1026,21 +1267,9 @@ async function set_pp_med_list_display() {
         // 藥品總量為0時不顯示
         if(radio_checked_input.value == "all") {
             ppml_main_container.appendChild(ppml_card_container);
-        } else if(radio_checked_input.value == "bottle") {
-            if(element.large == "L") {
-                ppml_main_container.appendChild(ppml_card_container);
-            }
-        } else if(radio_checked_input.value == "injection") {
-            if(element.injection == "Y") {
-                ppml_main_container.appendChild(ppml_card_container);
-            }
-        } else if(radio_checked_input.value == "oral") {
-            if(element.oral == "Y") {
-                ppml_main_container.appendChild(ppml_card_container);
-            }
-        } else if(radio_checked_input.value == "ice") {
-            if(element.ice == "Y") {
-                ppml_main_container.appendChild(ppml_card_container);
+        } else {
+            if(Array.isArray(element.med_group)) {
+                if(element.med_group.includes(radio_checked_input.value)) ppml_main_container.appendChild(ppml_card_container);
             }
         }
         if(+total_qty != 0) {

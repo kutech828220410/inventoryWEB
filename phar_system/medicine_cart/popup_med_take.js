@@ -78,6 +78,7 @@ function get_pp_med_take_footer() {
     return ppmt_footer_container;
 }
 function popup_med_take_div_close() {
+    check_cart_dispense();
     popup_med_take_div.Set_Visible(false);
 }
 async function popup_med_take_div_open() {

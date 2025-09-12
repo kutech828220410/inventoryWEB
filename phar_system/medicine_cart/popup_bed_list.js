@@ -56,7 +56,7 @@ async function popup_bed_list_div_open() {
     med_cart_beds_data = await get_bed_list_by_cart(current_pharmacy.phar, current_cart.hnursta);
     med_cart_beds_data = med_cart_beds_data.Data;
     set_pp_bed_list_info();
-    await check_cart_dispense();
+    // await check_cart_dispense();
     popup_bed_list_div.Set_Visible(true);
 }
 

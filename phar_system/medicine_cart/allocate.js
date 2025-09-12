@@ -1752,6 +1752,7 @@ function set_pbm_header_container() {
     pbmh_checked_submit_btn.classList.add("btn");
     pbmh_checked_submit_btn.innerHTML = "完成";
     pbmh_checked_submit_btn.addEventListener("click", async () => {
+        check_cart_dispense();
         check_cutoff_time_relogin();
         Set_main_div_enable(true);
         api_logger_add(`${current_cart.hnursta}-${current_p_bed_data.bednum}調劑畫面 "完成"按鈕點擊`, "click");
@@ -2111,6 +2112,7 @@ function set_pbm_footer_container() {
     pbmh_checked_submit_btn.classList.add("btn");
     pbmh_checked_submit_btn.innerHTML = "完成";
     pbmh_checked_submit_btn.addEventListener("click", async () => {
+        check_cart_dispense();
         check_cutoff_time_relogin();
         Set_main_div_enable(true);
         api_logger_add(`${current_cart.hnursta}-${current_p_bed_data.bednum}調劑畫面 "完成"按鈕點擊`, "click");

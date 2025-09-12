@@ -315,6 +315,18 @@
 }
 .check_selected_disable {
     cursor: not-allow;
+    background-color: #939393;
+}
+.check_selected_disable:hover {
+    background-color: #939393;
+}
+.ppml_bed_med_input {
+    display: none;
+}
+.ppml_bed_med_input:checked + label {
+  background-color: #4e6db4;
+  color: #fff;
+  transition: all 0.2s ease;
 }
 
 @media screen and (max-width: 1200px) {

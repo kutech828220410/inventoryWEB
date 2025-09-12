@@ -240,13 +240,13 @@ function get_pp_nearMiss_footer() {
 
     return ppnms_footer_container;
 }
-function popup_nearMiss_div_close() {
+async function popup_nearMiss_div_close() {
     let ppnms_main_display = document.querySelector(".ppnms_main_display");
     ppnms_main_display.setAttribute("step", 1);
     popup_nearMiss_div.Set_Visible(false);
+    check_cart_dispense();
 }
 function popup_nearMiss_div_open() {
-    check_cart_dispense();
     if(current_p_bed_data) {
         set_ppnms_main_display();
     }

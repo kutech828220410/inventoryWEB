@@ -74,6 +74,7 @@ function get_pp_dc_new_footer() {
     return ppdn_footer_container;
 }
 function popup_dc_new_div_close() {
+    check_cart_dispense();
     popup_dc_new_div.Set_Visible(false);
 }
 function popup_dc_new_div_open() {
