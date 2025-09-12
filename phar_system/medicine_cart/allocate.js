@@ -98,6 +98,7 @@ function pbm_header_scroll() {
 
 // 產生調劑台畫面
 async function allocate_display_init(light_on) {
+    check_cart_dispense();
     Set_main_div_enable(true);
     let start_p = performance.now();
     let all_start_p = performance.now();
@@ -1168,6 +1169,24 @@ function set_pbm_main_container() {
         med_name_card_container.appendChild(med_card_name);
         med_name_card_container.appendChild(med_card_cht_name);
 
+        let nearMiss_log_container = document.createElement("div");
+        if(element.nearmiss.GUID) {
+            nearMiss_log_container.classList.add("nearMiss_log_container_for_cpoe");
+    
+            let temp_type_arr = element.nearmiss.reason.split(";");
+    
+            if(Array.isArray(temp_type_arr)) {
+                temp_type_arr.forEach(item => {
+                    let ppnms_type_card = document.createElement("div");
+                    ppnms_type_card.classList.add("ppnms_type_card");
+                    
+                    ppnms_type_card.innerHTML = item;
+    
+                    if(item) nearMiss_log_container.appendChild(ppnms_type_card);
+                });
+            };
+        }
+
         med_card_main_display_container.appendChild(med_name_card_container);
         med_card_main_display_container.appendChild(med_card_info_container);
 
@@ -1177,6 +1196,9 @@ function set_pbm_main_container() {
 
         if(element.note) {
             med_card_main_display_container.appendChild(med_card_note_container);
+        }
+        if(element.nearmiss.GUID) {
+            med_card_main_display_container.appendChild(nearMiss_log_container);
         }
 
         // console.log(element.pharm_code);

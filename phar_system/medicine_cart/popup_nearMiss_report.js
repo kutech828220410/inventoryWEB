@@ -208,7 +208,6 @@ function set_main_report_display() {
                 nearMiss_log_container.classList.add("nearMiss_log_container");
 
                 let temp_type_arr = element.reason.split(";");
-                
 
                 if(Array.isArray(temp_type_arr)) {
                     temp_type_arr.forEach(item => {

@@ -1160,9 +1160,11 @@ async function allocate_func() {
     cart_content.addEventListener("click", open_cart_list);
     med_table_content.addEventListener("click", open_med_table_list);
     if(current_cart == "" && current_med_table == "") {
+      check_cart_dispense();
       Set_main_div_enable(false);
       return;
     } else if(current_cart == "" && current_med_table != "") {
+      check_cart_dispense();
       Set_main_div_enable(false);
       return;
     } else {
