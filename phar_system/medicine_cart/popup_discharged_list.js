@@ -45,34 +45,34 @@ function get_ppdl_header() {
             set_discharged_data_display();
         }
 
-        for (let i = 0; i < cart_list.length; i++) {
-            const element = cart_list[i];
-            if(element.hnursta == ppdl_h_current_cart_select.value) {
-                current_cart = element;
-                // let temp_logic = get_func_logic();
-                // get_all_select_option_logic(temp_logic);
+        // for (let i = 0; i < cart_list.length; i++) {
+        //     const element = cart_list[i];
+        //     if(element.hnursta == ppdl_h_current_cart_select.value) {
+        //         current_cart = element;
+        //         // let temp_logic = get_func_logic();
+        //         // get_all_select_option_logic(temp_logic);
                 
-                // 根據選取的調劑台解鎖藥品
-                if(current_med_table != "") {
-                    console.log("切換調劑台");
-                    patient_bed_index = -1;
-                    await allocate_display_init();
-                } else {
-                    console.log("未選調劑台");
-                    patient_bed_index = -1;
-                    await allocate_display_init();
-                }
+        //         // 根據選取的調劑台解鎖藥品
+        //         if(current_med_table != "") {
+        //             console.log("切換調劑台");
+        //             patient_bed_index = -1;
+        //             await allocate_display_init();
+        //         } else {
+        //             console.log("未選調劑台");
+        //             patient_bed_index = -1;
+        //             await allocate_display_init();
+        //         }
 
-                if(med_cart_beds_data[patient_bed_index].bednum != "1" && med_cart_beds_data.length != 0) {
-                    alert(`目前為第${med_cart_beds_data[patient_bed_index].bednum}床`);
-                }
+        //         if(med_cart_beds_data[patient_bed_index].bednum != "1" && med_cart_beds_data.length != 0) {
+        //             alert(`目前為第${med_cart_beds_data[patient_bed_index].bednum}床`);
+        //         }
 
-                last_current_cart = current_cart;
-                let cart_content = document.querySelector(".cart_select_container > .cart_content");
-                cart_content.innerHTML = ppdl_h_current_cart_select.value;
-                break;
-            }
-        }
+        //         last_current_cart = current_cart;
+        //         let cart_content = document.querySelector(".cart_select_container > .cart_content");
+        //         cart_content.innerHTML = ppdl_h_current_cart_select.value;
+        //         break;
+        //     }
+        // }
         Set_main_div_enable(false);
     });
 
@@ -121,9 +121,44 @@ function get_ppdl_footer() {
 
     return ppdl_footer_container;
 }
-function popup_discharged_list_div_close() {
-    check_cart_dispense();
+async function popup_discharged_list_div_close() {
+    // check_cart_dispense();
     popup_discharged_list_div.Set_Visible(false);
+
+    let ppdl_h_current_cart_select = document.querySelector(".ppdl_h_current_cart_select");
+
+    for (let i = 0; i < cart_list.length; i++) {
+        const element = cart_list[i];
+        if(element.hnursta == ppdl_h_current_cart_select.value) {
+            if(current_cart && ppdl_h_current_cart_select.value == current_cart.hnursta) {
+                await allocate_display_init();
+                break;
+            }
+            current_cart = element;
+            // let temp_logic = get_func_logic();
+            // get_all_select_option_logic(temp_logic);
+            
+            // 根據選取的調劑台解鎖藥品
+            if(current_med_table != "") {
+                console.log("切換調劑台");
+                patient_bed_index = -1;
+                await allocate_display_init();
+            } else {
+                console.log("未選調劑台");
+                patient_bed_index = -1;
+                await allocate_display_init();
+            }
+
+            if(med_cart_beds_data[patient_bed_index].bednum != "1" && med_cart_beds_data.length != 0) {
+                alert(`目前為第${med_cart_beds_data[patient_bed_index].bednum}床`);
+            }
+
+            last_current_cart = current_cart;
+            let cart_content = document.querySelector(".cart_select_container > .cart_content");
+            cart_content.innerHTML = ppdl_h_current_cart_select.value;
+            break;
+        }
+    }
 }
 async function popup_discharged_list_div_open() {
     await check_cart_dispense();

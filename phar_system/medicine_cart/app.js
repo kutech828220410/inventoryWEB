@@ -204,7 +204,10 @@ function get_header(test_user_data) {
         light_color_select_item.style.backgroundColor = `rgb(${light_color_object[element.name]})`;
         light_color_select_item.onclick = (e) => {
           let current_light_color_display = document.querySelector(".current_light_color_display");
-          current_light_color_display.style.backgroundColor = `rgb(${light_color_object[e.target.getAttribute("color")]})`;
+
+          console.log(light_color_object[e.target.getAttribute("data-color")]);
+          current_light_color_display.style.backgroundColor = `rgb(${light_color_object[e.target.getAttribute("data-color")]})`;
+
           light_color_list.forEach(element => {
             if(element.name == e.target.getAttribute("data-color")) {
               color_select = element;

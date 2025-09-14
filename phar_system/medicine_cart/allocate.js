@@ -73,6 +73,7 @@ async function allocate_diplay_logic() {
         console.log("未選調劑台");
         await allocate_display_init();
     }
+
     if(change_cart && med_cart_beds_data.length != 0) {
         if(med_cart_beds_data[patient_bed_index].bednum != "1") {
             alert(`目前為第${med_cart_beds_data[patient_bed_index].bednum}床`);
@@ -300,90 +301,90 @@ async function allocate_display_init(light_on) {
         });
         console.log("回到最上面done");
 
-        start_p = performance.now();
+        // start_p = performance.now();
 
-        if(current_func == "allocate") {
-            post_data = [current_cart.phar, current_cart.hnursta];
-            console.log(post_data);
+        // if(current_func == "allocate") {
+        //     post_data = [current_cart.phar, current_cart.hnursta];
+        //     console.log(post_data);
         
-            med_change_data = await get_patient_with_NOdispense(post_data);
-            med_change_data = med_change_data.Data;
-            med_change_data = med_change_data.filter((e) => {
-                return e.dispens_status != "Y";
-            });
+        //     med_change_data = await get_patient_with_NOdispense(post_data);
+        //     med_change_data = med_change_data.Data;
+        //     med_change_data = med_change_data.filter((e) => {
+        //         return e.dispens_status != "Y";
+        //     });
 
-            med_change_data = med_change_data.filter((e) => {
-                return Array.isArray(e.cpoe);
-            });
+        //     med_change_data = med_change_data.filter((e) => {
+        //         return Array.isArray(e.cpoe);
+        //     });
         
-            med_change_data = med_change_data.filter((e) => {
-                return e.cpoe.length != 0;
-            });
+        //     med_change_data = med_change_data.filter((e) => {
+        //         return e.cpoe.length != 0;
+        //     });
         
-            console.log("藥品異動確認", med_change_data);
-            console.log(med_change_data.length);
-            if(med_change_data.length != 0) {
-                console.log("加入驚嘆號");
-                let ppmcl_btn = document.querySelector(".ppmcl_btn");
-                if(current_func == "review") {
-                    ppmcl_btn.innerHTML = `未核藥品`;
-                } else {
-                    ppmcl_btn.innerHTML = `未調藥品`;
-                }
-            } else {
-                console.log("去除驚嘆號");
-                let ppmcl_btn = document.querySelector(".ppmcl_btn");
-                if(current_func == "review") {
-                    ppmcl_btn.innerHTML = `未核藥品`;
-                } else {
-                    ppmcl_btn.innerHTML = `未調藥品`;
-                }
-            }
+        //     console.log("藥品異動確認", med_change_data);
+        //     console.log(med_change_data.length);
+        //     if(med_change_data.length != 0) {
+        //         console.log("加入驚嘆號");
+        //         let ppmcl_btn = document.querySelector(".ppmcl_btn");
+        //         if(current_func == "review") {
+        //             ppmcl_btn.innerHTML = `未核藥品`;
+        //         } else {
+        //             ppmcl_btn.innerHTML = `未調藥品`;
+        //         }
+        //     } else {
+        //         console.log("去除驚嘆號");
+        //         let ppmcl_btn = document.querySelector(".ppmcl_btn");
+        //         if(current_func == "review") {
+        //             ppmcl_btn.innerHTML = `未核藥品`;
+        //         } else {
+        //             ppmcl_btn.innerHTML = `未調藥品`;
+        //         }
+        //     }
 
-            end_p = performance.now();
-            console.log("完成藥品異動確認：", end_p - start_p);
+        //     end_p = performance.now();
+        //     console.log("完成藥品異動確認：", end_p - start_p);
 
-        } else {
-            post_data = [current_cart.phar, current_cart.hnursta];
-            console.log(post_data);
+        // } else {
+        //     post_data = [current_cart.phar, current_cart.hnursta];
+        //     console.log(post_data);
         
-            med_change_data = await get_patient_with_NOdispense(post_data);
-            med_change_data = med_change_data.Data;
-            med_change_data = med_change_data.filter((e) => {
-                return e.check_status != "Y";
-            });
+        //     med_change_data = await get_patient_with_NOdispense(post_data);
+        //     med_change_data = med_change_data.Data;
+        //     med_change_data = med_change_data.filter((e) => {
+        //         return e.check_status != "Y";
+        //     });
 
-            med_change_data = med_change_data.filter((e) => {
-                return Array.isArray(e.cpoe);
-            });
+        //     med_change_data = med_change_data.filter((e) => {
+        //         return Array.isArray(e.cpoe);
+        //     });
         
-            med_change_data = med_change_data.filter((e) => {
-                return e.cpoe.length != 0;
-            });
+        //     med_change_data = med_change_data.filter((e) => {
+        //         return e.cpoe.length != 0;
+        //     });
         
-            console.log("藥品異動確認", med_change_data);
-            console.log(med_change_data.length);
-            if(med_change_data.length != 0) {
-                console.log("加入驚嘆號");
-                let ppmcl_btn = document.querySelector(".ppmcl_btn");
-                if(current_func == "review") {
-                    ppmcl_btn.innerHTML = `未核藥品`;
-                } else {
-                    ppmcl_btn.innerHTML = `未調藥品`;
-                }
-            } else {
-                console.log("去除驚嘆號");
-                let ppmcl_btn = document.querySelector(".ppmcl_btn");
-                if(current_func == "review") {
-                    ppmcl_btn.innerHTML = `未核藥品`;
-                } else {
-                    ppmcl_btn.innerHTML = `未調藥品`;
-                }
-            }
+        //     console.log("藥品異動確認", med_change_data);
+        //     console.log(med_change_data.length);
+        //     if(med_change_data.length != 0) {
+        //         console.log("加入驚嘆號");
+        //         let ppmcl_btn = document.querySelector(".ppmcl_btn");
+        //         if(current_func == "review") {
+        //             ppmcl_btn.innerHTML = `未核藥品`;
+        //         } else {
+        //             ppmcl_btn.innerHTML = `未調藥品`;
+        //         }
+        //     } else {
+        //         console.log("去除驚嘆號");
+        //         let ppmcl_btn = document.querySelector(".ppmcl_btn");
+        //         if(current_func == "review") {
+        //             ppmcl_btn.innerHTML = `未核藥品`;
+        //         } else {
+        //             ppmcl_btn.innerHTML = `未調藥品`;
+        //         }
+        //     }
 
-            end_p = performance.now();
-            console.log("完成藥品異動確認：", end_p - start_p);
-        }
+        //     end_p = performance.now();
+        //     console.log("完成藥品異動確認：", end_p - start_p);
+        // }
 
         // 監聽滾動事件
         let pbm_header_container = document.querySelector(".pbm_header_container");
@@ -1153,13 +1154,13 @@ function set_pbm_main_container() {
         // 覆核變色功能，等API架設後加入
         temp_check_isArray = page_setting_params && page_setting_params.highlight_checked && page_setting_params.highlight_checked.value;
         if(temp_check_isArray) {
-            if(current_func != "allocate" && element.check_status == "Y" && page_setting_params.highlight_checked.value == "True") {
+            if(element.dispens_name == "Y" && current_func != "allocate" && element.check_status == "Y" && page_setting_params.highlight_checked.value == "True") {
                 // med_card_name.classList.add("dobule_checked_color");
                 // med_card_cht_name.classList.add("dobule_checked_color");
                 med_card_container.classList.add("dobule_checked_color");
             }
 
-            if(current_func == "allocate" && element.check_status == "Y" && element.dispens_status == "Y" && page_setting_params.highlight_checked.value == "True") {
+            if(element.dispens_name == "Y" && current_func == "allocate" && element.check_status == "Y" && element.dispens_status == "Y" && page_setting_params.highlight_checked.value == "True") {
                 // med_card_name.classList.add("dobule_checked_color");
                 // med_card_cht_name.classList.add("dobule_checked_color");
                 med_card_container.classList.add("dobule_checked_color_yellow");
@@ -2298,8 +2299,6 @@ async function pre_bed_func() {
     let end_p = performance.now();
     console.log("床位調劑記錄完成並開始下一床資料準備：", end_p - start_p);
     // current_p_bed_data = pre_p_bed_data;
-    await allocate_display_init("on");
-
     if(temp_arr_none_bed != 0) {
         let temp_str = '';
         temp_arr_none_bed.forEach((element, index) => {
@@ -2312,6 +2311,8 @@ async function pre_bed_func() {
         temp_str += `為空床，已為您轉到第 ${med_cart_beds_data[patient_bed_index].bednum} 床。`;
         alert(temp_str);
     }
+    await allocate_display_init("on");
+
     // }
 }
 async function next_bed_func() {
@@ -2348,8 +2349,6 @@ async function next_bed_func() {
     let end_p = performance.now();
     console.log("床位調劑記錄完成並開始下一床資料準備：", end_p - start_p);
     // current_p_bed_data = next_p_bed_data;
-    await allocate_display_init("on");
-
     if(temp_arr_none_bed != 0) {
         let temp_str = '';
         temp_arr_none_bed.forEach((element, index) => {
@@ -2362,6 +2361,8 @@ async function next_bed_func() {
         temp_str += `為空床，已為您轉到第 ${med_cart_beds_data[patient_bed_index].bednum} 床。`;
         alert(temp_str);
     }
+    await allocate_display_init("on");
+
 }
 
 async function set_post_data_to_check_dispense() {
