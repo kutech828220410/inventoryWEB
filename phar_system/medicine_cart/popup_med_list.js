@@ -808,9 +808,9 @@ async function set_pp_med_list_display() {
 
         // 切換調劑模式
         let temp_mode = false;
-        if(page_setting_params.med_qty_popup_prefill) {
-            if(page_setting_params.med_qty_popup_prefill.value == "True") temp_mode = true;
-        }
+        // if(page_setting_params.med_qty_popup_prefill) {
+        //     if(page_setting_params.med_qty_popup_prefill.value == "True") temp_mode = true;
+        // }
         let uncheck_arr = [];
         let check_arr = [];
         if(temp_mode) {

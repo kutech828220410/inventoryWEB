@@ -102,8 +102,8 @@ function get_ppmcl_header() {
             console.log("出院處方退藥api",post_data);
             let return_data = await get_patient_discharge(post_data);
             if(return_data.Code != 200) {
-            alert("出院處方資料錯誤", return_data.Result);
-            Set_main_div_enable(false);
+                alert("出院處方資料錯誤", return_data.Result);
+                Set_main_div_enable(false);
             } else {
                 discharged_data = return_data.Data;
                 if(discharged_data.length != 0) {
@@ -124,11 +124,11 @@ function get_ppmcl_header() {
                         ppdl_h_current_cart_select.value = ppmcl_h_current_cart_select.value;
 
                         set_discharged_data_display();
-                        Set_main_div_enable(false);
                         // popup_med_change_list_div_close();
                         popup_med_change_list_div_close_other();
                         // popup_discharged_list_div_open();
                         popup_discharged_list_div_open_other();
+                        Set_main_div_enable(false);
                     } else {
                         Set_main_div_enable(false);
                     }
@@ -137,6 +137,7 @@ function get_ppmcl_header() {
         } else {
             Set_main_div_enable(false);
         }
+        Set_main_div_enable(false);
     });
 
     let ppmcl_h_title_content = document.createElement("div");
@@ -349,6 +350,7 @@ async function popup_med_change_list_div_open() {
         console.log("============ 檢查退藥完成 =============");
         Set_main_div_enable(false);
     }
+    Set_main_div_enable(false);
     // console.log("開啟退藥彈窗");
 }
 
@@ -358,8 +360,10 @@ async function set_ppmcl_main_info() {
     console.log("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
     ppmcl_main_container.innerHTML = "";
     console.log("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+    console.log(med_change_data.length);
     if(med_change_data.length == 0) {
         ppmcl_main_container.innerHTML = `<div class="ppmcl_main_no_info">${ppmcl_h_current_cart_select.value} 處方無異動</div>`;
+        Set_main_div_enable(false);
         return;
     }
 
@@ -594,7 +598,7 @@ async function set_ppmcl_main_info() {
                 }
 
                 console.log("未條藥品總調劑", post_data);
-                console.log("未條藥品總調劑log", post_data2);
+                // console.log("未條藥品總調劑log", post_data2);
                 let return_data = await api_med_cart_check_by_cart(post_data);
                 if(return_data.Code == 200) {
                     show_popup_notice(return_data.Result, true);
@@ -929,34 +933,34 @@ async function set_ppmcl_main_info() {
                             }
                         }
 
-                        // post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
-                        // console.log(post_data);
-                        // if(current_func == "allocate") {
-                        //     med_change_data = await get_patient_with_NOdispense(post_data);
-                        //     med_change_data = med_change_data.Data;
+                        post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
+                        console.log(post_data);
+                        if(current_func == "allocate") {
+                            med_change_data = await get_patient_with_NOdispense(post_data);
+                            med_change_data = med_change_data.Data;
                     
-                        //     med_change_data = med_change_data.filter((e) => {
-                        //         return e.cpoe_change_status != "";
-                        //     });
+                            med_change_data = med_change_data.filter((e) => {
+                                return e.cpoe_change_status != "";
+                            });
                     
-                        // } else {
-                        //     med_change_data = await get_patient_with_NOcheck(post_data);
-                        //     med_change_data = med_change_data.Data;
-                        // }
+                        } else {
+                            med_change_data = await get_patient_with_NOcheck(post_data);
+                            med_change_data = med_change_data.Data;
+                        }
                     
-                        // console.log(med_change_data);
+                        console.log(med_change_data);
                     
-                        // med_change_data = med_change_data.filter((e) => {
-                        //     return Array.isArray(e.cpoe) && e.cpoe.length != 0;
-                        // });
+                        med_change_data = med_change_data.filter((e) => {
+                            return Array.isArray(e.cpoe) && e.cpoe.length != 0;
+                        });
                     
-                        // console.log(med_change_data);
+                        console.log(med_change_data);
                     
-                        // if(med_change_data.length > 0) {
-                        //     med_change_data.sort((a, b) => +a.bednum - +b.bednum);
-                        // }
+                        if(med_change_data.length > 0) {
+                            med_change_data.sort((a, b) => +a.bednum - +b.bednum);
+                        }
                     
-                        // console.log("++++++++++++++++++++", med_change_data);
+                        console.log("++++++++++++++++++++", med_change_data);
                     }
     
                     Set_main_div_enable(false);
@@ -970,8 +974,8 @@ async function set_ppmcl_main_info() {
                     let radio_checked_input = document.querySelector('.sort_med_change_list_input:checked');
 
                     if(radio_checked_input.value != "all") {
-                        if(Array.isArray(temp_result.cpoe)) {
-                            temp_result.cpoe = temp_result.cpoe.filter(item => {
+                        if(Array.isArray(temp_cpoe)) {
+                            temp_cpoe = temp_cpoe.filter(item => {
                                 return item.med_group.includes(radio_checked_input.value);
                             });
                         }
@@ -1005,6 +1009,7 @@ async function set_ppmcl_main_info() {
                     console.log(temp_guid_arr);
 
                     let loggedName = sessionStorage.getItem('login_json');
+                    let ppmcl_h_current_cart_select = document.querySelector(".ppmcl_h_current_cart_select");
                     loggedName = JSON.parse(loggedName);
 
                     let post_data = {
@@ -1079,7 +1084,7 @@ async function set_ppmcl_main_info() {
                     if(return_data.Code == 200) {
                         show_popup_notice(return_data.Result, true);
                         // await add_med_inventory_log(post_data2);
-                        console.log("藥品異動逐床全部複合post_data2", post_data2);
+                        // console.log("藥品異動逐床全部複合post_data2", post_data2);
                     } else {
                         show_popup_notice(return_data.Result, false);
                     }
@@ -1087,7 +1092,6 @@ async function set_ppmcl_main_info() {
                     // 在這邊做確認退藥
                     //  調劑完後檢查退藥
                     let ppdl_h_current_cart_select = document.querySelector(".ppdl_h_current_cart_select");
-                    let ppmcl_h_current_cart_select = document.querySelector(".ppmcl_h_current_cart_select");
                     // 檢測有無退藥
                     console.log("============ 檢查退藥中 =============");
                     Set_main_div_enable(true);
@@ -1137,35 +1141,35 @@ async function set_ppmcl_main_info() {
                         }
                     }
                     
-                    // post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
-                    // console.log(post_data);
-                    // if(current_func == "allocate") {
-                    //     med_change_data = await get_patient_with_NOdispense(post_data);
-                    //     med_change_data = med_change_data.Data;
+                    post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
+                    console.log(post_data);
+                    if(current_func == "allocate") {
+                        med_change_data = await get_patient_with_NOdispense(post_data);
+                        med_change_data = med_change_data.Data;
                 
-                    //     console.log("未調藥品資料", med_change_data);
+                        console.log("未調藥品資料", med_change_data);
 
-                    //     med_change_data = med_change_data.filter((e) => {
-                    //         return e.cpoe_change_status != "";
-                    //     });
-                    // } else {
-                    //     med_change_data = await get_patient_with_NOcheck(post_data);
-                    //     med_change_data = med_change_data.Data;
+                        med_change_data = med_change_data.filter((e) => {
+                            return e.cpoe_change_status != "";
+                        });
+                    } else {
+                        med_change_data = await get_patient_with_NOcheck(post_data);
+                        med_change_data = med_change_data.Data;
 
-                    //     console.log("為何藥品資料", med_change_data);
-                    // }
+                        console.log("為何藥品資料", med_change_data);
+                    }
                 
-                    // med_change_data = med_change_data.filter((e) => {
-                    //     return Array.isArray(e.cpoe) && e.cpoe.length != 0;
-                    // });
+                    med_change_data = med_change_data.filter((e) => {
+                        return Array.isArray(e.cpoe) && e.cpoe.length != 0;
+                    });
                 
-                    // console.log(med_change_data);
+                    console.log(med_change_data);
                 
-                    // if(med_change_data.length > 0) {
-                    //     med_change_data.sort((a, b) => +a.bednum - +b.bednum);
-                    // }
+                    if(med_change_data.length > 0) {
+                        med_change_data.sort((a, b) => +a.bednum - +b.bednum);
+                    }
                 
-                    // console.log("++++++++++++++++++++", med_change_data);
+                    console.log("++++++++++++++++++++", med_change_data);
                     
                     Set_main_div_enable(false);
                 }
@@ -1677,6 +1681,7 @@ async function set_ppmcl_main_info() {
         if(radio_checked_input.value == "all") ppmcl_main_container.innerHTML = `<div class="ppmcl_main_no_info">${ppmcl_h_current_cart_select.value} 處方無異動</div>`;
         if(radio_checked_input.value != "all") ppmcl_main_container.innerHTML = `<div class="ppmcl_main_no_info">${ppmcl_h_current_cart_select.value} 處方無異動 / 無該類型藥品</div>`;
     }
+    Set_main_div_enable(false);
 }
 
 async function set_post_data_to_dispensed_by_GUID(guid_arr, master_guid) {

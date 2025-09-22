@@ -69,27 +69,26 @@ function popup_med_pic_div_close() {
 async function popup_med_pic_div_open() {
     popup_med_pic_div.Set_Visible(true);
 }
-async function set_pp_med_pic_func(name, cht_name, code) {
+async function set_pp_med_pic_func(name, cht_name, code, pic_str) {
     let ppmp_main_name = document.querySelector(".ppmp_main_name");
     let ppmp_main_cht_name = document.querySelector(".ppmp_main_cht_name");
     let ppmp_main_code = document.querySelector(".ppmp_main_code");
     let ppmp_main_pic_container = document.querySelector(".ppmp_main_pic_container");
     ppmp_main_pic_container.innerHTML = "";
 
-    let pic_boolean = false;
+    let pic_boolean = true;
     if(page_setting_params.med_pic_base64) {
       pic_boolean = page_setting_params.med_pic_base64.value == "True" ? false : true;
     }
 
     if(pic_boolean) {
         // ===== 使用範例（只需兩個參數）=====
-        let temp_arr = [
-            "https://www7.vghtpe.gov.tw/home/attach/f91e89b6-4177-4ad7-9ea6-1055e23713b4",
-            "https://www7.vghtpe.gov.tw/home/attach/a00c5e10-7487-4554-b9ff-4fd91fb4c568",
-            "https://www7.vghtpe.gov.tw/home/attach/a071a9a0-6ae9-464e-9a00-acbf030dc561"
-        ];
+        let temp_arr = [];
+        if(pic_str) {
+          temp_arr = pic_str.split(';');
+        }
         // createLoopSlider(ppmp_main_pic_container, temp_arr);
-        set_med_silder_pic([], ppmp_main_pic_container);
+        set_med_silder_pic(temp_arr, ppmp_main_pic_container);
     } else {
         let ppmp_main_img = document.createElement("img");
         ppmp_main_img.classList.add("ppmp_main_img");
@@ -115,15 +114,21 @@ async function set_pp_med_pic_func(name, cht_name, code) {
 }
 
 function set_med_silder_pic(array, div) {
-    let temp_arr = [
-        "https://www7.vghtpe.gov.tw/home/attach/f91e89b6-4177-4ad7-9ea6-1055e23713b4",
-        "https://www7.vghtpe.gov.tw/home/attach/a00c5e10-7487-4554-b9ff-4fd91fb4c568",
-        "https://www7.vghtpe.gov.tw/home/attach/a071a9a0-6ae9-464e-9a00-acbf030dc561",
-        "https://www7.vghtpe.gov.tw/home/attach/8bb41a33-5e68-49e1-95f4-147b926ac950",
-        "https://www7.vghtpe.gov.tw/home/attach/2003209a-b7ce-4e88-b76a-e3d80fb4ad7e",
-        "https://www7.vghtpe.gov.tw/home/attach/becfae1e-f4c1-434f-a6b5-88878a170b69"
-    ];
+  let temp_arr = [
+    "https://www7.vghtpe.gov.tw/home/attach/f91e89b6-4177-4ad7-9ea6-1055e23713b4",
+    "https://www7.vghtpe.gov.tw/home/attach/a00c5e10-7487-4554-b9ff-4fd91fb4c568",
+    "https://www7.vghtpe.gov.tw/home/attach/a071a9a0-6ae9-464e-9a00-acbf030dc561",
+    "https://www7.vghtpe.gov.tw/home/attach/becfae1e-f4c1-434f-a6b5-88878a170b69",
+    "https://www7.vghtpe.gov.tw/home/attach/8bb41a33-5e68-49e1-95f4-147b926ac950",
+    "https://www7.vghtpe.gov.tw/home/attach/2003209a-b7ce-4e88-b76a-e3d80fb4ad7e",
+  ];
+  
 
+  div.innerHTML = "";
+  temp_arr = array;
+
+  if(temp_arr.length > 0) {
+    console.log(temp_arr);
     div.style.position = "relative";
 
     let silder_med_container = document.createElement("div");
@@ -131,41 +136,84 @@ function set_med_silder_pic(array, div) {
 
     let max_slider_index = temp_arr.length - 1;
 
-    temp_arr.forEach((element, index) => {
-        let silder_div = document.createElement("div");
-        silder_div.classList.add("silder_div");
-        silder_div.classList.add(`silder_div_${index}`);
-        if(index == max_slider_index) {
-            silder_div.style.left = `100%`;
-        } else {
-            silder_div.style.left = `${100 * -index}%`;
-        }
-
-        let silder_img = document.createElement("img");
-        silder_img.classList.add("silder_img");
-        silder_img.src = element
-
-        silder_div.appendChild(silder_img);
-
-        silder_med_container.appendChild(silder_div);
-    });
     
     if(temp_arr.length > 1) {
-        let slider_pre_btn = document.createElement("div");
-        slider_pre_btn.classList.add("slider_pre_btn");
-        slider_pre_btn.addEventListener("click", () => {
-            let silder_div_arr = document.querySelectorAll(".silder_div");
+      console.log("藥品張數", temp_arr.length);
+      if(temp_arr.length > 2) {
+        console.log("這邊是三張");
+        temp_arr.forEach((element, index) => {
+            let silder_div = document.createElement("div");
+            silder_div.classList.add("silder_div");
+            silder_div.classList.add(`silder_div_${index}`);
+            if(index == max_slider_index) {
+                silder_div.style.left = `100%`;
+            } else {
+                silder_div.style.left = `${100 * -index}%`;
+            }
+    
+            let silder_img = document.createElement("img");
+            silder_img.classList.add("silder_img");
+            silder_img.src = element
+    
+            silder_div.appendChild(silder_img);
+    
+            silder_med_container.appendChild(silder_div);
+        });
+      } else {
+        console.log("這邊是兩張");
+        temp_arr.forEach((element, index) => {
+          let silder_div = document.createElement("div");
+          silder_div.classList.add("silder_div");
+          silder_div.classList.add(`silder_div_${index}`);
+          if(index == max_slider_index) {
+              silder_div.style.left = `100%`;
+          } else {
+              silder_div.style.left = `${100 * -index}%`;
+          }
+  
+          let silder_img = document.createElement("img");
+          silder_img.classList.add("silder_img");
+          silder_img.src = element
+  
+          silder_div.appendChild(silder_img);
+  
+          silder_med_container.appendChild(silder_div);
 
-            silder_div_arr.forEach(element => {
-                // console.log(element);
-                // 全部往左移動
-                let current_left = +element.style.left.replace("%", "");
-                element.style.left = `${current_left - 100}%`;
+          if(max_slider_index == 1 && max_slider_index == index) {
+            let silder_div = document.createElement("div");
+            silder_div.classList.add("silder_div");
+            silder_div.classList.add(`silder_div_${index}`);
+            silder_div.style.left = `-100%`;
+    
+            let silder_img = document.createElement("img");
+            silder_img.classList.add("silder_img");
+            silder_img.src = element
+    
+            silder_div.appendChild(silder_img);
+    
+            silder_med_container.appendChild(silder_div);
+          }
+        });
+      }
+      let slider_pre_btn = document.createElement("div");
+      slider_pre_btn.classList.add("slider_pre_btn");
+      slider_pre_btn.innerHTML = `<img class="" src="../image/left-arrow.png">`;
+      slider_pre_btn.addEventListener("click", () => {
+          let silder_div_arr = document.querySelectorAll(".silder_div");
 
-                // 取得新的展示圖片定位
-                let new_left = +element.style.left.replace("%", "");
-                let remove_index;
+          silder_div_arr.forEach(element => {
+              // console.log(element);
+              // 全部往左移動
+              let current_left = +element.style.left.replace("%", "");
+              element.style.left = `${current_left - 100}%`;
 
+              // 取得新的展示圖片定位
+              let new_left = +element.style.left.replace("%", "");
+              let remove_index;
+
+              if(max_slider_index == 1) {
+                if(new_left < -100) element.remove();
+              } else {
                 if(new_left == (max_slider_index * -100)) {
                     let temp_class = element.classList[1]
                     remove_index = temp_class.split('_')[2];
@@ -173,73 +221,81 @@ function set_med_silder_pic(array, div) {
                     console.log('--------' ,remove_index);
                     element.remove();
                 }
+              }
 
-                if(new_left == 0) {
-                    // 取得所有移動照片的index
-                    let temp_remove_class_index = element.classList[1];
-                    let temp_index = temp_remove_class_index.split('_')[2];
-                    console.log("展示的容器",temp_remove_class_index);
-                    console.log("容器的index", temp_index);
+              if(new_left == 0) {
+                  // 取得所有移動照片的index
+                  let temp_remove_class_index = element.classList[1];
+                  let temp_index = temp_remove_class_index.split('_')[2];
+                  console.log("展示的容器",temp_remove_class_index);
+                  console.log("容器的index", temp_index);
 
-                    //       |         |
-                    // 3 2 1 0
-                    // 2 1 0 3 ==> 1 0 3 2
-                    // 1 0 3 2
-                    // 0 3 2 1
-                    //       |         |
-                    let new_create_index = +temp_index - 1;
-                    if(new_create_index < 0) new_create_index = max_slider_index;
-                    console.log(new_create_index);
-                    console.log("新增的index", new_create_index);
-                    
-                    let silder_div = document.createElement("div");
-                    silder_div.classList.add("silder_div");
-                    silder_div.classList.add(`silder_div_${new_create_index}`);
-                    let temp_move = +max_slider_index - 1;
-                    silder_div.style.left = `100%`;
+                  //       |         |
+                  // 3 2 1 0
+                  // 2 1 0 3 ==> 1 0 3 2
+                  // 1 0 3 2
+                  // 0 3 2 1
+                  //       |         |
+                  let new_create_index = +temp_index - 1;
+                  if(new_create_index < 0) new_create_index = max_slider_index;
+                  console.log(new_create_index);
+                  console.log("新增的index", new_create_index);
+                  
+                  let silder_div = document.createElement("div");
+                  silder_div.classList.add("silder_div");
+                  silder_div.classList.add(`silder_div_${new_create_index}`);
+                  let temp_move = +max_slider_index - 1;
+                  silder_div.style.left = `100%`;
 
-                    let silder_img = document.createElement("img");
-                    silder_img.classList.add("silder_img");
-                    silder_img.src = temp_arr[new_create_index];
+                  let silder_img = document.createElement("img");
+                  silder_img.classList.add("silder_img");
+                  silder_img.src = temp_arr[new_create_index];
 
-                    silder_div.appendChild(silder_img);
+                  silder_div.appendChild(silder_img);
 
-                    silder_med_container.appendChild(silder_div);
-                }
-            }); 
-        });
-    
-        let slider_next_btn = document.createElement("div");
-        slider_next_btn.classList.add("slider_next_btn");
-        slider_next_btn.addEventListener("click", () => {
-            let silder_div_arr = document.querySelectorAll(".silder_div");
+                  silder_med_container.appendChild(silder_div);
+              }
+          }); 
+      });
+  
+      let slider_next_btn = document.createElement("div");
+      slider_next_btn.classList.add("slider_next_btn");
+      slider_next_btn.innerHTML = `<img class="" src="../image/left-arrow.png">`;
+      slider_next_btn.addEventListener("click", () => {
+          let silder_div_arr = document.querySelectorAll(".silder_div");
 
-            silder_div_arr.forEach(element => {
-                // console.log(element);
-                // 全部往左移動
-                let current_left = +element.style.left.replace("%", "");
-                element.style.left = `${current_left + 100}%`;
+          silder_div_arr.forEach(element => {
+              // console.log(element);
+              // 全部往左移動
+              let current_left = +element.style.left.replace("%", "");
+              element.style.left = `${current_left + 100}%`;
 
-                // 取得新的展示圖片定位
-                let new_left = +element.style.left.replace("%", "");
-                if(new_left > 100) {
-                    element.remove();
-                }
+              // 取得新的展示圖片定位
+              let new_left = +element.style.left.replace("%", "");
+              if(new_left > 100) {
+                  element.remove();
+              }
 
-                if(new_left == 0) {
-                    // 取得所有移動照片的index
-                    let temp_remove_class_index = element.classList[1];
-                    let temp_index = temp_remove_class_index.split('_')[2];
-                    console.log("展示的容器",temp_remove_class_index);
-                    console.log("容器的index", temp_index);
+              if(new_left == 0) {
+                  // 取得所有移動照片的index
+                  let temp_remove_class_index = element.classList[1];
+                  let temp_index = temp_remove_class_index.split('_')[2];
+                  console.log("展示的容器",temp_remove_class_index);
+                  console.log("容器的index", temp_index);
 
-                    //   |             |
-                    // 3 2 1 0
-                    // 2 1 0 3 ==> 3 2 1 0 
-                    // 1 0 3 2 ==> 2 1 0 3
-                    // 0 3 2 1
-                    //   |             |
-                    let new_create_index = +temp_index - 2;
+                  //   |             |
+                  // 3 2 1 0
+                  // 2 1 0 3 ==> 3 2 1 0 
+                  // 1 0 3 2 ==> 2 1 0 3
+                  // 0 3 2 1
+                  //   |             |
+                  let new_create_index = 0;
+                  if(max_slider_index == 1) {
+                    if(+temp_index == 0) {
+                      new_create_index = 1;
+                    }
+                  } else {
+                    new_create_index = +temp_index - 2;
                     if(new_create_index < 0) {
                         switch (new_create_index) {
                             case -1:
@@ -253,31 +309,61 @@ function set_med_silder_pic(array, div) {
                                 break;
                         }
                     }
-                    console.log(new_create_index);
-                    console.log("新增的index", new_create_index);
-                    
-                    let silder_div = document.createElement("div");
-                    silder_div.classList.add("silder_div");
-                    silder_div.classList.add(`silder_div_${new_create_index}`);
-                    let temp_move = +max_slider_index - 1;
+                  }
+                  console.log(new_create_index);
+                  console.log("新增的index", new_create_index);
+                  
+                  let silder_div = document.createElement("div");
+                  silder_div.classList.add("silder_div");
+                  silder_div.classList.add(`silder_div_${new_create_index}`);
+                  let temp_move = +max_slider_index - 1;
+                  if(max_slider_index == 1) {
+                    silder_div.style.left = `-100%`;
+                  } else {
                     silder_div.style.left = `${temp_move * -100}%`;
+                  }
 
-                    let silder_img = document.createElement("img");
-                    silder_img.classList.add("silder_img");
-                    silder_img.src = temp_arr[new_create_index];
+                  let silder_img = document.createElement("img");
+                  silder_img.classList.add("silder_img");
+                  silder_img.src = temp_arr[new_create_index];
 
-                    silder_div.appendChild(silder_img);
+                  silder_div.appendChild(silder_img);
 
-                    silder_med_container.appendChild(silder_div);
-                }
-            }); 
-        });
+                  silder_med_container.appendChild(silder_div);
+              }
+          }); 
+      });
 
-        div.appendChild(slider_pre_btn);
-        div.appendChild(slider_next_btn);
+      div.appendChild(slider_pre_btn);
+      div.appendChild(slider_next_btn);
+    } else {
+      temp_arr.forEach((element, index) => {
+        let silder_div = document.createElement("div");
+        silder_div.classList.add("silder_div");
+        silder_div.classList.add(`silder_div_${index}`);
+        silder_div.style.left = `0%`;
+
+        let silder_img = document.createElement("img");
+        silder_img.classList.add("silder_img");
+        silder_img.src = element
+
+        silder_div.appendChild(silder_img);
+
+        silder_med_container.appendChild(silder_div);
+      });
     }
 
     div.appendChild(silder_med_container);
+  } else {
+    console.log("????");
+    let ppmp_main_img = document.createElement("img");
+    ppmp_main_img.classList.add("ppmp_main_img");
+
+    temp_src = "../image/no_pic.png";
+    ppmp_main_img.src = temp_src;
+
+    div.appendChild(ppmp_main_img);
+  }
 }
 
 /** 無縫循環輪播：只需容器與圖片陣列兩個參數 */

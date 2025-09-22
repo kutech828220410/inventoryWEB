@@ -268,6 +268,8 @@ async function allocate_display_init(light_on) {
         let p_bed_header = get_p_bed_header();
         let p_bed_info_container = set_p_bed_info_container();
         let p_bed_med_container = set_p_bed_med_container();
+
+        function_display_container.innerHTML = "";
     
         function_display_container.appendChild(p_bed_header);
         function_display_container.appendChild(p_bed_info_container);
@@ -534,12 +536,12 @@ function get_p_bed_header() {
     });
 
     // pb_btn_container.appendChild(ppmcl_btn);
-    // if(page_setting_params && page_setting_params.pick_medicine.value == "True") {
-    //     pb_btn_container.appendChild(med_take_btn);
-    // }
+    if(page_setting_params && page_setting_params.pick_medicine.value == "True") {
+        pb_btn_container.appendChild(med_take_btn);
+    }
 
     // pb_btn_container.appendChild(med_log_btn);
-    pb_btn_container.appendChild(med_take_btn);
+    // pb_btn_container.appendChild(med_take_btn);
     pb_btn_container.appendChild(dc_new_btn);
     // pb_btn_container.appendChild(med_cart_sum_list_btn);
     pb_btn_container.appendChild(pb_list_btn);
@@ -1021,7 +1023,11 @@ function set_pbm_main_container() {
                     console.log(med_log_arr);
                     console.log(med_nodis_log_arr);
                 } else {
-                    alert("尚未完成調劑，無法進行覆核");
+                    if(current_func == "allocate") {
+                        alert("請選擇對應調劑台後，在進行調劑");
+                    } else {
+                        alert("尚未完成調劑，無法進行覆核");
+                    }
                 }
             }
         });
@@ -1365,8 +1371,9 @@ function set_pbm_main_container() {
                             cht_name = element.med_cloud[0].CHT_NAME;
                             code = element.med_cloud[0].CODE;
                         }
-                        await set_pp_med_pic_func(name, cht_name, code);
-                        popup_med_pic_div.Set_Visible(true);
+                        let pic_str = element.med_cloud[0].PIC_URL;
+                        await set_pp_med_pic_func(name, cht_name, code, pic_str);
+                        popup_med_pic_div_open();
                     })
                     break;
                 case "仿單":

@@ -233,6 +233,10 @@ function set_discharged_data_display() {
                 loggedName = JSON.parse(loggedName);
 
                 let post_data = {
+                    Data: {
+                        op_id: loggedName.ID,
+                        op_name: loggedName.Name
+                    },  
                     ServerName: "",
                     ServerType: "",
                     UserName: loggedName.Name,
@@ -267,21 +271,21 @@ function set_discharged_data_display() {
                     let loggedName = sessionStorage.getItem('login_json');
                     loggedName = JSON.parse(loggedName);
                     
-                    let post_data2 = {
-                        Data: [
-                            {
-                                op_id: loggedName.ID,
-                                op_name: loggedName.Name
-                            }
-                        ],
-                        ServerName: "",
-                        ServerType: "",
-                        ValueAry: [guid_arr.join(";")],
-                        Value: "退藥"
-                    }
+                    // let post_data2 = {
+                    //     Data: [
+                    //         {
+                    //             op_id: loggedName.ID,
+                    //             op_name: loggedName.Name
+                    //         }
+                    //     ],
+                    //     ServerName: "",
+                    //     ServerType: "",
+                    //     ValueAry: [guid_arr.join(";")],
+                    //     Value: "退藥"
+                    // }
 
-                    console.log("退藥log post", post_data2);
-                    await add_med_inventory_log(post_data2);
+                    // console.log("退藥log post", post_data2);
+                    // await add_med_inventory_log(post_data2);
 
                     discharged_data = return_data.Data;
                     set_discharged_data_display();
@@ -510,6 +514,10 @@ async function set_post_data_to_discharged_by_GUID(guid_arr, master_guid) {
     temp_str = guid_arr.join(";");
 
     let post_data = {
+        Data: {
+            op_id: loggedName.ID,
+            op_name: loggedName.Name
+        },
         ServerName: "",
         ServerType: "",
         UserName: loggedName.Name,
@@ -528,21 +536,21 @@ async function set_post_data_to_discharged_by_GUID(guid_arr, master_guid) {
 
     return_data = await api_med_cart_dispensed_by_GUID(post_data);
 
-    let post_data2 = {
-        Data: [
-            {
-                op_id: loggedName.ID,
-                op_name: loggedName.Name
-            }
-        ],
-        ServerName: "",
-        ServerType: "",
-        ValueAry: [guid_arr.join(";")],
-        Value: "退藥"
-    }
+    // let post_data2 = {
+    //     Data: [
+    //         {
+    //             op_id: loggedName.ID,
+    //             op_name: loggedName.Name
+    //         }
+    //     ],
+    //     ServerName: "",
+    //     ServerType: "",
+    //     ValueAry: [guid_arr.join(";")],
+    //     Value: "退藥"
+    // }
 
-    console.log("退藥log post", post_data2);
-    await add_med_inventory_log(post_data2);
+    // console.log("退藥log post", post_data2);
+    // await add_med_inventory_log(post_data2);
 
     return return_data;
 };

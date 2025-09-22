@@ -346,6 +346,22 @@ function drawToCanvas() {
     training_64 = base64Image;
 }
 
+function getTimestampFilename() {
+  const now = new Date();
+
+  const yyyy = now.getFullYear();
+  const MM = String(now.getMonth() + 1).padStart(2, "0");
+  const dd = String(now.getDate()).padStart(2, "0");
+
+  const HH = String(now.getHours()).padStart(2, "0");
+  const mm = String(now.getMinutes()).padStart(2, "0");
+  const ss = String(now.getSeconds()).padStart(2, "0");
+  const ms = String(now.getMilliseconds()).padStart(2, "0"); // 毫秒(兩位數)
+
+  // 檔名格式：YYYYMMDD_HH-mm-ss-ss.jpg
+  return `${yyyy}${MM}${dd}_${HH}-${mm}-${ss}-${ms}.jpg`;
+}
+
 function captureImage() {
     if (!isRunning) return;
     const videoElement = document.querySelector(".ppcd_video");
@@ -368,7 +384,40 @@ function captureImage() {
     api_sp = performance.now();
     // `${api_ip}api/medCount/medCountAnalyze`;
     console.log("辨識AI api_url", ai_api_ip);
+
+
+    // 轉成 JPG Blob
+    // canvas.toBlob(async (blob) => {
+    //     const formData = new FormData();
+    //     let frontEndCountDrug = getTimestampFilename();
+    //     formData.append("file", blob, frontEndCountDrug);
+
+    //     try {
+    //         const res = await fetch(ai_api_ip, {
+    //             method: "POST",
+    //             body: formData, // 不用設 Content-Type，瀏覽器會自動帶上 multipart/form-data
+    //         });
+
+    //         const data = await res.json();
+    //         handleRecognitionResult(data);
+    //     } catch (err) {
+    //         console.error("辨識失敗:", err);  
+    //         api_ep = performance.now();
+    //         api_time = api_ep - api_sp;
+    //         console.log("api時間：", api_time, "ms");
+    //         performance_result();
+    //         if (isRunning) {
+    //             // console.log(test_data);
+    //             // handleRecognitionResult(test_data);
+    //             // captureImage();
+    //             setTimeout(() => captureImage(), 500); // 繼續輪詢
+    //         }  
+    //     }
+    // }, "image/jpeg", 0.9);
+
+    // base64解法
     // let temp_test = "https://www.kutech.tw:3000/pill_rec_fast";
+
     fetch(ai_api_ip, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -613,9 +662,9 @@ async function enter_count_result() {
 async function enter_count_training() {
     let return_data = await pic_analyze_api(training_64, "True");
     if(return_data.Code == 200 || return_data["Result"].includes("AI辨識失敗")) {
-        display_notice_func(true);
+        display_notice_func(true, "");
     } else {
-        display_notice_func(false);
+        display_notice_func(false, return_data.Result);
     }
 
     console.log("====================================================");
@@ -656,12 +705,17 @@ async function pic_analyze_api(base64_data, training_trigger) {
         return response.json()
     }).catch(error => {
         console.error("錯誤 : ", error);
-        alert(error);
+        let temp_err = {
+            Data:[],
+            Code: -200,
+            Result: error
+        }
+        return temp_err
     });
 
     return return_data;
 }
-function display_notice_func(boolean) {
+function display_notice_func(boolean, str) {
     let notice = document.querySelector(".popup_count_drugs_notice_div");
     if (hideTimeout) {
         clearTimeout(hideTimeout);
@@ -672,7 +726,7 @@ function display_notice_func(boolean) {
         notice.innerHTML = "已加入";
     } else {
         notice.style.backgroundColor = "#b72800";
-        notice.innerHTML = "存入失敗";
+        notice.innerHTML = `存入失敗：\n${str}`;
     }
 
     // 將通知從上方移到畫面內

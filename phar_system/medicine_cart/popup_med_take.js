@@ -204,6 +204,10 @@ async function open_med_take_func() {
     med_take_data = med_take_data.Data;
     console.log(med_take_data);
     med_take_data = set_med_data(med_take_data);
+    if(Array.isArray(med_take_data) == false) {
+        alert(med_take_data);
+        Set_main_div_enable(false);
+    }
     console.log(med_take_data);
 
     let temp_current_bed_num = +current_p_bed_data.bednum;
@@ -293,22 +297,26 @@ async function pp_med_take_pre() {
 
 function set_med_data(arr) {
     const data = arr;
-
-    const groupedData = Object.values(data.reduce((acc, item) => {
-        const key = item.MAster_GUID;
-        if (!acc[key]) {
-        acc[key] = {
-            MAster_GUID: key,
-            bednum: item.bednum,
-            caseno: item.caseno,
-            cpoes: [],
-        };
-        }
-        acc[key].cpoes.push(item);
-        return acc;
-    }, {})
-    );
-
+    let groupedData = [];
+    try {       
+        groupedData = Object.values(data.reduce((acc, item) => {
+            const key = item.MAster_GUID;
+            if (!acc[key]) {
+            acc[key] = {
+                MAster_GUID: key,
+                bednum: item.bednum,
+                caseno: item.caseno,
+                cpoes: [],
+            };
+            }
+            acc[key].cpoes.push(item);
+            return acc;
+        }, {}));
+    } catch (error) {
+        console.error(error);
+        return `ERROR: ${error.message}`;
+    }
+    
     return groupedData;
 }
 
