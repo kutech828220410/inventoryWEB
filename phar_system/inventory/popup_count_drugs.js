@@ -387,67 +387,67 @@ function captureImage() {
 
 
     // 轉成 JPG Blob
-    // canvas.toBlob(async (blob) => {
-    //     const formData = new FormData();
-    //     let frontEndCountDrug = getTimestampFilename();
-    //     formData.append("file", blob, frontEndCountDrug);
+    canvas.toBlob(async (blob) => {
+        const formData = new FormData();
+        let frontEndCountDrug = getTimestampFilename();
+        formData.append("file", blob, frontEndCountDrug);
 
-    //     try {
-    //         const res = await fetch(ai_api_ip, {
-    //             method: "POST",
-    //             body: formData, // 不用設 Content-Type，瀏覽器會自動帶上 multipart/form-data
-    //         });
+        try {
+            const res = await fetch(ai_api_ip, {
+                method: "POST",
+                body: formData, // 不用設 Content-Type，瀏覽器會自動帶上 multipart/form-data
+            });
 
-    //         const data = await res.json();
-    //         handleRecognitionResult(data);
-    //     } catch (err) {
-    //         console.error("辨識失敗:", err);  
-    //         api_ep = performance.now();
-    //         api_time = api_ep - api_sp;
-    //         console.log("api時間：", api_time, "ms");
-    //         performance_result();
-    //         if (isRunning) {
-    //             // console.log(test_data);
-    //             // handleRecognitionResult(test_data);
-    //             // captureImage();
-    //             setTimeout(() => captureImage(), 500); // 繼續輪詢
-    //         }  
-    //     }
-    // }, "image/jpeg", 0.9);
+            const data = await res.json();
+            handleRecognitionResult(data);
+        } catch (err) {
+            console.error("辨識失敗:", err);  
+            api_ep = performance.now();
+            api_time = api_ep - api_sp;
+            console.log("api時間：", api_time, "ms");
+            performance_result();
+            if (isRunning) {
+                // console.log(test_data);
+                // handleRecognitionResult(test_data);
+                // captureImage();
+                setTimeout(() => captureImage(), 500); // 繼續輪詢
+            }  
+        }
+    }, "image/jpeg", 0.9);
 
     // base64解法
     // let temp_test = "https://www.kutech.tw:3000/pill_rec_fast";
 
-    fetch(ai_api_ip, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-            {
-                Data:[
-                    { 
-                        base64: canvas.toDataURL("image/jpeg")
-                    }
-                ],
-                Value: "",
+    // fetch(ai_api_ip, {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify(
+    //         {
+    //             Data:[
+    //                 { 
+    //                     base64: canvas.toDataURL("image/jpeg")
+    //                 }
+    //             ],
+    //             Value: "",
 
-            }
-        )
-    })
-    .then(response => response.json())
-    .then(data => handleRecognitionResult(data))
-    .catch(error => {
-        console.error("辨識失敗:", error);
-        api_ep = performance.now();
-        api_time = api_ep - api_sp;
-        console.log("api時間：", api_time, "ms");
-        performance_result();
-        if (isRunning) {
-            // console.log(test_data);
-            // handleRecognitionResult(test_data);
-            captureImage();
-            // setTimeout(() => captureImage(), 500); // 繼續輪詢
-        }
-    });
+    //         }
+    //     )
+    // })
+    // .then(response => response.json())
+    // .then(data => handleRecognitionResult(data))
+    // .catch(error => {
+    //     console.error("辨識失敗:", error);
+    //     api_ep = performance.now();
+    //     api_time = api_ep - api_sp;
+    //     console.log("api時間：", api_time, "ms");
+    //     performance_result();
+    //     if (isRunning) {
+    //         // console.log(test_data);
+    //         // handleRecognitionResult(test_data);
+    //         captureImage();
+    //         // setTimeout(() => captureImage(), 500); // 繼續輪詢
+    //     }
+    // });
 
     training_64 = canvas.toDataURL("image/jpeg");
 }

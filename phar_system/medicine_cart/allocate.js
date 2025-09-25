@@ -58,6 +58,8 @@ async function allocate_diplay_logic() {
         // pre_p_bed_data = "";
         // next_p_bed_data = "";
         change_cart = true;
+    } else {
+        console.log("同護理站，換調劑台");
     }
 
     // 根據選取的調劑台解鎖藥品
@@ -79,6 +81,7 @@ async function allocate_diplay_logic() {
             alert(`目前為第${med_cart_beds_data[patient_bed_index].bednum}床`);
         }
     }
+    change_cart = false;
 
     return;
 }

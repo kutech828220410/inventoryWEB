@@ -399,7 +399,7 @@ function set_discharged_data_display() {
     
                                     let ppdl_med_info_dunit = document.createElement("div");
                                     ppdl_med_info_dunit.classList.add("ppdl_med_info_dunit");
-                                    ppdl_med_info_dunit.innerHTML = "單位：" + item.dunit;
+                                    ppdl_med_info_dunit.innerHTML = "劑量：" + item.dosage;
     
                                     let ppdl_med_info_storage = document.createElement("div");
                                     ppdl_med_info_storage.classList.add("ppdl_med_info_storage");

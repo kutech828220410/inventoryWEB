@@ -27,7 +27,7 @@ function get_ppmcl_header() {
         Set_main_div_enable(true);
         // last_med_change_list_n = ppmcl_h_current_cart_select.value;
 
-        api_logger_add(`未調藥品：${current_cart.hnursta}更換藥車${ppmcl_h_current_cart_select}`, "click");
+        api_logger_add(`未調藥品：${current_cart.hnursta}更換藥車${ppmcl_h_current_cart_select.value}`, "click");
         let post_data = [current_pharmacy.phar, ppmcl_h_current_cart_select.value];
         console.log(post_data);
         if(current_func == "allocate") {
@@ -723,19 +723,23 @@ async function set_ppmcl_main_info() {
             let cart_content = document.querySelector(".cart_content");
             let ppmcl_h_current_cart_select = document.querySelector(".ppmcl_h_current_cart_select");
 
+            let temp_cart;
+
+
             if(current_cart.hnursta != ppmcl_h_current_cart_select.value) {
                 for (let index = 0; index < cart_list.length; index++) {
-                    const element = cart_list[index];
+                    const item = cart_list[index];
                     
-                    if(ppmcl_h_current_cart_select.value == element.hnursta) {
-                        cart_content.innerHTML = element.hnursta;
-                        current_cart = element;
-                        med_cart_beds_data = await get_bed_list_by_cart(current_pharmacy.phar, current_cart.hnursta);
+                    if(ppmcl_h_current_cart_select.value == item.hnursta) {
+                        cart_content.innerHTML = item.hnursta;
+                        temp_cart = item;
+                        med_cart_beds_data = await get_bed_list_by_cart(current_pharmacy.phar, item.hnursta);
                         med_cart_beds_data = med_cart_beds_data.Data;
                         break;
                     }
                 }
             }
+
             let temp_index = -1;
             for (let index = 0; index < med_cart_beds_data.length; index++) {
                 const item = med_cart_beds_data[index];
@@ -745,16 +749,19 @@ async function set_ppmcl_main_info() {
                 }
             }
 
-            if(temp_index == patient_bed_index) {
+            console.log(ppmcl_h_current_cart_select.value);
+            console.log(current_cart.hnursta);
+            if(temp_index == patient_bed_index && ppmcl_h_current_cart_select.value == current_cart.hnursta) {
                 alert("已經是目前床位"); 
                 return;
             } else {
                 Set_main_div_enable(true);
-            
+                current_cart = temp_cart;
                 last_patient_bed_index = patient_bed_index;
                 patient_bed_index = temp_index;
             
                 allocate_display_init("");
+                last_current_cart = current_cart;
                 popup_med_change_list_div_close();
             }
         });
